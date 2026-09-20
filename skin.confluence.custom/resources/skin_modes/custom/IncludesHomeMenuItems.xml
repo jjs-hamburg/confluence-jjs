@@ -1,0 +1,650 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<includes>
+	<include name="HomeSubMenuVideos">
+		<control type="image" id="91001">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91011">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_videos_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=videos,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_videos_1_Label))</visible>
+		</control>
+		<control type="button" id="91012">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_videos_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=videos,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_videos_2_Label))</visible>
+		</control>
+		<control type="button" id="91013">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_videos_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=videos,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_videos_3_Label))</visible>
+		</control>
+		<control type="button" id="91014">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_videos_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=videos,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_videos_4_Label))</visible>
+		</control>
+		<control type="button" id="91015">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_videos_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=videos,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_videos_5_Label))</visible>
+		</control>
+		<control type="button" id="91016">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_videos_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=videos,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_videos_6_Label))</visible>
+		</control>
+		<control type="image" id="91099">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuMovies">
+		<control type="image" id="91101">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91111">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_movies_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=movies,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_movies_1_Label))</visible>
+		</control>
+		<control type="button" id="91112">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_movies_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=movies,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_movies_2_Label))</visible>
+		</control>
+		<control type="button" id="91113">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_movies_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=movies,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_movies_3_Label))</visible>
+		</control>
+		<control type="button" id="91114">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_movies_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=movies,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_movies_4_Label))</visible>
+		</control>
+		<control type="button" id="91115">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_movies_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=movies,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_movies_5_Label))</visible>
+		</control>
+		<control type="button" id="91116">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_movies_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=movies,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_movies_6_Label))</visible>
+		</control>
+		<control type="image" id="91199">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuTVShows">
+		<control type="image" id="91201">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91211">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tvshows_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tvshows,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tvshows_1_Label))</visible>
+		</control>
+		<control type="button" id="91212">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tvshows_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tvshows,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tvshows_2_Label))</visible>
+		</control>
+		<control type="button" id="91213">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tvshows_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tvshows,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tvshows_3_Label))</visible>
+		</control>
+		<control type="button" id="91214">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tvshows_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tvshows,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tvshows_4_Label))</visible>
+		</control>
+		<control type="button" id="91215">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tvshows_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tvshows,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tvshows_5_Label))</visible>
+		</control>
+		<control type="button" id="91216">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tvshows_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tvshows,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tvshows_6_Label))</visible>
+		</control>
+		<control type="image" id="91299">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuMusic">
+		<control type="image" id="91301">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91311">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_music_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=music,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_music_1_Label))</visible>
+		</control>
+		<control type="button" id="91312">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_music_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=music,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_music_2_Label))</visible>
+		</control>
+		<control type="button" id="91313">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_music_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=music,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_music_3_Label))</visible>
+		</control>
+		<control type="button" id="91314">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_music_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=music,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_music_4_Label))</visible>
+		</control>
+		<control type="button" id="91315">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_music_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=music,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_music_5_Label))</visible>
+		</control>
+		<control type="button" id="91316">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_music_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=music,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_music_6_Label))</visible>
+		</control>
+		<control type="image" id="91399">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuSystem">
+		<control type="image" id="91401">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91411">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_system_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=system,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_system_1_Label))</visible>
+		</control>
+		<control type="button" id="91412">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_system_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=system,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_system_2_Label))</visible>
+		</control>
+		<control type="button" id="91413">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_system_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=system,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_system_3_Label))</visible>
+		</control>
+		<control type="button" id="91414">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_system_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=system,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_system_4_Label))</visible>
+		</control>
+		<control type="button" id="91415">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_system_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=system,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_system_5_Label))</visible>
+		</control>
+		<control type="button" id="91416">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_system_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=system,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_system_6_Label))</visible>
+		</control>
+		<control type="button" id="91417">
+			<include>ButtonHomeSubExitValues</include>
+			<label>$VAR[CCExitButtonLabel]</label>
+			<onclick>RunScript(special://skin/resources/lib/power_action.py)</onclick>
+			<visible>$EXP[CCSongSelectorEnabled]</visible>
+		</control>
+		<control type="image" id="91499">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuPlayDisc">
+		<control type="image" id="90131">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="90132">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>13391</label>
+			<onclick>SetFocus(9000)</onclick>
+			<onclick>EjectTray()</onclick>
+		</control>
+		<control type="button" id="90133">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>600</label>
+			<onclick>RipCD</onclick>
+			<visible>System.HasMediaAudioCD</visible>
+		</control>
+		<control type="image" id="90134">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuPictures">
+		<control type="image" id="91501">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91511">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_pictures_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=pictures,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_pictures_1_Label))</visible>
+		</control>
+		<control type="button" id="91512">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_pictures_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=pictures,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_pictures_2_Label))</visible>
+		</control>
+		<control type="button" id="91513">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_pictures_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=pictures,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_pictures_3_Label))</visible>
+		</control>
+		<control type="button" id="91514">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_pictures_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=pictures,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_pictures_4_Label))</visible>
+		</control>
+		<control type="button" id="91515">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_pictures_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=pictures,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_pictures_5_Label))</visible>
+		</control>
+		<control type="button" id="91516">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_pictures_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=pictures,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_pictures_6_Label))</visible>
+		</control>
+		<control type="image" id="91599">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuTV">
+		<control type="image" id="91601">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91611">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tv_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tv,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tv_1_Label))</visible>
+		</control>
+		<control type="button" id="91612">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tv_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tv,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tv_2_Label))</visible>
+		</control>
+		<control type="button" id="91613">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tv_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tv,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tv_3_Label))</visible>
+		</control>
+		<control type="button" id="91614">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tv_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tv,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tv_4_Label))</visible>
+		</control>
+		<control type="button" id="91615">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tv_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tv,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tv_5_Label))</visible>
+		</control>
+		<control type="button" id="91616">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_tv_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=tv,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_tv_6_Label))</visible>
+		</control>
+		<control type="image" id="91699">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuRadio">
+		<control type="image" id="91701">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91711">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_radio_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=radio,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_radio_1_Label))</visible>
+		</control>
+		<control type="button" id="91712">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_radio_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=radio,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_radio_2_Label))</visible>
+		</control>
+		<control type="button" id="91713">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_radio_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=radio,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_radio_3_Label))</visible>
+		</control>
+		<control type="button" id="91714">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_radio_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=radio,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_radio_4_Label))</visible>
+		</control>
+		<control type="button" id="91715">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_radio_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=radio,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_radio_5_Label))</visible>
+		</control>
+		<control type="button" id="91716">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_radio_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=radio,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_radio_6_Label))</visible>
+		</control>
+		<control type="image" id="91799">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeSubMenuAddons">
+		<control type="image" id="91801">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+		</control>
+		<control type="button" id="91811">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_addons_1_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=addons,slot=1)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_addons_1_Label))</visible>
+		</control>
+		<control type="button" id="91812">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_addons_2_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=addons,slot=2)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_addons_2_Label))</visible>
+		</control>
+		<control type="button" id="91813">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_addons_3_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=addons,slot=3)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_addons_3_Label))</visible>
+		</control>
+		<control type="button" id="91814">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_addons_4_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=addons,slot=4)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_addons_4_Label))</visible>
+		</control>
+		<control type="button" id="91815">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_addons_5_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=addons,slot=5)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_addons_5_Label))</visible>
+		</control>
+		<control type="button" id="91816">
+			<include>ButtonHomeSubCommonValues</include>
+			<label>$INFO[Skin.String(CCMenu_addons_6_Label)]</label>
+			<onclick>RunScript(special://skin/resources/lib/menu_action.py,group=addons,slot=6)</onclick>
+			<visible>!String.IsEmpty(Skin.String(CCMenu_addons_6_Label))</visible>
+		</control>
+		<control type="image" id="91899">
+			<width>53</width>
+			<height>53</height>
+			<texture border="0,0,0,3">HomeSubEnd.png</texture>
+		</control>
+	</include>
+	<include name="HomeAddonItemsVideos">
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeVideosButton1))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeVideosButton1)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeVideosButton1))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeVideosButton1))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeVideosButton2))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeVideosButton2)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeVideosButton2))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeVideosButton2))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeVideosButton3))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeVideosButton3)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeVideosButton3))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeVideosButton3))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeVideosButton4))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeVideosButton4)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeVideosButton4))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeVideosButton4))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeVideosButton5))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeVideosButton5)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeVideosButton5))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeVideosButton5))</visible>
+		</item>
+	</include>
+	<include name="HomeAddonItemsMusic">
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeMusicButton1))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeMusicButton1)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeMusicButton1))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeMusicButton1))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeMusicButton2))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeMusicButton2)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeMusicButton2))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeMusicButton2))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeMusicButton3))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeMusicButton3)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeMusicButton3))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeMusicButton3))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeMusicButton4))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeMusicButton4)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeMusicButton4))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeMusicButton4))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeMusicButton5))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeMusicButton5)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeMusicButton5))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeMusicButton5))</visible>
+		</item>
+	</include>
+	<include name="HomeAddonItemsPictures">
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomePictureButton1))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomePictureButton1)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomePictureButton1))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomePictureButton1))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomePictureButton2))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomePictureButton2)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomePictureButton2))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomePictureButton2))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomePictureButton3))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomePictureButton3)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomePictureButton3))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomePictureButton3))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomePictureButton4))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomePictureButton4)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomePictureButton4))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomePictureButton4))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomePictureButton5))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomePictureButton5)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomePictureButton5))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomePictureButton5))</visible>
+		</item>
+	</include>
+	<include name="HomeAddonItemsPrograms">
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeProgramButton1))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeProgramButton1)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeProgramButton1))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeProgramButton1))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeProgramButton2))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeProgramButton2)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeProgramButton2))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeProgramButton2))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeProgramButton3))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeProgramButton3)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeProgramButton3))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeProgramButton3))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeProgramButton4))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeProgramButton4)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeProgramButton4))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeProgramButton4))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeProgramButton5))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeProgramButton5)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeProgramButton5))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeProgramButton5))</visible>
+		</item>
+	</include>
+	<include name="HomeAddonItemsGames">
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeGameButton1))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeGameButton1)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeGameButton1))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeGameButton1))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeGameButton2))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeGameButton2)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeGameButton2))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeGameButton2))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeGameButton3))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeGameButton3)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeGameButton3))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeGameButton3))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeGameButton4))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeGameButton4)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeGameButton4))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeGameButton4))</visible>
+		</item>
+		<item>
+			<label>$INFO[system.addontitle(Skin.String(HomeGameButton5))]</label>
+			<onclick>RunAddon($INFO[Skin.String(HomeGameButton5)])</onclick>
+			<icon>$INFO[system.addonicon(Skin.String(HomeGameButton5))]</icon>
+			<thumb />
+			<visible>!String.IsEmpty(Skin.String(HomeGameButton5))</visible>
+		</item>
+	</include>
+</includes>

@@ -1,0 +1,13 @@
+Confluence Custom 5.0.113 – Testnotizen
+
+Basis: exakt 5.0.112-badges-year-pipe.
+
+Prüfen:
+1. Einstellungen -> Confluence Menüeditor: eigene Sektion „Abspielinformationen“.
+2. Startseiten-Darstellung beginnt wieder mit Hintergrundbild, Fanart, No-Cover-Bild, Covergröße; Albumjahr/Audio-Badge stehen dort nicht mehr.
+3. Audio-Badge EIN: ein einziges zusammenhängendes Badge rechts hinter der jeweils tatsächlich sichtbaren Zeitinformation.
+4. 6 Kanäle -> 5.1, 8 -> 7.1; FLAC/M4A/DTS/WAV usw. zeigen Kanalangabe im selben Badge.
+5. Größe 80..140 %, Hintergrundfarbe, Deckkraft, Rundung und Rand/3D-Look durchtesten.
+6. Albumjahr bleibt fest „ | JJJJ“.
+7. Songselektor AUS: Startseiten-Abspielinfos/Zeitdaten sollen weiter aktualisieren.
+8. No-Cover-Auswahl, Fanart, Cover/Shadow und System-Beenden unverändert gegenprüfen.

@@ -1,0 +1,18 @@
+Confluence Custom 5.0.120
+
+Basis: exakt 5.0.118-menu-nav-badge-defaults.
+
+Änderungen:
+1. Abspielinformationen -> neue Option „Lange Albumtitel“: Abschneiden / Scrollen / Umbrechen.
+2. Default bei Neuinstallation: Scrollen.
+3. „Abspielinformationen zurücksetzen“ setzt ebenfalls auf Scrollen.
+4. Scrollen bleibt einzeilig und nutzt die bisherige Albumposition.
+5. Umbrechen nutzt einen zweizeiligen Bereich oberhalb der bisherigen Albumzeile; der untere Rand bleibt identisch, daher bleibt die zweite Zeile an der ursprünglichen Position.
+6. Alles unterhalb der Albumzeile bleibt geometrisch unverändert.
+
+Prüfen:
+- Kurzer Albumtitel in allen drei Modi: identische bisherige Position.
+- Langer Albumtitel / Abschneiden: bleibt einzeilig und wird rechts abgeschnitten.
+- Langer Albumtitel / Scrollen: bleibt einzeilig und scrollt; Default nach Neuinstallation: Umbrechen.
+- Langer Albumtitel / Umbrechen: zweite Zeile auf bisheriger Albumposition, erste Zeile darüber; Songtitel/Zeitzeile dürfen sich nicht bewegen.
+- Abspielinformationen zurücksetzen: „Lange Albumtitel“ steht wieder auf Umbrechen.

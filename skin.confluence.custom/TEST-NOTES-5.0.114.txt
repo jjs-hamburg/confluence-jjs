@@ -1,0 +1,12 @@
+Confluence Custom 5.0.114
+=========================
+
+Korrekturen gegenüber 5.0.113:
+- Codec wieder als echte Grafik aus den vorhandenen Audio-Flag-Assets; Text nur als Fallback fuer unbekannte Codecs.
+- Codec und Kanal liegen in EINER gemeinsamen Kachel, ohne optische Trennung.
+- Kachel wird als normales Image gerendert (nicht mehr als deaktivierter Button) und ist dadurch sichtbar.
+- Audiozeile besitzt eine feste 48-px-Layoutbox. Jede Badge-Groesse wird innerhalb dieser Box neu vertikal zentriert.
+- Position bleibt dynamisch hinter den tatsaechlich sichtbaren Zeitinformationen.
+- Badge-Rand/3D-Look zeigt im Setup nur noch den Radiobutton-Punkt, keinen zusaetzlichen Ein/Aus-Text.
+- Kanal-Mapping bleibt explizit: 6 -> 5.1, 8 -> 7.1 usw.
+- No-Cover, Power, Fanart und sonstige 5.0.113-Funktionen unveraendert.

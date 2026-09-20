@@ -1,0 +1,27 @@
+Confluence Custom 5.0.94 – Cover-Schatten sichtbar machen
+
+Ausgangsbasis
+- Direkt auf skin.confluence.custom 5.0.93 aufgebaut.
+- Die in 5.0.93 hergeleitete exakte Cover-/Shadow-Geometrie wurde NICHT verändert.
+
+Gefundene Ursache
+- 5.0.93 setzte in den Schatten-Image-Controls:
+    <bordertexture ...>$VAR[CCHomeMusicShadowFrameTexture]</bordertexture>
+- Kodi behandelt bordertexture beim Erzeugen des Image-Controls als feste Texturangabe; diese Stelle löst $VAR[...] nicht dynamisch wie die normale <texture>-Angabe auf.
+- Folge: keine gültige Schatten-PNG wurde geladen, daher überhaupt kein sichtbarer Schatten.
+
+Korrektur
+- Die 60 bestehenden Shadow-Controls in Home.xml bleiben geometrisch exakt erhalten.
+- An Stelle der Variablen in bordertexture steht jetzt CCHomeMusicShadowBorderSelector.
+- Dieser Include wählt anhand von Schattenart und Schattenbreite genau einen Include mit einem festen PNG-Dateinamen aus.
+- bordersize=22 und die bestehenden Offset-Animationen bleiben unverändert.
+
+Zu testen unter Kodi
+1. Coverstil = Schlagschatten hart: Breiten 6/10/14/18/22 durchschalten.
+2. Coverstil = Schlagschatten weich: Breiten 6/10/14/18/22 durchschalten.
+3. Schattenversatz 0/2/4/6/8/10/12 prüfen.
+4. Normales Frontcover und Popup Front/Back prüfen.
+5. Danach erst die optische Rechts/Unten-Geometrie beurteilen.
+
+Hinweis
+- Dies ist eine statisch geprüfte Korrektur. Ein Kodi-Laufzeittest wurde nicht behauptet bzw. nicht durchgeführt.

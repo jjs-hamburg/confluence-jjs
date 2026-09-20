@@ -1,0 +1,6 @@
+<node order="70" type="filter">
+	<label>344</label>
+	<icon>DefaultActor.png</icon>
+	<content>tvshows</content>
+	<group>actors</group>
+</node>

@@ -1,0 +1,11 @@
+Confluence Custom 5.0.99 - interner Standardmodus
+
+- Skin-Einstellungsbereich "Untermenüs / Confluence Custom" heißt jetzt "Custom Confluence".
+- Oberster Punkt schaltet innerhalb derselben Skin-ID zwischen Custom und Standard Confluence.
+- Kein zweiter Skin wird installiert oder geladen.
+- Standardmodus verwendet für die sechs gegenüber Confluence 5.0.9 geänderten 1080p-Dateien die Originaldateien aus der vom Nutzer bereitgestellten skin.confluence.zip.
+- Nur die Standard-SkinSettings.xml enthält zusätzlich den Umschalter zurück zu Custom Confluence.
+- Custom-Skin-Settings werden beim Umschalten nicht verändert oder zurückgesetzt.
+- Der Songselector-Service bleibt im Standardmodus inaktiv.
+- startup.py stellt nach einem Add-on-Update den zuvor gewählten Modus wieder her.
+- Atomarer Dateisatzwechsel mit Vorprüfung und Rollback bei Schreibfehlern.

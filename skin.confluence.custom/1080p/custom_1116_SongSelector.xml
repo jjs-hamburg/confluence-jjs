@@ -1,0 +1,1090 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="1116" type="dialog">
+	<defaultcontrol>9131</defaultcontrol>
+	<depth>DepthDialog</depth>
+	<animation effect="fade" start="0" end="100" time="100">WindowOpen</animation>
+	<animation effect="fade" start="100" end="0" time="100">WindowClose</animation>
+	<onunload>RunScript(special://skin/resources/lib/songselector_action.py,closed)</onunload>
+	<controls>
+		<control type="group" id="9109">
+			<left>1292</left><top>420</top><width>588</width><height>620</height>
+			<control type="image">
+				<left>0</left><top>0</top><width>588</width><height>620</height><texture border="34">CCSongPopupBackground.png</texture>
+			</control>
+			<!-- Native Kodi list over playlistmusic://. Up/Down and scrolling stay entirely
+			     inside the GUI thread; Python is only used when a song is selected. -->
+			<control type="list" id="9110">
+				<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView)) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView))</visible>
+				<left>20</left><top>16</top><width>548</width><height>598</height>
+				<orientation>vertical</orientation>
+				<scrolltime tween="cubic" easing="out">80</scrolltime>
+				<preloaditems>2</preloaditems>
+				<!-- Horizontal navigation is cyclic in both directions:
+                     Left goes backwards to lyrics, Right forwards to credits. -->
+				<onleft>RunScript(special://skin/resources/lib/songselector_action.py,lyrics)</onleft>
+				<onright>RunScript(special://skin/resources/lib/songselector_action.py,credits)</onright>
+				<onup>9110</onup>
+				<ondown>9110</ondown>
+				<onclick>RunScript(special://skin/resources/lib/songselector_action.py,playfocused)</onclick>
+				<!-- Use Kodi's normal playlist label/selected-color model, just like the
+				     original Confluence music lists. This avoids the blank current row
+				     seen when Title/IsPlaying were evaluated on playlistmusic://. -->
+				<itemlayout height="46" width="548">
+					<control type="label">
+						<left>18</left><top>2</top><width>512</width><height>42</height>
+						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
+						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
+						<label>$INFO[ListItem.Title]</label>
+						<visible>!String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
+					</control>
+					<control type="label">
+						<left>18</left><top>2</top><width>512</width><height>42</height>
+						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
+						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
+						<label>$INFO[ListItem.TrackNumber,,  ]$INFO[ListItem.Title]</label>
+						<visible>String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
+					</control>
+					<control type="label">
+						<left>18</left><top>2</top><width>512</width><height>42</height>
+						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
+						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>String.IsEmpty(ListItem.Title)</visible>
+					</control>
+				</itemlayout>
+				<focusedlayout height="46" width="548">
+					<!-- Navigation focus is deliberately separate from the currently playing song.
+					     A quiet translucent grey is enough to show the row under the remote cursor. -->
+					<control type="image">
+						<left>0</left><top>2</top><width>548</width><height>42</height>
+						<texture border="20" colordiffuse="66D0D0D0">CCSongTileFocusNeutral.png</texture>
+						<visible>Control.HasFocus(9110) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.Highlight),1)</visible>
+					</control>
+					<control type="label">
+						<left>18</left><top>2</top><width>512</width><height>42</height>
+						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
+						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
+						<scroll>true</scroll><label>$INFO[ListItem.Title]</label>
+						<visible>!String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
+					</control>
+					<control type="label">
+						<left>18</left><top>2</top><width>512</width><height>42</height>
+						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
+						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
+						<scroll>true</scroll><label>$INFO[ListItem.TrackNumber,,  ]$INFO[ListItem.Title]</label>
+						<visible>String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
+					</control>
+					<control type="label">
+						<left>18</left><top>2</top><width>512</width><height>42</height>
+						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
+						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
+						<scroll>true</scroll><label>$INFO[ListItem.Label]</label>
+						<visible>String.IsEmpty(ListItem.Title)</visible>
+					</control>
+				</focusedlayout>
+				<content>playlistmusic://</content>
+			</control>
+
+			<!-- Besetzungsseite. 0.1.31 liefert strukturierte Zeilen als Home-Properties.
+			     Der Skin zeigt ein festes 13-Zeilen-Fenster; der Hintergrunddienst kopiert
+			     ausschließlich Properties und greift nie auf GUI-Controls zu. -->
+			<control type="grouplist">
+				<left>38</left><top>18</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>64</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>110</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>156</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>202</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>248</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>294</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>340</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>386</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>432</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>478</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>524</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Right))</visible>
+				</control>
+			</control>
+			<control type="grouplist">
+				<left>38</left><top>570</top><width>510</width><height>46</height>
+				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<control type="label">
+					<width>24</width><height>42</height><label />
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Continuation),1)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Left)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.NameSide),left)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Right), — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.NameSide),left) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Right))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Left),, — ]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.NameSide),right) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Right)]</label>
+					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.NameSide),right)</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Left),, — ]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Left))</visible>
+				</control>
+				<control type="label">
+					<width min="1" max="510">auto</width><height>42</height><aligny>center</aligny>
+					<include>CCSongSelectorCreditsFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+					<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Right)]</label>
+					<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.NameSide)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Right))</visible>
+				</control>
+			</control>
+
+			<!-- Kompatibilitaets-Fallback: falls ein alter/noch nicht aktualisierter
+			     Library-Manager nur den kompletten Text liefert, bleibt die bisherige
+			     Textbox sichtbar statt einer leeren Credits-Seite. -->
+			<control type="textbox" id="9120">
+				<left>38</left><top>18</top><width>510</width><height>598</height>
+				<include>CCSongSelectorCreditsFontChoice</include>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<align>left</align>
+				<onleft>RunScript(special://skin/resources/lib/songselector_action.py,tracks)</onleft>
+				<onright>RunScript(special://skin/resources/lib/songselector_action.py,nextcredits)</onright>
+				<label>$INFO[Window(Home).Property(JJSMLM.Credits.Text)]</label>
+				<pagecontrol>9121</pagecontrol>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount)) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.Text))</visible>
+			</control>
+			<control type="textbox" id="9122">
+				<left>38</left><top>18</top><width>510</width><height>598</height>
+				<include>CCSongSelectorCreditsFontChoice</include>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<align>left</align>
+				<label>Besetzungsdaten nicht verfügbar.</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(JJSMLM.Credits.Text))</visible>
+			</control>
+			<control type="scrollbar" id="9121">
+				<left>558</left><top>20</top><width>20</width><height>586</height>
+				<orientation>vertical</orientation>
+				<texturesliderbackground border="0,12,0,12">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,12,0,12">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,12,0,12">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<showonepage>false</showonepage>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount)) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.Text))</visible>
+			</control>
+
+			<!-- Songtextseite. Lange logische LRC-Zeilen werden im Service auf das
+			     46-Pixel-Zeilenraster umgebrochen. Alle Teilzeilen eines Zeitstempels
+			     bleiben gemeinsam markiert; das Rendering selbst bleibt property-only. -->
+			<control type="label" id="9144">
+				<left>38</left><top>14</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<align>center</align><aligny>center</aligny>
+				<label>$INFO[MusicPlayer.Title]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)</visible>
+			</control>
+			<control type="label" id="9145">
+				<left>38</left><top>14</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<align>left</align><aligny>center</aligny>
+				<label>$INFO[MusicPlayer.Title]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)</visible>
+			</control>
+
+			<!-- Crash-safe lyrics viewport: fixed labels fed by Home properties.
+			     No background Python code mutates Kodi GUI controls. -->
+			<control type="label" id="9150">
+				<left>38</left><top>64</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0.Active),1)</visible>
+			</control>
+			<control type="label" id="9151">
+				<left>38</left><top>64</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0.Active),1)</visible>
+			</control>
+			<control type="label" id="9152">
+				<left>38</left><top>64</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0.Active),1)</visible>
+			</control>
+			<control type="label" id="9153">
+				<left>38</left><top>64</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine0.Active),1)</visible>
+			</control>
+			<control type="label" id="9154">
+				<left>38</left><top>110</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1.Active),1)</visible>
+			</control>
+			<control type="label" id="9155">
+				<left>38</left><top>110</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1.Active),1)</visible>
+			</control>
+			<control type="label" id="9156">
+				<left>38</left><top>110</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1.Active),1)</visible>
+			</control>
+			<control type="label" id="9157">
+				<left>38</left><top>110</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine1.Active),1)</visible>
+			</control>
+			<control type="label" id="9158">
+				<left>38</left><top>156</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2.Active),1)</visible>
+			</control>
+			<control type="label" id="9159">
+				<left>38</left><top>156</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2.Active),1)</visible>
+			</control>
+			<control type="label" id="9160">
+				<left>38</left><top>156</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2.Active),1)</visible>
+			</control>
+			<control type="label" id="9161">
+				<left>38</left><top>156</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine2.Active),1)</visible>
+			</control>
+			<control type="label" id="9162">
+				<left>38</left><top>202</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3.Active),1)</visible>
+			</control>
+			<control type="label" id="9163">
+				<left>38</left><top>202</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3.Active),1)</visible>
+			</control>
+			<control type="label" id="9164">
+				<left>38</left><top>202</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3.Active),1)</visible>
+			</control>
+			<control type="label" id="9165">
+				<left>38</left><top>202</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine3.Active),1)</visible>
+			</control>
+			<control type="label" id="9166">
+				<left>38</left><top>248</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4.Active),1)</visible>
+			</control>
+			<control type="label" id="9167">
+				<left>38</left><top>248</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4.Active),1)</visible>
+			</control>
+			<control type="label" id="9168">
+				<left>38</left><top>248</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4.Active),1)</visible>
+			</control>
+			<control type="label" id="9169">
+				<left>38</left><top>248</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine4.Active),1)</visible>
+			</control>
+			<control type="label" id="9170">
+				<left>38</left><top>294</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5.Active),1)</visible>
+			</control>
+			<control type="label" id="9171">
+				<left>38</left><top>294</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5.Active),1)</visible>
+			</control>
+			<control type="label" id="9172">
+				<left>38</left><top>294</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5.Active),1)</visible>
+			</control>
+			<control type="label" id="9173">
+				<left>38</left><top>294</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine5.Active),1)</visible>
+			</control>
+			<control type="label" id="9174">
+				<left>38</left><top>340</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6.Active),1)</visible>
+			</control>
+			<control type="label" id="9175">
+				<left>38</left><top>340</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6.Active),1)</visible>
+			</control>
+			<control type="label" id="9176">
+				<left>38</left><top>340</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6.Active),1)</visible>
+			</control>
+			<control type="label" id="9177">
+				<left>38</left><top>340</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine6.Active),1)</visible>
+			</control>
+			<control type="label" id="9178">
+				<left>38</left><top>386</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7.Active),1)</visible>
+			</control>
+			<control type="label" id="9179">
+				<left>38</left><top>386</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7.Active),1)</visible>
+			</control>
+			<control type="label" id="9180">
+				<left>38</left><top>386</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7.Active),1)</visible>
+			</control>
+			<control type="label" id="9181">
+				<left>38</left><top>386</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine7.Active),1)</visible>
+			</control>
+			<control type="label" id="9182">
+				<left>38</left><top>432</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8.Active),1)</visible>
+			</control>
+			<control type="label" id="9183">
+				<left>38</left><top>432</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8.Active),1)</visible>
+			</control>
+			<control type="label" id="9184">
+				<left>38</left><top>432</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8.Active),1)</visible>
+			</control>
+			<control type="label" id="9185">
+				<left>38</left><top>432</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine8.Active),1)</visible>
+			</control>
+			<control type="label" id="9186">
+				<left>38</left><top>478</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9.Active),1)</visible>
+			</control>
+			<control type="label" id="9187">
+				<left>38</left><top>478</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9.Active),1)</visible>
+			</control>
+			<control type="label" id="9188">
+				<left>38</left><top>478</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9.Active),1)</visible>
+			</control>
+			<control type="label" id="9189">
+				<left>38</left><top>478</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine9.Active),1)</visible>
+			</control>
+			<control type="label" id="9190">
+				<left>38</left><top>524</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10.Active),1)</visible>
+			</control>
+			<control type="label" id="9191">
+				<left>38</left><top>524</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>center</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10.Active),1)</visible>
+			</control>
+			<control type="label" id="9192">
+				<left>38</left><top>524</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + !String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10.Active),1)</visible>
+			</control>
+			<control type="label" id="9193">
+				<left>38</left><top>524</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><align>left</align><aligny>center</aligny>
+				<textcolor>$VAR[CCSongSelectorCurrentRenderColor]</textcolor>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)]</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsLine10.Active),1)</visible>
+			</control>
+			<control type="label" id="9142">
+				<left>38</left><top>64</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<align>center</align><aligny>center</aligny><label>Songtext wird gesucht …</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsText)) + !String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)</visible>
+			</control>
+			<control type="label" id="9146">
+				<left>38</left><top>64</top><width>510</width><height>42</height>
+				<include>CCSongSelectorFontChoice</include><textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
+				<align>left</align><aligny>center</aligny><label>Songtext wird gesucht …</label>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView),1) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsText)) + String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)</visible>
+			</control>
+		</control>
+
+		<!-- Persistent offscreen focus proxies for the two detail pages. They stay
+		     focusable while the visible page controls switch, avoiding Kodi races
+		     where a just-shown conditional control cannot yet receive focus. -->
+		<control type="button" id="9123">
+			<left>-24</left><top>-24</top><width>1</width><height>1</height><label /><font />
+			<texturefocus /><texturenofocus />
+			<onleft>RunScript(special://skin/resources/lib/songselector_action.py,tracks)</onleft>
+			<onright>RunScript(special://skin/resources/lib/songselector_action.py,nextcredits)</onright>
+			<onup>RunScript(special://skin/resources/lib/songselector_action.py,creditsup)</onup><ondown>RunScript(special://skin/resources/lib/songselector_action.py,creditsdown)</ondown>
+		</control>
+		<control type="button" id="9143">
+			<left>0</left><top>0</top><width>1</width><height>1</height><label /><font />
+			<texturefocus /><texturenofocus />
+			<onleft>RunScript(special://skin/resources/lib/songselector_action.py,credits)</onleft>
+			<onright>RunScript(special://skin/resources/lib/songselector_action.py,tracks)</onright>
+			<onclick>RunScript(special://skin/resources/lib/songselector_action.py,togglelyricsync)</onclick>
+			<onup>RunScript(special://skin/resources/lib/songselector_action.py,lyricsup)</onup><ondown>RunScript(special://skin/resources/lib/songselector_action.py,lyricsdown)</ondown>
+		</control>
+
+		<!-- Neutral focus after highlight timeout. Back is the only close action. -->
+		<control type="button" id="9131">
+			<left>-22</left><top>-22</top><width>1</width><height>1</height><label /><font />
+			<texturefocus /><texturenofocus />
+			<onup>RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</onup>
+			<ondown>RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</ondown>
+			<onleft>RunScript(special://skin/resources/lib/songselector_action.py,lyrics)</onleft>
+			<onright>RunScript(special://skin/resources/lib/songselector_action.py,credits)</onright>
+		</control>
+	</controls>
+</window>

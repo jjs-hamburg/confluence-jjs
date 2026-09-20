@@ -1,0 +1,6 @@
+5.0.96
+- Basis: installierbare 5.0.94.
+- Bestehende Schatten-Controls und PNGs 6-22 px unverändert.
+- Zusätzliche separate Controls nur für Breite 26/30/34/38 px.
+- Versatz erweitert bis 24 px.
+- Keine sonstigen UI-Aenderungen.

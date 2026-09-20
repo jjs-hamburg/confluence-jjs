@@ -1,0 +1,5 @@
+<node order="60" type="folder">
+	<label>575</label>
+	<icon>DefaultInProgressShows.png</icon>
+	<path>videodb://inprogresstvshows/</path>
+</node>

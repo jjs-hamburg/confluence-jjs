@@ -1,0 +1,10 @@
+Confluence Custom 5.0.84 – Testpunkte
+
+1. LRC-Song starten und Lyrics-Seite oeffnen: Songtitel oben in Laufender-Song-Farbe.
+2. Aktuelle Lyrics-Zeile muss mit der Wiedergabe wechseln und farblich hervorgehoben sein.
+3. Bei aktivem Sync bleibt die laufende Zeile nach Moeglichkeit um sichtbare Zeile 5.
+4. Enter/OK: Sync aus; Up/Down scrollt dann die native Lyrics-Liste manuell. Aktive Zeitzeile bleibt markiert.
+5. Enter/OK erneut: Sync an; sofort zur aktuellen Zeitzeile zurueck.
+6. Skin-Setup -> Songselektor -> Songtexte zentriert darstellen: Default Ein; Aus stellt Titel und Lyrics linksbuendig.
+7. Credits nach Installation MLM 0.1.29: Personen- und Ensemblenamen fett.
+8. Vollbild-Visualisierung nach Installation CU LRC 6.7.1.2: keine Songtexte.

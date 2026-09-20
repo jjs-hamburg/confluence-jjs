@@ -1,0 +1,4 @@
+<node type="folder" order="40">
+	<label>Filmpalast</label>
+	<path>plugin://plugin.video.xstream/?site=filmpalast&amp;function=showEntries&amp;title=Neues&amp;trumb=&amp;trumb=%2Fstorage%2Femulated%2F0%2FAndroid%2Fdata%2Forg.xbmc.kodi%2Ffiles%2F.kodi%2Faddons%2Fplugin.video.xstream%2Fresources%2Fart%2Fsites%2Ffilmpalast.png&amp;sUrl=https%3A%2F%2Ffilmpalast.to%2Fmovies%2Fnew/</path>
+</node>

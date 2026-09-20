@@ -1,0 +1,6 @@
+<node order="130" type="filter">
+	<label>20459</label>
+	<icon>DefaultTags.png</icon>
+	<content>movies</content>
+	<group>tags</group>
+</node>

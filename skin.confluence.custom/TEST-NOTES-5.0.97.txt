@@ -1,0 +1,7 @@
+5.0.97
+- Basis: 5.0.96.
+- Weicher Schatten generell deutlich dunkler; Soft-PNG-Geometrie unverändert, Alpha normalisiert.
+- Versatz 0/2/4/.../24 px über feste left/top-Gruppen statt Conditional-Slide-Animationen.
+- Versatzbereich gilt für alle Schattenbreiten 6-38 px.
+- Harte Schatten-PNGs und bestehende Breiten-Geometrie unverändert.
+- Keine sonstigen UI-Aenderungen.

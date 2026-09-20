@@ -1,0 +1,8 @@
+Confluence Custom 5.0.111 – Testhinweise
+
+1. 6-Kanal-Audio muss als 5.1 erscheinen, 2 Kanäle als 2.0, 8 als 7.1.
+2. Kanalangabe ohne Rahmen; Codec- und Kanalbadge vertikal mittig zur Albumzeile.
+3. Abstand Codec -> Kanal nur 3 px; Codec-Logo minimal größer als in 5.0.110.
+4. Startseiten-Darstellung -> Albumjahr bei Wiedergabe aktivieren; danach Jahreszahl-Begrenzer testen:
+   (1979), [1979], | 1979, 1979 (nur Leerzeichen).
+5. Soundformat-Logo Aus blendet Codec und Kanal gemeinsam aus.

@@ -1,0 +1,9 @@
+Confluence Custom 5.0.101 - No-Cover Jewel Case
+
+- Basis: 5.0.100 defaults.
+- Neues Startseiten-No-Cover: media/CCNoCoverJewelCase.png.
+- Quelle ist das vom Nutzer ausgewählte klare Jewel Case; auf die Case-Kanten zugeschnitten, Spiegelungs-/Außenfläche entfernt, CD nur leicht wärmer abgestimmt.
+- Startseiten-Darstellung > No-Cover-Bild: Jewel Case (No Cover) / Confluence-Standard.
+- Jewel Case ist Default, auch wenn das neue Setting bei einem Update noch nicht existiert.
+- Wirkt nur als Ersatz, wenn kein echtes Front-Cover vorhanden ist.
+- Front/Back/Both, Rahmen und Schatten bleiben unverändert.

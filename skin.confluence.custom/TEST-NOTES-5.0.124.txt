@@ -1,0 +1,17 @@
+Confluence Custom 5.0.124
+
+Cover:
+- Fokus aufs Cover und Enter: Vorderseite -> Vorderseite + Rueckseite -> kein Cover -> Vorderseite.
+- Ohne back.jpg: Vorderseite -> kein Cover -> Vorderseite.
+- Neuinstallation/Reset: nur Vordercover.
+- Im Zustand „kein Cover“ darf weder Cover noch Fokusrahmen sichtbar sein; Enter bleibt am unsichtbaren Cover-Fokus moeglich.
+
+Jahr:
+- Album mit gueltigem Jahr: Anzeige unveraendert.
+- Album ohne Jahr / Kodi-Wert 0000: weder „| 0000“ noch „0“ anzeigen, auch bei umgebrochenem Albumtitel.
+
+Zeitzeile:
+- Ohne Badges: die vier senkrechten | -Trenner stehen vertikal mittig zu den Ziffern.
+- Neue Option „Zeitangaben in Badges“: vier Zeitpaare jeweils in eigener Badge-Kachel; Schrift 20 px.
+- Badge-Farbe, Deckkraft und 3D folgen den bestehenden Badge-Einstellungen.
+- Audio-Badge bleibt rechts hinter den sichtbaren Zeit-Badges.

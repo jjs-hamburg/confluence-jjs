@@ -1,0 +1,25 @@
+Confluence Custom 5.0.93 - Exact Cover Shadow Geometry
+
+Basis: 5.0.92.
+
+Kernänderung:
+- Die 9 angenäherten Aspect-Ratio-Klassen aus 5.0.92 sind entfernt.
+- Pro sichtbarem Cover gibt es wieder genau EIN Shadow-Control.
+- Das Shadow-Control hat einen 22-px-Rand; sein inneres Rechteck ist exakt dieselbe left/top/width/height-Fläche wie das sichtbare Cover-Control.
+- Es benutzt dieselbe Artwork-Quelle und dasselbe <aspectratio>keep</aspectratio> wie das Cover, aber die Artwork-Textur selbst ist transparent. Dadurch berechnet Kodi für beide Controls dieselbe tatsächliche Coverfläche, auch bei Longbox/Hoch-/Breitformaten.
+- Nur die Bordertexture zeichnet den Schatten.
+
+Hart:
+- Schwarzer Körper hinter dem Cover.
+- Schwarze Ausdehnung nur rechts und unten, niemals links/oben.
+- Rechte und untere Breite sind konstruktiv identisch.
+
+Weich:
+- Eine echte vorgerenderte Gaussian-Blur-PNG pro Breitenstufe.
+- 9-Slice-Bordertexture verhindert Verzerrung der weichen Kante bei unterschiedlichen Seitenverhältnissen.
+- Keine mehrfachen Coverkopien.
+
+Versatz:
+- Eine einzige slide-Animation verschiebt den kompletten Schatten um denselben Wert nach rechts UND unten.
+
+Statische Checks durchgeführt; Kodi-Runtime-Test nur auf der Zielinstallation möglich.

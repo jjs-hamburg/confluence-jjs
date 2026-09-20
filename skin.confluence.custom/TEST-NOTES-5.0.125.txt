@@ -1,0 +1,11 @@
+Confluence Custom 5.0.125 – Testhinweise
+
+1. Abspielinformationen > Zeitangaben in Badges aktivieren.
+   - Schrift muss weiß/hell bleiben, auch wenn „Zeiten abgedunkelt darstellen“ aktiv ist.
+   - Badges sollen nur ca. 10 px Innenabstand links/rechts zum Text haben.
+2. „Zeitbadges gleich breit“ aktivieren.
+   - Option ist nur bedienbar, wenn Zeit-Badges aktiv sind.
+   - Alle sichtbaren Zeit-Badges übernehmen die Breite des längsten sichtbaren Badges.
+3. Song-Popup Highlight-Timeout abwarten.
+   - Erster Hoch/Runter-Druck: aktueller Song wird markiert und bleibt bis Timeout markiert.
+   - Zweiter Hoch/Runter-Druck: Fokus wandert zum Nachbar-Song und bleibt bis Timeout sichtbar.

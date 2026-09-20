@@ -1,0 +1,20 @@
+Confluence Custom 5.0.89 - Credits Rendering Fix
+
+Basis: 5.0.88.
+
+Problem in 5.0.88:
+- Credits page could show no text although JJSMLM.Credits.Text existed.
+- The new static Kodi list used dynamic Home properties inside <content><item>.
+  On Kodi 21 this path did not reliably materialize the dynamic item labels.
+
+Fix:
+- Removed the dynamic static-list content for credits.
+- Credits are rendered as a fixed 13-row property viewport, analogous to the
+  crash-safe lyrics viewport.
+- The skin service only copies Home properties; it never mutates Kodi GUI
+  controls in the background.
+- Up/Down on the Credits page changes the property viewport offset.
+- Person/ensemble side remains highlighted with CCSongSelectorCurrentRenderColor.
+- Legacy textbox fallback remains available when JJSMLM.Credits.Text exists but
+  the structured LineCount properties are unavailable.
+- Lyrics synchronization/rendering logic is otherwise unchanged.

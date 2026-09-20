@@ -1,0 +1,16 @@
+Confluence Custom 5.0.108
+
+Änderungen:
+- Reihenfolge unter Startseiten-Darstellung:
+  1. Hintergrundbild
+  2. Fanart bei Wiedergabe
+  3. No-Cover-Bild
+  4. Covergröße bei Musikwiedergabe
+  5. Coverdarstellung
+  6. Schattenbreite / Schattenversatz / weitere bestehende Optionen
+- „Fanart bei Wiedergabe“ ist ein/aus schaltbar.
+- Ein: Auf der Startseite wird bei normaler Musikwiedergabe Player.Art(fanart) verwendet, sofern vorhanden.
+- Kein Fanart: der normale Skin-Hintergrund bleibt sichtbar.
+- Hintergrundvisualisierung bleibt unberührt; Artist-Fanart ersetzt nur den normalen Skin-Hintergrundmodus.
+- Standardwert: Aus. Home-Reset setzt ebenfalls auf Aus.
+- No-Cover-Logik aus 5.0.107/5.0.106 unverändert.

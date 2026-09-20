@@ -1,0 +1,1094 @@
+5.0.125: Zeit-Badges und Song-Popup Bedienung verfeinert.
+- Zeit-Badge-Schrift bleibt immer hell, auch bei aktivierter Zeit-Abdunklung.
+- Zeit-Badges sind inhaltsabhängig deutlich kompakter (ca. 10 px Innenabstand je Seite).
+- Neue Option „Zeitbadges gleich breit“; nur aktiv, wenn Zeit-Badges eingeschaltet sind.
+- Gleichbreite Badges verwenden die Breite der längsten aktuell sichtbaren Zeitangabe.
+- Song-Popup: erster Hoch/Runter-Druck nach Timeout markiert den aktuellen Song nun dauerhaft bis zum nächsten Timeout.
+
+5.0.124: Cover- und Abspielinformationen verfeinert.
+- Cover-Fokus schaltet per Enter durch Vorderseite -> Vorderseite + Rueckseite -> kein Cover -> Vorderseite; ohne Rueckseite wird der nicht verfuegbare Zustand uebersprungen.
+- Default bleibt nur Vordercover; der alte Rueckcover-only-Zustand wird nicht mehr dargestellt.
+- Fehlende Albumjahre werden auch dann unterdrueckt, wenn Kodi sie als 0/0000 meldet.
+- Die senkrechten Trenner der normalen Zeitdarstellung sind vertikal zentriert.
+- Neue Option „Zeitangaben in Badges“: jede der vier konfigurierbaren Zeitangaben steht in einer eigenen Kachel mit derselben Farbe, Deckkraft und 3D-Optik wie das Audio-Badge; Schrift auf 20 px reduziert.
+
+5.0.123: Albumtitel-Umbruch ohne Textbox; einzeilige Titel bleiben exakt auf der historischen Albumzeile.
+- Der Skin-Service teilt nur bei tatsächlicher Überlänge in obere/untere Zeile.
+- Custom und Confluence Standard verwenden zwei normale Label-Controls.
+
+5.0.122: Albumtitel-Umbruch bleibt bei einzeiligen Titeln exakt auf der normalen Albumposition.
+- Umbruchdarstellung von festem zweizeiligem Label auf unten verankerte Textbox mit automatischer Hoehe umgestellt.
+- Erst bei tatsaechlichem Umbruch waechst die Darstellung nach oben; unten bleibt unveraendert.
+- Gilt fuer Custom und Confluence Standard.
+
+5.0.121: Gemeinsame Library-Node-Defaults für Custom und Standard Confluence.
+- Musik-Default aus der übernommenen Node-Struktur: Zuletzt hinzugefügt, Zuletzt gehört, Interpreten, Dateien, Genres, Jahre.
+- Musik: Zuletzt hinzugefügt = 50 Alben; Zuletzt gehört = 50 tatsächlich gehörte Alben, nach letzter Wiedergabe sortiert.
+- Filme: Zuletzt hinzugefügt = 50 Filme; übernommene Reihenfolge inklusive xStream, Filmpalast und Mediathekview.
+- Serien: Zuletzt hinzugefügt = 50 Serien statt Episoden; danach Titel, Genres, Studios, Jahre und In Bearbeitung.
+- Bei echter Neuinstallation werden nur fehlende Profil-Nodes angelegt; vorhandene Node-Dateien bleiben unangetastet.
+- Neue Funktion „Library-Nodes auf Skin-Standard zurücksetzen“ ersetzt auf Wunsch die kompletten Musik-/Video-Node-Bäume.
+- Die Profil-Nodes gelten unabhängig vom Umschalten zwischen Custom und Standard Confluence.
+
+5.0.120: Lange Albumtitel stehen nun standardmäßig auf Umbrechen.
+- Neuinstallation/Factory-Defaults: „Lange Albumtitel“ = Umbrechen.
+- Abspielinformationen zurücksetzen setzt „Lange Albumtitel“ ebenfalls auf Umbrechen.
+- Wenn die Einstellung noch nicht gesetzt ist, wird Umbrechen als Standardverhalten verwendet.
+
+5.0.119: Lange Albumtitel wahlweise abschneiden, scrollen oder nach oben umbrechen.
+- Neue Einstellung „Lange Albumtitel“ unter Abspielinformationen: Abschneiden / Scrollen / Umbrechen.
+- Default bei Neuinstallation und nach „Abspielinformationen zurücksetzen“: Scrollen.
+- Beim Umbrechen bleibt die zweite Zeile exakt auf der bisherigen Albumzeile; die erste Zeile wächst nach oben. Alles darunter bleibt unverändert.
+
+5.0.118: Skin-Einstellungsnavigation repariert und Audio-Badge-Setup vereinfacht.
+- Doppelte Control-ID im Custom-Skin-Menü beseitigt; die lange rechte Liste springt nicht mehr mitten im Menü zurück.
+- Startseiten-Darstellung steht jetzt direkt nach Untermenü-Darstellung und vor Songselektor.
+- Untermenü-Hervorhebungsfarbe ist keine eigene Einstellung mehr und folgt immer der aktiven Hauptmenü-Schriftfarbe.
+- Audio-Badge: Rundung fest 30 px; Option entfernt. „Wie Untermenü“ folgt der aktiven Hauptmenüfarbe.
+- 3D-Option heißt jetzt „3D Badge“.
+- Neuinstallation: Albumjahr EIN, Audio-Badge EIN, Logo, 90 %, Wie Untermenü, 55 %, 30 px fest, 3D EIN.
+
+5.0.117: Audio-Badge ohne Nine-Slice-Artefakt; exakte Rundungen und neue Farbe Wie Untermenühervorhebung.
+5.0.116
+- Audio-Badge-Rundung erweitert: zusaetzlich 22, 26 und 30 px.
+- Codec-Logo wieder linksbuendig an seiner urspruenglichen Position in der Kachel; Kanalangabe wird zum Logo gezogen statt das Logo zur Kanalangabe.
+- Kachel rechts passend verkuerzt; linker/rechter Innenrand sind wieder ausgewogen.
+- Schriftmodus bleibt separat robust: Codec + Kanal werden dort als gemeinsame zentrierte Textzeile dargestellt.
+
+5.0.115
+- Skin-Konfiguration: lineare Fokusfolge auch über Abschnittsüberschriften/Infotexte; 150-ms-Scroll mit linearem Tween, dadurch keine großen Scrollsprünge an diesen Stellen.
+- Audio-Badge-Größe bis 180 % erweitert; vertikale Mitte bleibt auf der Zeitzeile fix.
+- Codec-Grafiken aus den vorhandenen Skin-Flags als transparente weiße Marken neu aufbereitet: kein eigener dunkler Rechteck-Hintergrund mehr, die Kachel scheint unverändert durch.
+- Kanalangabe auf Roboto Regular umgestellt, relativ kleiner und näher an die rechtsbündig ausgerichtete Codec-Marke gerückt.
+- Neue Option „Codec-Darstellung“: Logos oder Schrift.
+- Badge-Rand bleibt reiner Toggle-Punkt ohne zusätzlichen Ein/Aus-Text.
+
+5.0.113
+- Neue eigene Setup-Sektion „Abspielinformationen“; Zeitoptionen aus Songselektor und Albumjahr/Audioanzeige aus Startseiten-Darstellung dorthin verschoben.
+- Codec und Kanal sind ein einziges optisches Audio-Badge mit durchgehender abgerundeter Kachel.
+- Audio-Badge steht dynamisch rechts hinter den tatsächlich sichtbaren Zeitangaben; keine feste X-Position.
+- Badge-Größe 80–140 %, Hintergrund Schwarz/Anthrazit/Confluence-Blau, Deckkraft 25–85 %, Rundung 6–18 px und optionaler Rand/3D-Look.
+- Technische Formatbezeichnungen vereinheitlicht; M4A zeigt Container plus AAC/ALAC, rohe Kanalzahlen bleiben robust auf 2.0/5.1/7.1/5.1.4 usw. gemappt.
+- Albumzeile bleibt ruhig: Albumtitel + optional „ | JJJJ“; Audio-Badge ist aus der Albumzeile entfernt.
+- Abspiel-Zeitdaten bleiben auch bei deaktiviertem Songselektor verfügbar.
+
+5.0.112
+- Audioformat-Logo deutlich größer (84x40) und ohne den bisherigen unsichtbaren Leerraum vor dem Kanalbadge.
+- Kanalbadge wieder mit dunklem Hintergrund, ohne Außenlinie, gleich hoch wie das Audioformat-Logo.
+- Kanalbadge kompakt: nur wenig Innenabstand; tatsächlicher Abstand Codec -> Kanal 3 px.
+- Jahreszahl-Begrenzer-Auswahl entfernt; bei aktivierter Jahreszahl fest „ | JJJJ“ (nur linker Begrenzer).
+
+5.0.111
+- Kanalanzeige robust korrigiert: rohe Kanalzahl wird explizit auf Layout gemappt (6 -> 5.1, 8 -> 7.1, 10 -> 5.1.4 usw.).
+- Kanalbadge ohne Außenlinie; Codec- und Kanalangabe sitzen vertikal mittig zur Albumzeile.
+- Codec-Logo minimal vergrößert; Abstand zwischen Codec und Kanal auf 3 px reduziert.
+- Jahreszahl-Begrenzer als Auswahl: (1979), [1979], | 1979 oder nur Leerzeichen + 1979.
+
+5.0.110
+- Soundformat-Logo zeigt zusätzlich immer eine kompakte Kanalangabe (z. B. 2.0, 5.1, 7.1, 5.1.4).
+- Kanalangabe nutzt Kodis MusicPlayer.Channels(DefaultLayout) und funktioniert codec-unabhängig, also auch für FLAC, M4A/AAC/ALAC, DTS, WAV usw.
+- Die bestehende Option Soundformat-Logo bei Wiedergabe schaltet Codec- und Kanalanzeige gemeinsam ein/aus.
+
+5.0.109
+- Konfigurierbarer System-Untermenüpunkt: „Beenden“ oder „Herunterfahren“. Im Herunterfahren-Modus fragt der Button zwischen Herunterfahren und Neustart; Zurück bricht ab.
+- Startseiten-Darstellung: optionale Jahreszahl des laufenden Albums in Klammern direkt hinter dem Albumtitel.
+- Startseiten-Darstellung: optionales kleines Audioformat-Logo rechts neben der Albumzeile. Verwendet Kodi MusicPlayer.Codec und die vorhandenen Confluence-Audioflags.
+- Audioformat-Aliase werden auf vorhandene Flags abgebildet (u.a. AAC-Varianten, MP3 float, DTS/DTS-HD, TrueHD/Atmos, E-AC3/Atmos und PCM-Varianten).
+- Beide neuen Wiedergabeanzeigen sind standardmäßig aus; der Home-Reset schaltet sie wieder aus.
+
+5.0.108
+- Startseiten-Darstellung neu sortiert: Hintergrundbild, Fanart bei Wiedergabe, No-Cover-Bild, danach Covergröße und die bisherigen Cover-/Schattenoptionen.
+- Neue Option „Fanart bei Wiedergabe“: Auf der Startseite wird bei Musikwiedergabe die vorhandene Künstler-Fanart aus Player.Art(fanart) statt des Skin-Hintergrunds angezeigt.
+- Fehlt Künstler-Fanart, bleibt automatisch der gewählte Skin-Hintergrund sichtbar.
+- Die Option ist standardmäßig aus und „Startseiten-Darstellung zurücksetzen“ schaltet sie ebenfalls aus.
+
+5.0.107
+- Unter Startseiten-Darstellung gibt es jetzt „Hintergrundbild -> Skin-Default wiederherstellen“.
+- Die normale Confluence-Hintergrundbildauswahl bleibt unverändert.
+- Die Aktion setzt CustomBackgroundPath und MasterCustomBackgroundPath portabel auf special://skin/backgrounds/DefaultWallpaper.jpg und aktiviert den benutzerdefinierten Hintergrund wieder.
+
+5.0.106
+- Zusätzlich DefaultAudio.png aus dem Basis-Textures.xbt entfernt. Kodi verwendet dieses Icon für nackte Audiodateien, insbesondere unter Musik -> Dateien.
+- ConfluenceCustom Default und freie Bildwahl setzen jetzt sowohl DefaultAlbumCover.png als auch DefaultAudio.png global auf das gewählte Bild.
+- Kodi Default Theme enthält beide originalen Kodi/Confluence-Grafiken und stellt sie gemeinsam wieder her.
+
+5.0.105
+- DefaultAlbumCover.png aus dem Basis-Textures.xbt entfernt.
+- ConfluenceCustom-No-Cover und freie Bildwahl ersetzen damit Kodis DefaultAlbumCover global, auch bei Song-Icons.
+- Kodi Default bleibt über CCNoCoverKodi.xbt auswählbar.
+
+5.0.103
+- Global wählbares No-Cover-Bild: Kodi Default, ConfluenceCustom Default oder freie Bildwahl.
+
+5.0.102
+- No-Cover-Jewel-Case auf das reale CD-Jewel-Case-Seitenverhältnis 142:125 korrigiert.
+- Das Bild wird nicht mehr auf ein quadratisches Außenformat verzerrt.
+- Bei FHD und aspectratio=keep ist dadurch der Bereich der 120x120-mm-Covereinlage auf dem Bildschirm geometrisch quadratisch.
+- Keine Änderungen an echten Covern, Covergrößen, Schatten, Rahmen oder sonstiger Startseitenlogik.
+
+5.0.101
+- Neues No-Cover-Bild für die Musikdarstellung auf der Startseite: transparentes Jewel Case mit CD, ohne Papiereinlage, ohne Außenrand und ohne Spiegelungsfläche.
+- Unter Startseiten-Darstellung ist das No-Cover-Bild jetzt zwischen „Jewel Case (No Cover)“ und „Confluence-Standard“ auswählbar.
+- Jewel Case ist der neue Standard; vorhandene echte Cover und Back-Cover bleiben unverändert.
+- Startseiten-Darstellung zurücksetzen setzt auch die No-Cover-Auswahl wieder auf Jewel Case.
+
+5.0.100
+- Freund-/Neuinstallationspaket: der vom Nutzer exportierte Confluence-Custom-Einstellungsstand wird bei einer echten Neuinstallation einmalig als Factory-Default gesetzt.
+- Vorhandene Confluence-Custom-Installationen werden bei einem Update ausdrücklich nicht überschrieben.
+- Das mitgelieferte DefaultWallpaper.jpg ist portabel als special://skin/backgrounds/DefaultWallpaper.jpg hinterlegt; die zwei gerätespezifischen Wallpaper-Pfade des Exports wurden dadurch ersetzt.
+- Dasselbe Bild ersetzt zusätzlich backgrounds/SKINDEFAULT.jpg und ist damit auch der Skin-Fallback-Hintergrund.
+- Unterbrochene Ersteinrichtung ist über einen Pending-Marker wiederholbar; bestehende Profile erhalten einen Skip-Marker.
+
+5.0.97
+- Weicher Cover-Schatten generell deutlich dunkler: alle neun Soft-Frame-PNGs 6-38 px auf eine einheitliche maximale Deckkraft normalisiert.
+- Schattenversatz 0-24 px nicht mehr über Conditional-Slide-Animationen, sondern über feste Positionsgruppen mit echten left/top-Koordinaten.
+- Damit gelten 14-24 px Versatz jetzt auch für die normalen Schattenbreiten 6-22 px.
+- Schattenbreiten-Geometrie und harte Schatten-PNGs bleiben unverändert.
+- Keine Änderungen an Song-Popup, Credits, Lyrics oder sonstiger Home-UI.
+
+5.0.94
+- Kritischer Fix für 5.0.93: Die Schatten-PNG wurde in bordertexture über $VAR[...] ausgewählt. Kodi wertet bordertexture dort nicht als dynamisches InfoLabel aus; dadurch blieb der Schatten vollständig unsichtbar.
+- Die 60 vorhandenen Schatten-Controls und ihre exakte Cover-Geometrie bleiben unverändert. Nur die Texturauswahl wurde auf bedingte Includes mit festen PNG-Dateinamen umgestellt.
+- Schattenart Hart/Weich, Breite 6/10/14/18/22 px und Versatz 0/2/4/6/8/10/12 px bleiben erhalten.
+- Keine Änderungen an Song-Popup, Credits, Lyrics oder sonstiger Home-UI.
+
+5.0.93
+- Schattengeometrie vollständig vereinfacht: keine angenäherten Seitenverhältnis-Klassen mehr.
+- Der Schatten verwendet jetzt in einem unsichtbaren Image-Control dieselbe Artwork-Quelle und dasselbe aspectratio wie das sichtbare Cover. Kodi berechnet dadurch für Cover und Schatten exakt dieselbe reale Bildfläche.
+- Der Schatten wird ausschließlich als Bordertexture um diese exakte Bildfläche gezeichnet. Rechts und unten sind dadurch geometrisch identisch groß; der Versatz verschiebt den gesamten Schatten gleichmäßig in X und Y.
+- Hart: schwarzer Körper plus ausschließlich rechte/untere Ausdehnung.
+- Weich: echte vorgerenderte Blur-PNG als 9-Slice-Bordertexture; keine Cover-Überlagerungen.
+- Schattenbreite und Schattenversatz bleiben unverändert einstellbar.
+
+5.0.92
+- Adaptive Cover-Schatten neu aufgebaut; die fehlerhafte 5.0.91-Umsetzung wurde verworfen.
+- Schatten verwenden niemals mehr das Cover selbst als sichtbare/Border-Textur.
+- Hart: eigener 9-Slice-Schatten mit schwarzem Körper plus ausschließlich rechter/unterer Ausdehnung. Dadurch kein schwarzer Rand um alle vier Coverseiten.
+- Weich: eigene Gaussian-Blur-Schatten-PNGs, kein Blur durch mehrfach überlagerte Coverkopien.
+- Artwork-Seitenverhältnis wird beim Titelwechsel aus der tatsächlichen Front-/Back-Bilddatei gelesen und auf eine von neun nahen Geometrieklassen abgebildet. Longbox/Hoch-/Breitformate bekommen damit einen passend geformten Schatten.
+- Schattenbreite 6/10/14/18/22 px und Versatz 0/2/4/6/8/10/12 px bleiben einstellbar.
+
+5.0.88
+- Credits: native scrollbare Zeilenliste; Namen direkt in aktiver Songfarbe hervorgehoben. Lyrics unverändert.
+
+5.0.87: LRC-Sync-Verzoegerung als Skin-Setup-Parameter (0,00-1,00 s in 0,05-s-Schritten), Standard 0,25 s.
+5.0.86: Lyrics-Sync-Toggle per Enter robuster; im manuellen Modus keine aktive Zeilenhervorhebung; LRC-Wechsel um 0,40 s verzoegert.
+5.0.84
+- Lyrics-Synchronlauf auf native Kodi-Liste umgestellt; ControlTextBox.scroll() wird nicht mehr verwendet. Die aktive LRC-Zeile wird zeitgesteuert markiert und beim Sync um Zeile 5 gehalten.
+- Enter/OK toggelt Sync: an = automatisches Nachfuehren ohne Listenfokus; aus = native manuelle Up/Down-Navigation. Die zeitlich aktive Zeile bleibt auch im manuellen Modus hervorgehoben.
+- Lyrics-Seite zeigt den laufenden Songtitel als hervorgehobene Ueberschrift in derselben Aktivfarbe wie der laufende Song in der Songliste.
+- Neue Songselektor-Option 'Songtexte zentriert darstellen', Standard Ein. Ueberschrift und Lyrics folgen gemeinsam dieser Ausrichtung.
+- Fuer die Vollbild-Visualisierung selbst werden keine Lyrics mehr vorgesehen; das gehoert zur passenden CU-LRC-JJS-Version 6.7.1.2.
+
+5.0.83
+- Lyrics: zeitmarkierte LRC-Texte scrollen synchron zur laufenden Wiedergabe; die aktive Zeile bleibt nach Moeglichkeit im gleichen 13-Zeilen-Raster wie die Songliste um Zeile 5 sichtbar.
+- Enter/OK auf der Lyrics-Seite toggelt das synchrone Scrollen. Ausgeschaltet bleibt die aktuelle Position unangetastet und die Scrollbar kann normal manuell benutzt werden; beim Wiedereinschalten springt der Text sofort wieder zur aktuellen Songposition.
+- CU-LRC-Offset und eingebettete [offset:]-Tags werden bei der Zeitzuordnung beruecksichtigt. Nicht synchronisierte Klartext-Lyrics bleiben unveraendert.
+
+5.0.82
+- Song-Popup: Credits und Lyrics verwenden jetzt tatsächlich dasselbe 46-Pixel-Zeilenraster wie die Songliste. Schriftfamilie und Schriftgröße bleiben unverändert identisch zur Songliste.
+
+5.0.81
+- Integrates with CU LRC 6.7.1.1 JJS compatibility status.
+- Left cycle: tracks -> lyrics -> credits -> tracks; right cycle: tracks -> credits -> lyrics -> tracks.
+- Lyrics page disappears after definitive not_found.
+- Native playlist viewport is positioned without automatic focus races; neutral control is default.
+- Stop and natural playback end close immediately; fresh starts re-arm auto-open.
+
+5.0.80
+- Popup navigation is now truly cyclic in both directions: Tracks --Right--> Credits --Right--> Lyrics --Right--> Tracks; Left runs the reverse cycle.
+- Explicit Stop closes the song popup immediately via Kodi player callback instead of waiting for the 2.5 s HasAudio grace period.
+- Explicit Stop ends the auto-popup playback session immediately, so a quick Stop/Play can auto-open again.
+- Playlist control focus waits until control 9110 is actually visible/focusable, avoiding the remaining focus race in 5.0.79.
+
+5.0.79
+- Song popup: stable persistent focus proxies for Credits/Lyrics pages; Left/Right no longer focus a conditionally invisible control.
+- Song popup: automatic opening is armed when the skin service starts during already active music playback.
+- Lyrics diagnostics removed; normal lyrics layout restored, still always reachable during provider testing.
+
+5.0.78
+- Temporary lyrics diagnostics page: Kodi artist/title/album/file, skin lyrics add-on path, CU LRC running/source/islrc/haslist/manual/artist/track, raw/cleaned text lengths.
+
+5.0.76
+- Song-Popup: optionale dritte Seite für Songtexte aus CU LRC Lyrics. Sie erscheint nur, wenn für den aktuell laufenden Titel tatsächlich Text vorhanden ist.
+- Song-Popup: Rechts navigiert Songliste -> Credits -> Songtext -> Songliste; ohne Songtext bleibt Songliste <-> Credits wie bisher. Links führt von Songtext zurück zu Credits.
+- LRC-Zeitmarken und technische LRC-Metadaten werden für die Popup-Anzeige entfernt; normale Textmarkierungen wie [Chorus] bleiben erhalten.
+- Beim Titelwechsel werden alte CU-LRC-Texte nicht auf den neuen Titel übernommen.
+- Nach Songauswahl per OK wird der Fokus nach dem automatischen Nachführen neutral geparkt; der nächste Hoch/Runter-Druck aktiviert das Highlight zuverlässig wieder.
+
+5.0.75
+- Song-Popup: OK/Select spielt jetzt den absolut fokussierten Playlist-Eintrag; gescrollte Listen verwenden Container.CurrentItem statt Container.Position.
+- Song-Popup: Credits verwenden dieselbe Schriftfamilie und -größe wie die Songliste mit auf 46 Skin-Pixel abgestimmter Zeilenhöhe sowie angeglichener Textkante/Textbreite.
+
+5.0.73
+- Credits page focus target now covers the visible credits area itself.
+- Left and Right on credits reliably return to the song list; no offscreen/tiny focus anchor.
+
+5.0.71
+- Besetzungsseite: Links und Rechts führen zuverlässig zurück zur Songliste, auch wenn keine Scrollbar fokussierbar ist.
+
+5.0.70
+- Song popup: Right switches to the album credits page supplied by JJS Music Library Manager.
+- Left returns from credits to the song list; Back remains the only action that closes the popup.
+- Credits use the existing popup panel and a scrollable text area. If the manager/data is unavailable, a small fallback message is shown.
+- Track-follow/highlight logic is suspended while the credits page is open, so track changes never pull focus away from credits.
+
+5.0.69
+- Song popup automatic scrolling now follows playback only once on an actual track change; the highlight timeout no longer moves the viewport mid-song.
+- Playback follow keeps the current title on visible row 5 whenever possible (four previous, up to eight upcoming titles); the final page remains fixed.
+- Selecting/playing a song no longer closes the popup.
+- Back is now the only close action; Left is reserved for a future popup page.
+- Auto-open behavior and the 40 px right/bottom popup margins are unchanged.
+
+5.0.68
+- Song popup now has the same 40 px margin at the bottom and right edge.
+- Automatic playback following keeps two previous songs visible and shows as much of the remaining album as possible; the final page stays fixed once the last title is visible.
+- Manual Up/Down navigation remains a normal Kodi list and is not replaced by a fixed-list control.
+- New optional setting: automatically show the song popup once when a new music playback session starts; if playback starts outside Home, it opens once on the next visit to Home.
+
+5.0.67
+- Main-menu visibility toggles no longer reset DefaultHomeFocus / DefaultHomeFocusItem.
+- Changing main-menu visibility therefore stays in Skin Settings and no longer forces Home into default-menu selection mode.
+- Main-menu order, custom submenus and song popup behavior are unchanged.
+
+5.0.66
+- Main-menu visibility has one source of truth again: the normal Confluence HomeMenuNo... settings.
+- Removed the separate Master-profile visibility controls and all custom visibility helper logic.
+- Custom main-menu styling, order and submenu definitions remain unchanged.
+- Song popup behavior from 5.0.64 remains unchanged.
+
+5.0.64
+- Song popup uses the pure song title; track numbers are added exactly once only when enabled.
+- Main-menu visibility toggles explicitly clear both legacy/profile hide flags when re-enabling, repairing out-of-sync settings.
+- Closing the song popup only returns focus to the Home main-menu control; Kodi's preserved menu selection remains untouched.
+
+5.0.63
+- Main-menu visibility controls now change the settings that are effective for the active profile, including the master profile.
+- Song popup: automatic track changes move focus with the playing song only when the user was still on that row; manual browsing is not stolen.
+- Song popup: navigation focus is a subtle translucent light-grey background; bright text is reserved for the currently playing song.
+- Closing the song popup restores the exact Home main-menu position that was active before opening it.
+
+5.0.62
+- Home music navigation: Up from the main menu first enters the playback controls, a second Up focuses the cover.
+- Down from the cover returns to the playback controls, then to the main menu.
+- Song popup behavior from 5.0.61 remains unchanged.
+
+5.0.61
+- Song popup: OK/Select plays the currently focused native playlist row by its absolute container position.
+- No changes to the accepted 5.0.60 focus, current-song or timeout rendering logic.
+
+5.0.60
+- Song popup: correct zero-based absolute focus after native playlist row is loaded.
+- Current song uses Kodi/Confluence selected-color rendering and ListItem.Label; no blank row.
+- Highlight timeout keeps current song visible and removes only focus.
+
+5.0.59
+- Songselector-Popup: Fokus beim Oeffnen wird nach Laden der nativen Playlist mit Kodis 1-basierter SetFocus-Position direkt auf den laufenden Titel gesetzt.
+- Aktueller Titel nutzt Kodi Playing/Selected plus Label-Fallback; keine leere Zeile mehr bei fehlendem ListItem.Title.
+- Highlight-Timeout setzt direkt auf den laufenden Titel und gibt danach den Listenfokus an den neutralen Proxy ab.
+- Native Navigation wird nicht mehr durch Start+Move-Korrekturen oder unzuverlaessige ListItem-Signaturen beeinflusst.
+- Songselector nutzt fuer Normal/Aktuell/Fokus wieder seine eigenen konfigurierten Textfarben.
+
+5.0.58
+- Songselector: Highlight-Timeout springt zum aktuell spielenden Song zurueck und blendet dort den Fokusrahmen aus.
+- Aktuell spielender Song bleibt in der nativen Playlist sichtbar und wird mit der aktiven Textfarbe dargestellt.
+- Front/Back-Doppeldarstellung mit etwas groesserem Abstand.
+- Cover-Fokus nutzt den schlanken blauen Confluence-Rahmen statt der breiten Kachelmarkierung.
+
+5.0.57
+- Song selector popup uses native playlist scrolling.
+- Up from main menu focuses album artwork; Select cycles front/back/both when back art exists.
+
+[B]5.0.56[/B]
+
+- Time display rebuilt from character-width classes based on Roboto tabular digits
+- Song/album time separators now follow the actual rendered time length compactly
+- Remaining times include the minus sign in their measured layout width
+- Standard Confluence music text stays hidden whenever Song Selector mode is enabled, preventing track-change flashes
+
+5.0.55
+- Zeitzeile als echte kompakte Bloecke: Trenner und Gesamtzeit wandern mit; kurze/lange Zeitformate bekommen passende Breiten.
+- Selector-Playerlayout bleibt bei Trackwechsel stabil aktiv; kein kurzes Zurueckfallen auf die alte linke Coverposition.
+- Playlist-Popup navigiert innerhalb sichtbarer Zeilen nativ; Python wird nur noch am oberen/unteren Scrollrand benoetigt.
+- Trackwechsel im offenen Popup entkoppelt und verzoegert aktualisiert, damit die Fernbedienung responsiv bleibt.
+
+5.0.54
+- Zeitzeile wirklich linksbuendig: jede aktive Zeitgruppe beginnt direkt an ihrer dynamischen Position.
+- Linke Zeitwerte nicht mehr rechtsbuendig in grossen Reservefeldern.
+- Kompakte feste Zeitspalten halten die senkrechten Trenner stabil und vermeiden grosse Leerraeume.
+- Dynamisches Zusammenruecken bei deaktivierten Zeitgruppen bleibt erhalten.
+
+5.0.53
+- Zeitfelder deutlich verbreitert: Rest-Songzeit sowie Albumzeiten/-restzeiten werden auch mit Minuszeichen und h:mm:ss nicht mehr abgeschnitten.
+- Dynamisches Zusammenruecken aktivierter Zeitgruppen aus 5.0.52 bleibt erhalten.
+- Feste senkrechte Trenner bleiben mit kleinem Abstand direkt an den Zeitwerten.
+
+5.0.52
+- Playlist-Popup ist jetzt ein echtes Kodi-Dialogfenster; Back wird nativ vom Dialog konsumiert und schliesst nur das Popup.
+- Aktivierte Zeitgruppen ruecken per horizontaler Grouplist automatisch nach links; deaktivierte Gruppen hinterlassen keine Luecken.
+- Song- und Albumzeitpaare kompakter; Zeit vor dem festen Trenner rechtsbuendig direkt an der Linie.
+- Album-Restzeit bekommt genuegend Breite, damit keine Auslassungspunkte mehr erscheinen.
+- Cover-Schlagschatten deutlich dunkler bei unveraenderter Geometrie.
+
+5.0.51
+- Back/Links im Playlist-Popup wird direkt verarbeitet; kein Visualisierungs-Umweg mehr.
+- Songnummern-Option gilt auch fuer die Hauptanzeige.
+- Neuer Highlight-Timeout: Popup bleibt offen, Highlight verschwindet; Up/Down reaktiviert auf dem laufenden Titel.
+- Vier Zeitgruppen einzeln schaltbar: Song, Song-Restzeit, Album, Album-Restzeit jeweils mit Gesamtdauer.
+- Zeitdarstellung optional abgedunkelt.
+- Zeitfelder kompakter; feste Trenner sitzen deutlich naeher an den Werten.
+
+5.0.50
+- Playertext tiefer und auf den unteren Confluence-Balken zentriert.
+- Zeitanzeigen innerhalb der Zeitzeile linksbündig; feste Trenner bleiben erhalten.
+- Playlist-Popup schmaler im rechten unteren Bereich, mit Abstand zum grossen Cover und Bildschirmrand.
+- Back/Links schliesst das Popup über einen echten Navigations-Proxy statt die Visualisierung zu öffnen.
+- Lange Hilftexte in den Skin-Einstellungen gekürzt.
+
+5.0.49
+- Ruhige Playeranzeige unten links statt permanenter Songkacheln.
+- Großes vertikales Playlist-Popup mit topologischer Navigation.
+- Optionaler Popup-Timeout (Standard: Aus).
+- Cover bleibt im Songselektor-Modus oben mittig.
+
+5.0.47
+- Songselektor optional; klassische räumliche Navigation stabilisiert
+- Optionale Songnummern, Albumtitel- und Zeitkacheln
+- Musikinfo-Text im Songselektor-Modus ausgeblendet, Cover versetzt
+- Powerbutton im Songselektor-Modus durch rotes „Beenden“ im System-Untermenü ersetzt
+
+[B]5.0.46[/B]
+
+- Song selector: highlight now walks across visible songs
+- Song strip scrolls only when continuing past the left/right visible edge
+- Starting a selected song re-centres it and moves the highlight to the middle
+- Current-song text colour follows the running song while browsing
+
+5.0.44
+- Songselektor intern auf fünf echte Button-Controls umgestellt: gleiche Fokus-/Textlogik wie die Home-Untermenüs.
+- Laufender Song ist immer die mittlere Kachel und verwendet direkt MusicPlayer.Title; keine Sonder-Overlay-Labels mehr.
+- Links/Rechts bewegt nur den Fokus über die sichtbaren vorherigen/nächsten Songs; Enter spielt relativ zum laufenden Titel.
+- Auswahl- und Fokus-Timeout an die neuen Button-IDs angepasst.
+- Fanart-Unterdrückung während Selektorfokus an alle fünf Button-IDs angepasst.
+- Transparent-Grau dunkler; Kacheln und Fokusgrafik stärker abgerundet.
+
+5.0.43
+- Songselektor im Fokus zeigt wieder ausschließlich Songtitel statt Tracknummer + Albumartist.
+- Der aktuell laufende Song wird im Fokus direkt über MusicPlayer.Title gerendert und bleibt dadurch sichtbar.
+- Auswahl-, Wiedergabe- und Timeout-Logik gegenüber 5.0.42 unverändert.
+
+5.0.42
+- Songselektor ohne Fokus strikt auf den aktuell laufenden Song zentriert; der Playlist-Container zeichnet außerhalb seines Fokus nichts mehr.
+- Dadurch verschwindet das alte Highlight nach Fokus-Timeout bzw. Fokuswechsel vollständig.
+- Fokus-Text verwendet ListItem.Label für zuverlässige Anzeige des selektierten Songs.
+- Hintergrund „Wie Untermenü“ jetzt schwarz und leicht transparent; „Transparent“ bleibt durchsichtiges Grau; „Weg“ ohne ruhende Kacheln.
+- Song-Kacheln stärker abgerundet.
+- Cover-Schlagschatten deutlicher nach rechts/unten versetzt und Cover zusätzlich angehoben.
+
+5.0.41
+- Songselektor als einzelne abgerundete Song-Kacheln statt durchgehendem Balken.
+- Aktueller Song bleibt auch im Fokus sichtbar; Fokusmarkierung liegt sauber hinter dem Text.
+- Falsche Titelwahl behoben: Auswahl verwendet den tatsächlichen aktuellen Container-Eintrag statt der festen Fokusposition.
+- Wiedergabe des gewählten Titels erfolgt gezielt über JSON-RPC Player.GoTo.
+- Hintergrundmodi: Wie Untermenü, Transparent (durchsichtiges Grau), Weg.
+- Sichtbarer Abstand zwischen den Songs.
+- Fokus- und Auswahl-Timeout verwenden nun den tatsächlichen Listenindex und funktionieren auch bei fixedlist.
+
+5.0.40
+- Songselektor bei Shuffle deaktiviert.
+- Songselektor übernimmt Schrift, Schriftgröße, Textfarben und Hervorhebung direkt aus den Untermenü-Einstellungen.
+- Fokus-/Navigationslogik ohne rekursives Refocus neu aufgebaut.
+- Fanart-Übernahme beim Fokus auf die Wiedergabeliste verhindert.
+- Abstände zwischen Titeln und abgerundete Selektor-Enden.
+
+5.0.39
+- Horizontaler Songselektor auf der Startseite während Musik-Wiedergabe, 2/3 Bildschirmbreite und auf Höhe der unteren Bedienelemente.
+- Laufender Song im Ruhezustand mittig; vorherige/nächste Titel links/rechts.
+- Navigation aus Haupt-/Untermenü mit Links/Rechts-Auswahl und Enter zur Wiedergabe.
+- Separat konfigurierbare Schrift/Farben/Hervorhebung, Untermenü-Stil oder transparenter Hintergrund.
+- Auswahl-Timeout zurück zum laufenden Titel und Fokus-Timeout zurück zur Hauptmenüleiste.
+
+5.0.38
+- Musik-Cover auf der Startseite wahlweise mit originalem Rahmen oder ohne Rahmen mit Schlagschatten rechts/unten.
+- Schlagschatten-Cover wird leicht angehoben, damit der Schatten nach unten/rechts Luft hat.
+
+5.0.37
+- Musik-Cover auf der Startseite bis 585 px (3x Originalgröße).
+- Musik-Cover und Wiedergabeinformationen folgen der vertikalen Menüverschiebung gemeinsam.
+- Album-/Titeltext endet vor den Player-Steuerelementen und scrollt bei Überlänge innerhalb des verfügbaren Bereichs.
+
+5.0.36
+- Musik-Cover auf der Startseite bis 390 px (2x Originalgröße).
+- Untermenü-Schriftgrößen jetzt in 1-px-Stufen von 20 bis 30 px.
+- Haupt-/Untermenüleiste vertikal in 25-px-Stufen verschiebbar.
+
+5.0.35
+- Corrected scalable Home music cover geometry: fixed left edge, growth to the right/up.
+- Music info text shifts right with the cover so the original spacing is preserved.
+
+5.0.34
+- Feinere Untermenü-Schriftgrößen 22/24/26/28/30 px; bisherige 34/38 werden auf 30 migriert.
+- Einstellbare Covergröße der Musikwiedergabe auf der Hauptseite (195/210/225/240 px).
+- Unterer Hauptseiten-Balken wählbar: Original, Dunkel, Transparent oder Aus.
+
+5.0.33
+- Untermenü-Hervorhebungsfarbe separat konfigurierbar (Grundfarben + Default).
+- Default der aktiven Untermenü-Schrift auf originales Confluence-Weiß korrigiert.
+- Default-Hervorhebung verwendet weiterhin exakt die originale Confluence-Textur.
+
+5.0.32
+- Hauptmenü-Fokuswechsel ohne übereinander gerenderte Normal-/Aktivschrift; kurzes Aufblitzen entfernt.
+- Hauptmenüfarben jetzt über feste Grundfarben plus Default statt freiem Farbwähler.
+- Untermenü-Darstellung separat konfigurierbar: Schriftart, Schriftgröße, normale und aktive Farbe.
+- Montserrat Black auch für Untermenüs verfügbar.
+
+5.0.31
+- Hauptmenü-Schriftart, -größe sowie normale/aktive Schriftfarbe separat konfigurierbar.
+- Montserrat Black als optionale Hauptmenü-Schrift ergänzt.
+- Restliche Skin-Schriften bleiben unverändert.
+
+5.0.30
+- Confluence-Custom-Skin-Einstellungen vollständig sichern/laden (frei wählbare Datei, auch NAS/SMB)
+
+5.0.25
+- Context add-on actions are navigated as their nested menu tree before a concrete leaf can be selected.
+- Menu editor uses an in-memory live list while editing so deletes/moves/additions refresh immediately.
+
+[B]5.0.9[/B]
+
+- Teletext button fix
+
+[B]5.0.8[/B]
+
+- Add new Options menu and move play speed
+
+[B]5.0.7[/B]
+
+- Fix mouse issue with subtitles dialog
+- Fix debug grid not displaying
+
+[B]5.0.6[/B]
+
+- Fix video player media info alignment
+- Increase list width in video version dialog
+
+[B]5.0.5[/B]
+
+- Fix wrong header id
+
+[B]5.0.4[/B]
+
+- Add 'Check Previous Episode' addon layout
+
+[B]5.0.3[/B]
+
+- Add video version/extra select dialog
+- Fix panel height
+
+[B]5.0.2[/B]
+
+- Fix Original/Localised title
+- Fix 'Movie' and 'TV Shows' buttons visible condition
+- Fix addon focus issue
+- Fix Formed/Born overlap issue
+- Fix exiting from settings focus problem
+- Fix missing label in view id=50
+- Fix broken bool in PosterThumb variable
+- Fix default home item selection issue
+- Remove unneeded code
+- Fix default select item when using login
+- Remove unneeded close button
+
+[B]5.0.1[/B]
+
+- Rework versions/extras textures
+
+[B]5.0.0[/B]
+
+- Add Video version support
+- Convert skin from 720p to 1080p
+- Update scrollbars
+- Add grid overlay
+- Add game agents
+- Add disabled slider texture
+
+[B]4.8.0[/B]
+
+- Bump skin version and update changelog
+- Add movie title format option
+- Bump xbmc.gui for Nexus
+- Add Nexus game changes
+- Add show password button to keyboard
+- Add Player.Process(videoscantype) infolabel
+- Add Cuts, Scene Markers, and Editlist
+- Add missing aspect ratios
+- Add 'infill' attribute to border textures
+- Add HDR flagging
+- Delete DialogFavourites.xml
+- Fix home episode thumbs not using spoiler settings
+- Add default start item selection
+
+[B]4.7.15[/B]
+
+- Fix image in select dialog
+
+[B]4.7.14[/B]
+
+- Add PVR guide controls dialog
+
+[B]4.7.13[/B]
+
+- Updated language files from Transifex
+
+[B]4.7.12[/B]
+
+- Updated language files from Transifex
+
+[B]4.7.11[/B]
+
+- Fix PVR radio record button
+- Fix PVR recording label
+- Fix posters
+- Add "Versions" button to add-on information dialog
+
+[B]4.7.10[/B]
+
+- Updated language files from Transifex
+
+[B]4.7.9[/B]
+
+- Fix season posters
+
+[B]4.7.6[/B]
+
+- Switch to dynamic content for home screen widgets
+- Home screen widgets show only unwatched items
+
+[B]4.7.5[/B]
+
+- Bump xbmc.gui
+- Add support for enabled add-ons
+
+[B]4.7.1[/B]
+
+- Add support for PVR reminders
+- Fix / add new buttons in PVR information window
+- Update PVR group manager dialog with latest changes
+
+[B]4.7.0[/B]
+
+- Added chapter markers to progress bar
+- Uppercase Season and Episode indicators on home Recently Added Episodes
+
+[B]4.6.9[/B]
+
+- Media flagging updates
+- Language updates
+
+[B]4.6.8[/B]
+
+- Add HasArchive indicator to channels and programs
+- Add CoreELEC compatibility
+
+[B]4.6.7[/B]
+
+- Language updates
+
+[B]4.6.6[/B]
+
+- Language updates
+- Fix comments in strings.po
+- Fix addon.xml
+
+[B]4.6.5[/B]
+
+- Language updates
+- Fix endtime visibility for video info screen
+- Add video duration into view
+
+[B]4.6.4[/B]
+
+- Add "End time" for video playback
+- Add add-ons submenu
+- Music artist info updated
+- Power/Favourites buttons updated
+
+[B]4.6.3[/B]
+
+- Fix now playing issue
+
+[B]4.6.2[/B]
+
+- Tags fixed
+
+[B]4.6.1[/B]
+
+- Language updates
+
+[B]4.6.0[/B]
+
+- Added "Kids profile" option
+
+[B]4.5.15[/B]
+
+- Fix game stretch mode
+
+[B]4.5.14[/B]
+
+- Unused include removed (NowPlaying)
+
+[B]4.5.13[/B]
+
+- Fixed missing labels
+- Removed audio dsp references
+
+[B]4.5.12[/B]
+
+- Language updates
+
+[B]4.5.11[/B]
+
+- Add "Rip CD" button to home sub menu
+
+[B]4.5.10[/B]
+
+- Language updates
+
+[B]4.5.9[/B]
+
+- Fix menu visibility when offsetting subtitles
+
+[B[4.5.8[/B]
+
+- Language updates
+
+[B]4.5.7[/B]
+
+- Language updates
+
+[B]4.5.6[/B]
+
+- Refactor media info/now playing views
+- Support for hide plot/thumb (OverlaySpoiler.png)
+
+[B]4.5.5[/B]
+
+- GUI version bump to 5.14.0
+- Fonts updates
+- Language updates
+
+[B]4.5.4[/B]
+
+- Fix missing video and audio codec flags
+
+[B]4.5.3[/B]
+
+- Fix album start rating
+- Fix missing localisation
+
+[B]4.5.2[/B]
+
+- Added 8K support
+- Add setting for profile identification
+
+[B]4.5.1[/B]
+
+- Audio DSP support removed 
+
+[B]4.5.0[/B]
+
+- Added 'Game' shortcuts to home menu
+- Fixed hiding 'Games' home menu item
+
+[B]4.4.7[/B]
+
+- Updated GameOSD dialog
+
+[B]4.1.41[/B]
+
+- Added GameOSD dialog
+
+[B]4.1.4[/B]
+
+- Added path to music info dialog
+- Updated language files from Transifex
+
+[B]4.0.4[/B]
+
+- Added fallbacks for home screen Recently Added items
+- Updated addon settings dialog
+
+[B]4.0.1[/B]
+
+- Updated addon settings dialog
+
+[B]4.0.0[/B]
+
+* Leia (v18) updates
+- Bumped xbmc.gui to 5.13.0
+- Removed hyphens as a none value
+- Added Game sections
+- Changed DialogPVRGuideOSD.xml to DialogPVRChannelGuide.xml
+- Updated duration labels
+- Removed 'noop' values
+- Added 'TV/Radio toggle' button to DialogPVRGroupManager.xml
+- Removed views 11 and 13 from MyPVRGuide.xml
+- Added 'All/Watched/Unwatched' to MyPVRRecordings.xml 
+
+[B]3.0.39[/B]
+
+- Fixed home Weather item
+- Added 'Privacy Policy' to system info
+- Updated background video conditions
+
+[B]3.0.38[/B]
+
+- Fix using DefaultUser.png added in v3.0.6 and remove unknown-user.png
+
+[B]3.0.36[/B]
+
+- Added customisable home submenus that use library nodes
+- Added news feature
+
+[B]3.0.35[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.34[/B]
+
+- Added player speed controls (tempo) and on-screen indicator
+
+[B]3.0.33[/B]
+
+- Changed LibrarySettings to MediaSettings
+
+[B]3.0.32[/B]
+
+- Added DialogPlayerProcessInfo.xml
+- Removed player process info from video OSD
+- Added 'assets' to addon.xml
+
+[B]3.0.31[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.30[/B]
+
+- Updated DialogSelect.xml
+
+[B]3.0.29[/B]
+
+- Updated video osd player process info
+
+[B]3.0.28[/B]
+
+- Added player processing info to video osd
+
+[B]3.0.27[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.26[/B]
+
+- Show addon status if available, instead of size
+
+[B]3.0.25[/B]
+
+- Added size label to addon browser
+
+[B]3.0.24[/B]
+
+- Removed changelog button from addon info dialog
+
+[B]3.0.23[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.22[/B]
+
+- Cleanup after removal of Player.ShowCodec
+
+[B]3.0.21[/B]
+
+- Remove startup window heading
+
+[B]3.0.20[/B]
+
+- Fix case issue with Defaults.xml
+
+[B]3.0.19[/B]
+
+- Fix include problem
+- Case change for Defaults.xml and Includes.xml
+
+[B]3.0.18[/B]
+
+- Fix text width for buttons in addon settings
+
+[B]3.0.17[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.16[/B]
+
+- Fixed PVR OSD guide label problem
+
+[B]3.0.15[/B]
+
+- Added horizontal orientation tag to default slider control
+
+[B]3.0.14[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.13[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.12[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.11[/B]
+
+- Updated settings layout
+- Remove the set of ADSP manager dialog list types, becomes done from Kodi itself
+
+[B]3.0.10[/B]
+
+- Updated global search
+- Updated music and video info
+- Added DefaultAddonsRecentlyUpdated.png and DefaultMusicRoles.png
+
+[B]3.0.9[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.8[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.7[/B]
+
+- Updated include calls
+
+[B]3.0.6[/B]
+
+- Added game controller support
+- Added DefaultAddonInputstream.png and DefaultAddonLookAndFeel.png
+- Changed unknown-user.png to DefaultUser.png
+- Removed obsolete fanart code from DialogVideoInfo.xml
+- Updated boolean conditions
+
+[B]3.0.5[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.4[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.3[/B]
+
+- Removed Player.ShowCodec
+
+[B]3.0.2[/B]
+
+- Merged setting dialogs into DialogSettings
+
+[B]3.0.1[/B]
+
+- Updated language files from Transifex
+
+[B]3.0.0[/B]
+
+- Move skin to repository
+
+[B]2.8.2[/B]
+
+- Updated language files from Transifex
+
+[B]2.8.1[/B]
+
+- Updated language files from Transifex
+
+[B]2.7.3[/B]
+
+- Updated language files from Transifex
+
+[B]2.7.2[/B]
+
+- Updated language files from Transifex
+
+[B]2.7.1[/B]
+
+- Updated language files from Transifex
+
+[B]2.7.0[/B]
+
+- Removed new/edit/delete buttons from the channel manager dialog
+
+[B]2.6.0[/B]
+
+- Moved some context menu functionality for PVR channels to the sideblade
+
+[B]2.5.8[/B]
+
+- Updated language files from Transifex
+
+[B]2.5.7[/B]
+
+- Updated language files from Transifex
+
+[B]2.5.6[/B]
+
+- Updated language files from Transifex
+
+[B]2.5.5[/B]
+
+- Updated language files from Transifex
+
+[B]2.5.4[/B]
+
+- Updated language files from Transifex
+
+[B]2.5.3[/B]
+
+- Updated language files from Transifex
+
+[B]2.5.2[/B]
+
+- Updated language files from Transifex
+
+[B]2.5.0[/B]
+- Kodi name change
+
+[B]2.4.0[/B]
+- Set minimum GUI version to 5.2.0
+- Rewrite of the PVR section
+
+[B]2.2.14[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.13[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.12[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.11[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.10[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.9[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.8[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.7[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.6[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.5[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.4[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.3[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.2[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.1[/B]
+
+- Updated language files from Transifex
+
+[B]2.2.0[/B]
+- Set minimum GUI version to 5.0.0
+- Adjusted to Gotham code changes
+
+[B]2.1.7[/B]
+
+- Updated language files from Transifex
+
+[B]2.1.6[/B]
+
+- Updated language files from Transifex
+
+[B]2.1.5[/B]
+
+- Updated language files from Transifex
+
+[B]2.1.4[/B]
+
+- Updated language files from Transifex
+
+[B]2.1.3[/B]
+
+- Updated language files from Transifex
+
+[B]2.1.2[/B]
+
+- Updated language files from Transifex
+
+[B]2.1.0[/B]
+
+- Changed the home menu to Horizontal Layout instead of Vertical
+- Added support for the TvTunes Addon enable it in skin settings\General (if you have it installed)
+- Added support for the Weather+ script (install it and select it in weather settings)
+- Updated translation files
+- Added some more codec flagging images (eg: pcm_bluray, wav files, etc)
+- Added Visual notification in Add-on Thumbnail view if an add-on is broken
+
+[B]2.0.0[/B]
+
+- Bumped the skin version up for the major change to eden branch
+
+[B]1.2.0[/B]
+
+- All media views now follow a similar layout off File List on the Left hand side and icons/data on the right
+- Views are all now in content panels (no fullscreen black)
+- Added a thumb view for addons
+- Non full screen Now Playing Media info (Bottom left) has more info
+- Full screen Now Playing Media info trimmed down
+- Fullscreen Player controls changed
+- Media windows side menu is completely redesigned (and also lower case)
+- Added a "filter" button to all media windows
+- Added Filter (BLAH) text to the item/page count bottom right
+- Removed the Disc Play button from home (which relies on !System.HasMediaDVD to appear)
+- Repositioned the seekbar from lower right to upper right
+
+[B]1.1.0[/B]
+
+- Redesigned the video and Music OSD Info and controls
+- Added more images for codec flagging on videos and audio
+- Added all the windows needed for the new Addon Browser
+- Removed the right hand side bar graphic from all windows and only made the left hand one visible if a menu is there
+- Lots of other little changes
+
+[B]1.0.0[/B]
+
+- Initial Commit to the SVN
+
+5.0.85: Lyrics-Sync ohne direkte GUI-Listenmanipulation aus dem Service; fester 11-Zeilen-Viewport, aktive Zeile, Enter-Toggle und manuelles Hoch/Runter.
+5.0.98: Option zum Ausblenden der Wiedergabe-Steuerelemente ueber der Home-Menueleiste; Navigation umgeht ausgeblendete Controls.

@@ -1,0 +1,19 @@
+Confluence Custom 5.0.116
+=========================
+
+Basis: exakt 5.0.115.
+
+Aenderungen:
+- Badge-Rundung erweitert: 6 / 10 / 14 / 18 / 22 / 26 / 30 px.
+- Logo-Ausrichtung wieder linksbuendig wie vor 5.0.115.
+- Kanalposition folgt jetzt dem Logo; das Logo wird nicht mehr nach rechts geschoben.
+- Badge-Hintergrund rechts auf den benoetigten Inhalt verkuerzt; rechter Rand entspricht optisch dem linken Innenrand.
+- Schriftmodus bleibt erhalten und nutzt eine gemeinsame Textzeile fuer Codec + Kanal.
+- Keine Aenderung an Zeitposition, 24-px-Abstand Zeit -> Badge, vertikaler Zentrierung oder Kanal-Mapping.
+
+Zu testen:
+1. FLAC/MP3/DTS: Logo beginnt wieder an der gewohnten linken Position in der Kachel.
+2. Kanalangabe sitzt direkt dahinter; kein grosser Leerraum.
+3. Kachel endet kurz hinter der Kanalangabe und wirkt links/rechts ausgewogen.
+4. Badge-Rundung 22/26/30 px sichtbar pruefen, auch mit 3D-Rand.
+5. Codec-Darstellung Logos/Schrift weiterhin umschaltbar.

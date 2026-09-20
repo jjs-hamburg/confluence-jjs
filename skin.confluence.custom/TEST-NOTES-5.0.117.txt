@@ -1,0 +1,11 @@
+5.0.117
+
+- Audio badge background no longer uses Kodi nine-slice border scaling.
+  Exact-size rounded textures are used for every badge size/radius/opacity.
+  This removes the filled rectangular band seen at small/medium scales.
+- Existing 5.0.116 logo/channel geometry is unchanged.
+- New badge background color: "Wie Untermenühervorhebung".
+  It follows CCSubMenuHighlightColor; default Confluence submenu blue is used
+  while the submenu highlight remains on Default.
+- 3D look is now a separate exact-size bevel overlay and never extends beyond
+  the rounded tile.

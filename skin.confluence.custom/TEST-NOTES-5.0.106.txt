@@ -1,0 +1,10 @@
+Confluence Custom 5.0.106
+Global music no-cover replacement
+
+- Basis media/Textures.xbt enthält weder defaultalbumcover.png noch defaultaudio.png.
+- media/DefaultAlbumCover.png und media/DefaultAudio.png sind bei Auslieferung identisch mit CCNoCoverJewelCase.png.
+- media/CCNoCoverKodi.xbt enthält ausschließlich die originalen Kodi/Confluence defaultalbumcover.png und defaultaudio.png.
+- Kodi setzt für nackte Audiodateien ListItem.Icon auf DefaultAudio.png; deshalb war der Dateimodus in 5.0.105 noch nicht abgedeckt.
+- Modus ConfluenceCustom Default: Theme=SKINDEFAULT, beide loose Defaults = Jewel Case.
+- Modus Freie Bildwahl: Theme=SKINDEFAULT, beide loose Defaults = gewähltes Bild.
+- Modus Kodi Default: Theme=CCNoCoverKodi.xbt, Theme-Bundle überschreibt beide loose Defaults global.

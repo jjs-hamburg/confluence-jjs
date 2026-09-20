@@ -1,0 +1,5 @@
+<node order="110" type="folder" visible="Library.HasContent(Boxsets)">
+	<label>38074</label>
+	<icon>DefaultSets.png</icon>
+	<path>musicdb://albums/?boxset=true</path>
+</node>

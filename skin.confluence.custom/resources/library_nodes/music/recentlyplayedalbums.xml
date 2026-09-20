@@ -1,0 +1,11 @@
+<node order="20" type="filter" visible="Library.HasContent(Music)">
+	<label>Zuletzt gehört</label>
+	<icon>DefaultMusicRecentlyPlayed.png</icon>
+	<content>albums</content>
+	<match>all</match>
+	<rule field="lastplayed" operator="after">
+		<value>1900-01-01</value>
+	</rule>
+	<limit>50</limit>
+	<order direction="descending">lastplayed</order>
+</node>

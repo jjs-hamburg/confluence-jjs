@@ -1,0 +1,6 @@
+<node order="20" type="filter">
+	<label>10024</label>
+	<icon>DefaultTVShowTitle.png</icon>
+	<content>tvshows</content>
+	<order direction="ascending">sorttitle</order>
+</node>

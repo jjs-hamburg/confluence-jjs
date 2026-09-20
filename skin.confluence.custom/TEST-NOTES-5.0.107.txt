@@ -1,0 +1,7 @@
+Confluence Custom 5.0.107
+
+Neue Funktion:
+- Startseiten-Darstellung -> Hintergrundbild -> Skin-Default wiederherstellen
+- Setzt normalen und Master-Hintergrund auf special://skin/backgrounds/DefaultWallpaper.jpg.
+- Die originale Confluence-Auswahl über Skin.SetImage bleibt unverändert.
+- Sonstige Startseiten-, No-Cover-, Musik- und Menüfunktionen basieren unverändert auf 5.0.106.

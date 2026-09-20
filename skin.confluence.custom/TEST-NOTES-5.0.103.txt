@@ -1,0 +1,8 @@
+Confluence Custom 5.0.103
+
+- No-Cover-Bild unter Startseiten-Darstellung: Kodi Default / ConfluenceCustom Default / Freie Bildwahl.
+- Die Auswahl wirkt skinweit, indem der lose DefaultAlbumCover.png-Override gesetzt bzw. entfernt wird.
+- Kodi Default entfernt den Override und legt das Original aus Textures.xbt wieder frei.
+- ConfluenceCustom Default verwendet CCNoCoverJewelCase.png (142:125).
+- Freie Bildwahl wird profilfest gespeichert und nach Skin-Updates automatisch wieder angewendet.
+- Altwerte jewelcase/standard werden kompatibel auf custom/kodi migriert.

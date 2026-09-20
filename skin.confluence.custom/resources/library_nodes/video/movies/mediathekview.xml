@@ -1,0 +1,4 @@
+<node order="50" type="folder">
+	<label>Mediathekview</label>
+	<path>plugin://plugin.video.mediathekview/?mode=channels</path>
+</node>

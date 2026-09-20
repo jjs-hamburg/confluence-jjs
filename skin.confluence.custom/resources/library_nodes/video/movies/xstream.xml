@@ -1,0 +1,4 @@
+<node order="30" type="folder">
+	<label>xStream</label>
+	<path>plugin://plugin.video.xstream/</path>
+</node>

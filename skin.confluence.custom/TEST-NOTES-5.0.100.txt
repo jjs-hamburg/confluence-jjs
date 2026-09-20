@@ -1,0 +1,8 @@
+Confluence Custom 5.0.100 - Factory Defaults / Freund-Version
+
+- Basis: 5.0.99 internal standard mode.
+- Neuinstallation: factory-default-settings.json wird einmalig vollständig angewendet.
+- Update einer vorhandenen Installation: bestehende Skin-Einstellungen bleiben unverändert.
+- Default-Wallpaper: backgrounds/DefaultWallpaper.jpg und identischer Fallback backgrounds/SKINDEFAULT.jpg.
+- Die Exportwerte custombackgroundpath und MasterCustomBackgroundPath zeigen portabel auf special://skin/backgrounds/DefaultWallpaper.jpg.
+- Alle übrigen Werte des bereitgestellten Settings-Snapshots bleiben unverändert.

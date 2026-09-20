@@ -1,0 +1,20 @@
+Confluence Custom 5.0.121
+
+Library-Node-Defaults
+---------------------
+1. Neuinstallation auf Profil ohne userdata/library/music und video: Skin legt beide Node-Bäume aus resources/library_nodes an.
+2. Neuinstallation bei bereits vorhandenen Node-Dateien: vorhandene Dateien dürfen nicht überschrieben werden; nur fehlende Dateien werden ergänzt.
+3. Musik-Untermenü Standard Confluence: Zuletzt hinzugefügt / Zuletzt gehört / Interpreten / Dateien / Genres / Jahre.
+4. Musik „Zuletzt hinzugefügt“: maximal 50 Alben.
+5. Musik „Zuletzt gehört“: maximal 50 gehörte Alben, absteigend nach letzter Wiedergabe; ungehörte Alben nicht auffüllen.
+6. Filme „Zuletzt hinzugefügt“: maximal 50 Filme.
+7. Serien „Zuletzt hinzugefügt“: maximal 50 Serien, keine Episoden.
+8. Serien-Untermenü: Zuletzt hinzugefügt / Titel / Genres / Studios / Jahre / In Bearbeitung.
+9. Umschalten Custom <-> Standard: Profil-Nodes bleiben unverändert.
+10. „Library-Nodes auf Skin-Standard zurücksetzen“: Bestätigungsdialog; nach Zustimmung werden music und video komplett ersetzt und der Skin neu geladen.
+11. Reset-Funktion ist sowohl in Custom als auch in Standard Confluence erreichbar.
+
+Regression
+----------
+- Alle Funktionen aus 5.0.120 unverändert, insbesondere Albumtitel-Umbrechen als Default.
+- Menü-Navigation und Audio-Badge unverändert.

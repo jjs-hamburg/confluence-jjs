@@ -1,0 +1,17 @@
+Confluence Custom 5.0.109
+
+Änderungen:
+- „Beenden-Button“ ist im Bereich Confluence Menüeditor konfigurierbar:
+  * Beenden -> Kodi Quit() wie bisher.
+  * Herunterfahren -> Auswahl „Herunterfahren“ / „Neustart“, Zurück = Abbruch.
+  * Nur vom System unterstützte Aktionen werden angeboten.
+- Startseiten-Darstellung erhält zwei optionale Schalter:
+  * Albumjahr bei Wiedergabe
+  * Soundformat-Logo bei Wiedergabe
+- Albumjahr nutzt MusicPlayer.Year und steht in Klammern direkt hinter dem Albumtitel.
+- Das Soundformat-Logo nutzt MusicPlayer.Codec und vorhandene Confluence-Flags.
+- Unterstützte/abgebildete Familien: AAC, AC3/Dolby Digital, AIFF, ALAC, APE, CDDA, DTS, DTS-HD HRA/MA, E-AC3, FLAC, MP1/2/3, OGG, Opus, PCM, TrueHD, Vorbis, WAV, WavPack, WMA.
+- Kodi-spezifische Codecvarianten (z.B. truehd_atmos, eac3_ddp_atmos, dtshd_ma_x, mp3float) werden auf das passende vorhandene Grundformat-Logo gemappt.
+- Bei unbekanntem Codec wird kein Platzhalter-Logo gezeigt.
+- Home-Reset setzt Albumjahr und Soundformat-Logo auf Aus.
+- Bestehende Fanart-, No-Cover-, Cover-/Schatten- und Songselektor-Funktionen bleiben unverändert.

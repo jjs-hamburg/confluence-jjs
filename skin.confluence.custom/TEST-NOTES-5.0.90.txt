@@ -1,0 +1,25 @@
+Confluence Custom 5.0.90 - Wrapped Credits + Lyrics
+
+Basis: 5.0.89.
+
+Credits:
+- Lange logische Credit-Zeilen werden vor dem Property-Viewport an Wortgrenzen
+  auf die sichtbare Breite umgebrochen.
+- Namens-Hervorhebung bleibt auf allen umgebrochenen Teilzeilen erhalten.
+- Fortsetzungszeilen werden exakt 24 px eingerueckt.
+- Up/Down scrollt ueber die physischen, umgebrochenen Anzeigezeilen.
+- Kein direkter Zugriff des Background-Service auf Kodi GUI Controls.
+
+Lyrics:
+- Lange LRC-/Plain-Lyrics-Zeilen werden an Wortgrenzen umgebrochen.
+- Zentrierte Darstellung bleibt zentriert; linksbuendige Darstellung bleibt links.
+- Alle Teilzeilen derselben zeitcodierten LRC-Zeile teilen denselben Zeitstempel
+  und werden bei aktivem Sync gemeinsam hervorgehoben.
+- Der Sync-Anker bleibt am Anfang der aktiven logischen LRC-Zeile nahe Zeile 5.
+- Bei Sync aus bleibt die Hervorhebung wie in 5.0.89 vollstaendig aus.
+
+Breitenlogik:
+- Kodi stellt Python keine Font-Metriken bereit; der Service verwendet deshalb
+  eine konservative, fontgroessenabhaengige Breitenabschaetzung.
+- Ein einzelnes ueberlanges Wort/Token wird notfalls hart geteilt, damit es nicht
+  rechts aus dem Popup laeuft.

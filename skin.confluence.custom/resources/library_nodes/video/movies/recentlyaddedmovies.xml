@@ -1,0 +1,7 @@
+<node order="10" type="filter">
+	<label>20382</label>
+	<icon>DefaultRecentlyAddedMovies.png</icon>
+	<content>movies</content>
+	<order direction="descending">dateadded</order>
+	<limit>50</limit>
+</node>

@@ -1,0 +1,7 @@
+Confluence Custom 5.0.112
+
+Basis: 5.0.111.
+Codec-Logo: 84x40 px (Quelle 100x48, proportional).
+Kanalbadge: 40 px hoch, rahmenloser dunkler Hintergrund; 42 px bei 2.0/5.1/7.1, 58 px bei 5.1.4/7.1.4 usw.
+Codec/Kanal: 3 px echter Zwischenraum.
+Albumjahr: fest „ | JJJJ“; Auswahl des Begrenzers entfernt.

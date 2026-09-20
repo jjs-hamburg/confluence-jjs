@@ -1,0 +1,8 @@
+Confluence Custom 5.0.88
+
+- Basis: 5.0.87.
+- Ausschließlich Credits-Darstellung geändert; Lyrics-/Scroll-Code unverändert.
+- Credits 9120 ist jetzt eine native scrollbare Liste mit 46px-Zeilenraster und bestehendem Scrollbar 9121.
+- Jede Credit-Zeile bezieht Left/Right/NameSide aus JJSMLM-Home-Properties.
+- Namen werden ohne [B]/[COLOR]-Markup direkt mit CCSongSelectorCurrentRenderColor gezeichnet.
+- Rollen/Instrumente/Metadaten bleiben in CCSongSelectorNormalRenderColor.

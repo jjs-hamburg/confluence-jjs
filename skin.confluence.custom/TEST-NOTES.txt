@@ -1,0 +1,13 @@
+5.0.83 synchrones Lyrics-Scrolling / Enter-Toggle
+
+Basis: 5.0.82 + CU LRC 6.7.1.1 JJS.
+
+Test:
+1. Einen Titel mit synchronisiertem LRC-Songtext starten und Lyrics-Seite oeffnen.
+2. Der Text soll automatisch der Wiedergabe folgen; die aktuelle Textzeile bleibt nach Moeglichkeit etwa auf sichtbarer Zeile 5.
+3. Enter/OK auf der Lyrics-Seite: Synchron-Scrolling stoppt, aktuelle Scrollposition bleibt stehen.
+4. Mit Hoch/Runter manuell scrollen: Position darf vom Service nicht zurueckgesetzt werden.
+5. Enter/OK erneut: Text springt sofort zur aktuellen Wiedergabeposition und folgt wieder synchron.
+6. Beim naechsten Titel ist Synchron-Scrolling wieder standardmaessig aktiv.
+7. Klartext-Lyrics ohne LRC-Zeitmarken: Enter/OK hat keine Wirkung; manuelles Scrollen bleibt unveraendert.
+8. Links/Rechts-Navigation, Credits, Songliste, Auto-Popup und Stop-Verhalten muessen unveraendert bleiben.

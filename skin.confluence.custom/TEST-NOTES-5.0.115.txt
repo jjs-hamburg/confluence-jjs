@@ -1,0 +1,22 @@
+Confluence Custom 5.0.115
+=========================
+
+Basis: exakt 5.0.114.
+
+Aenderungen:
+- SkinSettings Custom-Bereich scrollt linearer: nicht anklickbare Abschnitts-/Infozeilen sind unsichtbar fokussierbar, Kodi ueberspringt deren Hoehe nicht mehr in einem Schritt; Scrollzeit 150 ms mit linearem Tween.
+- Audio-Badge-Groesse erweitert auf 80-180 %.
+- Vertikale Audio-Badge-Mitte bleibt bei jeder Groesse auf der 48-px-Zeitzeile; grosse Kacheln wachsen gleichmaessig nach oben/unten.
+- Codec-Logos aus den bestehenden Confluence-Audioflags extrahiert und als weisse transparente Logos unter media/CCAudioLogos abgelegt. Der alte grauschwarze Logo-Hintergrund ist entfernt.
+- Ein gemeinsamer Kachel-Hintergrund bleibt dadurch fuer Codec + Kanal optisch unveraendert sichtbar.
+- Codec-Logo rechtsbuendig im Logo-Slot; Kanalabstand dadurch unabhaengiger von der Logo-Breite und deutlich kleiner.
+- Kanaltext Roboto Regular statt Montserrat Black, relativ kleiner.
+- Neue Einstellung Codec-Darstellung: Logos / Schrift. Unbekannte Codecs fallen im Logo-Modus automatisch auf Schrift zurueck.
+- Badge-Rand/3D bleibt nur Radiobutton-Punkt.
+
+Zu testen:
+1. Skin-Einstellungen mit Hoch/Runter ueber alle blauen Abschnittstitel und Infotexte bewegen: kein grosser Sprung mehr.
+2. Audio-Badge 80, 120, 160, 180 %: vertikale Mitte bleibt zur Zeitzeile konstant.
+3. FLAC, MP3, DTS/DTS-HD, Dolby/TrueHD, WAV: kein rechteckiger Fremdhintergrund um das Logo; Kachelfarbe/-transparenz einheitlich.
+4. Codec-Darstellung zwischen Logos und Schrift umschalten.
+5. Kanalwerte weiterhin korrekt (6 -> 5.1, 8 -> 7.1 etc.).

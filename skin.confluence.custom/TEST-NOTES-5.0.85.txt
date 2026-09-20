@@ -1,0 +1,9 @@
+5.0.85 crash fix
+
+Basis: 5.0.84.
+Ursache der Instabilitaet: 5.0.84 manipulierte ControlList 9140 direkt aus dem dauerlaufenden Python-Service (getControl/reset/addItem/selectItem).
+5.0.85 entfernt diese Zugriffe vollstaendig. Lyrics werden ueber 11 Home-Properties dargestellt.
+Sync an: aktive LRC-Zeile wird markiert und Fenster folgt ihr.
+Enter: Sync an/aus.
+Sync aus: Hoch/Runter verschiebt das 11-Zeilen-Fenster manuell.
+Titel/aktive Zeile/Zentrierungsoption bleiben erhalten.

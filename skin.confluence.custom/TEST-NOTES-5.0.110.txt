@@ -1,0 +1,10 @@
+Confluence Custom 5.0.110
+
+Basis: 5.0.109.
+
+Test:
+- Soundformat-Logo AUS: keine Codec-/Kanalanzeige.
+- Soundformat-Logo EIN: Codeclogo (wenn bekannt) + Kanalbadge rechts daneben.
+- Kanalbadge basiert auf MusicPlayer.Channels(DefaultLayout): z. B. 2.0, 5.1, 7.1, 5.1.4.
+- Auch bei unbekanntem Codec soll die Kanalangabe erscheinen, sofern Kodi eine Kanalzahl liefert.
+- Albumjahr bleibt unabhängig schaltbar.

@@ -1,0 +1,24 @@
+Confluence Custom 5.0.92 - Correct Adaptive Cover Shadows
+
+Basis: stabiler Stand 5.0.90; die 5.0.91-Schattenimplementierung wurde nicht weitergepatcht, sondern verworfen.
+
+Konstruktion:
+- Das Cover wird NICHT als weicher Schatten missbraucht.
+- Hart und weich benutzen ausschließlich eigene Schatten-PNGs.
+- Die Schatten-PNGs sind 9-Slice-Texturen mit transparentem Randbereich und einem definierten Artwork-Körper.
+- Hart besitzt einen schwarzen Körper (unter dem Cover verdeckt) und eine harte Erweiterung nur nach rechts/unten.
+- Weich besitzt einen echten vorgerenderten Gaussian-Blur. Keine Mehrfachüberlagerung von Coverkopien.
+- Der gesamte Schatten wird für den einstellbaren Versatz nach rechts/unten verschoben.
+
+Geometrie:
+- Front- und Back-Artwork werden beim Titelwechsel vermessen (PNG/GIF/JPEG Header; SMB/lokale Dateien).
+- Neun diskrete Seitenverhältnisse: 0.50, 0.60, 0.70, 0.80, 1.00, 1.25, 1.43, 1.67, 2.00.
+- Die nächstgelegene Klasse wird verwendet. Dadurch wird der Schatten nur moderat skaliert, auch bei Longboxen.
+- Falls ein Artwork nicht direkt vermessen werden kann (z.B. nicht lesbare image://-Quelle), wird Front zusätzlich über folder/front/cover.* im Albumordner versucht; sonst sicherer 1:1-Fallback.
+
+Setup:
+- Coverdarstellung: Rahmen / Schlagschatten hart / Schlagschatten weich.
+- Schattenbreite: 6 / 10 / 14 / 18 / 22 px (Standard 14).
+- Schattenversatz: 0 / 2 / 4 / 6 / 8 / 10 / 12 px (Standard 4).
+
+Statische Checks wurden durchgeführt; Kodi-Runtime-Test nur auf der Zielinstallation möglich.

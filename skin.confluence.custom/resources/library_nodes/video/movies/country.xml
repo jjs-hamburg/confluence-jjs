@@ -1,0 +1,6 @@
+<node order="120" type="filter">
+	<label>20451</label>
+	<icon>DefaultCountry.png</icon>
+	<content>movies</content>
+	<group>countries</group>
+</node>

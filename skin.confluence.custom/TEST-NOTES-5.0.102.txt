@@ -1,0 +1,8 @@
+Confluence Custom 5.0.102 - No-Cover aspect ratio fix
+
+- Basis: 5.0.101.
+- media/CCNoCoverJewelCase.png ersetzt durch unverzerrten Crop des vom Nutzer ausgewählten Jewel Cases.
+- Asset: 1136 x 1000 px = 142:125 (reales Jewel-Case-Verhältnis).
+- Kodi Home nutzt weiterhin aspectratio=keep; bei 540 px Breite ergibt das 540 x 475,35 px für das Case.
+- Der nominelle 120 x 120 mm Covereinschub entspricht damit 456,34 x 456,34 px auf FHD und ist geometrisch quadratisch.
+- Keine XML-Geometrie geändert; echte Cover bleiben weiterhin quadratisch und unverändert.

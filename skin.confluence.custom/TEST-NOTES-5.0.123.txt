@@ -1,0 +1,7 @@
+Confluence Custom 5.0.123
+
+Albumtitel / Umbrechen:
+- Kurzer Titel: genau eine Zeile an der bisherigen Albumposition; nichts darf nach oben rutschen.
+- Langer Titel: erste Zeile eine Zeilenhoehe oberhalb, zweite Zeile an der bisherigen Albumposition.
+- Abschneiden und Scrollen unveraendert.
+- Custom und Confluence Standard pruefen.

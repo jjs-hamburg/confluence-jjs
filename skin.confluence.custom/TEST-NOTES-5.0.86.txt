@@ -1,0 +1,7 @@
+5.0.86 Lyrics sync refinements
+
+- Based on 5.0.85.
+- Lyrics focus proxy 9143 is now a transparent 1x1 on-screen control so OK/Enter reliably triggers togglelyricsync.
+- Sync off/manual mode publishes no active lyric slot, so no lyric line is highlighted.
+- Automatic LRC timing uses a 0.40 second visual lag to avoid changing a little early.
+- No background GUI control mutation reintroduced.

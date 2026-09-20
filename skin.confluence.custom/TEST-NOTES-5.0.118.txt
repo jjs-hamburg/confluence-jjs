@@ -1,0 +1,18 @@
+Confluence Custom 5.0.118
+
+Basis: exakt 5.0.117-badge-artifact-fix-submenu-color.
+
+Änderungen:
+1. Doppelte ID 554 in SkinSettings beseitigt (Abspielinformationen jetzt ID 563).
+2. Startseiten-Darstellung hinter Untermenü-Darstellung und vor Songselektor verschoben.
+3. Untermenü-Hervorhebung folgt fest CCMainMenuColorActive; separate Hervorhebungsfarbe entfernt.
+4. Audio-Badge-Rundung fest 30 px; UI-Auswahl entfernt.
+5. Badge-Hintergrund „Wie Untermenü“ folgt derselben aktiven Hauptmenüfarbe.
+6. „Badge-Rand / 3D-Look“ in „3D Badge“ umbenannt.
+7. Factory Defaults: Albumjahr EIN, Audio-Badge EIN, Logo, 90 %, Wie Untermenü, 55 %, 30 px, 3D EIN.
+
+Prüfen:
+- Skin-Einstellungen von oben nach unten vollständig durchlaufen; kein Sprung zurück vor dem echten Listenende.
+- Reihenfolge: Untermenü-Darstellung -> Startseiten-Darstellung -> Songselektor -> Abspielinformationen.
+- Hauptmenü-Aktivfarbe ändern: Untermenü-Highlight und Badge mit „Wie Untermenü“ müssen unmittelbar mitgehen.
+- Badge bei 90 % mit 30-px-Rundung und 3D EIN prüfen.

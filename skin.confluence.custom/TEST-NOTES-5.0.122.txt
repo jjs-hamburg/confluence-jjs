@@ -1,0 +1,9 @@
+Confluence Custom 5.0.122
+
+Albumtitel-Umbruch Fix
+
+1. Lange Albumtitel = Umbrechen.
+2. Kurzen Albumtitel abspielen: Albumzeile muss exakt an der normalen einzeiligen Position stehen.
+3. Langen Albumtitel abspielen: zweite Zeile bleibt an der normalen Position, erste Zeile erscheint darueber.
+4. Songtitel, Zeiten und Audio-Badge duerfen sich in beiden Faellen nicht verschieben.
+5. Gegenprobe in Custom und Confluence Standard.

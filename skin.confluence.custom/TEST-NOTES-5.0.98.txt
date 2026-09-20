@@ -1,0 +1,15 @@
+Confluence Custom 5.0.98
+
+Basis: 5.0.97
+
+Aenderung:
+- Neue Option unter Skin-Einstellungen > Startseiten-Darstellung:
+  Wiedergabe-Steuerelemente ueber Menueleiste ausblenden
+- Bei aktivierter Option wird der Player-Control-Block direkt ueber der Hauptmenueleiste ausgeblendet.
+- Navigation bei Musikwiedergabe mit aktivem Songselektor: Hauptmenue Hoch -> Cover; Cover Runter -> Hauptmenue.
+- Ohne verfuegbares Cover-Ziel bleibt Hoch auf dem Hauptmenue.
+
+Unveraendert:
+- Schatten-/Cover-Geometrie und PNGs aus 5.0.97
+- Song-Popup/Credits/Lyrics
+- Menueleiste und Untermenues

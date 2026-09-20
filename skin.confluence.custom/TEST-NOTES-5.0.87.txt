@@ -1,0 +1,5 @@
+5.0.87
+- Basis: 5.0.86.
+- Neue Skin-Setup-Option fuer die zusaetzliche LRC-Sync-Verzoegerung.
+- Werte 0,00 bis 1,00 s in 0,05-s-Schritten; Default 0,25 s.
+- Service liest den Wert dynamisch, kein Kodi-Neustart nach Aenderung noetig.
