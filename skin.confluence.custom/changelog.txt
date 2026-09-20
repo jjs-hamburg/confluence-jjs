@@ -1,3 +1,11 @@
+5.0.126: JJS-Namensgebung, lange Texteingaben, Hauptmenü-Reihenfolge und kompakte Coveransicht.
+- Sichtbarer Skin-Name: JJS KODI Confluence Custom; technische ID skin.confluence.custom bleibt unverändert.
+- Bildschirmtastatur: Texteingabe linksbündig, damit Kodis Edit-Control bei langen Namen dem Cursor bis zum Anfang und Ende folgt; keine zusätzliche Zeichenbegrenzung.
+- Menüeditor: die neun vom Editor verwalteten Hauptmenüs lassen sich nach links/rechts verschieben; die Reihenfolge wird persistent in Skin-Settings gespeichert.
+- Neue Coveransicht „kompakt“: großes Cover oben verschwindet; unten links steht das Cover als Block vor den Wiedergabeinformationen.
+- Kompaktes Cover: nur 115 px Höhe ist fest; Breite folgt der echten Bildproportion. Longboxes und andere nicht-quadratische Cover werden weder quadratisch gezwungen noch beschnitten.
+- Cover-Zyklus mit Back-Cover: Vorderseite -> Vorderseite + Rückseite -> kompakt -> kein Cover -> Vorderseite; ohne Back-Cover wird die Paaransicht übersprungen.
+
 5.0.125: Zeit-Badges und Song-Popup Bedienung verfeinert.
 - Zeit-Badge-Schrift bleibt immer hell, auch bei aktivierter Zeit-Abdunklung.
 - Zeit-Badges sind inhaltsabhängig deutlich kompakter (ca. 10 px Innenabstand je Seite).

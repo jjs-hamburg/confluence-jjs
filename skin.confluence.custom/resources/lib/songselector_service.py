@@ -9,7 +9,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from cover_display_action import clear_back_art, sync_back_art
+from cover_display_action import COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
 from nocover_manager import sync_on_startup
 from songselector_action import detail_view, focus_current, lyrics_view, open_popup, show_credits
 from songselector_state import (
@@ -100,7 +100,7 @@ _LRC_META_RE = re.compile(r"^\[(?:ar|al|ti|au|by|offset|re|ve|length|id):.*\]$",
 def _lyrics_sync_delay_seconds():
     """Return the user-configured extra delay for the highlighted LRC line.
 
-    Stored as a Skin.String so it can be tuned from Confluence Custom settings
+    Stored as a Skin.String so it can be tuned from JJS KODI Confluence Custom settings
     without restarting the service.  Invalid values fall back safely.
     """
     try:
@@ -320,6 +320,14 @@ def _update_album_wrap_properties(home):
         return
     standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
     width = ALBUM_WRAP_STANDARD_WIDTH_PX if standard else ALBUM_WRAP_CUSTOM_WIDTH_PX
+    if not standard and xbmc.getCondVisibility(
+        "String.IsEqual(Skin.String(CCMusicArtworkMode),compact)"
+    ):
+        try:
+            compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
+        except Exception:
+            compact_width = 120.0
+        width = max(240.0, width - compact_width - 15.0)
     upper, lower = _split_album_wrap(text, width)
     if upper:
         home.setProperty(ALBUM_WRAP_UPPER_PROP, upper)
@@ -1218,6 +1226,7 @@ def run():
                 playing_file = xbmc.getInfoLabel("Player.FilenameAndPath") or ""
                 if playing_file and playing_file != last_art_file:
                     sync_back_art()
+                    sync_compact_cover_width()
                     last_art_file = playing_file
                 if now - last_time_update >= 0.50:
                     _set_times(home, meta, playing)

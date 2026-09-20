@@ -541,7 +541,7 @@
 		<!-- Confluence Custom: selector-mode artwork. Normally Up enters the playback controls
 		     before the artwork. If CCHideHomePlaybackControls is enabled, navigation bypasses
 		     the hidden controls and goes directly between the main menu and artwork.
-		     Select cycles front -> front+back -> none. Without back artwork the pair state is skipped. -->
+		     Select cycles front -> front+back -> compact footer cover -> none. Without back artwork the pair state is skipped. -->
 		<control type="group">
 			<depth>DepthMenu</depth>
 			<visible>$EXP[CCSongSelectorEnabled] + Player.HasAudio + !Skin.HasSetting(homepageMusicinfo) + String.IsEmpty(Window(Videos).Property(PlayingBackgroundMedia))</visible>
@@ -570,7 +570,7 @@
 			<include>VisibleFadeEffect</include><include>Window_OpenClose_Animation</include>
 			<!-- Confluence Custom: cover focus uses the original Confluence blue folder-focus frame. -->
 			<control type="group">
-				<visible>Control.HasFocus(9150) + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
+				<visible>Control.HasFocus(9150) + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + !String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
 				<control type="image"><description>Selector single Confluence focus 195px</description><left>862</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>5</bordersize><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
 				<control type="image"><description>Selector single Confluence focus 210px</description><left>855</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
 				<control type="image"><description>Selector single Confluence focus 225px</description><left>847</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
@@ -621,7 +621,7 @@
 				<control type="image"><description>Selector back Confluence focus pair 585px</description><left>980</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
 			</control>
 			<control type="group">
-				<visible>[String.IsEmpty(Skin.String(CCHomeMusicCoverStyle)) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),frame)] + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
+				<visible>[String.IsEmpty(Skin.String(CCHomeMusicCoverStyle)) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),frame)] + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + !String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
 				<control type="image"><description>Selector single framed artwork 195px</description><left>862</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
 				<control type="image"><description>Selector single framed artwork 210px</description><left>855</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
 				<control type="image"><description>Selector single framed artwork 225px</description><left>847</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
@@ -639,7 +639,7 @@
 				<control type="image"><description>Selector single framed artwork 585px</description><left>667</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
 			</control>
 			<control type="group">
-				<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
+				<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + !String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
 				<include>CCHomeMusicSelectorSingleShadowOffsetGroups</include><control type="image"><description>Selector single borderless artwork 195px</description><left>862</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
 				<control type="image"><description>Selector single borderless artwork 210px</description><left>855</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
 				<control type="image"><description>Selector single borderless artwork 225px</description><left>847</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
@@ -1780,14 +1780,7 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoPicturesButton)</visible>
-					</item>
-					<item id="14">
-						<label>$VAR[CCMainLabelGames]</label>
-						<onclick>ActivateWindow(Games)</onclick>
-						<icon/>
-						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoGamesButton)</visible>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_1)) | String.IsEqual(Skin.String(CCMainOrder_1),pictures)] + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
 					</item>
 					<item id="13">
 						<label>$VAR[CCMainLabelRadio]</label>
@@ -1795,7 +1788,7 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoRadioButton)</visible>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
 					</item>
 					<item id="12">
 						<label>$VAR[CCMainLabelTV]</label>
@@ -1803,7 +1796,7 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoTVButton)</visible>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
 					</item>
 					<item id="2">
 						<label>$VAR[CCMainLabelVideos]</label>
@@ -1812,7 +1805,7 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoVideosButton)</visible>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
 					</item>
 					<item id="10">
 						<label>$VAR[CCMainLabelMovies]</label>
@@ -1821,7 +1814,7 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoMovieButton)</visible>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
 					</item>
 					<item id="11">
 						<label>$VAR[CCMainLabelTVShows]</label>
@@ -1830,7 +1823,7 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoTVShowButton)</visible>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
 					</item>
 					<item id="3">
 						<label>$VAR[CCMainLabelMusic]</label>
@@ -1840,7 +1833,7 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoMusicButton)</visible>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
 					</item>
 					<item id="1">
 						<label>$VAR[CCMainLabelAddons]</label>
@@ -1849,7 +1842,568 @@
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoProgramsButton)</visible>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_1),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
+					</item>
+					<item id="14">
+						<label>$VAR[CCMainLabelGames]</label>
+						<onclick>ActivateWindow(Games)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>!Skin.HasSetting(HomeMenuNoGamesButton)</visible>
+					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_2)) | String.IsEqual(Skin.String(CCMainOrder_2),radio)] + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_2),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
+					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_3)) | String.IsEqual(Skin.String(CCMainOrder_3),tv)] + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_3),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
+					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_4)) | String.IsEqual(Skin.String(CCMainOrder_4),videos)] + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_4),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
+					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_5)) | String.IsEqual(Skin.String(CCMainOrder_5),movies)] + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_5),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
+					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_6)) | String.IsEqual(Skin.String(CCMainOrder_6),tvshows)] + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_6),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
+					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_7)) | String.IsEqual(Skin.String(CCMainOrder_7),music)] + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_7),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
+					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_8)) | String.IsEqual(Skin.String(CCMainOrder_8),addons)] + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
+					<item id="5">
+						<label>$VAR[CCMainLabelSystem]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_8),system) + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
 					</item>
 					<item id="6">
 						<label>31958</label>
@@ -1858,13 +2412,83 @@
 						<thumb/>
 						<visible>System.HasMediaDVD | System.HasMediaAudioCD</visible>
 					</item>
+					<item id="4">
+						<label>$VAR[CCMainLabelPictures]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_pictures_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=pictures)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_pictures_Action))">ActivateWindow(Pictures)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),pictures) + [!Skin.HasSetting(HomeMenuNoPicturesButton)]</visible>
+					</item>
+					<item id="13">
+						<label>$VAR[CCMainLabelRadio]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_radio_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=radio)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_radio_Action))">ActivateWindow(RadioChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),radio) + [!Skin.HasSetting(HomeMenuNoRadioButton)]</visible>
+					</item>
+					<item id="12">
+						<label>$VAR[CCMainLabelTV]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tv_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tv)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tv_Action))">ActivateWindow(TVChannels)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),tv) + [!Skin.HasSetting(HomeMenuNoTVButton)]</visible>
+					</item>
+					<item id="2">
+						<label>$VAR[CCMainLabelVideos]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_videos_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_videos_Action)) + [!String.IsEqual(Window.Property(VideosDirectLink),True)]">ActivateWindow(Videos,root)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),videos) + [!Skin.HasSetting(HomeMenuNoVideosButton)]</visible>
+					</item>
+					<item id="10">
+						<label>$VAR[CCMainLabelMovies]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_movies_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=movies)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,MovieTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_movies_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMovieUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuMoviePlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),movies) + [!Skin.HasSetting(HomeMenuNoMovieButton)]</visible>
+					</item>
+					<item id="11">
+						<label>$VAR[CCMainLabelTVShows]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_tvshows_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=tvshows)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [System.IsMaster | !Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,TVShowTitles,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_tvshows_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuTVShowUsePlaylist)]">ActivateWindow(Videos,$INFO[Skin.String(HomeMenuTVShowPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),tvshows) + [!Skin.HasSetting(HomeMenuNoTVShowButton)]</visible>
+					</item>
+					<item id="3">
+						<label>$VAR[CCMainLabelMusic]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_music_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [[System.IsMaster | !Skin.HasSetting(HomeMenuMusicUsePlaylist)] + !String.IsEqual(Window.Property(MusicDirectLink),True)]">ActivateWindow(Music,root)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_music_Action)) + [!System.IsMaster + Skin.HasSetting(HomeMenuMusicUsePlaylist)]">ActivateWindow(Music,$INFO[Skin.String(HomeMenuMusicPlaylist)],return)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),music) + [!Skin.HasSetting(HomeMenuNoMusicButton)]</visible>
+					</item>
+					<item id="1">
+						<label>$VAR[CCMainLabelAddons]</label>
+						<onclick condition="!String.IsEmpty(Skin.String(CCMain_addons_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=addons)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [!System.Platform.Android]">ActivateWindow(Programs,Addons,return)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(CCMain_addons_Action)) + [System.Platform.Android]">ActivateWindow(Programs)</onclick>
+						<icon/>
+						<thumb/>
+						<visible>String.IsEqual(Skin.String(CCMainOrder_9),addons) + [!Skin.HasSetting(HomeMenuNoProgramsButton)]</visible>
+					</item>
 					<item id="5">
 						<label>$VAR[CCMainLabelSystem]</label>
 						<onclick condition="!String.IsEmpty(Skin.String(CCMain_system_Action))">RunScript(special://skin/resources/lib/menu_main_action.py,group=system)</onclick>
 						<onclick condition="String.IsEmpty(Skin.String(CCMain_system_Action))">ActivateWindow(Settings)</onclick>
 						<icon/>
 						<thumb/>
-						<visible>!Skin.HasSetting(HomeMenuNoSystemButton)</visible>
+						<visible>[String.IsEmpty(Skin.String(CCMainOrder_9)) | String.IsEqual(Skin.String(CCMainOrder_9),system)] + [!Skin.HasSetting(HomeMenuNoSystemButton)]</visible>
 					</item>
 				</content>
 			</control>
@@ -1997,6 +2621,1256 @@
 			<left>30</left><top>955</top><width>1860</width><height>115</height>
 			<visible>Player.HasAudio + !MusicPlayer.Content(LiveTV) + String.IsEmpty(Window(Videos).Property(PlayingBackgroundMedia))</visible>
 			<include>Window_OpenClose_Animation</include>
+			<!-- 5.0.126: compact artwork has a fixed 115 px height only. -->
+			<control type="image">
+				<description>Compact proportional cover 30px class</description>
+				<left>0</left><top>0</top><width>30</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),30)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 30px class</description>
+				<left>0</left><top>0</top><width>30</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),30)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 40px class</description>
+				<left>0</left><top>0</top><width>40</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),40)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 40px class</description>
+				<left>0</left><top>0</top><width>40</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),40)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 50px class</description>
+				<left>0</left><top>0</top><width>50</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),50)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 50px class</description>
+				<left>0</left><top>0</top><width>50</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),50)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 60px class</description>
+				<left>0</left><top>0</top><width>60</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),60)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 60px class</description>
+				<left>0</left><top>0</top><width>60</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),60)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 70px class</description>
+				<left>0</left><top>0</top><width>70</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),70)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 70px class</description>
+				<left>0</left><top>0</top><width>70</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),70)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 80px class</description>
+				<left>0</left><top>0</top><width>80</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),80)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 80px class</description>
+				<left>0</left><top>0</top><width>80</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),80)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 90px class</description>
+				<left>0</left><top>0</top><width>90</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),90)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 90px class</description>
+				<left>0</left><top>0</top><width>90</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),90)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 100px class</description>
+				<left>0</left><top>0</top><width>100</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),100)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 100px class</description>
+				<left>0</left><top>0</top><width>100</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),100)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 110px class</description>
+				<left>0</left><top>0</top><width>110</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),110)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 110px class</description>
+				<left>0</left><top>0</top><width>110</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),110)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 120px class</description>
+				<left>0</left><top>0</top><width>120</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),120)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 120px class</description>
+				<left>0</left><top>0</top><width>120</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),120)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 130px class</description>
+				<left>0</left><top>0</top><width>130</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),130)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 130px class</description>
+				<left>0</left><top>0</top><width>130</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),130)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 140px class</description>
+				<left>0</left><top>0</top><width>140</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),140)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 140px class</description>
+				<left>0</left><top>0</top><width>140</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),140)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 150px class</description>
+				<left>0</left><top>0</top><width>150</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),150)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 150px class</description>
+				<left>0</left><top>0</top><width>150</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),150)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 160px class</description>
+				<left>0</left><top>0</top><width>160</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),160)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 160px class</description>
+				<left>0</left><top>0</top><width>160</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),160)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 170px class</description>
+				<left>0</left><top>0</top><width>170</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),170)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 170px class</description>
+				<left>0</left><top>0</top><width>170</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),170)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 180px class</description>
+				<left>0</left><top>0</top><width>180</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),180)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 180px class</description>
+				<left>0</left><top>0</top><width>180</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),180)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 190px class</description>
+				<left>0</left><top>0</top><width>190</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),190)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 190px class</description>
+				<left>0</left><top>0</top><width>190</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),190)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 200px class</description>
+				<left>0</left><top>0</top><width>200</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),200)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 200px class</description>
+				<left>0</left><top>0</top><width>200</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),200)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 210px class</description>
+				<left>0</left><top>0</top><width>210</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),210)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 210px class</description>
+				<left>0</left><top>0</top><width>210</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),210)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 220px class</description>
+				<left>0</left><top>0</top><width>220</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),220)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 220px class</description>
+				<left>0</left><top>0</top><width>220</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),220)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 230px class</description>
+				<left>0</left><top>0</top><width>230</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),230)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 230px class</description>
+				<left>0</left><top>0</top><width>230</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),230)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 240px class</description>
+				<left>0</left><top>0</top><width>240</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),240)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 240px class</description>
+				<left>0</left><top>0</top><width>240</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),240)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 250px class</description>
+				<left>0</left><top>0</top><width>250</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),250)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 250px class</description>
+				<left>0</left><top>0</top><width>250</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),250)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 260px class</description>
+				<left>0</left><top>0</top><width>260</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),260)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 260px class</description>
+				<left>0</left><top>0</top><width>260</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),260)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 270px class</description>
+				<left>0</left><top>0</top><width>270</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),270)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 270px class</description>
+				<left>0</left><top>0</top><width>270</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),270)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 280px class</description>
+				<left>0</left><top>0</top><width>280</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),280)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 280px class</description>
+				<left>0</left><top>0</top><width>280</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),280)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 290px class</description>
+				<left>0</left><top>0</top><width>290</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),290)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 290px class</description>
+				<left>0</left><top>0</top><width>290</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),290)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 300px class</description>
+				<left>0</left><top>0</top><width>300</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),300)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 300px class</description>
+				<left>0</left><top>0</top><width>300</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),300)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 310px class</description>
+				<left>0</left><top>0</top><width>310</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),310)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 310px class</description>
+				<left>0</left><top>0</top><width>310</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),310)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 320px class</description>
+				<left>0</left><top>0</top><width>320</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),320)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 320px class</description>
+				<left>0</left><top>0</top><width>320</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),320)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 330px class</description>
+				<left>0</left><top>0</top><width>330</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),330)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 330px class</description>
+				<left>0</left><top>0</top><width>330</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),330)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 340px class</description>
+				<left>0</left><top>0</top><width>340</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),340)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 340px class</description>
+				<left>0</left><top>0</top><width>340</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),340)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 350px class</description>
+				<left>0</left><top>0</top><width>350</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),350)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 350px class</description>
+				<left>0</left><top>0</top><width>350</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),350)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 360px class</description>
+				<left>0</left><top>0</top><width>360</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),360)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 360px class</description>
+				<left>0</left><top>0</top><width>360</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),360)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 370px class</description>
+				<left>0</left><top>0</top><width>370</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),370)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 370px class</description>
+				<left>0</left><top>0</top><width>370</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),370)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 380px class</description>
+				<left>0</left><top>0</top><width>380</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),380)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 380px class</description>
+				<left>0</left><top>0</top><width>380</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),380)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 390px class</description>
+				<left>0</left><top>0</top><width>390</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),390)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 390px class</description>
+				<left>0</left><top>0</top><width>390</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),390)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 400px class</description>
+				<left>0</left><top>0</top><width>400</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),400)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 400px class</description>
+				<left>0</left><top>0</top><width>400</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),400)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 410px class</description>
+				<left>0</left><top>0</top><width>410</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),410)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 410px class</description>
+				<left>0</left><top>0</top><width>410</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),410)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 420px class</description>
+				<left>0</left><top>0</top><width>420</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),420)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 420px class</description>
+				<left>0</left><top>0</top><width>420</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),420)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 430px class</description>
+				<left>0</left><top>0</top><width>430</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),430)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 430px class</description>
+				<left>0</left><top>0</top><width>430</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),430)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 440px class</description>
+				<left>0</left><top>0</top><width>440</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),440)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 440px class</description>
+				<left>0</left><top>0</top><width>440</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),440)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 450px class</description>
+				<left>0</left><top>0</top><width>450</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),450)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 450px class</description>
+				<left>0</left><top>0</top><width>450</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),450)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 460px class</description>
+				<left>0</left><top>0</top><width>460</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),460)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 460px class</description>
+				<left>0</left><top>0</top><width>460</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),460)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 470px class</description>
+				<left>0</left><top>0</top><width>470</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),470)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 470px class</description>
+				<left>0</left><top>0</top><width>470</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),470)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 480px class</description>
+				<left>0</left><top>0</top><width>480</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),480)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 480px class</description>
+				<left>0</left><top>0</top><width>480</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),480)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 490px class</description>
+				<left>0</left><top>0</top><width>490</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),490)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 490px class</description>
+				<left>0</left><top>0</top><width>490</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),490)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 500px class</description>
+				<left>0</left><top>0</top><width>500</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),500)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 500px class</description>
+				<left>0</left><top>0</top><width>500</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),500)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 510px class</description>
+				<left>0</left><top>0</top><width>510</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),510)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 510px class</description>
+				<left>0</left><top>0</top><width>510</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),510)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 520px class</description>
+				<left>0</left><top>0</top><width>520</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),520)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 520px class</description>
+				<left>0</left><top>0</top><width>520</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),520)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 530px class</description>
+				<left>0</left><top>0</top><width>530</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),530)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 530px class</description>
+				<left>0</left><top>0</top><width>530</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),530)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 540px class</description>
+				<left>0</left><top>0</top><width>540</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),540)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 540px class</description>
+				<left>0</left><top>0</top><width>540</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),540)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 550px class</description>
+				<left>0</left><top>0</top><width>550</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),550)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 550px class</description>
+				<left>0</left><top>0</top><width>550</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),550)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 560px class</description>
+				<left>0</left><top>0</top><width>560</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),560)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 560px class</description>
+				<left>0</left><top>0</top><width>560</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),560)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 570px class</description>
+				<left>0</left><top>0</top><width>570</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),570)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 570px class</description>
+				<left>0</left><top>0</top><width>570</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),570)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 580px class</description>
+				<left>0</left><top>0</top><width>580</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),580)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 580px class</description>
+				<left>0</left><top>0</top><width>580</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),580)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 590px class</description>
+				<left>0</left><top>0</top><width>590</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),590)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 590px class</description>
+				<left>0</left><top>0</top><width>590</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),590)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 600px class</description>
+				<left>0</left><top>0</top><width>600</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),600)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 600px class</description>
+				<left>0</left><top>0</top><width>600</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),600)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 610px class</description>
+				<left>0</left><top>0</top><width>610</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),610)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 610px class</description>
+				<left>0</left><top>0</top><width>610</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),610)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 620px class</description>
+				<left>0</left><top>0</top><width>620</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),620)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 620px class</description>
+				<left>0</left><top>0</top><width>620</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),620)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 630px class</description>
+				<left>0</left><top>0</top><width>630</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),630)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 630px class</description>
+				<left>0</left><top>0</top><width>630</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),630)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 640px class</description>
+				<left>0</left><top>0</top><width>640</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),640)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 640px class</description>
+				<left>0</left><top>0</top><width>640</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),640)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 650px class</description>
+				<left>0</left><top>0</top><width>650</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),650)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 650px class</description>
+				<left>0</left><top>0</top><width>650</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),650)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 660px class</description>
+				<left>0</left><top>0</top><width>660</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),660)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 660px class</description>
+				<left>0</left><top>0</top><width>660</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),660)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 670px class</description>
+				<left>0</left><top>0</top><width>670</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),670)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 670px class</description>
+				<left>0</left><top>0</top><width>670</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),670)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 680px class</description>
+				<left>0</left><top>0</top><width>680</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),680)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 680px class</description>
+				<left>0</left><top>0</top><width>680</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),680)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 690px class</description>
+				<left>0</left><top>0</top><width>690</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),690)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 690px class</description>
+				<left>0</left><top>0</top><width>690</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),690)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 700px class</description>
+				<left>0</left><top>0</top><width>700</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),700)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 700px class</description>
+				<left>0</left><top>0</top><width>700</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),700)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 710px class</description>
+				<left>0</left><top>0</top><width>710</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),710)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 710px class</description>
+				<left>0</left><top>0</top><width>710</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),710)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 720px class</description>
+				<left>0</left><top>0</top><width>720</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),720)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 720px class</description>
+				<left>0</left><top>0</top><width>720</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),720)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 730px class</description>
+				<left>0</left><top>0</top><width>730</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),730)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 730px class</description>
+				<left>0</left><top>0</top><width>730</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),730)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 740px class</description>
+				<left>0</left><top>0</top><width>740</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),740)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 740px class</description>
+				<left>0</left><top>0</top><width>740</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),740)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 750px class</description>
+				<left>0</left><top>0</top><width>750</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),750)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 750px class</description>
+				<left>0</left><top>0</top><width>750</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),750)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 760px class</description>
+				<left>0</left><top>0</top><width>760</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),760)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 760px class</description>
+				<left>0</left><top>0</top><width>760</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),760)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 770px class</description>
+				<left>0</left><top>0</top><width>770</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),770)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 770px class</description>
+				<left>0</left><top>0</top><width>770</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),770)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 780px class</description>
+				<left>0</left><top>0</top><width>780</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),780)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 780px class</description>
+				<left>0</left><top>0</top><width>780</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),780)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 790px class</description>
+				<left>0</left><top>0</top><width>790</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),790)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 790px class</description>
+				<left>0</left><top>0</top><width>790</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),790)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover 800px class</description>
+				<left>0</left><top>0</top><width>800</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),800)</visible>
+			</control>
+			<control type="image">
+				<description>Compact proportional cover focus 800px class</description>
+				<left>0</left><top>0</top><width>800</width><height>115</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<bordertexture infill="false" border="5">folder-focus.png</bordertexture><bordersize>4</bordersize>
+				<visible>Control.HasFocus(9150) + String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),800)</visible>
+			</control>
+			<control type="group">
+				<animation effect="slide" start="0,0" end="45,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),30)">conditional</animation>
+				<animation effect="slide" start="0,0" end="55,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),40)">conditional</animation>
+				<animation effect="slide" start="0,0" end="65,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),50)">conditional</animation>
+				<animation effect="slide" start="0,0" end="75,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),60)">conditional</animation>
+				<animation effect="slide" start="0,0" end="85,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),70)">conditional</animation>
+				<animation effect="slide" start="0,0" end="95,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),80)">conditional</animation>
+				<animation effect="slide" start="0,0" end="105,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),90)">conditional</animation>
+				<animation effect="slide" start="0,0" end="115,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),100)">conditional</animation>
+				<animation effect="slide" start="0,0" end="125,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),110)">conditional</animation>
+				<animation effect="slide" start="0,0" end="135,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),120)">conditional</animation>
+				<animation effect="slide" start="0,0" end="145,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),130)">conditional</animation>
+				<animation effect="slide" start="0,0" end="155,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),140)">conditional</animation>
+				<animation effect="slide" start="0,0" end="165,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),150)">conditional</animation>
+				<animation effect="slide" start="0,0" end="175,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),160)">conditional</animation>
+				<animation effect="slide" start="0,0" end="185,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),170)">conditional</animation>
+				<animation effect="slide" start="0,0" end="195,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),180)">conditional</animation>
+				<animation effect="slide" start="0,0" end="205,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),190)">conditional</animation>
+				<animation effect="slide" start="0,0" end="215,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),200)">conditional</animation>
+				<animation effect="slide" start="0,0" end="225,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),210)">conditional</animation>
+				<animation effect="slide" start="0,0" end="235,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),220)">conditional</animation>
+				<animation effect="slide" start="0,0" end="245,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),230)">conditional</animation>
+				<animation effect="slide" start="0,0" end="255,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),240)">conditional</animation>
+				<animation effect="slide" start="0,0" end="265,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),250)">conditional</animation>
+				<animation effect="slide" start="0,0" end="275,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),260)">conditional</animation>
+				<animation effect="slide" start="0,0" end="285,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),270)">conditional</animation>
+				<animation effect="slide" start="0,0" end="295,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),280)">conditional</animation>
+				<animation effect="slide" start="0,0" end="305,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),290)">conditional</animation>
+				<animation effect="slide" start="0,0" end="315,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),300)">conditional</animation>
+				<animation effect="slide" start="0,0" end="325,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),310)">conditional</animation>
+				<animation effect="slide" start="0,0" end="335,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),320)">conditional</animation>
+				<animation effect="slide" start="0,0" end="345,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),330)">conditional</animation>
+				<animation effect="slide" start="0,0" end="355,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),340)">conditional</animation>
+				<animation effect="slide" start="0,0" end="365,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),350)">conditional</animation>
+				<animation effect="slide" start="0,0" end="375,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),360)">conditional</animation>
+				<animation effect="slide" start="0,0" end="385,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),370)">conditional</animation>
+				<animation effect="slide" start="0,0" end="395,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),380)">conditional</animation>
+				<animation effect="slide" start="0,0" end="405,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),390)">conditional</animation>
+				<animation effect="slide" start="0,0" end="415,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),400)">conditional</animation>
+				<animation effect="slide" start="0,0" end="425,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),410)">conditional</animation>
+				<animation effect="slide" start="0,0" end="435,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),420)">conditional</animation>
+				<animation effect="slide" start="0,0" end="445,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),430)">conditional</animation>
+				<animation effect="slide" start="0,0" end="455,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),440)">conditional</animation>
+				<animation effect="slide" start="0,0" end="465,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),450)">conditional</animation>
+				<animation effect="slide" start="0,0" end="475,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),460)">conditional</animation>
+				<animation effect="slide" start="0,0" end="485,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),470)">conditional</animation>
+				<animation effect="slide" start="0,0" end="495,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),480)">conditional</animation>
+				<animation effect="slide" start="0,0" end="505,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),490)">conditional</animation>
+				<animation effect="slide" start="0,0" end="515,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),500)">conditional</animation>
+				<animation effect="slide" start="0,0" end="525,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),510)">conditional</animation>
+				<animation effect="slide" start="0,0" end="535,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),520)">conditional</animation>
+				<animation effect="slide" start="0,0" end="545,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),530)">conditional</animation>
+				<animation effect="slide" start="0,0" end="555,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),540)">conditional</animation>
+				<animation effect="slide" start="0,0" end="565,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),550)">conditional</animation>
+				<animation effect="slide" start="0,0" end="575,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),560)">conditional</animation>
+				<animation effect="slide" start="0,0" end="585,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),570)">conditional</animation>
+				<animation effect="slide" start="0,0" end="595,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),580)">conditional</animation>
+				<animation effect="slide" start="0,0" end="605,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),590)">conditional</animation>
+				<animation effect="slide" start="0,0" end="615,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),600)">conditional</animation>
+				<animation effect="slide" start="0,0" end="625,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),610)">conditional</animation>
+				<animation effect="slide" start="0,0" end="635,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),620)">conditional</animation>
+				<animation effect="slide" start="0,0" end="645,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),630)">conditional</animation>
+				<animation effect="slide" start="0,0" end="655,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),640)">conditional</animation>
+				<animation effect="slide" start="0,0" end="665,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),650)">conditional</animation>
+				<animation effect="slide" start="0,0" end="675,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),660)">conditional</animation>
+				<animation effect="slide" start="0,0" end="685,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),670)">conditional</animation>
+				<animation effect="slide" start="0,0" end="695,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),680)">conditional</animation>
+				<animation effect="slide" start="0,0" end="705,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),690)">conditional</animation>
+				<animation effect="slide" start="0,0" end="715,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),700)">conditional</animation>
+				<animation effect="slide" start="0,0" end="725,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),710)">conditional</animation>
+				<animation effect="slide" start="0,0" end="735,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),720)">conditional</animation>
+				<animation effect="slide" start="0,0" end="745,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),730)">conditional</animation>
+				<animation effect="slide" start="0,0" end="755,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),740)">conditional</animation>
+				<animation effect="slide" start="0,0" end="765,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),750)">conditional</animation>
+				<animation effect="slide" start="0,0" end="775,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),760)">conditional</animation>
+				<animation effect="slide" start="0,0" end="785,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),770)">conditional</animation>
+				<animation effect="slide" start="0,0" end="795,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),780)">conditional</animation>
+				<animation effect="slide" start="0,0" end="805,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),790)">conditional</animation>
+				<animation effect="slide" start="0,0" end="815,0" time="0" condition="String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + String.IsEqual(Window(Home).Property(ConfluenceCustom.NowPlaying.CompactCoverWidth),800)">conditional</animation>
 			<!-- 5.0.113: year stays with album metadata; technical audio data moved to the time line. -->
 			<!-- Long album titles: truncate, scroll, or wrap upward while keeping the original lower baseline. -->
 			<control type="label">
@@ -2656,6 +4530,7 @@
 				<left>0</left><top>32</top><width>1830</width><height>45</height><label/><font/>
 				<texturefocus/><texturenofocus/><onfocus>RunScript(special://skin/resources/lib/songselector_action.py,open)</onfocus>
 				<onclick>RunScript(special://skin/resources/lib/songselector_action.py,open)</onclick><onup>9000</onup><ondown>9000</ondown>
+			</control>
 			</control>
 		</control>
 

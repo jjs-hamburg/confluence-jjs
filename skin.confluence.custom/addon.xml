@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addon id="skin.confluence.custom" version="5.0.125" name="Confluence Custom" provider-name="Jezz_X, Team Kodi; custom menu editor">
+<addon id="skin.confluence.custom" version="5.0.126" name="JJS KODI Confluence Custom" provider-name="Jezz_X, Team Kodi; JJS">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
 		<import addon="xbmc.python" version="3.0.0" />
@@ -7,7 +7,7 @@
 	<extension point="xbmc.gui.skin" debugging="false" effectslowdown="1.0">
 		<res width="1920" height="1080" aspect="16:9" default="true" folder="1080p" />
 	</extension>
-	<extension point="kodi.context.item"><menu id="kodi.core.main"><item library="resources/lib/menu_capture.py" args="take"><label>Diesen Eintrag als Menüpunkt übernehmen</label><visible>!String.IsEmpty(Window(home).Property(ConfluenceCustom.MenuCapture.Active))</visible></item><item library="resources/lib/menu_capture.py" args="cancel"><label>Confluence-Menüauswahl abbrechen</label><visible>!String.IsEmpty(Window(home).Property(ConfluenceCustom.MenuCapture.Active))</visible></item></menu></extension>
+	<extension point="kodi.context.item"><menu id="kodi.core.main"><item library="resources/lib/menu_capture.py" args="take"><label>Diesen Eintrag als Menüpunkt übernehmen</label><visible>!String.IsEmpty(Window(home).Property(ConfluenceCustom.MenuCapture.Active))</visible></item><item library="resources/lib/menu_capture.py" args="cancel"><label>JJS-Confluence-Menüauswahl abbrechen</label><visible>!String.IsEmpty(Window(home).Property(ConfluenceCustom.MenuCapture.Active))</visible></item></menu></extension>
 	<extension point="xbmc.service" library="resources/lib/songselector_service.py" start="login" /><extension point="xbmc.addon.metadata">
 		<platform>all</platform>
 		<license>GNU General Public License version 2</license>
@@ -35,12 +35,12 @@
 		<summary lang="cs_CZ">Vzhled Confluence od Jezz_X.</summary>
 		<summary lang="cy_GB">Croen Confluence gan Jezz_X. (Croen rhagosodedig Kodi)</summary>
 		<summary lang="da_DK">Confluence skin af Jezz_X.</summary>
-		<summary lang="de_DE">Confluence Skin von Jezz_X.</summary>
+		<summary lang="de_DE">JJS KODI Confluence Custom – erweiterter Confluence-Skin auf Basis von Jezz_X / Team Kodi.</summary>
 		<summary lang="el_GR">Το κέλυφος Confluence από τον Jezz_X (προεπιλεγμένο κέλυφος του Kodi).</summary>
 		<summary lang="en_AU">Confluence skin by Jezz_X. (Kodi's default skin)</summary>
-		<summary lang="en_GB">Confluence skin by Jezz_X.</summary>
+		<summary lang="en_GB">JJS KODI Confluence Custom – extended Confluence skin based on Jezz_X / Team Kodi.</summary>
 		<summary lang="en_NZ">Confluence skin by Jezz_X. (Kodi's default skin)</summary>
-		<summary lang="en_US">Confluence skin by Jezz_X.</summary>
+		<summary lang="en_US">JJS KODI Confluence Custom – extended Confluence skin based on Jezz_X / Team Kodi.</summary>
 		<summary lang="es_AR">Skin Confluence por Jezz_X.</summary>
 		<summary lang="es_ES">Skin Confluence por Jezz_X.</summary>
 		<summary lang="es_MX">Skin confluende por Jezz_X. (skin por defecto de Kodi)</summary>

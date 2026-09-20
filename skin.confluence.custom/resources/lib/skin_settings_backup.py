@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Backup/restore every setting of the active Confluence Custom skin.
+"""Backup/restore every setting of the active JJS KODI Confluence Custom skin.
 
 The snapshot contains only skin-specific bool/string settings returned by Kodi's
 Settings.GetSkinSettings API. General Kodi settings are deliberately untouched.
@@ -38,7 +38,7 @@ def _skin_snapshot():
     result = _rpc("Settings.GetSkinSettings") or {}
     skin = result.get("skin") or ""
     if skin != SKIN_ID:
-        raise RuntimeError("Confluence Custom ist derzeit nicht der aktive Skin.")
+        raise RuntimeError("JJS KODI Confluence Custom ist derzeit nicht der aktive Skin.")
     settings = []
     for item in result.get("settings") or []:
         setting_id = str(item.get("id") or "").strip()
@@ -128,13 +128,13 @@ def save_settings():
     filename = filename.replace("/", "_").replace("\\", "_")
     path = _join(folder, filename)
     if xbmcvfs.exists(path) and not dialog.yesno(
-        "Confluence Custom", "Die Datei existiert bereits. Überschreiben?", path
+        "JJS KODI Confluence Custom", "Die Datei existiert bereits. Überschreiben?", path
     ):
         return
     payload = _skin_snapshot()
     _write_text(path, json.dumps(payload, ensure_ascii=False, indent=2))
     dialog.notification(
-        "Confluence Custom", "Skin-Einstellungen gesichert", xbmcgui.NOTIFICATION_INFO, 4000
+        "JJS KODI Confluence Custom", "Skin-Einstellungen gesichert", xbmcgui.NOTIFICATION_INFO, 4000
     )
 
 
@@ -144,7 +144,7 @@ def _validate_payload(payload):
     if payload.get("format") != FORMAT or int(payload.get("format_version") or 0) != FORMAT_VERSION:
         raise RuntimeError("Die Datei ist keine Confluence-Custom-Sicherung.")
     if payload.get("skin") != SKIN_ID:
-        raise RuntimeError("Die Sicherung gehört nicht zu Confluence Custom.")
+        raise RuntimeError("Die Sicherung gehört nicht zu JJS KODI Confluence Custom.")
     settings = payload.get("settings")
     if not isinstance(settings, list):
         raise RuntimeError("Die Sicherungsdatei enthält keine Skin-Einstellungen.")
@@ -175,7 +175,7 @@ def load_settings():
     payload = json.loads(_read_text(path))
     backup = _validate_payload(payload)
     if not dialog.yesno(
-        "Confluence Custom",
+        "JJS KODI Confluence Custom",
         "Alle aktuellen Confluence-Custom-Einstellungen werden durch diese Sicherung ersetzt.",
         "Allgemeine Kodi-Einstellungen bleiben unverändert.",
     ):
@@ -213,7 +213,7 @@ def load_settings():
         )
 
     dialog.notification(
-        "Confluence Custom", "Skin-Einstellungen werden übernommen", xbmcgui.NOTIFICATION_INFO, 3000
+        "JJS KODI Confluence Custom", "Skin-Einstellungen werden übernommen", xbmcgui.NOTIFICATION_INFO, 3000
     )
     xbmc.sleep(150)
     xbmc.executebuiltin("ReloadSkin()")
@@ -229,7 +229,7 @@ def main():
         else:
             raise RuntimeError("Unbekannte Aktion.")
     except Exception as exc:
-        xbmcgui.Dialog().ok("Confluence Custom", str(exc))
+        xbmcgui.Dialog().ok("JJS KODI Confluence Custom", str(exc))
 
 
 if __name__ == "__main__":

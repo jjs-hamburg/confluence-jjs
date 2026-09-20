@@ -393,12 +393,12 @@ def choose_home_floor_style():
 def restore_skin_default_background():
     # The regular Confluence image picker intentionally stays untouched. This
     # action only provides a deterministic way back to the wallpaper shipped
-    # with Confluence Custom, for both normal and master profiles.
+    # with JJS KODI Confluence Custom, for both normal and master profiles.
     _set("CustomBackgroundPath", SKIN_DEFAULT_BACKGROUND)
     _set("MasterCustomBackgroundPath", SKIN_DEFAULT_BACKGROUND)
     xbmc.executebuiltin("Skin.SetBool(UseCustomBackground,true)")
     xbmcgui.Dialog().notification(
-        "Confluence Custom", "Skin-Default-Hintergrund wiederhergestellt", xbmcgui.NOTIFICATION_INFO, 2500
+        "JJS KODI Confluence Custom", "Skin-Default-Hintergrund wiederhergestellt", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 
@@ -426,13 +426,13 @@ def choose_home_no_cover():
             return
         if not save_free_image(image):
             xbmcgui.Dialog().notification(
-                "Confluence Custom", "Bild konnte nicht übernommen werden", xbmcgui.NOTIFICATION_ERROR, 3500
+                "JJS KODI Confluence Custom", "Bild konnte nicht übernommen werden", xbmcgui.NOTIFICATION_ERROR, 3500
             )
             return
     applied_mode, ok = apply_no_cover(mode, reload_skin=True)
     if not ok:
         xbmcgui.Dialog().notification(
-            "Confluence Custom", "No-Cover-Bild konnte nicht aktiviert werden", xbmcgui.NOTIFICATION_ERROR, 3500
+            "JJS KODI Confluence Custom", "No-Cover-Bild konnte nicht aktiviert werden", xbmcgui.NOTIFICATION_ERROR, 3500
         )
         return
 
@@ -589,7 +589,7 @@ def reset_playback_info():
     _set(AUDIO_BADGE_3D_SETTING, DEFAULT_AUDIO_BADGE_3D)
     _set(AUDIO_BADGE_CONTENT_SETTING, DEFAULT_AUDIO_BADGE_CONTENT)
     _update_audio_badge_texture()
-    xbmcgui.Dialog().notification("Confluence Custom", "Abspielinformationen zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500)
+    xbmcgui.Dialog().notification("JJS KODI Confluence Custom", "Abspielinformationen zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500)
 
 
 def reset_song_selector():
@@ -606,7 +606,7 @@ def reset_song_selector():
     _set(SONG_SELECTOR_FOCUS_TIMEOUT_SETTING, DEFAULT_SONG_SELECTOR_FOCUS_TIMEOUT)
     _set(SONG_SELECTOR_HIGHLIGHT_TIMEOUT_SETTING, DEFAULT_SONG_SELECTOR_HIGHLIGHT_TIMEOUT)
     xbmcgui.Dialog().notification(
-        "Confluence Custom", "Songselektor zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "JJS KODI Confluence Custom", "Songselektor zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 
@@ -624,7 +624,7 @@ def reset_home():
     apply_no_cover(DEFAULT_HOME_NO_COVER, reload_skin=False)
     xbmc.executebuiltin("ReloadSkin()")
     xbmcgui.Dialog().notification(
-        "Confluence Custom", "Startseiten-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "JJS KODI Confluence Custom", "Startseiten-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 def reset_main():
@@ -634,7 +634,7 @@ def reset_main():
     _set(MAIN_ACTIVE_COLOR_SETTING, DEFAULT_MAIN_ACTIVE_COLOR)
     _set(MAIN_Y_OFFSET_SETTING, DEFAULT_MAIN_Y_OFFSET)
     xbmcgui.Dialog().notification(
-        "Confluence Custom", "Hauptmenü-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "JJS KODI Confluence Custom", "Hauptmenü-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 
@@ -644,7 +644,7 @@ def reset_sub():
     _set(SUB_NORMAL_COLOR_SETTING, DEFAULT_SUB_NORMAL_COLOR)
     _set(SUB_ACTIVE_COLOR_SETTING, DEFAULT_SUB_ACTIVE_COLOR)
     xbmcgui.Dialog().notification(
-        "Confluence Custom", "Untermenü-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "JJS KODI Confluence Custom", "Untermenü-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 

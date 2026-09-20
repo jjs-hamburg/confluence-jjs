@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Install/restore Confluence Custom's bundled Kodi library nodes.
+"""Install/restore JJS KODI Confluence Custom's bundled Kodi library nodes.
 
 Fresh skin installs only fill node files that do not yet exist.  Existing
 profiles are never overwritten automatically.  The explicit ``reset`` action
@@ -20,7 +20,7 @@ KINDS = ("music", "video")
 
 
 def _log(message, level=xbmc.LOGINFO):
-    xbmc.log("[Confluence Custom] Library nodes: {}".format(message), level)
+    xbmc.log("[JJS KODI Confluence Custom] Library nodes: {}".format(message), level)
 
 
 def _join(base, name):
@@ -112,7 +112,7 @@ def restore_defaults():
 def reset_interactive():
     dialog = xbmcgui.Dialog()
     if not dialog.yesno(
-        "Confluence Custom",
+        "JJS KODI Confluence Custom",
         "Vorhandene Musik- und Video-Library-Nodes werden vollständig durch den Skin-Standard ersetzt.[CR][CR]Fortfahren?",
     ):
         return False
@@ -120,9 +120,9 @@ def reset_interactive():
         total = restore_defaults()
     except Exception as exc:
         _log("reset failed: {}".format(exc), xbmc.LOGERROR)
-        dialog.ok("Confluence Custom", "Library-Nodes konnten nicht zurückgesetzt werden:[CR]{}".format(exc))
+        dialog.ok("JJS KODI Confluence Custom", "Library-Nodes konnten nicht zurückgesetzt werden:[CR]{}".format(exc))
         return False
-    dialog.notification("Confluence Custom", "{} Library-Node-Dateien wiederhergestellt".format(total), xbmcgui.NOTIFICATION_INFO, 3500)
+    dialog.notification("JJS KODI Confluence Custom", "{} Library-Node-Dateien wiederhergestellt".format(total), xbmcgui.NOTIFICATION_INFO, 3500)
     xbmc.sleep(250)
     xbmc.executebuiltin("ReloadSkin()")
     return True

@@ -145,7 +145,7 @@ def _rpc(method, params=None):
         result = json.loads(raw or "{}")
         return result
     except Exception as exc:
-        xbmc.log("[Confluence Custom] JSON-RPC failed: {}".format(exc), xbmc.LOGWARNING)
+        xbmc.log("[JJS KODI Confluence Custom] JSON-RPC failed: {}".format(exc), xbmc.LOGWARNING)
         return {"error": {"message": str(exc)}}
 
 
@@ -167,7 +167,7 @@ def _set_theme(theme):
     )
     if "error" in result:
         xbmc.log(
-            "[Confluence Custom] Unable to set skin theme {}: {}".format(theme, result),
+            "[JJS KODI Confluence Custom] Unable to set skin theme {}: {}".format(theme, result),
             xbmc.LOGWARNING,
         )
         return False
@@ -193,7 +193,7 @@ def _activate_global_default(mode):
     for target in ACTIVE_DEFAULTS:
         if not _copy(source, target):
             xbmc.log(
-                "[Confluence Custom] Unable to replace {}".format(target),
+                "[JJS KODI Confluence Custom] Unable to replace {}".format(target),
                 xbmc.LOGWARNING,
             )
             return False
@@ -234,4 +234,4 @@ def sync_on_startup():
             mode = MODE_CUSTOM
         apply(mode, reload_skin=False)
     except Exception as exc:
-        xbmc.log('[Confluence Custom] No-cover sync failed: {}'.format(exc), xbmc.LOGWARNING)
+        xbmc.log('[JJS KODI Confluence Custom] No-cover sync failed: {}'.format(exc), xbmc.LOGWARNING)

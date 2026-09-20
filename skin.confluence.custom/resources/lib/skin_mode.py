@@ -146,7 +146,7 @@ def switch(mode, show_error=True):
         xbmc.executebuiltin("ReloadSkin()")
         return True
     except Exception as exc:
-        xbmc.log("Confluence Custom mode switch failed: {}".format(exc), xbmc.LOGERROR)
+        xbmc.log("JJS KODI Confluence Custom mode switch failed: {}".format(exc), xbmc.LOGERROR)
         if show_error:
             xbmcgui.Dialog().ok("Custom Confluence", "Umschalten fehlgeschlagen:[CR]{}".format(exc))
         return False
@@ -159,11 +159,11 @@ def ensure_mode():
         return False
     try:
         _copy_mode(mode)
-        xbmc.log("Confluence Custom: XML-Satz für Modus {} wiederhergestellt".format(mode), xbmc.LOGINFO)
+        xbmc.log("JJS KODI Confluence Custom: XML-Satz für Modus {} wiederhergestellt".format(mode), xbmc.LOGINFO)
         xbmc.executebuiltin("ReloadSkin()")
         return True
     except Exception as exc:
-        xbmc.log("Confluence Custom ensure mode failed: {}".format(exc), xbmc.LOGERROR)
+        xbmc.log("JJS KODI Confluence Custom ensure mode failed: {}".format(exc), xbmc.LOGERROR)
         return False
 
 

@@ -1,0 +1,38 @@
+JJS KODI Confluence Custom 5.0.126 – Testhinweise
+======================================================
+
+1. Lange Texteingabe / Dateiname
+- Datei mit sehr langem Namen umbenennen bzw. einen Text von mindestens 255 Zeichen in der Kodi-Tastatur öffnen.
+- Cursor mit Links bis zum ersten Zeichen bewegen.
+- Erwartung: der sichtbare Textausschnitt folgt dem Cursor vollständig bis zum Anfang.
+- Danach mit Rechts bis zum Ende. Auch dabei muss der Ausschnitt dem Cursor folgen.
+- Es gibt keine vom Skin gesetzte zusätzliche Zeichenbegrenzung.
+
+2. Hauptmenü-Reihenfolge
+- JJS Confluence Menüeditor öffnen.
+- Z. B. Musik mehrfach nach links und danach wieder nach rechts verschieben.
+- Erwartung: Reihenfolge auf Home ändert sich entsprechend.
+- Untermenü, eigenes Label und eigenes Ziel müssen beim semantisch gleichen Hauptmenü bleiben.
+- Skin neu laden und Kodi neu starten: Reihenfolge muss erhalten bleiben.
+- Weather, Games und Disc sind weiterhin feste Confluence-Einträge und werden vom JJS-Menüeditor nicht umsortiert.
+
+3. Kompakte Coveransicht
+- Während Musikwiedergabe Cover fokussieren und per Enter durchschalten.
+- Mit back.jpg: Front -> Front+Back -> Kompakt -> Kein Cover -> Front.
+- Ohne back.jpg: Front -> Kompakt -> Kein Cover -> Front.
+- In Kompakt: oben darf kein großes Cover sichtbar sein.
+- Unten links muss das Cover direkt vor den Wiedergabeinformationen stehen.
+- Höhe = vollständiger Wiedergabeinformationsblock (115 px).
+- Quadratcover prüfen.
+- Unbedingt eine schmale/hohe Longbox prüfen: sie muss schmal bleiben und darf nicht quadratisch verzerrt oder beschnitten werden.
+- Wiedergabeinformationen müssen passend zur tatsächlich benötigten Coverbreite nach rechts rücken.
+- Albumtitel-Umbruch sowie Zeit-/Audio-Badges gegenprüfen.
+
+4. Standard-Confluence-Modus
+- Umschalten auf Standard Confluence.
+- Custom-Hauptmenüreihenfolge und kompakte Home-Coveransicht sollen dort nicht eingreifen.
+- Die globale DialogKeyboard-Korrektur muss auch im Standard-Modus wirken.
+
+5. Update
+- Installation über bestehende 5.0.125.
+- Skin-ID bleibt skin.confluence.custom; vorhandene Einstellungen müssen erhalten bleiben.

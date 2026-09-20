@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Temporary Kodi context item used by Confluence Custom's universal target picker.
+"""Temporary Kodi context item used by JJS KODI Confluence Custom's universal target picker.
 
 While the editor's capture mode is active this context item copies the selected
 ListItem's normal activation target into the pending Confluence menu slot. The
@@ -242,7 +242,7 @@ def _cancel():
     except ValueError:
         index = -1
     _clear()
-    D.notification("Confluence Menüeditor", "Zielauswahl abgebrochen", time=1800)
+    D.notification("JJS Confluence Menüeditor", "Zielauswahl abgebrochen", time=1800)
     if group:
         _resume(mode, group, index)
 
@@ -292,7 +292,7 @@ def _take():
         return
 
     _clear()
-    D.notification("Confluence Menüeditor", "Übernommen: {}".format(label), time=1800)
+    D.notification("JJS Confluence Menüeditor", "Übernommen: {}".format(label), time=1800)
     _resume(mode, group, resume_index)
 
 

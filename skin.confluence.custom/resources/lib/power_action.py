@@ -26,7 +26,7 @@ def run():
         actions.append("Reboot()")
     if not actions:
         xbmcgui.Dialog().notification(
-            "Confluence Custom", "Keine System-Aktion verfügbar", xbmcgui.NOTIFICATION_WARNING, 3000
+            "JJS KODI Confluence Custom", "Keine System-Aktion verfügbar", xbmcgui.NOTIFICATION_WARNING, 3000
         )
         return
     choice = xbmcgui.Dialog().select("System", labels)

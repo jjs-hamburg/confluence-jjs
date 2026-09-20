@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Shared menu storage/defaults for Confluence Custom.
+"""Shared menu storage/defaults for JJS KODI Confluence Custom.
 
 The home skin renders ordinary Confluence buttons. Labels and actions are stored
 in skin settings. The editor uses Kodi's standard Dialog.select/input dialogs.
@@ -31,6 +31,15 @@ GROUPS = [
 GROUP_LABEL = dict((g, label) for g, label, _ in GROUPS)
 MAIN_LOCALIZE = dict((g, lid) for g, _, lid in GROUPS)
 
+# Visual order of the menu-editor-managed main items in the unmodified 5.0.125
+# Home.xml. Weather, Games and Disc keep their fixed Confluence positions; the
+# nine managed items can move through the nine managed slots around them.
+DEFAULT_MAIN_ORDER = [
+    "pictures", "radio", "tv", "videos", "movies",
+    "tvshows", "music", "addons", "system",
+]
+MAIN_ORDER_PREFIX = "CCMainOrder_"
+
 # Fallbacks are used only if a Kodi core localization happens to be empty.
 LOC_FALLBACK = {
     5: "Einstellungen", 7: "Dateimanager", 130: "Systeminformationen",
@@ -44,7 +53,7 @@ LOC_FALLBACK = {
 
 
 def log(message, level=xbmc.LOGINFO):
-    xbmc.log("[Confluence Custom Menu] {}".format(message), level)
+    xbmc.log("[JJS KODI Confluence Custom Menu] {}".format(message), level)
 
 
 def _q(value):
@@ -81,6 +90,52 @@ def item_key(group, slot, field):
 
 def main_label_key(group):
     return "CCMain_{}_Label".format(group)
+
+
+def main_order_key(slot):
+    return "{}{}".format(MAIN_ORDER_PREFIX, int(slot))
+
+
+def get_main_order():
+    """Return a repaired, unique main-menu order without guessing unknown values."""
+    known = set(DEFAULT_MAIN_ORDER)
+    order = []
+    for slot in range(1, len(DEFAULT_MAIN_ORDER) + 1):
+        group = skin_string(main_order_key(slot)).strip().lower()
+        if group in known and group not in order:
+            order.append(group)
+    for group in DEFAULT_MAIN_ORDER:
+        if group not in order:
+            order.append(group)
+    return order
+
+
+def set_main_order(order):
+    """Persist the complete managed main-menu order."""
+    wanted = []
+    for group in list(order or []):
+        group = str(group).strip().lower()
+        if group in DEFAULT_MAIN_ORDER and group not in wanted:
+            wanted.append(group)
+    for group in DEFAULT_MAIN_ORDER:
+        if group not in wanted:
+            wanted.append(group)
+    for slot, group in enumerate(wanted, 1):
+        set_skin_string(main_order_key(slot), group)
+    return wanted
+
+
+def ensure_main_order():
+    repaired = get_main_order()
+    current = [
+        skin_string(main_order_key(slot)).strip().lower()
+        for slot in range(1, len(DEFAULT_MAIN_ORDER) + 1)
+    ]
+    if current != repaired:
+        set_main_order(repaired)
+        log("Main-menu order initialized/repaired: {}".format(",".join(repaired)))
+        return True
+    return False
 
 
 def get_items(group):
@@ -315,6 +370,7 @@ def ensure_initialised(force=False):
         initialised = True
     migrate_5022()
     migrate_5028()
+    ensure_main_order()
     return initialised
 
 

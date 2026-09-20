@@ -15,8 +15,8 @@ import xbmcvfs
 from menu_common import (
     GROUPS, GROUP_LABEL, MAX_ITEMS, activate_window, addon_details, addon_list,
     all_installed_addons, default_items, directory_items, ensure_initialised,
-    favourites, get_items, main_label_key, reset_skin_setting, rpc, set_items,
-    set_skin_string, settings_categories, settings_for_category, settings_sections,
+    favourites, get_items, get_main_order, main_label_key, reset_skin_setting, rpc, set_items,
+    set_main_order, set_skin_string, settings_categories, settings_for_category, settings_sections,
     skin_string, log,
 )
 
@@ -231,34 +231,76 @@ def reset_main_action(group):
     reset_skin_setting(main_action_key(group))
 
 
+def _move_main_group(group, delta):
+    order = get_main_order()
+    try:
+        pos = order.index(group)
+    except ValueError:
+        return False
+    target = pos + int(delta)
+    if target < 0 or target >= len(order):
+        return False
+    order[pos], order[target] = order[target], order[pos]
+    wanted = set_main_order(order)
+    for _ in range(20):
+        if get_main_order() == wanted:
+            break
+        xbmc.sleep(25)
+    return True
+
+
 def group_editor(group):
     while True:
         custom = skin_string(main_label_key(group))
         submenu_count = len(get_items(group))
         main_action = skin_string(main_action_key(group))
-        choices = [
-            "Untermenü bearbeiten ({} Einträge)".format(submenu_count),
-            "Hauptmenü umbenennen" + (" – {}".format(custom) if custom else ""),
-            "Hauptmenü-Ziel ändern" + (" – angepasst" if main_action else ""),
-            "Hauptmenüname auf Standard zurücksetzen",
-            "Hauptmenü-Ziel auf Standard zurücksetzen",
-            "Untermenü auf Confluence-Standard zurücksetzen",
+        order = get_main_order()
+        try:
+            position = order.index(group)
+        except ValueError:
+            position = -1
+
+        actions = [
+            ("submenu", "Untermenü bearbeiten ({} Einträge)".format(submenu_count)),
+            ("rename", "Hauptmenü umbenennen" + (" – {}".format(custom) if custom else "")),
+            ("target", "Hauptmenü-Ziel ändern" + (" – angepasst" if main_action else "")),
         ]
-        choice = select("Menü: {}".format(main_label(group)), choices)
+        if position > 0:
+            actions.append(("left", "Hauptmenü nach links verschieben"))
+        if 0 <= position < len(order) - 1:
+            actions.append(("right", "Hauptmenü nach rechts verschieben"))
+        actions += [
+            ("reset_label", "Hauptmenüname auf Standard zurücksetzen"),
+            ("reset_target", "Hauptmenü-Ziel auf Standard zurücksetzen"),
+            ("reset_submenu", "Untermenü auf Confluence-Standard zurücksetzen"),
+        ]
+
+        title = "Menü: {}".format(main_label(group))
+        if position >= 0:
+            title += "  ·  Position {}/{}".format(position + 1, len(order))
+        choice = select(title, [label for _action, label in actions])
         if choice < 0:
             return
-        if choice == 0:
+        action = actions[choice][0]
+        if action == "submenu":
             edit_submenu(group)
-        elif choice == 1:
+        elif action == "rename":
             edit_main_label(group)
-        elif choice == 2:
+        elif action == "target":
             edit_main_action(group)
-        elif choice == 3:
+        elif action == "left":
+            _move_main_group(group, -1)
+        elif action == "right":
+            _move_main_group(group, 1)
+        elif action == "reset_label":
             reset_main_label(group)
-        elif choice == 4:
+        elif action == "reset_target":
             reset_main_action(group)
-        elif choice == 5:
-            if D.yesno("Untermenü zurücksetzen", "Die Einträge von '{}' auf den Startzustand zurücksetzen?".format(GROUP_LABEL[group])):
+        elif action == "reset_submenu":
+            if D.yesno(
+                "Untermenü zurücksetzen",
+                "Die Einträge von '{}' auf den Startzustand zurücksetzen?".format(GROUP_LABEL[group]),
+            ):
                 set_items_synced(group, default_items(group))
 
 
@@ -268,7 +310,7 @@ def choose_target(capture=None):
     # Kontextmenü bzw. für echte kodi.context.item-Aktionen erhalten.
     choices = [
         "In Kodi auswählen (normale Listen / Long-Press)",
-        "Confluence Custom",
+        "JJS KODI Confluence Custom",
         "Kodi-Einstellungen durchsuchen",
         "Video-Bibliothek durchsuchen",
         "Musik-Bibliothek durchsuchen",
@@ -313,7 +355,7 @@ def choose_confluence_target():
         ("Skin konfigurieren", "ActivateWindow(SkinSettings)"),
         ("Kodi Home", "ActivateWindow(Home)"),
     ]
-    c = select("Confluence Custom", [x[0] for x in targets])
+    c = select("JJS KODI Confluence Custom", [x[0] for x in targets])
     return targets[c] if c >= 0 else None
 
 
@@ -361,7 +403,7 @@ def browse_skin_settings():
         if c == 0:
             return ("Skin konfigurieren", "ActivateWindow(SkinSettings)")
         if c == 1:
-            d = select("Confluence Menüeditor", [
+            d = select("JJS Confluence Menüeditor", [
                 "[Diesen Eintrag übernehmen]  Confluence Menüeditor",
                 "Zurück",
             ])
@@ -961,7 +1003,7 @@ def choose_kodi_window():
             ("Erweiterte Game-Einstellungen", "GameAdvancedSettings"), ("Game-Videodrehung", "GameVideoRotation"),
             ("Game-Ports", "GamePorts"), ("In-Game-Saves", "InGameSaves"), ("Game-Saves", "GameSaves"), ("Game-Agents", "GameAgents"),
         ]),
-        ("Confluence Custom", [("Confluence Menüeditor", "__MENUEDITOR__")]),
+        ("JJS KODI Confluence Custom", [("JJS Confluence Menüeditor", "__MENUEDITOR__")]),
         ("Fenstername oder ID manuell eingeben", "manual"),
     ]
     while True:
@@ -1024,7 +1066,7 @@ def choose_favourite():
 
 def run():
     if xbmc.getSkinDir() != "skin.confluence.custom":
-        D.ok("Confluence Menüeditor", "Der Editor kann nur mit Confluence Custom verwendet werden.")
+        D.ok("JJS Confluence Menüeditor", "Der Editor kann nur mit JJS KODI Confluence Custom verwendet werden.")
         return
     ensure_initialised(False)
 
@@ -1066,12 +1108,18 @@ def run():
     while True:
         options = []
         keys = []
-        for group, default_label, _ in GROUPS:
+        order = get_main_order()
+        for position, group in enumerate(order, 1):
+            default_label = GROUP_LABEL.get(group, group)
             custom = skin_string(main_label_key(group))
             shown = custom or default_label
-            options.append("{}   ({} Untermenüpunkte)".format(shown, len(get_items(group))))
+            options.append(
+                "{}. {}   ({} Untermenüpunkte)".format(
+                    position, shown, len(get_items(group))
+                )
+            )
             keys.append(group)
-        c = select("Confluence Menüeditor", options)
+        c = select("JJS Confluence Menüeditor", options)
         if c < 0:
             return
         group_editor(keys[c])
@@ -1084,4 +1132,4 @@ if __name__ == "__main__":
         pass
     except Exception as exc:
         log("Editor failed: {}".format(exc), xbmc.LOGERROR)
-        D.ok("Confluence Menüeditor", "Fehler im Menüeditor:\n{}".format(exc))
+        D.ok("JJS Confluence Menüeditor", "Fehler im Menüeditor:\n{}".format(exc))

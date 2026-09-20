@@ -13,7 +13,7 @@ MARKER_NAME = ".confluence-settings-imported-v1"
 
 
 def log(message, level=xbmc.LOGINFO):
-    xbmc.log("[Confluence Custom] {}".format(message), level)
+    xbmc.log("[JJS KODI Confluence Custom] {}".format(message), level)
 
 
 def q(value):
@@ -79,7 +79,7 @@ def apply_setting(setting):
 
 def run():
     # Never import while another skin is active. Home.xml invokes us only from
-    # Confluence Custom, but this protects manual/scripted calls as well.
+    # JJS KODI Confluence Custom, but this protects manual/scripted calls as well.
     if xbmc.getSkinDir() != TARGET_SKIN:
         return
 
@@ -121,7 +121,7 @@ def run():
 
     log("Imported {} settings from original Confluence".format(applied))
     if applied:
-        xbmc.executebuiltin("Notification(Confluence Custom,Einstellungen aus Confluence übernommen,3000)")
+        xbmc.executebuiltin("Notification(JJS KODI Confluence Custom,Einstellungen aus Confluence übernommen,3000)")
 
 
 if __name__ == "__main__":
