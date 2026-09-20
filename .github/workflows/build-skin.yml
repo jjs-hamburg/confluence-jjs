@@ -1,0 +1,128 @@
+name: "Build Kodi skin ZIP"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "skin.confluence.custom/**"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate skin
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root_dir = Path("skin.confluence.custom")
+          addon_xml = root_dir / "addon.xml"
+          root = ET.parse(addon_xml).getroot()
+
+          addon_id = root.attrib["id"]
+          version = root.attrib["version"]
+
+          assert addon_id == "skin.confluence.custom", addon_id
+          assert version, "Missing skin version"
+          assert any(
+              e.attrib.get("point") == "xbmc.gui.skin"
+              for e in root.findall("extension")
+          ), "Missing xbmc.gui.skin extension"
+
+          required = [
+              root_dir / "1080p" / "Home.xml",
+              root_dir / "1080p" / "Includes.xml",
+              root_dir / "1080p" / "SkinSettings.xml",
+              root_dir / "resources" / "skin_modes" / "custom" / "Home.xml",
+              root_dir / "resources" / "skin_modes" / "standard" / "Home.xml",
+              root_dir / "resources" / "lib" / "songselector_service.py",
+              root_dir / "resources" / "lib" / "menu_editor.py",
+              root_dir / "resources" / "lib" / "skin_mode.py",
+              root_dir / "resources" / "factory-default-settings.json",
+              root_dir / "LICENSE.txt",
+          ]
+          for item in required:
+              assert item.is_file() and item.stat().st_size > 0, f"Missing/empty: {item}"
+
+          for item in sorted((root_dir / "resources" / "lib").rglob("*.py")):
+              py_compile.compile(str(item), doraise=True)
+
+          for xml_dir in [
+              root_dir / "1080p",
+              root_dir / "resources" / "skin_modes" / "custom",
+              root_dir / "resources" / "skin_modes" / "standard",
+          ]:
+              for item in sorted(xml_dir.glob("*.xml")):
+                  ET.parse(item)
+
+          Path("skin-version.txt").write_text(version, encoding="utf-8")
+          print(f"{addon_id} {version}")
+          PY
+
+      - name: Build direct-install ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(cat skin-version.txt)"
+          ZIP="skin.confluence.custom-${VERSION}.zip"
+
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+
+          zip -qr "$ZIP" skin.confluence.custom             -x "*/__pycache__/*" "*.pyc"
+
+          python - "$ZIP" <<'PY'
+          import sys
+          import zipfile
+
+          zip_path = sys.argv[1]
+          with zipfile.ZipFile(zip_path) as zf:
+              names = zf.namelist()
+              roots = {name.split("/", 1)[0] for name in names if name}
+              assert roots == {"skin.confluence.custom"}, roots
+              assert "skin.confluence.custom/addon.xml" in names
+              assert zf.testzip() is None
+          print("ZIP structure OK:", zip_path)
+          PY
+
+          echo "SKIN_ZIP=$ZIP" >> "$GITHUB_ENV"
+          echo "SKIN_VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Show SHA256
+        shell: bash
+        run: sha256sum "$SKIN_ZIP"
+
+      - name: Publish direct-install GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="v${SKIN_VERSION}"
+          TITLE="JJS KODI Confluence Custom ${SKIN_VERSION}"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$SKIN_ZIP" --clobber
+          else
+            gh release create "$TAG" "$SKIN_ZIP"               --title "$TITLE"               --notes "Direct-install Kodi skin ZIP. Download skin.confluence.custom-${SKIN_VERSION}.zip from Assets and install it in Kodi via Add-ons -> Install from zip file."
+          fi
