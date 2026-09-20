@@ -1,0 +1,74 @@
+name: "Import Confluence Custom 5.0.125"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "skin.confluence.custom-5.0.125*.zip"
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Locate and verify source ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="$(find . -maxdepth 1 -type f -name 'skin.confluence.custom-5.0.125*.zip' -print -quit)"
+          if [ -z "$ZIP" ]; then
+            echo "Source ZIP not found."
+            exit 1
+          fi
+          echo "SOURCE_ZIP=$ZIP" >> "$GITHUB_ENV"
+          echo "55ecd8cd93ab713d1099e75ee0923f1eec5932db380b86b5264ad1df18d8d186  $ZIP" | sha256sum -c -
+
+      - name: Extract exact 5.0.125 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf skin.confluence.custom
+          unzip -q "$SOURCE_ZIP"
+
+          test -f skin.confluence.custom/addon.xml
+          test -d skin.confluence.custom/1080p
+          test -d skin.confluence.custom/resources/skin_modes/custom
+          test -d skin.confluence.custom/resources/skin_modes/standard
+          test -f skin.confluence.custom/resources/lib/songselector_service.py
+          test -f skin.confluence.custom/resources/lib/menu_editor.py
+          test -f skin.confluence.custom/resources/lib/skin_mode.py
+          test -f skin.confluence.custom/TEST-NOTES-5.0.125.txt
+
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          root = ET.parse("skin.confluence.custom/addon.xml").getroot()
+          assert root.attrib["id"] == "skin.confluence.custom", root.attrib
+          assert root.attrib["version"] == "5.0.125", root.attrib
+          assert root.attrib["name"] == "Confluence Custom", root.attrib
+          assert any(
+              e.attrib.get("point") == "xbmc.gui.skin"
+              for e in root.findall("extension")
+          )
+          print("Verified:", root.attrib["id"], root.attrib["version"], root.attrib["name"])
+          PY
+
+      - name: Commit imported source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f "$SOURCE_ZIP"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "Import Confluence Custom 5.0.125 source"
+          git push
