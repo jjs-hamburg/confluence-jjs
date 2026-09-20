@@ -1,6 +1,6 @@
 # JJS KODI Confluence Custom
 
-**Aktuelle Referenzbasis: 5.0.125 – timebadges-popup-highlight**
+**Aktueller Release: 5.0.126**
 
 JJS KODI Confluence Custom ist ein stark erweiterter Confluence-Skin für Kodi Omega. Er basiert auf dem ursprünglichen Confluence von Jezz_X / Team Kodi, bleibt aber als eigener Skin vollständig von `skin.confluence` getrennt.
 
@@ -10,7 +10,7 @@ Die technische Add-on-ID bleibt dauerhaft:
 
 Dadurch bleibt der Skin updatefähig, ohne eine vorhandene originale Confluence-Installation zu überschreiben.
 
-> Die unveränderte Referenzversion 5.0.125 trägt im historischen `addon.xml` noch den sichtbaren Namen **Confluence Custom**. Der Projektname ist **JJS KODI Confluence Custom**; die sichtbare Umbenennung erfolgt in der nächsten Version, ohne die Add-on-ID zu ändern.
+> Die unveränderte Referenzversion 5.0.125 bleibt in der Git-Historie als **Confluence Custom** erhalten. Seit 5.0.126 lautet der sichtbare Skin-Name **JJS KODI Confluence Custom**; die technische Add-on-ID bleibt unverändert.
 
 ## Herkunft und Lizenz
 
@@ -99,6 +99,7 @@ Unterstützt werden unter anderem:
 
 - Hauptmenü-Bezeichnungen ändern
 - Hauptmenü-Ziele ändern
+- Position der vom Editor verwalteten Hauptmenüs nach links/rechts verschieben
 - Untermenüs frei editieren
 - bis zu sieben Untermenü-Einträge pro Gruppe
 - Library-Nodes als Ziel
@@ -109,7 +110,13 @@ Unterstützt werden unter anderem:
 Während der Zielauswahl erscheinen im Kodi-Kontextmenü die temporären Einträge:
 
 - **Diesen Eintrag als Menüpunkt übernehmen**
-- **Confluence-Menüauswahl abbrechen**
+- **JJS-Confluence-Menüauswahl abbrechen**
+
+## Lange Texteingaben
+
+Die Texteingabe in `DialogKeyboard.xml` ist seit 5.0.126 so ausgelegt, dass Kodis Edit-Control bei langen Texten den sichtbaren Ausschnitt mit dem Cursor verschiebt.
+
+Damit kann bei langen Datei- und Ordnernamen bis zum Anfang und wieder bis zum Ende navigiert werden. Der Skin setzt **keine zusätzliche Zeichenbegrenzung**. Für die praktische Prüfung ist insbesondere eine Länge von mindestens 255 Zeichen vorgesehen.
 
 ## Startseiten-Darstellung
 
@@ -149,10 +156,19 @@ Bei vorhandenem Back-Cover kann per Fokus/Enter durch die Zustände geschaltet w
 
 1. Vorderseite
 2. Vorderseite + Rückseite
-3. kein Cover
-4. zurück zur Vorderseite
+3. Kompakt unten
+4. kein Cover
+5. zurück zur Vorderseite
 
-Wenn kein Back-Cover existiert, wird der nicht verfügbare Zustand übersprungen.
+Wenn kein Back-Cover existiert, wird die nicht verfügbare Paaransicht übersprungen.
+
+### Kompakt unten
+
+In der kompakten Ansicht verschwindet das große Cover oberhalb des Hauptmenüs vollständig. Stattdessen steht das Cover unten links direkt vor den Wiedergabeinformationen.
+
+**Nur die Höhe ist fest definiert:** 115 px, entsprechend der Höhe des gesamten Wiedergabeinformationsblocks. Die Breite wird aus der tatsächlichen Bildproportion berechnet. Ein quadratisches Cover bleibt quadratisch, eine schmale Longbox bleibt schmal; nicht-quadratische Cover werden weder beschnitten noch auf ein Quadrat gezwungen.
+
+Albumtitel, Songtitel, Zeiten und Badges werden gemeinsam nach rechts verschoben, sodass sie unmittelbar hinter der tatsächlich benötigten Coverbreite beginnen.
 
 ### No-Cover
 
@@ -413,3 +429,7 @@ Der zuerst in dieses Repository übernommene, unveränderte und getestete Refere
 **5.0.125 – timebadges-popup-highlight**
 
 Der Original-Import wird anhand seiner SHA256-Prüfsumme verifiziert, bevor er als Quellstand übernommen wird.
+
+Aktueller Release:
+
+**5.0.126 – JJS-Namensgebung, lange Texteingaben, verschiebbare Hauptmenüs und proportionale kompakte Coveransicht**
