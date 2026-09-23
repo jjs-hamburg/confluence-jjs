@@ -22,6 +22,16 @@
 			<width>450</width>
 			<height max="1005">auto</height>
 			<itemgap>3</itemgap>
+			<control type="button" id="9800">
+				<width>450</width><height>57</height><font>fontContextMenu</font><align>center</align>
+				<label>Diesen Eintrag als Menüpunkt übernehmen</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">button-focus.png</texturefocus>
+				<onclick>RunScript(special://skin/resources/lib/menu_capture.py,take)</onclick><visible>!String.IsEmpty(Window(Home).Property(ConfluenceCustom.MenuCapture.Active))</visible>
+			</control>
+			<control type="button" id="9801">
+				<width>450</width><height>57</height><font>fontContextMenu</font><align>center</align>
+				<label>JJS-Confluence-Menüauswahl abbrechen</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">button-focus.png</texturefocus>
+				<onclick>RunScript(special://skin/resources/lib/menu_capture.py,cancel)</onclick><visible>!String.IsEmpty(Window(Home).Property(ConfluenceCustom.MenuCapture.Active))</visible>
+			</control>
 		</control>
 		<control type="button">
 			<description>Close Window button</description>

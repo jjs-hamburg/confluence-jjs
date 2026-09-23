@@ -1,3 +1,23 @@
+5.0.129: Song-Popup-Fokus geglättet und boolesche Skin-Einstellungen vereinheitlicht.
+- Beim Öffnen des Song-Popups bleibt der graue Navigationsfokus während der rein programmgesteuerten Listenausrichtung unsichtbar und erscheint erst auf der endgültigen Zeile; kein sichtbares Springen vom Listenende mehr.
+- Der Service führt beim ersten Öffnen keine zweite, redundante Fokus-/Viewport-Ausrichtung mehr aus.
+- Rückkehr von Credits/Lyrics zur Songliste verwendet die bereits erhaltene native Listenposition statt den Viewport neu aufzubauen; das Highlight ist dadurch praktisch sofort wieder da.
+- Alle echten Ein/Aus- bzw. Ja/Nein-Schalter der Custom-Konfiguration verwenden nun einheitlich Kodis Radiobutton-Anzeige mit blauem Punkt; mehrwertige Einstellungen bleiben Textauswahlen.
+
+5.0.128: Library-Manager-Kopplung aus 5.0.127 zurückgenommen.
+- Library-Manager-Kontextaktionen werden nicht mehr vom Skin nachgebaut; sie bleiben native Funktionen des Library Managers und funktionieren damit mit jedem Skin.
+- Der Skin startet keine Library-Manager-Dienste mehr. Scanner/DB/Recovery bleiben vollständig Eigentum des Library Managers.
+- Alle eigentlichen 5.0.127-Skin-Funktionen bleiben erhalten: integrierte Lyrics, integrierte Credits, LibreELEC-Zeitbadge-Reserve und permanente Songauswahl mit 5-s-Rücksprung.
+- Confluence Custom registriert weiterhin nur den Add-on-Typ Skin; seine eigenen Hintergrundskripte werden intern gestartet.
+
+5.0.127: Song-Popup, Lyrics/Credits und Add-on-Struktur zusammengeführt.
+- Zeit-Badges erhalten eine kleine Breitenreserve, damit LibreELEC/FreeType Grenzfälle nicht mit Ellipse abschneidet.
+- Die bewährte JJS-Popup-only-Logik aus CU LRC Lyrics 6.7.1.2 ist in den Skin integriert; ein separates CU-LRC-Add-on ist für das Song-Popup nicht mehr erforderlich.
+- Besetzungsdaten werden vom Skin selbst über Discogs/MusicBrainz aufgelöst und albumbezogen im Skin-Profil gecacht; keine Laufzeitabhängigkeit vom Music Library Manager.
+- Songauswahl: graues Navigations-Highlight ist auf der Titelseite immer aktiv; Hoch/Runter bewegt es, Enter startet den markierten Titel, nach 5 s ohne weitere Navigation springt es zum laufenden Titel zurück. Der laufende Titel bleibt parallel wie bisher farblich hervorgehoben.
+- Der Skin registriert nur noch den Add-on-Typ Skin. Interne Python-Helfer werden vom Skin selbst gestartet und erzeugen keine zusätzlichen Benutzer-Addon-Kategorien.
+- Library-Manager-Kontextaktionen werden im Custom-Skin-Kontextmenü eingeblendet, ohne den Library Manager als Context-Addon zu registrieren.
+
 5.0.126: JJS-Namensgebung, lange Texteingaben, Hauptmenü-Reihenfolge und kompakte Coveransicht.
 - Sichtbarer Skin-Name: JJS KODI Confluence Custom; technische ID skin.confluence.custom bleibt unverändert.
 - Bildschirmtastatur: Texteingabe linksbündig, damit Kodis Edit-Control bei langen Namen dem Cursor bis zum Anfang und Ende folgt; keine zusätzliche Zeichenbegrenzung.

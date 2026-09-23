@@ -45,6 +45,7 @@ SONG_SELECTOR_TIME_BACKGROUND_SETTING = "CCSongSelectorTimeBackground"
 SONG_SELECTOR_SELECTION_TIMEOUT_SETTING = "CCSongSelectorSelectionTimeout"
 SONG_SELECTOR_FOCUS_TIMEOUT_SETTING = "CCSongSelectorFocusTimeout"
 SONG_SELECTOR_HIGHLIGHT_TIMEOUT_SETTING = "CCSongSelectorHighlightTimeout"
+SONG_SELECTOR_RETURN_V127_MIGRATION_SETTING = "CCSongSelectorReturnV127Migrated"
 SONG_TIME_CURRENT_SETTING = "CCSongTimeCurrent"
 SONG_TIME_REMAINING_SETTING = "CCSongTimeRemaining"
 ALBUM_TIME_CURRENT_SETTING = "CCAlbumTimeCurrent"
@@ -93,7 +94,7 @@ DEFAULT_SONG_SELECTOR_LYRICS_CENTERED = "true"
 DEFAULT_SONG_SELECTOR_LYRICS_SYNC_DELAY = "0.25"
 DEFAULT_SONG_SELECTOR_BACKGROUND = "submenu"
 DEFAULT_SONG_SELECTOR_TIME_BACKGROUND = "transparent"
-DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT = "10"
+DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT = "5"
 DEFAULT_SONG_SELECTOR_FOCUS_TIMEOUT = "30"
 DEFAULT_SONG_SELECTOR_HIGHLIGHT_TIMEOUT = "10"
 DEFAULT_SONG_TIME_CURRENT = "true"
@@ -262,6 +263,13 @@ def ensure_defaults():
     # 5.0.47 stored selector font settings but did not expose/use them. Preserve its look.
     if _get(SONG_SELECTOR_FONT_SETTING).lower() == "default":
         _set(SONG_SELECTOR_FONT_SETTING, "submenu")
+    # 5.0.127 changes the old dormant/default 10-second selector value into the
+    # active return-to-playing timeout requested for the always-visible cursor.
+    # Migrate that legacy default once; later user choices are left untouched.
+    if _get(SONG_SELECTOR_RETURN_V127_MIGRATION_SETTING) != "1":
+        if _get(SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, "10") == "10":
+            _set(SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, "5")
+        _set(SONG_SELECTOR_RETURN_V127_MIGRATION_SETTING, "1")
     _update_audio_badge_texture()
 
 
@@ -507,7 +515,7 @@ def choose_song_selector_focus_timeout():
     _choose("Fokus zurück in die Menüleiste", SONG_SELECTOR_FOCUS_TIMEOUT_SETTING, SONG_SELECTOR_FOCUS_TIMEOUTS, DEFAULT_SONG_SELECTOR_FOCUS_TIMEOUT)
 
 def choose_song_selector_highlight_timeout():
-    _choose("Highlight nach Inaktivität ausblenden", SONG_SELECTOR_HIGHLIGHT_TIMEOUT_SETTING, SONG_SELECTOR_HIGHLIGHT_TIMEOUTS, DEFAULT_SONG_SELECTOR_HIGHLIGHT_TIMEOUT)
+    _choose("Auswahl zurück auf laufenden Song", SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, SONG_SELECTOR_SELECTION_TIMEOUTS, DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT)
 
 
 def _toggle_bool_setting(name, default="true"):

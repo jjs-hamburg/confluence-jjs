@@ -6,6 +6,16 @@ import library_nodes
 from menu_common import ensure_initialised, log
 from mainmenu_style import ensure_defaults
 from skin_mode import ensure_mode
+import xbmcgui
+
+
+def _start_background_services():
+    home = xbmcgui.Window(10000)
+    if home.getProperty("ConfluenceCustom.SongSelector.ServiceRunning") != "1":
+        xbmc.executebuiltin("RunScript(special://skin/resources/lib/songselector_service.py)", wait=False)
+    if home.getProperty("ConfluenceCustom.Lyrics.ServiceRunning") != "1":
+        xbmc.executebuiltin("RunScript(special://skin/resources/lib/culrc_runner.py)", wait=False)
+
 
 
 if __name__ == "__main__":
@@ -28,6 +38,7 @@ if __name__ == "__main__":
             raise SystemExit
         ensure_initialised(False)
         ensure_defaults()
+        _start_background_services()
     except SystemExit:
         raise
     except Exception as exc:

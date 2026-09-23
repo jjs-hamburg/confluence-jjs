@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window id="1116" type="dialog">
-	<defaultcontrol>9131</defaultcontrol>
+	<defaultcontrol>9110</defaultcontrol>
 	<depth>DepthDialog</depth>
 	<animation effect="fade" start="0" end="100" time="100">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="100">WindowClose</animation>
@@ -97,7 +97,7 @@
 			<control type="grouplist">
 				<left>38</left><top>18</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine0.Continuation),1)</visible>
@@ -142,7 +142,7 @@
 			<control type="grouplist">
 				<left>38</left><top>64</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine1.Continuation),1)</visible>
@@ -187,7 +187,7 @@
 			<control type="grouplist">
 				<left>38</left><top>110</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine2.Continuation),1)</visible>
@@ -232,7 +232,7 @@
 			<control type="grouplist">
 				<left>38</left><top>156</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine3.Continuation),1)</visible>
@@ -277,7 +277,7 @@
 			<control type="grouplist">
 				<left>38</left><top>202</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine4.Continuation),1)</visible>
@@ -322,7 +322,7 @@
 			<control type="grouplist">
 				<left>38</left><top>248</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine5.Continuation),1)</visible>
@@ -367,7 +367,7 @@
 			<control type="grouplist">
 				<left>38</left><top>294</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine6.Continuation),1)</visible>
@@ -412,7 +412,7 @@
 			<control type="grouplist">
 				<left>38</left><top>340</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine7.Continuation),1)</visible>
@@ -457,7 +457,7 @@
 			<control type="grouplist">
 				<left>38</left><top>386</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine8.Continuation),1)</visible>
@@ -502,7 +502,7 @@
 			<control type="grouplist">
 				<left>38</left><top>432</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine9.Continuation),1)</visible>
@@ -547,7 +547,7 @@
 			<control type="grouplist">
 				<left>38</left><top>478</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine10.Continuation),1)</visible>
@@ -592,7 +592,7 @@
 			<control type="grouplist">
 				<left>38</left><top>524</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine11.Continuation),1)</visible>
@@ -637,7 +637,7 @@
 			<control type="grouplist">
 				<left>38</left><top>570</top><width>510</width><height>46</height>
 				<orientation>horizontal</orientation><align>left</align><itemgap>0</itemgap>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount))</visible>
 				<control type="label">
 					<width>24</width><height>42</height><label />
 					<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsLine12.Continuation),1)</visible>
@@ -690,9 +690,9 @@
 				<align>left</align>
 				<onleft>RunScript(special://skin/resources/lib/songselector_action.py,tracks)</onleft>
 				<onright>RunScript(special://skin/resources/lib/songselector_action.py,nextcredits)</onright>
-				<label>$INFO[Window(Home).Property(JJSMLM.Credits.Text)]</label>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.Credits.Text)]</label>
 				<pagecontrol>9121</pagecontrol>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount)) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.Text))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.Text))</visible>
 			</control>
 			<control type="textbox" id="9122">
 				<left>38</left><top>18</top><width>510</width><height>598</height>
@@ -700,7 +700,7 @@
 				<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
 				<align>left</align>
 				<label>Besetzungsdaten nicht verfügbar.</label>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(JJSMLM.Credits.Text))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.Text))</visible>
 			</control>
 			<control type="scrollbar" id="9121">
 				<left>558</left><top>20</top><width>20</width><height>586</height>
@@ -711,7 +711,7 @@
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
 				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 				<showonepage>false</showonepage>
-				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(JJSMLM.Credits.LineCount)) + !String.IsEmpty(Window(Home).Property(JJSMLM.Credits.Text))</visible>
+				<visible>String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView),1) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.LineCount)) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.Credits.Text))</visible>
 			</control>
 
 			<!-- Songtextseite. Lange logische LRC-Zeilen werden im Service auf das
@@ -1077,7 +1077,7 @@
 			<onup>RunScript(special://skin/resources/lib/songselector_action.py,lyricsup)</onup><ondown>RunScript(special://skin/resources/lib/songselector_action.py,lyricsdown)</ondown>
 		</control>
 
-		<!-- Neutral focus after highlight timeout. Back is the only close action. -->
+		<!-- Legacy neutral proxy retained for backwards compatibility; normal track focus now stays on 9110. -->
 		<control type="button" id="9131">
 			<left>-22</left><top>-22</top><width>1</width><height>1</height><label /><font />
 			<texturefocus /><texturenofocus />

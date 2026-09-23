@@ -902,7 +902,7 @@
     {
       "id": "CCSongSelectorSelectionTimeout",
       "type": "string",
-      "value": "10"
+      "value": "5"
     },
     {
       "id": "CCSongSelectorShowTrackNumbers",

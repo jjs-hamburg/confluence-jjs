@@ -6,10 +6,10 @@ import re
 import time
 
 import xbmc
-import xbmcaddon
 import xbmcgui
 
 from cover_display_action import COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
+from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
 from nocover_manager import sync_on_startup
 from songselector_action import detail_view, focus_current, lyrics_view, open_popup, show_credits
 from songselector_state import (
@@ -22,7 +22,7 @@ from songselector_state import (
 
 HOME_ID = 10000
 TOUCH_PROP = "ConfluenceCustom.SongSelector.Touch"
-HIGHLIGHT_TIMEOUT_SETTING = "CCSongSelectorHighlightTimeout"
+SELECTION_TIMEOUT_SETTING = "CCSongSelectorSelectionTimeout"
 AUTO_OPEN_SETTING = "CCSongSelectorAutoOpen"
 SONG_ELAPSED_PROP = "ConfluenceCustom.SongSelector.SongElapsed"
 SONG_DURATION_PROP = "ConfluenceCustom.SongSelector.SongDuration"
@@ -77,9 +77,9 @@ CULRC_MANUAL_PROP = "culrc.manual"
 CULRC_ARTIST_PROP = "culrc.artist"
 CULRC_TRACK_PROP = "culrc.track"
 SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
-CREDITS_SOURCE_COUNT_PROP = "JJSMLM.Credits.LineCount"
-CREDITS_SOURCE_UPDATED_PROP = "JJSMLM.Credits.Updated"
-CREDITS_SOURCE_PREFIX = "JJSMLM.Credits.Line."
+CREDITS_SOURCE_COUNT_PROP = "ConfluenceCustom.Credits.LineCount"
+CREDITS_SOURCE_UPDATED_PROP = "ConfluenceCustom.Credits.Updated"
+CREDITS_SOURCE_PREFIX = "ConfluenceCustom.Credits.Line."
 CREDITS_VISIBLE_ROWS = 13
 CREDITS_WINDOW_START_PROP = "ConfluenceCustom.SongSelector.CreditsWindowStart"
 CREDITS_VIEW_LINE_PREFIX = "ConfluenceCustom.SongSelector.CreditsLine"
@@ -112,15 +112,8 @@ def _lyrics_sync_delay_seconds():
 
 
 def _culrc_setting_offset():
-    """Return CU LRC's global sync offset in seconds."""
-    try:
-        return float(xbmcaddon.Addon("script.cu.lrclyrics").getSettingNumber("offset"))
-    except Exception:
-        try:
-            value = xbmcaddon.Addon("script.cu.lrclyrics").getSetting("offset")
-            return float(value or 0.0)
-        except Exception:
-            return 0.0
+    """Embedded CU LRC uses the skin's own sync-delay control only."""
+    return 0.0
 
 
 def _parse_lrc_timestamp(tag):
@@ -740,7 +733,10 @@ def _time_badge_class(left, right):
             text_width += 5
         else:
             text_width += 11
-    wanted = text_width + 20
+    # Keep a small safety reserve. Kodi/FreeType may measure Roboto fractionally
+    # wider on LibreELEC; without this reserve a <1 px overflow triggers Kodi's
+    # ellipsis and visually removes several digits.
+    wanted = text_width + 24
     for width in TIME_BADGE_CLASS_WIDTHS:
         if wanted <= width:
             return "w{}".format(width)
@@ -902,10 +898,13 @@ class _PlaybackEvents(xbmc.Player):
         self.start_serial += 1
 
 
+
 def run():
     sync_on_startup()
     monitor = xbmc.Monitor()
     home = xbmcgui.Window(HOME_ID)
+    credits_runtime = CreditsRuntime()
+    credits_runtime.start()
     playback_events = _PlaybackEvents()
     last_stop_serial = playback_events.stop_serial
     last_start_serial = playback_events.start_serial
@@ -955,6 +954,7 @@ def run():
         # This prevents auto-popup/navigation side effects while the original
         # Confluence XML set is active.
         if xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)"):
+            clear_credits_properties()
             if popup_open():
                 try:
                     close_popup()
@@ -964,6 +964,11 @@ def run():
             if monitor.waitForAbort(0.5):
                 break
             continue
+
+        try:
+            credits_runtime.poll()
+        except Exception as exc:
+            xbmc.log("[ConfluenceCustom] Credits runtime: {!r}".format(exc), xbmc.LOGWARNING)
 
         now = time.monotonic()
         audio = _audio_active()
@@ -1243,63 +1248,52 @@ def run():
 
             if opened:
                 if not was_open:
+                    # open_popup() has already positioned the native list before
+                    # revealing the grey navigation tile. Do not repeat that
+                    # selectItem sequence here: the second pass was the visible
+                    # bottom-to-current jump when the dialog opened.
                     last_user_activity = now
-                    _set_navigation_highlight(home, False)
                     last_list_position = _container_position()
-
-                # Follow playback exactly once per real track change. Automatic
-                # following is allowed when the focus was still on the old playing
-                # row, when OK just selected the new playing row, or when the grey
-                # navigation highlight has already timed out to the neutral proxy.
-                # A user who is actively browsing another row is never pulled away.
-                if was_open and not detail_view() and last_playing >= 0 and playing != last_playing:
-                    position = _container_position()
-                    neutral = xbmc.getCondVisibility(
-                        "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)
-                    )
-                    selected_target = _selection_target(home)
-                    explicit_selection = selected_target == playing
-                    if neutral or explicit_selection or position == last_playing or position == playing:
-                        focus_current()
-                        last_list_position = playing
-                        if neutral or explicit_selection:
-                            xbmc.sleep(35)
-                            _hide_navigation_highlight(home)
-                            last_list_position = None
-                    if selected_target is not None:
-                        home.clearProperty(SELECTION_TARGET_PROP)
 
                 touch = home.getProperty(TOUCH_PROP)
                 if touch and touch != last_touch:
                     last_touch = touch
                     last_user_activity = now
 
-                # Observe the native container's absolute current item instead of
-                # its viewport position. This stays correct after the list has scrolled
-                # and adds no Python action to normal Up/Down navigation.
+                # Observe Kodi's native absolute current item. A change outside our
+                # short programmatic-focus grace period is real Up/Down navigation.
                 position = _container_position()
                 if position is not None and position != last_list_position:
                     last_list_position = position
-                    if _programmatic_focus_active(home):
-                        # focus_current() temporarily visits the viewport anchors.
-                        # Normally those jumps stay invisible. reactivate(), however,
-                        # deliberately enables the highlight after the final focus move;
-                        # preserve that explicit state instead of erasing it again.
-                        if home.getProperty(HIGHLIGHT_PROP) != "1":
-                            _set_navigation_highlight(home, False)
-                    else:
-                        # A native list position change outside our programmatic
-                        # window is an actual Up/Down browse action.
+                    if not _programmatic_focus_active(home):
                         _set_navigation_highlight(home, True)
                         last_user_activity = now
 
-                highlight_timeout = _seconds(HIGHLIGHT_TIMEOUT_SETTING, 10)
-                if (not detail_view() and highlight_timeout
-                        and now - last_user_activity >= highlight_timeout and _list_focused()):
-                    # Timeout is visual only. 5.0.68 called focus_current() here,
-                    # causing a delayed mid-song viewport jump.
-                    _hide_navigation_highlight(home)
-                    last_list_position = None
+                selected_target = _selection_target(home)
+                explicit_selection = selected_target == playing
+
+                # Natural track changes follow immediately only when the user has
+                # not left the current row to browse. While browsing, the cursor
+                # stays where the user put it until the inactivity timeout below.
+                if was_open and not detail_view() and last_playing >= 0 and playing != last_playing:
+                    position = _container_position()
+                    if explicit_selection or position == last_playing or position == playing:
+                        focus_current(take_focus=True)
+                        last_list_position = playing
+                    if selected_target is not None:
+                        home.clearProperty(SELECTION_TARGET_PROP)
+
+                selection_timeout = _seconds(SELECTION_TIMEOUT_SETTING, 5)
+                if (not detail_view() and selection_timeout and _list_focused()
+                        and now - last_user_activity >= selection_timeout):
+                    position = _container_position()
+                    if position is not None and position != playing:
+                        focus_current(take_focus=True)
+                        last_list_position = playing
+                    # Keep the permanent navigation highlight active. Reset the
+                    # timer so we do not repeatedly reposition the same row.
+                    _set_navigation_highlight(home, True)
+                    last_user_activity = now
 
         else:
             _clear_times(home)
@@ -1339,6 +1333,16 @@ def run():
         if monitor.waitForAbort(0.15):
             break
 
+    clear_credits_properties()
+
+
+SERVICE_RUNNING_PROP = "ConfluenceCustom.SongSelector.ServiceRunning"
 
 if __name__ == "__main__":
-    run()
+    _service_home = xbmcgui.Window(HOME_ID)
+    if _service_home.getProperty(SERVICE_RUNNING_PROP) != "1":
+        _service_home.setProperty(SERVICE_RUNNING_PROP, "1")
+        try:
+            run()
+        finally:
+            _service_home.clearProperty(SERVICE_RUNNING_PROP)

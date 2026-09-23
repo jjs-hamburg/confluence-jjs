@@ -2928,7 +2928,7 @@
 	<variable name="CCNowPlayingTimeSeparatorColor"><value condition="String.IsEqual(Skin.String(CCPlayerTimesDimmed),true)">779A9A9A</value><value>BBFFFFFF</value></variable>
 	<variable name="CCSongSelectorSelectionTimeoutSetting">
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorSelectionTimeout),0)">Aus</value>
-		<value condition="String.IsEmpty(Skin.String(CCSongSelectorSelectionTimeout))">10 s</value>
+		<value condition="String.IsEmpty(Skin.String(CCSongSelectorSelectionTimeout))">5 s</value>
 		<value>$INFO[Skin.String(CCSongSelectorSelectionTimeout)] s</value>
 	</variable>
 	<variable name="CCSongSelectorFocusTimeoutSetting">

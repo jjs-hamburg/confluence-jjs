@@ -25,7 +25,7 @@ LYRICS_SYNC_PROP = "ConfluenceCustom.SongSelector.LyricsSync"
 CREDITS_SCROLL_ID = 9121
 CREDITS_NAV_ID = 9123
 CREDITS_VISIBLE_ROWS = 13
-CREDITS_SOURCE_COUNT_PROP = "JJSMLM.Credits.LineCount"
+CREDITS_SOURCE_COUNT_PROP = "ConfluenceCustom.Credits.LineCount"
 CREDITS_DISPLAY_COUNT_PROP = "ConfluenceCustom.SongSelector.CreditsLineCount"
 CREDITS_WINDOW_START_PROP = "ConfluenceCustom.SongSelector.CreditsWindowStart"
 LYRICS_NAV_ID = 9143
@@ -59,8 +59,8 @@ def _set_highlight(enabled):
 
 def _programmatic_focus_begin(seconds=0.8):
     # The viewport setup deliberately focuses several rows. Mark that sequence so
-    # the service never mistakes it for manual Up/Down navigation.
-    _set_highlight(False)
+    # the service never mistakes it for manual Up/Down navigation. The navigation
+    # highlight itself stays visible permanently on the track page.
     _home().setProperty(PROGRAMMATIC_UNTIL_PROP, "{:.6f}".format(time.time() + float(seconds)))
 
 
@@ -189,48 +189,85 @@ def _native_list_control():
 
 
 def focus_current(take_focus=False):
-    """Position the native playlist on the playing song.
+    """Position the native playlist on the playing song without a visible focus jump.
 
-    Automatic positioning uses ControlList.selectItem() while focus stays on the
-    neutral proxy. This avoids Kodi's intermittent "asked to focus, but it can't"
-    race and keeps the grey navigation highlight hidden. Only a real Up/Down action
-    asks Kodi to move focus into the list.
+    Kodi needs the short selectItem(start/end/current) sequence to build the wanted
+    13-row viewport. While that purely programmatic sequence runs, suppress only the
+    grey navigation tile; the separately coloured currently-playing row remains
+    visible. The grey tile is restored on the final row afterwards.
     """
+    home = _home()
+    restore_highlight = home.getProperty(HIGHLIGHT_PROP) == "1"
+    if restore_highlight:
+        _set_highlight(False)
+
     _programmatic_focus_begin()
-    if not _wait_for_list_visible():
-        _programmatic_focus_end()
-        return False
-    count = size()
-    if count <= 0:
-        _programmatic_focus_end()
-        return False
-    playing = current()
-    view_start, view_end = _desired_window(count, playing)
-    if not _wait_for_list(view_end):
-        _programmatic_focus_end()
-        return False
-
-    window, control = _native_list_control()
-    if control is None:
-        _programmatic_focus_end()
-        return False
     try:
-        control.selectItem(view_start)
-        xbmc.sleep(20)
-        control.selectItem(view_end)
-        xbmc.sleep(80)
-        control.selectItem(playing)
-        xbmc.sleep(35)
-        if take_focus:
-            window.setFocus(control)
-        else:
-            _focus(NEUTRAL_CONTROL_ID)
-    except Exception:
-        _programmatic_focus_end()
-        return False
+        if not _wait_for_list_visible():
+            return False
+        count = size()
+        if count <= 0:
+            return False
+        playing = current()
+        view_start, view_end = _desired_window(count, playing)
+        if not _wait_for_list(view_end):
+            return False
 
-    _programmatic_focus_end()
-    return True
+        window, control = _native_list_control()
+        if control is None:
+            return False
+        try:
+            control.selectItem(view_start)
+            xbmc.sleep(20)
+            control.selectItem(view_end)
+            xbmc.sleep(80)
+            control.selectItem(playing)
+            xbmc.sleep(35)
+            if take_focus:
+                window.setFocus(control)
+            else:
+                _focus(NEUTRAL_CONTROL_ID)
+        except Exception:
+            return False
+        return True
+    finally:
+        _programmatic_focus_end()
+        if restore_highlight:
+            _set_highlight(True)
+
+
+
+def _focus_existing_track_selection():
+    """Return from credits/lyrics to the already-positioned track list.
+
+    The native list keeps its selected row and viewport while hidden. Reusing that
+    state avoids replaying the slower viewport-positioning sequence and makes the
+    grey navigation tile available on the first practical GUI frame.
+    """
+    window, control = _native_list_control()
+    if control is not None:
+        try:
+            window.setFocus(control)
+            if xbmc.getCondVisibility(
+                    "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
+                return True
+        except Exception:
+            pass
+
+    deadline = time.time() + 0.35
+    while time.time() < deadline:
+        window, control = _native_list_control()
+        if control is not None and xbmc.getCondVisibility(
+                "Window.IsActive({}) + Control.IsVisible({})".format(DIALOG_ID, LIST_ID)):
+            try:
+                window.setFocus(control)
+                if xbmc.getCondVisibility(
+                        "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
+                    return True
+            except Exception:
+                pass
+        xbmc.sleep(5)
+    return False
 
 
 def _close_dialog():
@@ -252,6 +289,8 @@ def _audio_player_id():
 def open_popup():
     if size() <= 0:
         return
+    # Keep the grey navigation tile hidden while Kodi creates and positions the
+    # native list. This prevents the default/bottom row from flashing briefly.
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
@@ -260,7 +299,8 @@ def open_popup():
     set_popup_open(True)
     _touch()
     xbmc.executebuiltin("ActivateWindow({})".format(DIALOG_ID))
-    focus_current(take_focus=False)
+    focus_current(take_focus=True)
+    _set_highlight(True)
 
 
 def show_credits():
@@ -376,24 +416,25 @@ def next_from_credits():
 
 
 def show_tracks():
+    # Credits/lyrics hide 9110 but do not destroy its native selection/viewport.
+    # Reuse that state instead of rebuilding the 13-row viewport, so the grey
+    # highlight is back essentially immediately when returning to the track page.
+    _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
     _touch()
-    # Do not focus 9110 until its visibility switch has actually reached Kodi's
-    # GUI thread. focus_current() performs that wait and then restores the wanted
-    # viewport in one sequence.
-    focus_current(take_focus=False)
+    if not _focus_existing_track_selection():
+        focus_current(take_focus=True)
+    _set_highlight(True)
 
 
 def reactivate():
-    # First Up/Down after idle wakes selection on the currently playing song.
-    # focus_current() leaves a short programmatic-focus grace period so viewport
-    # anchor moves are ignored. The service now preserves an explicitly enabled
-    # highlight during that grace period, so the first key press is visible at once.
+    # Backwards-compatible entry point for older XML. The track page now keeps
+    # its selection highlight active continuously.
     if detail_view():
         return
+    _set_highlight(True)
     if focus_current(take_focus=True):
-        _set_highlight(True)
         _touch()
 
 
@@ -478,8 +519,8 @@ def play_focused():
         return
 
     # Mark explicit OK/Select playback separately from a natural track change.
-    # The service uses this marker to park on the neutral proxy after following
-    # the newly playing row, so the next Up/Down always re-enables highlight.
+    # The service uses this marker to follow the newly playing row without
+    # confusing that move with manual Up/Down navigation.
     home = _home()
     previous_playing = current()
     if target != previous_playing:
