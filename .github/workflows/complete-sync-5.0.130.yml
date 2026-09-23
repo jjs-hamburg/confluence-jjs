@@ -1,0 +1,51 @@
+name: "Complete tested Confluence Custom 5.0.130 sync"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".sync/run-skin-5.0.130"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Add exact missing tested files
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .sync/skinbig{1..5}.txt | base64 -d > /tmp/skin-added.tar.gz
+          tar -xzf /tmp/skin-added.tar.gz
+
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          root = ET.parse("skin.confluence.custom/addon.xml").getroot()
+          assert root.attrib["id"] == "skin.confluence.custom"
+          assert root.attrib["version"] == "5.0.130"
+          for p in (
+              "skin.confluence.custom/resources/lib/credits_runtime.py",
+              "skin.confluence.custom/resources/lib/credits_resolver.py",
+              "skin.confluence.custom/resources/lib/culrc/gui.py",
+              "skin.confluence.custom/resources/lib/culrc/culrcscrapers/lrclib/lyricsScraper.py",
+              "skin.confluence.custom/TEST-NOTES-5.0.130.txt",
+              "skin.confluence.custom/THIRD_PARTY_NOTICES.txt",
+          ):
+              assert Path(p).is_file(), p
+          PY
+
+          rm -f .sync/skinbig{1..5}.txt .sync/run-skin-5.0.130
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Complete tested Confluence Custom 5.0.130 source"
+          git push
