@@ -1,3 +1,7 @@
+5.0.132: Interpretenbild ohne Background-Loader.
+- In ArtistMediaListView wurde ausschließlich background="true" am großen Interpretenbild entfernt.
+- Basis ist der funktionierende Release-Stand 5.0.130; keine Cache-Services und keine weiteren Artist-Cache-Änderungen.
+
 5.0.129: Song-Popup-Fokus geglättet und boolesche Skin-Einstellungen vereinheitlicht.
 - Beim Öffnen des Song-Popups bleibt der graue Navigationsfokus während der rein programmgesteuerten Listenausrichtung unsichtbar und erscheint erst auf der endgültigen Zeile; kein sichtbares Springen vom Listenende mehr.
 - Der Service führt beim ersten Öffnen keine zweite, redundante Fokus-/Viewport-Ausrichtung mehr aus.

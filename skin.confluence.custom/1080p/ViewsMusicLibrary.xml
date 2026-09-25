@@ -769,7 +769,7 @@
 					<height>450</height>
 					<aspectratio>keep</aspectratio>
 					<fadetime>IconCrossfadeTime</fadetime>
-					<texture background="true">$INFO[ListItem.Icon]</texture>
+					<texture>$INFO[ListItem.Icon]</texture>
 					<bordertexture infill="false" border="8">ThumbShadow.png</bordertexture>
 					<bordersize>8</bordersize>
 				</control>
