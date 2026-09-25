@@ -769,7 +769,7 @@
 					<height>450</height>
 					<aspectratio>keep</aspectratio>
 					<fadetime>IconCrossfadeTime</fadetime>
-					<texture background="true">$INFO[ListItem.Icon]</texture>
+					<texture fallback="$INFO[ListItem.Art(thumb)]">special://profile/addon_data/skin.confluence.custom/artist_cache/$INFO[ListItem.DBID].jpg</texture>
 					<bordertexture infill="false" border="8">ThumbShadow.png</bordertexture>
 					<bordersize>8</bordersize>
 				</control>

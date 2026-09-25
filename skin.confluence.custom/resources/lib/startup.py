@@ -15,6 +15,8 @@ def _start_background_services():
         xbmc.executebuiltin("RunScript(special://skin/resources/lib/songselector_service.py)", wait=False)
     if home.getProperty("ConfluenceCustom.Lyrics.ServiceRunning") != "1":
         xbmc.executebuiltin("RunScript(special://skin/resources/lib/culrc_runner.py)", wait=False)
+    if home.getProperty("ConfluenceCustom.ArtistCache.ServiceRunning") != "1":
+        xbmc.executebuiltin("RunScript(special://skin/resources/lib/artist_cache_service.py)", wait=False)
 
 
 
