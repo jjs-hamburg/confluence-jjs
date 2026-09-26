@@ -1,3 +1,8 @@
+5.0.133: Integrierte Credits-/Lyrics-Laufzeit vollständig wiederhergestellt.
+- Beim Import des getesteten 5.0.130-Stands ins GitHub-Repo war der interne Runtime-Block für Credits und eingebettete CU-LRC-Lyrics nicht mit übernommen worden.
+- credits_resolver.py, credits_runtime.py, culrc_runner.py und das vollständige interne culrc-Paket werden 1:1 aus dem getesteten 5.0.130-Stand wiederhergestellt.
+- Build-Validierung prüft die Runtime-Kerndateien künftig explizit, damit unvollständige Pakete nicht mehr veröffentlicht werden.
+
 5.0.132: Interpretenbild ohne Background-Loader.
 - In ArtistMediaListView wurde ausschließlich background="true" am großen Interpretenbild entfernt.
 - Basis ist der funktionierende Release-Stand 5.0.130; keine Cache-Services und keine weiteren Artist-Cache-Änderungen.
