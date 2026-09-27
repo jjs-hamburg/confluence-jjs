@@ -49,12 +49,13 @@ ALBUM_WRAP_UPPER_PROP = "ConfluenceCustom.NowPlaying.AlbumWrapUpper"
 ALBUM_WRAP_LOWER_PROP = "ConfluenceCustom.NowPlaying.AlbumWrapLower"
 SONG_WRAP_UPPER_PROP = "ConfluenceCustom.NowPlaying.SongWrapUpper"
 SONG_WRAP_LOWER_PROP = "ConfluenceCustom.NowPlaying.SongWrapLower"
+SONG_SCROLL_WIDTH_PROP = "ConfluenceCustom.NowPlaying.SongScrollWidth"
 ALBUM_WRAP_CUSTOM_WIDTH_PX = 1830.0
 ALBUM_WRAP_STANDARD_WIDTH_PX = 1500.0
 ALBUM_WRAP_FONT_SIGNATURE = ("roboto", 26)
 SONG_WRAP_CUSTOM_WIDTH_PX = 1830.0
 SONG_WRAP_STANDARD_WIDTH_PX = 1500.0
-SONG_WRAP_FONT_SIGNATURE = ("roboto", 30)
+SONG_WRAP_FONT_SIGNATURE = ("robotobold", 30)
 DIALOG_ID = 1116
 LIST_ID = 9110
 NEUTRAL_CONTROL_ID = 9131
@@ -354,7 +355,7 @@ def _split_song_wrap(text, width_px):
     text = str(text or "").strip()
     if not text:
         return "", ""
-    if _estimated_text_width(text, SONG_WRAP_FONT_SIGNATURE) <= (width_px * 1.015):
+    if _estimated_text_width(text, SONG_WRAP_FONT_SIGNATURE) <= width_px:
         return "", text
     words = text.split()
     if len(words) <= 1:
@@ -375,12 +376,7 @@ def _split_song_wrap(text, width_px):
     return upper, lower
 
 
-def _update_song_wrap_properties(home):
-    text = _song_line_text()
-    if not text:
-        home.clearProperty(SONG_WRAP_UPPER_PROP)
-        home.clearProperty(SONG_WRAP_LOWER_PROP)
-        return
+def _song_available_width(home):
     standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
     width = SONG_WRAP_STANDARD_WIDTH_PX if standard else SONG_WRAP_CUSTOM_WIDTH_PX
     if not standard and xbmc.getCondVisibility(
@@ -391,6 +387,31 @@ def _update_song_wrap_properties(home):
         except Exception:
             compact_width = 120.0
         width = max(240.0, width - compact_width - 15.0)
+    return width
+
+
+def _song_scroll_width_class(width):
+    """Return a safe fixed XML width for the current visible footer area.
+
+    Kodi label scrolling is based on the control width, not on pixels clipped by
+    the screen edge. Compact artwork shifts the text block right, so use a
+    conservative 100-pixel bucket that never exceeds the actually visible width.
+    """
+    width = float(width or SONG_WRAP_CUSTOM_WIDTH_PX)
+    if width >= SONG_WRAP_CUSTOM_WIDTH_PX:
+        return "1830"
+    bucket = int(width // 100.0) * 100
+    return str(max(1000, min(1700, bucket)))
+
+
+def _update_song_wrap_properties(home):
+    width = _song_available_width(home)
+    home.setProperty(SONG_SCROLL_WIDTH_PROP, _song_scroll_width_class(width))
+    text = _song_line_text()
+    if not text:
+        home.clearProperty(SONG_WRAP_UPPER_PROP)
+        home.clearProperty(SONG_WRAP_LOWER_PROP)
+        return
     upper, lower = _split_song_wrap(text, width)
     if upper:
         home.setProperty(SONG_WRAP_UPPER_PROP, upper)
@@ -959,7 +980,11 @@ class _PlaybackEvents(xbmc.Player):
         self.stop_serial += 1
 
     def onPlayBackEnded(self):
-        self.stop_serial += 1
+        # Ended also fires when Player.GoTo replaces the current playlist item.
+        # It is therefore not a Stop signal. Normal playlist/session shutdown is
+        # handled by the existing HasAudio timeout; only onPlayBackStopped closes
+        # the popup immediately.
+        pass
 
     def onPlayBackStarted(self):
         self.start_serial += 1
