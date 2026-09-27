@@ -1,3 +1,7 @@
+5.0.140: Diagnosefehler in 5.0.139 korrigiert.
+- popup_open wird in songselector_action.py korrekt importiert.
+- Keine Funktionsänderung: der Diagnose-Log vor/nach Player.GoTo kann jetzt ausgeführt werden, ohne die Songauswahl selbst abzubrechen.
+
 5.0.139: Reine Diagnosefassung für Songtitel-Overflow und Popup-Schließen.
 - Keine Funktionsänderung gegenüber 5.0.138.
 - Loggt Auswahl und Readback von CCNowPlayingSongOverflow.
