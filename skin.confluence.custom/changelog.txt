@@ -1,3 +1,8 @@
+5.0.135: Titelanzeige-Regressionsfix.
+- Einzeilige Songtitel im Umbrechen-Modus werden wieder direkt aus Kodis Player-InfoLabel angezeigt und hängen nicht mehr von einer Python-Property ab.
+- Die Python-Aufteilung wird nur noch bei einem tatsächlichen Zweizeiler verwendet; für die Ermittlung wird primär MusicPlayer.Title gelesen.
+- Dadurch bleibt die Titelanzeige auch dann sofort sichtbar, wenn der Hintergrunddienst seine Wrap-Properties noch nicht gesetzt hat.
+
 5.0.134: Titelwechsel/Lyrics entkoppelt; lange Songtitel wie Albumtitel behandelbar.
 - Die eingebettete Lyrics-Laufzeit führt die Netz-/Scraper-Suche nicht mehr synchron aus dem onAVStarted-Callback aus; der Callback signalisiert nur noch den Wechsel, die Suche läuft anschließend im Lyrics-Worker.
 - Die blockierende Vorab-Suche des nächsten Titels wurde entfernt, damit ein laufender Prefetch keinen echten Titelwechsel verzögern kann.
