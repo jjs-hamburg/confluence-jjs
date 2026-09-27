@@ -1,3 +1,10 @@
+5.0.139: Reine Diagnosefassung für Songtitel-Overflow und Popup-Schließen.
+- Keine Funktionsänderung gegenüber 5.0.138.
+- Loggt Auswahl und Readback von CCNowPlayingSongOverflow.
+- Loggt Player.Title, MusicPlayer.Title, berechnete Titelbreite, effektive Breite sowie SongWrapUpper/Lower bei Zustandsänderungen.
+- Loggt onPlayBackStopped/onPlayBackEnded/onPlayBackStarted/onAVStarted.
+- Loggt den konkreten Popup-Schließpfad (stop_serial oder 2,5-s-Audio-Lücke) sowie den Zustand direkt vor/nach Player.GoTo.
+
 5.0.138: Stabile 5.0.133-Servicebasis wiederhergestellt; Songtitel-Overflow isoliert neu aufgebaut.
 - startup.py sowie die komplette bestehende Popup-/Playback-Logik des Songselektors sind wieder identisch zu 5.0.133; die nachträgliche Hot-Restart-Logik aus 5.0.136/137 ist entfernt.
 - Im Songselektor-Service kommt gegenüber 5.0.133 ausschließlich die Songtitel-Aufteilung hinzu; bestehende Servicezeilen werden dafür nicht verändert.
