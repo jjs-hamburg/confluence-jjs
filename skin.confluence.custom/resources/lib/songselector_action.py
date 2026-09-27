@@ -8,7 +8,7 @@ import time
 import xbmc
 import xbmcgui
 
-from songselector_state import close_popup, current, set_popup_open, size
+from songselector_state import close_popup, current, popup_open, set_popup_open, size
 
 HOME_ID = 10000
 DIALOG_ID = 1116
