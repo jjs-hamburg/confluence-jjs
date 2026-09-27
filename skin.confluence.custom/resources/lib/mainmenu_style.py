@@ -290,15 +290,6 @@ def _choose(title, setting, values_and_labels, default):
     choice = xbmcgui.Dialog().select(title, labels, preselect=preselect)
     if choice >= 0:
         _set(setting, values[choice])
-        if setting == SONG_LINE_OVERFLOW_SETTING:
-            xbmc.sleep(50)
-            xbmc.log(
-                "[CC-DIAG] songoverflow select requested={} readback={}".format(
-                    values[choice],
-                    xbmc.getInfoLabel("Skin.String({})".format(SONG_LINE_OVERFLOW_SETTING)) or "<empty>",
-                ),
-                xbmc.LOGINFO,
-            )
 
 
 def choose_main_font():
