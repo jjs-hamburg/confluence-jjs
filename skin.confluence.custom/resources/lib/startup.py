@@ -18,8 +18,6 @@ LYRICS_SERVICE_PATH = "special://skin/resources/lib/culrc_runner.py"
 
 
 def _wait_stopped(home, property_name, timeout_ms=3000):
-    deadline = xbmc.getGlobalIdleTime()  # force xbmc module access before the loop
-    del deadline
     remaining = max(0, int(timeout_ms))
     while home.getProperty(property_name) == "1" and remaining > 0:
         xbmc.sleep(50)
