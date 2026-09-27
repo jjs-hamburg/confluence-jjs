@@ -1054,7 +1054,12 @@ def run():
         # that distinguishes an explicit popup selection from a real Stop button.
         if playback_events.stop_serial != last_stop_serial:
             last_stop_serial = playback_events.stop_serial
-            selection_in_progress = popup_open() and _selection_target(home) is not None
+            selection_target = _selection_target(home)
+            selection_in_progress = (
+                popup_open()
+                and selection_target is not None
+                and selection_target == current()
+            )
             if not selection_in_progress:
                 playback_session_active = False
                 playback_missing_since = None
