@@ -17,19 +17,31 @@ SONG_SERVICE_PATH = "special://skin/resources/lib/songselector_service.py"
 LYRICS_SERVICE_PATH = "special://skin/resources/lib/culrc_runner.py"
 
 
+def _wait_stopped(home, property_name, timeout_ms=3000):
+    deadline = xbmc.getGlobalIdleTime()  # force xbmc module access before the loop
+    del deadline
+    remaining = max(0, int(timeout_ms))
+    while home.getProperty(property_name) == "1" and remaining > 0:
+        xbmc.sleep(50)
+        remaining -= 50
+    return home.getProperty(property_name) != "1"
+
+
 def _start_background_services():
     home = xbmcgui.Window(10000)
     version = xbmcaddon.Addon().getAddonInfo("version") or ""
 
-    # RunScript instances survive a skin package update. If their source changed,
-    # keeping the old Python process would combine new XML with old service code.
-    # Restart exactly once per installed skin version.
+    # RunScript instances survive a skin package update. Never clear their
+    # running flags ourselves: doing that before StopScript has really finished
+    # can start a second copy of the same service.
     if home.getProperty(BACKGROUND_SERVICE_VERSION_PROP) != version:
         xbmc.executebuiltin("StopScript({})".format(SONG_SERVICE_PATH))
         xbmc.executebuiltin("StopScript({})".format(LYRICS_SERVICE_PATH))
-        xbmc.sleep(120)
-        home.clearProperty(SONG_SERVICE_RUNNING_PROP)
-        home.clearProperty(LYRICS_SERVICE_RUNNING_PROP)
+        song_stopped = _wait_stopped(home, SONG_SERVICE_RUNNING_PROP)
+        lyrics_stopped = _wait_stopped(home, LYRICS_SERVICE_RUNNING_PROP)
+        if not (song_stopped and lyrics_stopped):
+            log("Background service restart still pending; not starting duplicate services", xbmc.LOGWARNING)
+            return
         home.setProperty(BACKGROUND_SERVICE_VERSION_PROP, version)
 
     if home.getProperty(SONG_SERVICE_RUNNING_PROP) != "1":
