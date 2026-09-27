@@ -1,3 +1,10 @@
+5.0.137: Songtitel-Overflow und Popup-Auswahl robust korrigiert.
+- Die in 5.0.136 mögliche Doppelinstanz der Hintergrunddienste wird beim Update aktiv beendet; ein neuer Dienst startet erst, wenn der alte wirklich beendet ist.
+- Das Popup schließt nicht mehr wegen einer Player.HasAudio-Lücke beim Wechsel auf einen ausgewählten Titel. Back bleibt die normale Schließaktion; echter Stop schließt weiterhin sofort.
+- Songtitel-Scrollen verwendet wieder exakt das bewährte einfache Kodi-Label-Prinzip des Albumtitels.
+- Songtitel-Umbrechen verwendet die gleiche Zwei-Zeilen-Aufteilung wie der Albumtitel und zusätzlich Kodis natives wrapmultiline als direkten Fallback.
+- Ungültige oder leere Songtitel-Overflow-Werte werden auf Umbrechen normalisiert; die Setup-Anzeige verwendet denselben Default.
+
 5.0.136: Songtitel-Overflow und Popup-Persistenz korrigiert.
 - Der laufende Songselektor-/Lyrics-Hintergrunddienst wird nach einem Skin-Update versionsabhängig neu gestartet, damit neues XML niemals mit altem Python-Code weiterläuft.
 - Lange Songtitel verwenden im Scroll-Modus die tatsächlich sichtbare Restbreite neben dem kompakten Cover statt immer 1830 px.
