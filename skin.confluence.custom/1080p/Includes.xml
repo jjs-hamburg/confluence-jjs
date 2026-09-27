@@ -3337,8 +3337,8 @@
 	</variable>
 	<variable name="CCNowPlayingSongOverflowSetting">
 		<value condition="String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate)">Abschneiden</value>
-		<value condition="String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)">Umbrechen</value>
-		<value>Scrollen</value>
+		<value condition="String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll)">Scrollen</value>
+		<value>Umbrechen</value>
 	</variable>
 	<!-- Use the raw channel count and map it ourselves. This avoids Kodi versions/builds
 	     that expose 6 instead of 5.1 through MusicPlayer.Channels(DefaultLayout). -->
