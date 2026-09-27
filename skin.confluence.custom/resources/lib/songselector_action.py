@@ -8,7 +8,7 @@ import time
 import xbmc
 import xbmcgui
 
-from songselector_state import close_popup, current, popup_open, set_popup_open, size
+from songselector_state import close_popup, current, set_popup_open, size
 
 HOME_ID = 10000
 DIALOG_ID = 1116
@@ -534,26 +534,8 @@ def play_focused():
         "params": {"playerid": _audio_player_id(), "to": target},
         "id": 1,
     }
-    xbmc.log(
-        "[CC-DIAG] playfocused before GoTo target={} previous={} dialog_active={} popup_prop={}".format(
-            target,
-            previous_playing,
-            xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)),
-            popup_open(),
-        ),
-        xbmc.LOGINFO,
-    )
     try:
         result = json.loads(xbmc.executeJSONRPC(json.dumps(request)))
-        xbmc.log(
-            "[CC-DIAG] playfocused after GoTo target={} result_error={} dialog_active={} popup_prop={}".format(
-                target,
-                bool(result.get("error")),
-                xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)),
-                popup_open(),
-            ),
-            xbmc.LOGINFO,
-        )
         if result.get("error"):
             home.clearProperty(SELECTION_TARGET_PROP)
             return
