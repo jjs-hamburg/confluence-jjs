@@ -1334,14 +1334,11 @@ def run():
                 if now - last_time_update >= 0.50:
                     _set_times(home, meta, playing)
                     last_time_update = now
-            elif opened:
-                if audio_missing_since is None:
-                    audio_missing_since = now
-                if now - audio_missing_since >= 2.5:
-                    close_popup()
-                    _close_dialog()
-                    opened = False
             else:
+                # A selected playlist item may need several seconds before audio
+                # becomes active. The popup must survive that transition; Back or
+                # an explicit Stop are the close actions.
+                audio_missing_since = None
                 _clear_times(home)
 
             if opened:
