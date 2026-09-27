@@ -1,3 +1,12 @@
+5.0.138: Stabile 5.0.133-Servicebasis wiederhergestellt; Songtitel-Overflow isoliert neu aufgebaut.
+- startup.py sowie die komplette bestehende Popup-/Playback-Logik des Songselektors sind wieder identisch zu 5.0.133; die nachträgliche Hot-Restart-Logik aus 5.0.136/137 ist entfernt.
+- Im Songselektor-Service kommt gegenüber 5.0.133 ausschließlich die Songtitel-Aufteilung hinzu; bestehende Servicezeilen werden dafür nicht verändert.
+- Die Lyrics-Suche bleibt vom onAVStarted-Callback entkoppelt und die blockierende Vorab-Suche des nächsten Titels bleibt entfernt.
+- Lange Songtitel besitzen wie Albumtitel Abschneiden / Scrollen / Umbrechen.
+- Bei zweizeiligem Songtitel wird der komplette Albumblock über feste Koordinaten exakt 45 px nach oben gesetzt. Ist auch der Albumtitel zweizeilig, entstehen vier feste Textzeilen.
+- Keine verschachtelte Album-Slide-Animation und kein nativer Wrap-Fallback mehr; die Anzeige folgt wieder dem bewährten Property-Prinzip des Albumtitels.
+- Nach Installation dieser Recovery-Version Kodi einmal neu starten, damit garantiert keine Python-Instanz einer Zwischenversion weiterläuft.
+
 5.0.137: Songtitel-Overflow und Popup-Auswahl robust korrigiert.
 - Die in 5.0.136 mögliche Doppelinstanz der Hintergrunddienste wird beim Update aktiv beendet; ein neuer Dienst startet erst, wenn der alte wirklich beendet ist.
 - Das Popup schließt nicht mehr wegen einer Player.HasAudio-Lücke beim Wechsel auf einen ausgewählten Titel. Back bleibt die normale Schließaktion; echter Stop schließt weiterhin sofort.
