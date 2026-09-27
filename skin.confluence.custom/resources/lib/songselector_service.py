@@ -338,7 +338,7 @@ def _update_album_wrap_properties(home):
 
 
 def _song_line_text():
-    title = (xbmc.getInfoLabel("Player.Title") or "").strip()
+    title = (xbmc.getInfoLabel("MusicPlayer.Title") or xbmc.getInfoLabel("Player.Title") or "").strip()
     if not title:
         return ""
     show_track = (xbmc.getInfoLabel("Skin.String(CCSongSelectorShowTrackNumbers)") or "").strip().lower()
