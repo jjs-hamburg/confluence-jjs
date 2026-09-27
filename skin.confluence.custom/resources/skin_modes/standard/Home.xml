@@ -74,38 +74,68 @@
 				<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 				<bordersize>5</bordersize>
 			</control>
-			<control type="group">
-				<animation effect="slide" start="0,0" end="0,-45" time="0" condition="[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))">conditional</animation>
-				<control type="label">
-					<description>Album Label - truncate</description>
-					<left>255</left><top>398</top><height>38</height><width>1500</width>
-					<label>$VAR[CCNowPlayingAlbumLineText]</label>
-					<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-					<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate)</visible>
-				</control>
-				<control type="label">
-					<description>Album Label - scroll</description>
-					<left>255</left><top>398</top><height>38</height><width>1500</width>
-					<label>$VAR[CCNowPlayingAlbumLineText]</label>
-					<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-					<scroll>true</scroll>
-					<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll)</visible>
-				</control>
-				<control type="label">
-					<description>Album Label - wrap upper</description>
-					<left>255</left><top>360</top><height>38</height><width>1500</width>
-					<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)]</label>
-					<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-					<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper))</visible>
-				</control>
-				<control type="label">
-					<description>Album Label - wrap lower</description>
-					<left>255</left><top>398</top><height>38</height><width>1500</width>
-					<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapLower)]</label>
-					<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-					<visible>String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)</visible>
-				</control>
+			<!-- 5.0.138: preserve the 5.0.133 album layout. Use explicit shifted
+			     album controls only while the song really occupies two wrap rows. -->
+			<control type="label">
+				<description>Album Label - truncate</description>
+				<left>255</left><top>398</top><height>38</height><width>1500</width>
+				<label>$VAR[CCNowPlayingAlbumLineText]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
+			<control type="label">
+				<description>Album Label - scroll</description>
+				<left>255</left><top>398</top><height>38</height><width>1500</width>
+				<label>$VAR[CCNowPlayingAlbumLineText]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+			</control>
+			<control type="label">
+				<description>Album Label - wrap upper</description>
+				<left>255</left><top>360</top><height>38</height><width>1500</width>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+			</control>
+			<control type="label">
+				<description>Album Label - wrap lower</description>
+				<left>255</left><top>398</top><height>38</height><width>1500</width>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapLower)]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+			</control>
+
+			<control type="label">
+				<description>Album Label - truncate shifted for wrapped song</description>
+				<left>255</left><top>353</top><height>38</height><width>1500</width>
+				<label>$VAR[CCNowPlayingAlbumLineText]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + [String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
+			</control>
+			<control type="label">
+				<description>Album Label - scroll shifted for wrapped song</description>
+				<left>255</left><top>353</top><height>38</height><width>1500</width>
+				<label>$VAR[CCNowPlayingAlbumLineText]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + [String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
+			</control>
+			<control type="label">
+				<description>Album Label - wrap upper shifted for wrapped song</description>
+				<left>255</left><top>315</top><height>38</height><width>1500</width>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + [String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
+			</control>
+			<control type="label">
+				<description>Album Label - wrap lower shifted for wrapped song</description>
+				<left>255</left><top>353</top><height>38</height><width>1500</width>
+				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapLower)]</label>
+				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + [String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
+			</control>
+
 			<control type="label">
 				<description>Title label - truncate</description>
 				<left>255</left><top>428</top><height>45</height><width>1500</width>
@@ -133,15 +163,7 @@
 				<left>255</left><top>428</top><height>45</height><width>1500</width>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapLower)]</label>
 				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
-			</control>
-			<control type="label">
-				<description>Title label - native wrap fallback</description>
-				<left>255</left><top>383</top><height>90</height><width>1500</width>
-				<label>$INFO[Player.Title]</label>
-				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<wrapmultiline>true</wrapmultiline>
-				<visible>[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
+				<visible>String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)</visible>
 			</control>
 			<control type="grouplist">
 				<left>255</left><top>464</top><width>1500</width><height>48</height>
