@@ -1,3 +1,9 @@
+5.0.136: Songtitel-Overflow und Popup-Persistenz korrigiert.
+- Der laufende Songselektor-/Lyrics-Hintergrunddienst wird nach einem Skin-Update versionsabhängig neu gestartet, damit neues XML niemals mit altem Python-Code weiterläuft.
+- Lange Songtitel verwenden im Scroll-Modus die tatsächlich sichtbare Restbreite neben dem kompakten Cover statt immer 1830 px.
+- Die Wrap-Breitenmessung berücksichtigt Roboto Bold korrekt und wickelt ohne die bisherige zusätzliche Toleranz.
+- onPlayBackEnded wird nicht mehr als Stop interpretiert. Die Auswahl eines anderen Titels per Enter/OK lässt das Popup daher offen; Back bleibt die normale Schließaktion.
+
 5.0.135: Titelanzeige-Regressionsfix.
 - Einzeilige Songtitel im Umbrechen-Modus werden wieder direkt aus Kodis Player-InfoLabel angezeigt und hängen nicht mehr von einer Python-Property ab.
 - Die Python-Aufteilung wird nur noch bei einem tatsächlichen Zweizeiler verwendet; für die Ermittlung wird primär MusicPlayer.Title gelesen.
