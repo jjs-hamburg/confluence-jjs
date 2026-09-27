@@ -1,3 +1,9 @@
+5.0.142: Diagnose natürlicher Titelwechsel.
+- Keine Funktionsänderung gegenüber 5.0.141.
+- Loggt nur bei Zustandswechseln Playlist-Index, Player.Title, MusicPlayer.Title, Dateipfad, HasAudio, Player.Time und Player.Duration.
+- Loggt zusätzlich onPlayBackStopped/onPlayBackEnded/onPlayBackStarted/onAVStarted mit aktuellem Index, Titel und Dateipfad.
+- Zweck: exakte Zeitkorrelation mit PAPlayer::ProcessStream - Stream Finished bei natürlichem Durchspielen.
+
 5.0.141: Popup bleibt bei Titelauswahl offen.
 - Diagnose aus 5.0.139/140 entfernt.
 - onPlayBackEnded wird nicht mehr als expliziter Stop behandelt; natürliche Titelwechsel schließen das Popup nicht.
