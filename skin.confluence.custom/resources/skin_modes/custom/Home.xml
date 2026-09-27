@@ -3926,7 +3926,13 @@
 				<left>0</left><top>32</top><width>1830</width><height>45</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapLower)]</label>
 				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)</visible>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
+			</control>
+			<control type="label">
+				<left>0</left><top>32</top><width>1830</width><height>45</height>
+				<label>$VAR[CCNowPlayingSongTitle]</label>
+				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
 			</control>
 
 			<!-- Compact modular time line. Enabled groups collapse left automatically.
