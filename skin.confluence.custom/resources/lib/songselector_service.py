@@ -956,18 +956,50 @@ class _PlaybackEvents(xbmc.Player):
         self.start_serial = 0
 
     def onPlayBackStopped(self):
+        xbmc.log(
+            "[CC-TRANSITION] callback=onPlayBackStopped idx={} title={!r} file={!r}".format(
+                current(),
+                xbmc.getInfoLabel("Player.Title") or "",
+                xbmc.getInfoLabel("Player.FilenameAndPath") or "",
+            ),
+            xbmc.LOGINFO,
+        )
         self.stop_serial += 1
 
     def onPlayBackEnded(self):
+        xbmc.log(
+            "[CC-TRANSITION] callback=onPlayBackEnded idx={} title={!r} file={!r}".format(
+                current(),
+                xbmc.getInfoLabel("Player.Title") or "",
+                xbmc.getInfoLabel("Player.FilenameAndPath") or "",
+            ),
+            xbmc.LOGINFO,
+        )
         # Track end is not an explicit Stop. Keep the selector alive across
         # natural playlist transitions; final playback end is still handled by
         # the existing Player.HasAudio timeout.
         pass
 
     def onPlayBackStarted(self):
+        xbmc.log(
+            "[CC-TRANSITION] callback=onPlayBackStarted idx={} title={!r} file={!r}".format(
+                current(),
+                xbmc.getInfoLabel("Player.Title") or "",
+                xbmc.getInfoLabel("Player.FilenameAndPath") or "",
+            ),
+            xbmc.LOGINFO,
+        )
         self.start_serial += 1
 
     def onAVStarted(self):
+        xbmc.log(
+            "[CC-TRANSITION] callback=onAVStarted idx={} title={!r} file={!r}".format(
+                current(),
+                xbmc.getInfoLabel("Player.Title") or "",
+                xbmc.getInfoLabel("Player.FilenameAndPath") or "",
+            ),
+            xbmc.LOGINFO,
+        )
         self.start_serial += 1
 
 
@@ -1006,6 +1038,7 @@ def run():
     last_credits_source_key = None
     credits_display_rows = []
     stop_wait_for_audio_clear = False
+    last_transition_state = None
 
     # Auto-open is session based: opening once at playback start must never mean
     # reopening on every track change. A brief Player.HasAudio gap between songs
@@ -1047,6 +1080,32 @@ def run():
         now = time.monotonic()
         audio = _audio_active()
         auto_open_enabled = _auto_open_enabled()
+
+        # Diagnostic only: record the exact Kodi runtime state whenever one of
+        # the values that drives the footer/popup changes. This does not mutate
+        # playback or skin state.
+        diag_state = (
+            current(),
+            xbmc.getInfoLabel("Player.Title") or "",
+            xbmc.getInfoLabel("MusicPlayer.Title") or "",
+            xbmc.getInfoLabel("Player.FilenameAndPath") or "",
+            bool(audio),
+        )
+        if diag_state != last_transition_state:
+            last_transition_state = diag_state
+            xbmc.log(
+                "[CC-TRANSITION] state idx={} Player.Title={!r} MusicPlayer.Title={!r} "
+                "file={!r} has_audio={} time={!r} duration={!r}".format(
+                    diag_state[0],
+                    diag_state[1],
+                    diag_state[2],
+                    diag_state[3],
+                    diag_state[4],
+                    xbmc.getInfoLabel("Player.Time") or "",
+                    xbmc.getInfoLabel("Player.Duration") or "",
+                ),
+                xbmc.LOGINFO,
+            )
 
         # Kodi/PAPLayer also fires onPlayBackStopped when Player.GoTo replaces
         # the current playlist item. play_focused() sets SELECTION_TARGET_PROP
