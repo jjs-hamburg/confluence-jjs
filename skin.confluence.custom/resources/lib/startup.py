@@ -33,8 +33,12 @@ def _start_background_services():
     # running flags ourselves: doing that before StopScript has really finished
     # can start a second copy of the same service.
     if home.getProperty(BACKGROUND_SERVICE_VERSION_PROP) != version:
-        xbmc.executebuiltin("StopScript({})".format(SONG_SERVICE_PATH))
-        xbmc.executebuiltin("StopScript({})".format(LYRICS_SERVICE_PATH))
+        # 5.0.136 could briefly start duplicate RunScript instances. Stop by
+        # path more than once so an already-created duplicate is cleaned up too.
+        for _ in range(4):
+            xbmc.executebuiltin("StopScript({})".format(SONG_SERVICE_PATH))
+            xbmc.executebuiltin("StopScript({})".format(LYRICS_SERVICE_PATH))
+            xbmc.sleep(250)
         song_stopped = _wait_stopped(home, SONG_SERVICE_RUNNING_PROP)
         lyrics_stopped = _wait_stopped(home, LYRICS_SERVICE_RUNNING_PROP)
         if not (song_stopped and lyrics_stopped):
