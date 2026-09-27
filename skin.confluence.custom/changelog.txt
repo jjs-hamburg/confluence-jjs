@@ -1,3 +1,9 @@
+5.0.141: Popup bleibt bei Titelauswahl offen.
+- Diagnose aus 5.0.139/140 entfernt.
+- onPlayBackEnded wird nicht mehr als expliziter Stop behandelt; natürliche Titelwechsel schließen das Popup nicht.
+- Kodi/PAPLayer meldet Player.GoTo als onPlayBackStopped. Dieser Callback wird jetzt nur dann als interner Titelsprung erkannt, wenn das vom Popup gesetzte SelectionTarget dem aktuellen Playlist-Index entspricht.
+- Echter Stop behält das bisherige Verhalten und schließt das Popup weiterhin.
+
 5.0.140: Diagnosefehler in 5.0.139 korrigiert.
 - popup_open wird in songselector_action.py korrekt importiert.
 - Keine Funktionsänderung: der Diagnose-Log vor/nach Player.GoTo kann jetzt ausgeführt werden, ohne die Songauswahl selbst abzubrechen.
