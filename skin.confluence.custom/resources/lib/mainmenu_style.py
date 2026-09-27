@@ -252,6 +252,10 @@ def ensure_defaults():
     for name, value in defaults:
         if not _get(name):
             _set(name, value)
+    raw_song_overflow = (xbmc.getInfoLabel("Skin.String({})".format(SONG_LINE_OVERFLOW_SETTING)) or "").strip().lower()
+    if raw_song_overflow not in ("truncate", "scroll", "wrap"):
+        _set(SONG_LINE_OVERFLOW_SETTING, DEFAULT_SONG_LINE_OVERFLOW)
+
     # Legacy: the old single shadow mode is the soft shadow mode.
     if _get(HOME_COVER_STYLE_SETTING).lower() == "shadow":
         _set(HOME_COVER_STYLE_SETTING, "softshadow")
