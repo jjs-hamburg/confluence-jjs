@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addon id="skin.confluence.custom" version="5.0.141" name="JJS KODI Confluence Custom" provider-name="Jezz_X, Team Kodi; JJS">
+<addon id="skin.confluence.custom" version="5.0.142" name="JJS KODI Confluence Custom" provider-name="Jezz_X, Team Kodi; JJS">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
 		<import addon="xbmc.python" version="3.0.0" />
