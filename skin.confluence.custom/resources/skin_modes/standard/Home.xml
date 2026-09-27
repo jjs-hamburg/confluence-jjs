@@ -136,10 +136,11 @@
 				<visible>[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
 			</control>
 			<control type="label">
-				<description>Title label - wrap direct fallback</description>
-				<left>255</left><top>428</top><height>45</height><width>1500</width>
+				<description>Title label - native wrap fallback</description>
+				<left>255</left><top>383</top><height>90</height><width>1500</width>
 				<label>$INFO[Player.Title]</label>
 				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
+				<wrapmultiline>true</wrapmultiline>
 				<visible>[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
 			</control>
 			<control type="grouplist">
