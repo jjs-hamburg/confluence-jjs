@@ -338,7 +338,7 @@ def _update_album_wrap_properties(home):
 
 
 def _song_line_text():
-    title = (xbmc.getInfoLabel("MusicPlayer.Title") or xbmc.getInfoLabel("Player.Title") or "").strip()
+    title = (xbmc.getInfoLabel("Player.Title") or "").strip()
     if not title:
         return ""
     show_track = (xbmc.getInfoLabel("Skin.String(CCSongSelectorShowTrackNumbers)") or "").strip().lower()
@@ -350,7 +350,7 @@ def _song_line_text():
 
 
 def _split_song_wrap(text, width_px):
-    """Return (upper, lower) for the same two-line policy used by album titles."""
+    """Same two-line policy as the proven album wrap, for the song title."""
     text = str(text or "").strip()
     if not text:
         return "", ""
@@ -375,7 +375,12 @@ def _split_song_wrap(text, width_px):
     return upper, lower
 
 
-def _song_available_width(home):
+def _update_song_wrap_properties(home):
+    text = _song_line_text()
+    if not text:
+        home.clearProperty(SONG_WRAP_UPPER_PROP)
+        home.clearProperty(SONG_WRAP_LOWER_PROP)
+        return
     standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
     width = SONG_WRAP_STANDARD_WIDTH_PX if standard else SONG_WRAP_CUSTOM_WIDTH_PX
     if not standard and xbmc.getCondVisibility(
@@ -386,16 +391,6 @@ def _song_available_width(home):
         except Exception:
             compact_width = 120.0
         width = max(240.0, width - compact_width - 15.0)
-    return width
-
-
-def _update_song_wrap_properties(home):
-    width = _song_available_width(home)
-    text = _song_line_text()
-    if not text:
-        home.clearProperty(SONG_WRAP_UPPER_PROP)
-        home.clearProperty(SONG_WRAP_LOWER_PROP)
-        return
     upper, lower = _split_song_wrap(text, width)
     if upper:
         home.setProperty(SONG_WRAP_UPPER_PROP, upper)
@@ -964,11 +959,7 @@ class _PlaybackEvents(xbmc.Player):
         self.stop_serial += 1
 
     def onPlayBackEnded(self):
-        # Ended also fires when Player.GoTo replaces the current playlist item.
-        # It is therefore not a Stop signal. Normal playlist/session shutdown is
-        # handled by the existing HasAudio timeout; only onPlayBackStopped closes
-        # the popup immediately.
-        pass
+        self.stop_serial += 1
 
     def onPlayBackStarted(self):
         self.start_serial += 1
@@ -1012,7 +1003,6 @@ def run():
     last_credits_source_key = None
     credits_display_rows = []
     stop_wait_for_audio_clear = False
-    last_credits_poll = 0.0
 
     # Auto-open is session based: opening once at playback start must never mean
     # reopening on every track change. A brief Player.HasAudio gap between songs
@@ -1046,13 +1036,12 @@ def run():
                 break
             continue
 
+        try:
+            credits_runtime.poll()
+        except Exception as exc:
+            xbmc.log("[ConfluenceCustom] Credits runtime: {!r}".format(exc), xbmc.LOGWARNING)
+
         now = time.monotonic()
-        if now - last_credits_poll >= 0.50:
-            try:
-                credits_runtime.poll()
-            except Exception as exc:
-                xbmc.log("[ConfluenceCustom] Credits runtime: {!r}".format(exc), xbmc.LOGWARNING)
-            last_credits_poll = now
         audio = _audio_active()
         auto_open_enabled = _auto_open_enabled()
 
@@ -1318,11 +1307,14 @@ def run():
                 if now - last_time_update >= 0.50:
                     _set_times(home, meta, playing)
                     last_time_update = now
+            elif opened:
+                if audio_missing_since is None:
+                    audio_missing_since = now
+                if now - audio_missing_since >= 2.5:
+                    close_popup()
+                    _close_dialog()
+                    opened = False
             else:
-                # A selected playlist item may need several seconds before audio
-                # becomes active. The popup must survive that transition; Back or
-                # an explicit Stop are the close actions.
-                audio_missing_since = None
                 _clear_times(home)
 
             if opened:
@@ -1409,7 +1401,7 @@ def run():
         was_open = opened
         last_playing = playing
 
-        if monitor.waitForAbort(0.05):
+        if monitor.waitForAbort(0.15):
             break
 
     clear_credits_properties()
