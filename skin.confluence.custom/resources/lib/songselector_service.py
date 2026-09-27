@@ -959,7 +959,10 @@ class _PlaybackEvents(xbmc.Player):
         self.stop_serial += 1
 
     def onPlayBackEnded(self):
-        self.stop_serial += 1
+        # Track end is not an explicit Stop. Keep the selector alive across
+        # natural playlist transitions; final playback end is still handled by
+        # the existing Player.HasAudio timeout.
+        pass
 
     def onPlayBackStarted(self):
         self.start_serial += 1
@@ -1045,38 +1048,41 @@ def run():
         audio = _audio_active()
         auto_open_enabled = _auto_open_enabled()
 
-        # A real Stop button is different from the tiny HasAudio gap between two
-        # playlist tracks. Close within one service tick and end the playback
-        # session immediately, so a quick Stop -> Play also re-arms auto-open.
+        # Kodi/PAPLayer also fires onPlayBackStopped when Player.GoTo replaces
+        # the current playlist item. play_focused() sets SELECTION_TARGET_PROP
+        # before issuing Player.GoTo, so that existing state is the exact marker
+        # that distinguishes an explicit popup selection from a real Stop button.
         if playback_events.stop_serial != last_stop_serial:
             last_stop_serial = playback_events.stop_serial
-            playback_session_active = False
-            playback_missing_since = None
-            auto_open_pending = False
-            audio_missing_since = None
-            stop_wait_for_audio_clear = True
-            _clear_times(home)
-            home.clearProperty(LYRICS_TEXT_PROP)
-            home.clearProperty(LYRICS_SYNC_PROP)
-            home.clearProperty(SELECTION_TARGET_PROP)
-            lyrics_sync_entries = []
-            lyrics_sync_times = []
-            lyrics_line_count = 0
-            lyrics_lines = []
-            last_lyrics_active = -1
-            last_lyrics_window_key = None
-            last_lyrics_sync_enabled = None
-            last_lyrics_font_signature = None
-            _clear_lyrics_window(home)
-            _clear_credits_window(home)
-            home.clearProperty(CREDITS_WINDOW_START_PROP)
-            last_credits_window_key = None
-            last_credits_source_key = None
-            credits_display_rows = []
-            if popup_open():
-                close_popup()
-                _close_dialog()
-            was_open = False
+            selection_in_progress = popup_open() and _selection_target(home) is not None
+            if not selection_in_progress:
+                playback_session_active = False
+                playback_missing_since = None
+                auto_open_pending = False
+                audio_missing_since = None
+                stop_wait_for_audio_clear = True
+                _clear_times(home)
+                home.clearProperty(LYRICS_TEXT_PROP)
+                home.clearProperty(LYRICS_SYNC_PROP)
+                home.clearProperty(SELECTION_TARGET_PROP)
+                lyrics_sync_entries = []
+                lyrics_sync_times = []
+                lyrics_line_count = 0
+                lyrics_lines = []
+                last_lyrics_active = -1
+                last_lyrics_window_key = None
+                last_lyrics_sync_enabled = None
+                last_lyrics_font_signature = None
+                _clear_lyrics_window(home)
+                _clear_credits_window(home)
+                home.clearProperty(CREDITS_WINDOW_START_PROP)
+                last_credits_window_key = None
+                last_credits_source_key = None
+                credits_display_rows = []
+                if popup_open():
+                    close_popup()
+                    _close_dialog()
+                was_open = False
 
         # If Play follows Stop so quickly that polling never observes HasAudio=false,
         # the AV-start callback still marks this as a genuinely new playback session.
