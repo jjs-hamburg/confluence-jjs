@@ -820,6 +820,11 @@
       "value": "wrap"
     },
     {
+      "id": "CCNowPlayingSongOverflow",
+      "type": "string",
+      "value": "wrap"
+    },
+    {
       "id": "ccnowplayingaudiologo",
       "type": "boolean",
       "value": true

@@ -52,6 +52,7 @@ ALBUM_TIME_CURRENT_SETTING = "CCAlbumTimeCurrent"
 ALBUM_TIME_REMAINING_SETTING = "CCAlbumTimeRemaining"
 PLAYER_TIMES_DIMMED_SETTING = "CCPlayerTimesDimmed"
 ALBUM_LINE_OVERFLOW_SETTING = "CCNowPlayingAlbumOverflow"
+SONG_LINE_OVERFLOW_SETTING = "CCNowPlayingSongOverflow"
 AUDIO_BADGE_SIZE_SETTING = "CCAudioBadgeSize"
 AUDIO_BADGE_COLOR_SETTING = "CCAudioBadgeColor"
 AUDIO_BADGE_OPACITY_SETTING = "CCAudioBadgeOpacity"
@@ -103,6 +104,7 @@ DEFAULT_ALBUM_TIME_CURRENT = "true"
 DEFAULT_ALBUM_TIME_REMAINING = "true"
 DEFAULT_PLAYER_TIMES_DIMMED = "false"
 DEFAULT_ALBUM_LINE_OVERFLOW = "wrap"
+DEFAULT_SONG_LINE_OVERFLOW = "wrap"
 DEFAULT_AUDIO_BADGE_SIZE = "90"
 DEFAULT_AUDIO_BADGE_COLOR = "submenu"
 DEFAULT_AUDIO_BADGE_OPACITY = "55"
@@ -239,6 +241,7 @@ def ensure_defaults():
         (SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT),
         (SONG_SELECTOR_FOCUS_TIMEOUT_SETTING, DEFAULT_SONG_SELECTOR_FOCUS_TIMEOUT),
         (ALBUM_LINE_OVERFLOW_SETTING, DEFAULT_ALBUM_LINE_OVERFLOW),
+        (SONG_LINE_OVERFLOW_SETTING, DEFAULT_SONG_LINE_OVERFLOW),
         (AUDIO_BADGE_SIZE_SETTING, DEFAULT_AUDIO_BADGE_SIZE),
         (AUDIO_BADGE_COLOR_SETTING, DEFAULT_AUDIO_BADGE_COLOR),
         (AUDIO_BADGE_OPACITY_SETTING, DEFAULT_AUDIO_BADGE_OPACITY),
@@ -558,6 +561,10 @@ def choose_album_line_overflow():
     _choose("Lange Albumtitel", ALBUM_LINE_OVERFLOW_SETTING, ALBUM_LINE_OVERFLOWS, DEFAULT_ALBUM_LINE_OVERFLOW)
 
 
+def choose_song_line_overflow():
+    _choose("Lange Songtitel", SONG_LINE_OVERFLOW_SETTING, ALBUM_LINE_OVERFLOWS, DEFAULT_SONG_LINE_OVERFLOW)
+
+
 def choose_audio_badge_content():
     _choose("Codec-Darstellung", AUDIO_BADGE_CONTENT_SETTING, AUDIO_BADGE_CONTENTS, DEFAULT_AUDIO_BADGE_CONTENT)
 
@@ -590,6 +597,7 @@ def reset_playback_info():
     xbmc.executebuiltin("Skin.Reset(CCPlayerTimesBadges)")
     xbmc.executebuiltin("Skin.Reset(CCPlayerTimeBadgesEqual)")
     _set(ALBUM_LINE_OVERFLOW_SETTING, DEFAULT_ALBUM_LINE_OVERFLOW)
+    _set(SONG_LINE_OVERFLOW_SETTING, DEFAULT_SONG_LINE_OVERFLOW)
     _set(AUDIO_BADGE_SIZE_SETTING, DEFAULT_AUDIO_BADGE_SIZE)
     _set(AUDIO_BADGE_COLOR_SETTING, DEFAULT_AUDIO_BADGE_COLOR)
     _set(AUDIO_BADGE_OPACITY_SETTING, DEFAULT_AUDIO_BADGE_OPACITY)
@@ -725,6 +733,8 @@ def main():
         _toggle_bool_setting(PLAYER_TIMES_DIMMED_SETTING, DEFAULT_PLAYER_TIMES_DIMMED)
     elif mode == "albumoverflow":
         choose_album_line_overflow()
+    elif mode == "songoverflow":
+        choose_song_line_overflow()
     elif mode == "audiobadgecontent":
         choose_audio_badge_content()
     elif mode == "audiobadgesize":

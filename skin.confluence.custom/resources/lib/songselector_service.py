@@ -47,9 +47,14 @@ TIME_BADGE_CLASS_WIDTHS = (112, 123, 134, 145, 156, 167, 178, 189, 200, 211, 222
 
 ALBUM_WRAP_UPPER_PROP = "ConfluenceCustom.NowPlaying.AlbumWrapUpper"
 ALBUM_WRAP_LOWER_PROP = "ConfluenceCustom.NowPlaying.AlbumWrapLower"
+SONG_WRAP_UPPER_PROP = "ConfluenceCustom.NowPlaying.SongWrapUpper"
+SONG_WRAP_LOWER_PROP = "ConfluenceCustom.NowPlaying.SongWrapLower"
 ALBUM_WRAP_CUSTOM_WIDTH_PX = 1830.0
 ALBUM_WRAP_STANDARD_WIDTH_PX = 1500.0
 ALBUM_WRAP_FONT_SIGNATURE = ("roboto", 26)
+SONG_WRAP_CUSTOM_WIDTH_PX = 1830.0
+SONG_WRAP_STANDARD_WIDTH_PX = 1500.0
+SONG_WRAP_FONT_SIGNATURE = ("roboto", 30)
 DIALOG_ID = 1116
 LIST_ID = 9110
 NEUTRAL_CONTROL_ID = 9131
@@ -330,6 +335,71 @@ def _update_album_wrap_properties(home):
         home.setProperty(ALBUM_WRAP_LOWER_PROP, lower)
     else:
         home.clearProperty(ALBUM_WRAP_LOWER_PROP)
+
+
+def _song_line_text():
+    title = (xbmc.getInfoLabel("Player.Title") or "").strip()
+    if not title:
+        return ""
+    show_track = (xbmc.getInfoLabel("Skin.String(CCSongSelectorShowTrackNumbers)") or "").strip().lower()
+    if show_track in ("1", "true", "yes", "on"):
+        track = (xbmc.getInfoLabel("MusicPlayer.TrackNumber") or "").strip()
+        if track and track not in ("0", "00"):
+            return "{}. {}".format(track, title)
+    return title
+
+
+def _split_song_wrap(text, width_px):
+    """Return (upper, lower) for the same two-line policy used by album titles."""
+    text = str(text or "").strip()
+    if not text:
+        return "", ""
+    if _estimated_text_width(text, SONG_WRAP_FONT_SIGNATURE) <= (width_px * 1.015):
+        return "", text
+    words = text.split()
+    if len(words) <= 1:
+        return "", text
+    upper = ""
+    split_at = 0
+    for i, word in enumerate(words):
+        trial = _append_word(upper, word)
+        if upper and _estimated_text_width(trial, SONG_WRAP_FONT_SIGNATURE) > width_px:
+            split_at = i
+            break
+        upper = trial
+    else:
+        return "", text
+    lower = " ".join(words[split_at:]).strip()
+    if not upper or not lower:
+        return "", text
+    return upper, lower
+
+
+def _update_song_wrap_properties(home):
+    text = _song_line_text()
+    if not text:
+        home.clearProperty(SONG_WRAP_UPPER_PROP)
+        home.clearProperty(SONG_WRAP_LOWER_PROP)
+        return
+    standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
+    width = SONG_WRAP_STANDARD_WIDTH_PX if standard else SONG_WRAP_CUSTOM_WIDTH_PX
+    if not standard and xbmc.getCondVisibility(
+        "String.IsEqual(Skin.String(CCMusicArtworkMode),compact)"
+    ):
+        try:
+            compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
+        except Exception:
+            compact_width = 120.0
+        width = max(240.0, width - compact_width - 15.0)
+    upper, lower = _split_song_wrap(text, width)
+    if upper:
+        home.setProperty(SONG_WRAP_UPPER_PROP, upper)
+    else:
+        home.clearProperty(SONG_WRAP_UPPER_PROP)
+    if lower:
+        home.setProperty(SONG_WRAP_LOWER_PROP, lower)
+    else:
+        home.clearProperty(SONG_WRAP_LOWER_PROP)
 
 
 def _append_word(current, word):
@@ -933,6 +1003,7 @@ def run():
     last_credits_source_key = None
     credits_display_rows = []
     stop_wait_for_audio_clear = False
+    last_credits_poll = 0.0
 
     # Auto-open is session based: opening once at playback start must never mean
     # reopening on every track change. A brief Player.HasAudio gap between songs
@@ -950,6 +1021,7 @@ def run():
         # Keep the album wrap properties current in both Custom and Standard mode.
         # The rest of the service remains inert in Standard mode as before.
         _update_album_wrap_properties(home)
+        _update_song_wrap_properties(home)
         # Standard Confluence mode keeps the custom service installed but inert.
         # This prevents auto-popup/navigation side effects while the original
         # Confluence XML set is active.
@@ -965,12 +1037,13 @@ def run():
                 break
             continue
 
-        try:
-            credits_runtime.poll()
-        except Exception as exc:
-            xbmc.log("[ConfluenceCustom] Credits runtime: {!r}".format(exc), xbmc.LOGWARNING)
-
         now = time.monotonic()
+        if now - last_credits_poll >= 0.50:
+            try:
+                credits_runtime.poll()
+            except Exception as exc:
+                xbmc.log("[ConfluenceCustom] Credits runtime: {!r}".format(exc), xbmc.LOGWARNING)
+            last_credits_poll = now
         audio = _audio_active()
         auto_open_enabled = _auto_open_enabled()
 
@@ -1330,7 +1403,7 @@ def run():
         was_open = opened
         last_playing = playing
 
-        if monitor.waitForAbort(0.15):
+        if monitor.waitForAbort(0.05):
             break
 
     clear_credits_properties()

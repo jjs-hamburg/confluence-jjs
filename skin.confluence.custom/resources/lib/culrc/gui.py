@@ -35,7 +35,8 @@ class MAIN():
     def setup_main(self):
         self.fetchedLyrics = []
         self.current_lyrics = Lyrics(settings=self.lyricssettings)
-        self.MyPlayer = MyPlayer(function=self.myPlayerChanged, clear=self.clear)
+        self.player_change_pending = True
+        self.MyPlayer = MyPlayer(function=self.player_changed, clear=self.clear)
         self.Monitor = MyMonitor(function=self.update_settings)
         self.dialog = xbmcgui.Dialog()
         self.customtimer = False
@@ -111,21 +112,19 @@ class MAIN():
             # Full-screen music visualisation is deliberately not a lyrics context.
             if self.proceed():
                 if not self.CULRC_FIRSTRUN:
-                    # only the first lyrics are fetched by main_loop, the rest is done through onAVStarted. this makes sure both don't run simultaniously
                     self.CULRC_FIRSTRUN = True
-                    # notify user the script is searching for lyrics
+                    self.player_change_pending = True
                     if not self.SETTING_SILENT and _visualisation_visible():
                         self.dialog.notification(ADDONNAME, LANGUAGE(32004), icon=ADDONICON, time=2000, sound=False)
-                    # start fetching lyrics
-                    self.myPlayerChanged()
-                elif WIN.getProperty('culrc.force') == 'TRUE':
-                    # we're already running, user clicked button on osd
+                if WIN.getProperty('culrc.force') == 'TRUE':
                     WIN.setProperty('culrc.force','FALSE')
                     self.current_lyrics = Lyrics(settings=self.lyricssettings)
+                    self.player_change_pending = True
+                # onAVStarted only marks work pending. Network/scraper work is
+                # deliberately executed here, after the Kodi player callback has returned.
+                if self.player_change_pending:
+                    self.player_change_pending = False
                     self.myPlayerChanged()
-                # internetstreams may (like spotify) or may not (like many internet radio stations) generate onAVStarted callbacks to indicate a new song has started.
-                # TODO: no idea how to differentiate between those automatically.
-                # for now, add a setting for internet radio, which will cause issues with spotify and the likes.
                 elif xbmc.getCondVisibility('Player.IsInternetStream') and self.SETTING_INTERNETRADIO:
                     self.myPlayerChanged()
             else:
@@ -134,6 +133,7 @@ class MAIN():
                 if self.CULRC_FIRSTRUN:
                     self.current_lyrics = Lyrics(settings=self.lyricssettings)
                 self.CULRC_FIRSTRUN = False
+                self.player_change_pending = False
                 if not _jjs_popup_visible():
                     WIN.clearProperty(JJS_STATUS_PROP)
             xbmc.sleep(100)
@@ -348,6 +348,11 @@ class MAIN():
             log('failed to delete file', debug=self.DEBUG)
             return False
 
+    def player_changed(self):
+        # Keep Kodi's player callback tiny. The actual search may involve local
+        # parsing plus multiple network scrapers and must not run in onAVStarted.
+        self.player_change_pending = True
+
     def myPlayerChanged(self):
         if not self.CULRC_FIRSTRUN:
             return
@@ -393,14 +398,9 @@ class MAIN():
                         self.dialog.notification(ADDONNAME + ': ' + LANGUAGE(32001), song.artist + ' - ' + song.title, icon=ADDONICON, time=2000, sound=False)
                 break
             xbmc.sleep(50)
-        # only search for next lyrics if current song has changed and we have not skipped to another track while searching for lyrics
-        if xbmc.getCondVisibility('MusicPlayer.HasNext') and songchanged and (song == Song.current(opt=self.lyricssettings)):
-            next_song = Song.next(opt=self.lyricssettings)
-            if next_song:
-                log('Next Song: %s - %s' % (next_song.artist, next_song.title), debug=self.DEBUG)
-                self.get_lyrics(next_song, True)
-            else:
-                log('Missing Artist or Song name for next track', debug=self.DEBUG)
+        # No synchronous next-song prefetch here. A slow provider could otherwise
+        # occupy this worker across the real track boundary. The next title is
+        # searched as soon as onAVStarted marks it pending.
 
     def update_settings(self):
         self.get_settings()

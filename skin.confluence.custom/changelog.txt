@@ -1,3 +1,10 @@
+5.0.134: Titelwechsel/Lyrics entkoppelt; lange Songtitel wie Albumtitel behandelbar.
+- Die eingebettete Lyrics-Laufzeit führt die Netz-/Scraper-Suche nicht mehr synchron aus dem onAVStarted-Callback aus; der Callback signalisiert nur noch den Wechsel, die Suche läuft anschließend im Lyrics-Worker.
+- Die blockierende Vorab-Suche des nächsten Titels wurde entfernt, damit ein laufender Prefetch keinen echten Titelwechsel verzögern kann.
+- Songselektor-Service pollt mit 50 ms für schnelle Wechsel, Credits nur noch mit 500 ms; die 5-s-Auswahlrückkehr bleibt unverändert.
+- Lange Songtitel erhalten wie Albumtitel die Optionen Abschneiden / Scrollen / Umbrechen; Default ist Umbrechen.
+- Bei Song-Umbruch rückt die Albumzeile nach oben. Sind Album und Song zweizeilig, entstehen vier sauber gestapelte Textzeilen.
+
 5.0.133: Integrierte Credits-/Lyrics-Laufzeit vollständig wiederhergestellt.
 - Beim Import des getesteten 5.0.130-Stands ins GitHub-Repo war der interne Runtime-Block für Credits und eingebettete CU-LRC-Lyrics nicht mit übernommen worden.
 - credits_resolver.py, credits_runtime.py, culrc_runner.py und das vollständige interne culrc-Paket werden 1:1 aus dem getesteten 5.0.130-Stand wiederhergestellt.

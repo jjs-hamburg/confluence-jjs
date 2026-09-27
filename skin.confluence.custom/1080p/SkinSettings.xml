@@ -1559,6 +1559,11 @@
 						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumoverflow)</onclick>
 					</control>
+					<control type="button" id="568">
+						<width>1125</width><height>60</height><font>font13</font><label>Lange Songtitel</label><label2>[COLOR=selected]$VAR[CCNowPlayingSongOverflowSetting][/COLOR]</label2>
+						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songoverflow)</onclick>
+					</control>
 					<control type="radiobutton" id="553">
 						<width>1125</width><height>60</height><font>font13</font><label>Audio-Badge bei Wiedergabe</label>
 						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
