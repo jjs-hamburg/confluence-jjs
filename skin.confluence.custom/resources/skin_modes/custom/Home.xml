@@ -3879,26 +3879,26 @@
 				<left>0</left><top>0</top><width>1830</width><height>34</height>
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 			<control type="label">
 				<left>0</left><top>0</top><width>1830</width><height>34</height>
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
-				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 			<control type="label">
 				<left>0</left><top>-34</top><width>1830</width><height>34</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 			<control type="label">
 				<left>0</left><top>0</top><width>1830</width><height>34</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapLower)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 
 			<!-- If the song wraps to two rows, move the complete album block up by
