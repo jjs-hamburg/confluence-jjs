@@ -402,6 +402,46 @@ def _update_song_wrap_properties(home):
         home.clearProperty(SONG_WRAP_LOWER_PROP)
 
 
+def _diagnose_song_overflow(home):
+    """Log the complete song-overflow decision chain without changing state."""
+    mode = (xbmc.getInfoLabel("Skin.String(CCNowPlayingSongOverflow)") or "").strip()
+    player_title = (xbmc.getInfoLabel("Player.Title") or "").strip()
+    music_title = (xbmc.getInfoLabel("MusicPlayer.Title") or "").strip()
+    rendered = _song_line_text()
+    standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
+    artwork_mode = (xbmc.getInfoLabel("Skin.String(CCMusicArtworkMode)") or "").strip()
+    width = SONG_WRAP_STANDARD_WIDTH_PX if standard else SONG_WRAP_CUSTOM_WIDTH_PX
+    compact_width = ""
+    if not standard and artwork_mode == "compact":
+        compact_width = home.getProperty(COMPACT_WIDTH_PROP) or ""
+        try:
+            width = max(240.0, width - float(compact_width or 120) - 15.0)
+        except Exception:
+            width = max(240.0, width - 120.0 - 15.0)
+    estimated = _estimated_text_width(rendered, SONG_WRAP_FONT_SIGNATURE) if rendered else 0.0
+    upper = home.getProperty(SONG_WRAP_UPPER_PROP) or ""
+    lower = home.getProperty(SONG_WRAP_LOWER_PROP) or ""
+    key = (
+        mode, player_title, music_title, rendered, standard, artwork_mode,
+        compact_width, round(width, 1), round(estimated, 1), upper, lower,
+    )
+    xbmc.log(
+        "[CC-DIAG] overflow mode={!r} cond(truncate/scroll/wrap)={}/{}/{} "
+        "Player.Title={!r} MusicPlayer.Title={!r} rendered={!r} "
+        "standard={} artwork={!r} compactWidth={!r} effectiveWidth={:.1f} "
+        "estimatedWidth={:.1f} upper={!r} lower={!r}".format(
+            mode,
+            xbmc.getCondVisibility("String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate)"),
+            xbmc.getCondVisibility("String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll)"),
+            xbmc.getCondVisibility("String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)"),
+            player_title, music_title, rendered, standard, artwork_mode,
+            compact_width, width, estimated, upper, lower,
+        ),
+        xbmc.LOGINFO,
+    )
+    return key
+
+
 def _append_word(current, word):
     return (current + " " + word).strip() if current else word
 
@@ -956,15 +996,19 @@ class _PlaybackEvents(xbmc.Player):
         self.start_serial = 0
 
     def onPlayBackStopped(self):
+        xbmc.log("[CC-DIAG] player-event onPlayBackStopped", xbmc.LOGINFO)
         self.stop_serial += 1
 
     def onPlayBackEnded(self):
+        xbmc.log("[CC-DIAG] player-event onPlayBackEnded", xbmc.LOGINFO)
         self.stop_serial += 1
 
     def onPlayBackStarted(self):
+        xbmc.log("[CC-DIAG] player-event onPlayBackStarted", xbmc.LOGINFO)
         self.start_serial += 1
 
     def onAVStarted(self):
+        xbmc.log("[CC-DIAG] player-event onAVStarted", xbmc.LOGINFO)
         self.start_serial += 1
 
 
@@ -1003,6 +1047,7 @@ def run():
     last_credits_source_key = None
     credits_display_rows = []
     stop_wait_for_audio_clear = False
+    last_diag_song_key = None
 
     # Auto-open is session based: opening once at playback start must never mean
     # reopening on every track change. A brief Player.HasAudio gap between songs
@@ -1021,6 +1066,16 @@ def run():
         # The rest of the service remains inert in Standard mode as before.
         _update_album_wrap_properties(home)
         _update_song_wrap_properties(home)
+        diag_song_key = (
+            (xbmc.getInfoLabel("Skin.String(CCNowPlayingSongOverflow)") or "").strip(),
+            (xbmc.getInfoLabel("Player.Title") or "").strip(),
+            home.getProperty(SONG_WRAP_UPPER_PROP) or "",
+            home.getProperty(SONG_WRAP_LOWER_PROP) or "",
+            (xbmc.getInfoLabel("Skin.String(CCMusicArtworkMode)") or "").strip(),
+            home.getProperty(COMPACT_WIDTH_PROP) or "",
+        )
+        if diag_song_key != last_diag_song_key:
+            last_diag_song_key = _diagnose_song_overflow(home)
         # Standard Confluence mode keeps the custom service installed but inert.
         # This prevents auto-popup/navigation side effects while the original
         # Confluence XML set is active.
@@ -1049,6 +1104,12 @@ def run():
         # playlist tracks. Close within one service tick and end the playback
         # session immediately, so a quick Stop -> Play also re-arms auto-open.
         if playback_events.stop_serial != last_stop_serial:
+            xbmc.log(
+                "[CC-DIAG] popup-close path=stop_serial old={} new={} popup_open={} has_audio={}".format(
+                    last_stop_serial, playback_events.stop_serial, popup_open(), _audio_active()
+                ),
+                xbmc.LOGINFO,
+            )
             last_stop_serial = playback_events.stop_serial
             playback_session_active = False
             playback_missing_since = None
@@ -1311,6 +1372,12 @@ def run():
                 if audio_missing_since is None:
                     audio_missing_since = now
                 if now - audio_missing_since >= 2.5:
+                    xbmc.log(
+                        "[CC-DIAG] popup-close path=audio_gap seconds={:.3f} popup_open={}".format(
+                            now - audio_missing_since, popup_open()
+                        ),
+                        xbmc.LOGINFO,
+                    )
                     close_popup()
                     _close_dialog()
                     opened = False
