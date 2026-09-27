@@ -81,7 +81,7 @@
 				<left>255</left><top>398</top><height>38</height><width>1500</width>
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 			<control type="label">
 				<description>Album Label - scroll</description>
@@ -89,21 +89,21 @@
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
-				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 			<control type="label">
 				<description>Album Label - wrap upper</description>
 				<left>255</left><top>360</top><height>38</height><width>1500</width>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 			<control type="label">
 				<description>Album Label - wrap lower</description>
 				<left>255</left><top>398</top><height>38</height><width>1500</width>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapLower)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
-				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + ![[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
+				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
 
 			<control type="label">
