@@ -558,11 +558,11 @@ def _choose_audio_badge(title, setting, choices, default):
 
 
 def choose_album_line_overflow():
-    _choose("Lange Albumtitel", ALBUM_LINE_OVERFLOW_SETTING, ALBUM_LINE_OVERFLOWS, DEFAULT_ALBUM_LINE_OVERFLOW)
+    _choose("Long album titles", ALBUM_LINE_OVERFLOW_SETTING, ALBUM_LINE_OVERFLOWS, DEFAULT_ALBUM_LINE_OVERFLOW)
 
 
 def choose_song_line_overflow():
-    _choose("Lange Songtitel", SONG_LINE_OVERFLOW_SETTING, ALBUM_LINE_OVERFLOWS, DEFAULT_SONG_LINE_OVERFLOW)
+    _choose("Long song titles", SONG_LINE_OVERFLOW_SETTING, ALBUM_LINE_OVERFLOWS, DEFAULT_SONG_LINE_OVERFLOW)
 
 
 def choose_audio_badge_content():
