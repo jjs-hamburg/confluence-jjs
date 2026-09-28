@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Install/restore JJS KODI Confluence Custom's bundled Kodi library nodes.
+"""Install/restore Confluence-jjs's bundled Kodi library nodes.
 
 Fresh skin installs only fill node files that do not yet exist.  Existing
 profiles are never overwritten automatically.  The explicit ``reset`` action
@@ -20,7 +20,7 @@ KINDS = ("music", "video")
 
 
 def _log(message, level=xbmc.LOGINFO):
-    xbmc.log("[JJS KODI Confluence Custom] Library nodes: {}".format(message), level)
+    xbmc.log("[Confluence-jjs] Library nodes: {}".format(message), level)
 
 
 def _join(base, name):
@@ -30,7 +30,7 @@ def _join(base, name):
 def _ensure_dir(path):
     if not xbmcvfs.exists(path):
         if not xbmcvfs.mkdirs(path) and not xbmcvfs.exists(path):
-            raise RuntimeError("Ordner konnte nicht angelegt werden: {}".format(path))
+            raise RuntimeError("Folder could not be created: {}".format(path))
 
 
 def _copy_tree(source, target, overwrite=False):
@@ -55,7 +55,7 @@ def _copy_tree(source, target, overwrite=False):
             except Exception:
                 pass
         if not xbmcvfs.copy(src, dst):
-            raise RuntimeError("Datei konnte nicht kopiert werden: {}".format(filename))
+            raise RuntimeError("File could not be copied: {}".format(filename))
         copied += 1
     return copied, skipped
 
@@ -67,7 +67,7 @@ def _remove_tree(path):
     for filename in files:
         target = _join(path, filename)
         if not xbmcvfs.delete(target) and xbmcvfs.exists(target):
-            raise RuntimeError("Datei konnte nicht gelöscht werden: {}".format(target))
+            raise RuntimeError("File could not be deleted: {}".format(target))
     for dirname in dirs:
         _remove_tree(_join(path, dirname))
     try:
@@ -75,7 +75,7 @@ def _remove_tree(path):
     except TypeError:
         ok = xbmcvfs.rmdir(path)
     if not ok and xbmcvfs.exists(path):
-        raise RuntimeError("Ordner konnte nicht gelöscht werden: {}".format(path))
+        raise RuntimeError("Folder could not be deleted: {}".format(path))
 
 
 def install_missing_defaults():
@@ -86,11 +86,11 @@ def install_missing_defaults():
         source = _join(SOURCE_ROOT, kind)
         target = _join(TARGET_ROOT, kind)
         if not xbmcvfs.exists(source):
-            raise RuntimeError("Gebündelte {}-Nodes fehlen".format(kind))
+            raise RuntimeError("Bundled {} nodes are missing".format(kind))
         copied, skipped = _copy_tree(source, target, overwrite=False)
         total_copied += copied
         total_skipped += skipped
-    _log("fresh install: {} Dateien angelegt, {} vorhandene Dateien beibehalten".format(total_copied, total_skipped))
+    _log("fresh install: {} files created, {} existing files kept".format(total_copied, total_skipped))
     return total_copied, total_skipped
 
 
@@ -105,24 +105,24 @@ def restore_defaults():
         target = _join(TARGET_ROOT, kind)
         copied, _ = _copy_tree(source, target, overwrite=True)
         total += copied
-    _log("explicit reset: {} Node-Dateien wiederhergestellt".format(total))
+    _log("explicit reset: {} node files restored".format(total))
     return total
 
 
 def reset_interactive():
     dialog = xbmcgui.Dialog()
     if not dialog.yesno(
-        "JJS KODI Confluence Custom",
-        "Vorhandene Musik- und Video-Library-Nodes werden vollständig durch den Skin-Standard ersetzt.[CR][CR]Fortfahren?",
+        "Confluence-jjs",
+        "Existing music and video library nodes will be completely replaced by the skin defaults.[CR][CR]Continue?",
     ):
         return False
     try:
         total = restore_defaults()
     except Exception as exc:
         _log("reset failed: {}".format(exc), xbmc.LOGERROR)
-        dialog.ok("JJS KODI Confluence Custom", "Library-Nodes konnten nicht zurückgesetzt werden:[CR]{}".format(exc))
+        dialog.ok("Confluence-jjs", "Library nodes could not be reset:[CR]{}".format(exc))
         return False
-    dialog.notification("JJS KODI Confluence Custom", "{} Library-Node-Dateien wiederhergestellt".format(total), xbmcgui.NOTIFICATION_INFO, 3500)
+    dialog.notification("Confluence-jjs", "{} library node files restored".format(total), xbmcgui.NOTIFICATION_INFO, 3500)
     xbmc.sleep(250)
     xbmc.executebuiltin("ReloadSkin()")
     return True
