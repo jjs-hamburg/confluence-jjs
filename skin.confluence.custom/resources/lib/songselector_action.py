@@ -34,6 +34,7 @@ LYRICS_WINDOW_START_PROP = "ConfluenceCustom.SongSelector.LyricsWindowStart"
 LYRICS_MANUAL_START_PROP = "ConfluenceCustom.SongSelector.LyricsManualStart"
 LYRICS_LINE_COUNT_PROP = "ConfluenceCustom.SongSelector.LyricsLineCount"
 SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
+SELECTION_GOTO_PENDING_PROP = "ConfluenceCustom.SongSelector.GoToPending"
 HIGHLIGHT_PROP = "ConfluenceCustom.SongSelector.Highlight"
 PROGRAMMATIC_UNTIL_PROP = "ConfluenceCustom.SongSelector.ProgrammaticUntil"
 NEUTRAL_CONTROL_ID = 9131
@@ -443,6 +444,7 @@ def close_dialog():
     _set_credits_view(False)
     _set_lyrics_view(False)
     _home().clearProperty(SELECTION_TARGET_PROP)
+    _home().clearProperty(SELECTION_GOTO_PENDING_PROP)
     _home().clearProperty(CREDITS_WINDOW_START_PROP)
     close_popup()
     _touch()
@@ -454,6 +456,7 @@ def closed():
     _set_credits_view(False)
     _set_lyrics_view(False)
     _home().clearProperty(SELECTION_TARGET_PROP)
+    _home().clearProperty(SELECTION_GOTO_PENDING_PROP)
     _home().clearProperty(CREDITS_WINDOW_START_PROP)
     close_popup()
     _touch()
@@ -525,8 +528,13 @@ def play_focused():
     previous_playing = current()
     if target != previous_playing:
         home.setProperty(SELECTION_TARGET_PROP, str(target))
+        # Player.GoTo may make PAPPlayer emit onPlayBackStopped before Kodi has
+        # updated the playlist position. Mark that one expected callback before
+        # issuing GoTo so the service can distinguish it from a real Stop.
+        home.setProperty(SELECTION_GOTO_PENDING_PROP, "{:.6f}".format(time.time()))
     else:
         home.clearProperty(SELECTION_TARGET_PROP)
+        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
 
     request = {
         "jsonrpc": "2.0",
@@ -538,9 +546,11 @@ def play_focused():
         result = json.loads(xbmc.executeJSONRPC(json.dumps(request)))
         if result.get("error"):
             home.clearProperty(SELECTION_TARGET_PROP)
+            home.clearProperty(SELECTION_GOTO_PENDING_PROP)
             return
     except Exception:
         home.clearProperty(SELECTION_TARGET_PROP)
+        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
         return
 
     # Keep the popup open: selecting a song is now a playback action only.

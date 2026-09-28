@@ -82,6 +82,7 @@ CULRC_MANUAL_PROP = "culrc.manual"
 CULRC_ARTIST_PROP = "culrc.artist"
 CULRC_TRACK_PROP = "culrc.track"
 SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
+SELECTION_GOTO_PENDING_PROP = "ConfluenceCustom.SongSelector.GoToPending"
 CREDITS_SOURCE_COUNT_PROP = "ConfluenceCustom.Credits.LineCount"
 CREDITS_SOURCE_UPDATED_PROP = "ConfluenceCustom.Credits.Updated"
 CREDITS_SOURCE_PREFIX = "ConfluenceCustom.Credits.Line."
@@ -692,7 +693,26 @@ def _selection_target(home):
         return int(value)
     except Exception:
         home.clearProperty(SELECTION_TARGET_PROP)
+                home.clearProperty(SELECTION_GOTO_PENDING_PROP)
         return None
+
+
+def _consume_selection_goto_pending(home, max_age=3.0):
+    """Consume the one Stop callback expected from a popup Player.GoTo request.
+
+    PAPPlayer can emit onPlayBackStopped before Kodi updates the playlist index.
+    The old target==current check therefore raced with that index update and
+    intermittently treated a song selection as a real Stop, closing the popup.
+    """
+    raw = home.getProperty(SELECTION_GOTO_PENDING_PROP)
+    home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+    if not raw:
+        return False
+    try:
+        age = time.time() - float(raw)
+    except Exception:
+        return False
+    return 0.0 <= age <= float(max_age)
 
 
 def _skin_string(name, default=""):
@@ -1114,10 +1134,11 @@ def run():
         if playback_events.stop_serial != last_stop_serial:
             last_stop_serial = playback_events.stop_serial
             selection_target = _selection_target(home)
+            goto_stop_expected = _consume_selection_goto_pending(home)
             selection_in_progress = (
                 popup_open()
                 and selection_target is not None
-                and selection_target == current()
+                and goto_stop_expected
             )
             if not selection_in_progress:
                 playback_session_active = False
@@ -1129,6 +1150,7 @@ def run():
                 home.clearProperty(LYRICS_TEXT_PROP)
                 home.clearProperty(LYRICS_SYNC_PROP)
                 home.clearProperty(SELECTION_TARGET_PROP)
+            home.clearProperty(SELECTION_GOTO_PENDING_PROP)
                 lyrics_sync_entries = []
                 lyrics_sync_times = []
                 lyrics_line_count = 0
@@ -1423,6 +1445,7 @@ def run():
                         last_list_position = playing
                     if selected_target is not None:
                         home.clearProperty(SELECTION_TARGET_PROP)
+                    home.clearProperty(SELECTION_GOTO_PENDING_PROP)
 
                 selection_timeout = _seconds(SELECTION_TIMEOUT_SETTING, 5)
                 if (not detail_view() and selection_timeout and _list_focused()
@@ -1442,6 +1465,7 @@ def run():
             home.clearProperty(LYRICS_TEXT_PROP)
             home.clearProperty(LYRICS_SYNC_PROP)
             home.clearProperty(SELECTION_TARGET_PROP)
+            home.clearProperty(SELECTION_GOTO_PENDING_PROP)
             lyrics_sync_entries = []
             lyrics_sync_times = []
             lyrics_line_count = 0

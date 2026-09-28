@@ -8,11 +8,13 @@ The main goal is to preserve the simple and direct Confluence experience while i
 
 Confluence-jjs keeps the familiar Confluence home screen while adding more information about the currently playing music and extended artwork options.
 
-![Confluence-jjs playback overview](docs/screenshots/overview-playback.webp)
-
-The artwork display can be enlarged and optionally show the front and back cover together.
+The artwork display can be enlarged and can show the front and back cover together.
 
 ![Confluence-jjs front and back cover](docs/screenshots/overview-artwork.webp)
+
+Three additional playback layouts show a large cover, compact cover and an information-only view.
+
+![Confluence-jjs playback layouts](docs/screenshots/overview-playback.webp)
 
 ## Main additions
 
@@ -29,7 +31,15 @@ The Confluence-jjs settings are organized into separate tabs for easier navigati
 
 ## Song popup
 
-The song popup provides additional information and functions without leaving the home screen.
+The song popup provides track selection, synchronized lyrics and credits without leaving the home screen.
+
+### Simple navigation
+
+- Move the focus **above the main menu bar** to the artwork area. Press **Enter / OK** to cycle the artwork display.
+- Move the focus **below the main menu bar** to open the song popup.
+- Inside the popup, use **Left / Right** to switch between **Track list**, **Lyrics** and **Credits**.
+- In the track list, use **Up / Down** to select a song and **Enter / OK** to start it.
+- Press **Back** to close the popup.
 
 ### Track list
 
