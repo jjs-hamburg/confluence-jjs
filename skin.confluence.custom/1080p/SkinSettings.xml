@@ -1250,137 +1250,76 @@
 
 				<control type="group" id="9005">
 					<visible>Container(9000).Hasfocus(5)</visible>
-					<left>435</left><top>90</top><width>1125</width><height>795</height>
-					<defaultcontrol>5701</defaultcontrol>
-					<control type="image">
-						<left>0</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemNF.png</texture>
-					</control>
-					<control type="image">
-						<left>0</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemFO.png</texture>
-						<visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible>
-					</control>
-					<control type="image">
-						<left>189</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemNF.png</texture>
-					</control>
-					<control type="image">
-						<left>189</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemFO.png</texture>
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible>
-					</control>
-					<control type="image">
-						<left>378</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemNF.png</texture>
-					</control>
-					<control type="image">
-						<left>378</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemFO.png</texture>
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible>
-					</control>
-					<control type="image">
-						<left>567</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemNF.png</texture>
-					</control>
-					<control type="image">
-						<left>567</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemFO.png</texture>
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),popup)</visible>
-					</control>
-					<control type="image">
-						<left>756</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemNF.png</texture>
-					</control>
-					<control type="image">
-						<left>756</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemFO.png</texture>
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),playback)</visible>
-					</control>
-					<control type="image">
-						<left>945</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemNF.png</texture>
-					</control>
-					<control type="image">
-						<left>945</left><top>0</top><width>180</width><height>54</height>
-						<texture border="5">MenuItemFO.png</texture>
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),badges)</visible>
-					</control>
+					<left>435</left><top>90</top><width>1125</width><height>795</height><defaultcontrol>5701</defaultcontrol>
+					<control type="image"><left>0</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
+					<control type="image"><left>0</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemFO.png</texture><visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible></control>
+					<control type="image"><left>189</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
+					<control type="image"><left>189</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemFO.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible></control>
+					<control type="image"><left>378</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
+					<control type="image"><left>378</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemFO.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible></control>
+					<control type="image"><left>567</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
+					<control type="image"><left>567</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemFO.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),popup)</visible></control>
+					<control type="image"><left>756</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
+					<control type="image"><left>756</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemFO.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),playback)</visible></control>
+					<control type="image"><left>945</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
+					<control type="image"><left>945</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemFO.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),badges)</visible></control>
 					<control type="grouplist" id="5700">
-						<left>0</left><top>0</top><width>1125</width><height>54</height>
-						<orientation>horizontal</orientation><itemgap>9</itemgap>
+						<left>0</left><top>0</top><width>1125</width><height>54</height><orientation>horizontal</orientation><itemgap>9</itemgap>
 						<onleft>9000</onleft><onright>5700</onright><onup>5700</onup>
 						<control type="button" id="5701">
-							<width>180</width><height>54</height><font>font12</font>
-							<label>General</label><align>center</align><aligny>center</aligny>
-							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
-							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,general)</onclick>
-							<ondown>503</ondown>
+							<width>180</width><height>54</height><font>font12</font><label>General</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
+							<onclick>SetProperty(CCSettingsTab,general)</onclick><ondown>503</ondown>
 						</control>
 						<control type="button" id="5702">
-							<width>180</width><height>54</height><font>font12</font>
-							<label>Menus</label><align>center</align><aligny>center</aligny>
-							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
-							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,menus)</onclick>
-							<ondown>506</ondown>
+							<width>180</width><height>54</height><font>font12</font><label>Home</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
+							<onclick>SetProperty(CCSettingsTab,home)</onclick><ondown>550</ondown>
 						</control>
 						<control type="button" id="5703">
-							<width>180</width><height>54</height><font>font12</font>
-							<label>Home</label><align>center</align><aligny>center</aligny>
-							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
-							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,home)</onclick>
-							<ondown>550</ondown>
+							<width>180</width><height>54</height><font>font12</font><label>Menus</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
+							<onclick>SetProperty(CCSettingsTab,menus)</onclick><ondown>506</ondown>
 						</control>
 						<control type="button" id="5704">
-							<width>180</width><height>54</height><font>font12</font>
-							<label>Song popup</label><align>center</align><aligny>center</aligny>
-							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
-							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,popup)</onclick>
-							<ondown>529</ondown>
+							<width>180</width><height>54</height><font>font12</font><label>Song popup</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
+							<onclick>SetProperty(CCSettingsTab,popup)</onclick><ondown>529</ondown>
 						</control>
 						<control type="button" id="5705">
-							<width>180</width><height>54</height><font>font12</font>
-							<label>Playback</label><align>center</align><aligny>center</aligny>
-							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
-							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,playback)</onclick>
-							<ondown>537</ondown>
+							<width>180</width><height>54</height><font>font12</font><label>Playback</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
+							<onclick>SetProperty(CCSettingsTab,playback)</onclick><ondown>537</ondown>
 						</control>
 						<control type="button" id="5706">
-							<width>180</width><height>54</height><font>font12</font>
-							<label>Badges</label><align>center</align><aligny>center</aligny>
-							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
-							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,badges)</onclick>
-							<ondown>566</ondown>
+							<width>180</width><height>54</height><font>font12</font><label>Badges</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
+							<onclick>SetProperty(CCSettingsTab,badges)</onclick><ondown>566</ondown>
 						</control>
 					</control>
 					<control type="grouplist" id="5710">
 						<visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible>
-						<left>0</left><top>70</top><width>1125</width><height>725</height>
-						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<left>0</left><top>70</top><width>1125</width><height>725</height><itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
 						<onleft>9000</onleft><onright>5710</onright><onup>5701</onup><ondown>5710</ondown>
 						<control type="label" id="497">
 							<width>1125</width><height>68</height><font>font13_title</font>
-							<label>General</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+							<label>Skin selection</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
 						</control>
-						<control type="button" id="498">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Switch to Standard Confluence</label><label2>Confluence-jjs settings remain fully preserved</label2>
+						<control type="radiobutton" id="498">
+							<width>1125</width><height>60</height><font>font13</font><label>Confluence</label>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/skin_mode.py,standard)</onclick>
-							<visible>!Skin.HasSetting(CCStandardConfluence)</visible>
+							<selected>Skin.HasSetting(CCStandardConfluence)</selected>
+							<onclick condition="!Skin.HasSetting(CCStandardConfluence)">RunScript(special://skin/resources/lib/skin_mode.py,standard)</onclick>
 						</control>
-						<control type="button" id="499">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Switch to Confluence-jjs</label><label2>Restore saved Confluence-jjs settings</label2>
+						<control type="radiobutton" id="499">
+							<width>1125</width><height>60</height><font>font13</font><label>Confluence-jjs</label>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/skin_mode.py,custom)</onclick>
-							<visible>Skin.HasSetting(CCStandardConfluence)</visible>
+							<selected>!Skin.HasSetting(CCStandardConfluence)</selected>
+							<onclick condition="Skin.HasSetting(CCStandardConfluence)">RunScript(special://skin/resources/lib/skin_mode.py,custom)</onclick>
+						</control>
+						<control type="label" id="500">
+							<width>1125</width><height>68</height><font>font13_title</font>
+							<label>Settings backup / restore</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
 						</control>
 						<control type="button" id="503">
 							<width>1125</width><height>60</height><font>font13</font>
@@ -1395,17 +1334,11 @@
 							<onclick>RunScript(special://skin/resources/lib/skin_settings_backup.py,load)</onclick>
 						</control>
 						<control type="label" id="502">
-							<width>1125</width><height>135</height><font>font12</font>
-							<label>The backup contains all settings owned by this skin: backgrounds, visible main-menu items, labels, targets, submenus and other Confluence-jjs options. General Kodi settings are not changed.</label>
+							<width>1125</width><height>115</height><font>font12</font>
+							<label>The backup contains all Confluence-jjs settings. General Kodi settings are not changed.</label>
 							<textcolor>grey2</textcolor><align>left</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline>
 						</control>
-						<control type="button" id="565">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Reset library nodes to skin defaults</label><label2>Music, movies and TV shows · overwrite existing nodes</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/library_nodes.py,reset)</onclick>
-						</control>
-						<control type="label" id="500">
+						<control type="label" id="569">
 							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Menu editor</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
 						</control>
@@ -1416,11 +1349,86 @@
 							<onclick>RunScript(special://skin/resources/lib/menu_editor.py)</onclick>
 						</control>
 					</control>
-					<control type="grouplist" id="5730">
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible>
+					<control type="grouplist" id="5750">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible>
 						<left>0</left><top>70</top><width>1125</width><height>725</height>
 						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5730</onright><onup>5702</onup><ondown>5730</ondown>
+						<onleft>9000</onleft><onright>5750</onright><onup>5702</onup><ondown>5750</ondown>
+						<control type="label" id="518">
+							<width>1125</width><height>68</height><font>font13_title</font>
+							<label>Home screen appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						</control>
+						<control type="button" id="550">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Background image</label><label2>[COLOR=selected]Restore skin default[/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homebackgrounddefault)</onclick>
+						</control>
+						<control type="radiobutton" id="551">
+							<description>Show playing artist fanart instead of the home skin background when available</description>
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Show fanart during playback</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>Skin.ToggleSetting(CCHomePlaybackFanart)</onclick>
+							<selected>Skin.HasSetting(CCHomePlaybackFanart)</selected>
+						</control>
+						<control type="button" id="549">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>No-cover image</label><label2>[COLOR=selected]$VAR[CCHomeNoCoverSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homenocover)</onclick>
+						</control>
+						<control type="button" id="519">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Music cover size</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverSizeSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecover)</onclick>
+						</control>
+						<control type="button" id="523">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Cover appearance</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverStyleSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecoverstyle)</onclick>
+						</control>
+						<control type="button" id="546">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Shadow width</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowwidth)</onclick>
+							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
+						</control>
+						<control type="button" id="547">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Shadow offset</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowoffset)</onclick>
+							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
+						</control>
+						<control type="button" id="520">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Bottom bar</label><label2>[COLOR=selected]$VAR[CCHomeFloorStyleSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homefloor)</onclick>
+						</control>
+						<control type="radiobutton" id="548">
+							<description>Hide playback controls above main menu</description>
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Hide playback controls above the menu bar</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>Skin.ToggleSetting(CCHideHomePlaybackControls)</onclick>
+							<selected>Skin.HasSetting(CCHideHomePlaybackControls)</selected>
+						</control>
+						<control type="button" id="521">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Reset home screen appearance</label><label2>Front · original cover · jewel case · frame · original bottom bar</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homereset)</onclick>
+						</control>
+					</control>
+					<control type="grouplist" id="5730">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible>
+						<left>0</left><top>70</top><width>1125</width><height>725</height><itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5730</onright><onup>5703</onup><ondown>5730</ondown>
 						<control type="label" id="505">
 							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Main menu appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
@@ -1495,81 +1503,15 @@
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subreset)</onclick>
 						</control>
-					</control>
-					<control type="grouplist" id="5750">
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible>
-						<left>0</left><top>70</top><width>1125</width><height>725</height>
-						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5750</onright><onup>5703</onup><ondown>5750</ondown>
-						<control type="label" id="518">
+						<control type="label" id="5709">
 							<width>1125</width><height>68</height><font>font13_title</font>
-							<label>Home screen appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+							<label>Library nodes</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
 						</control>
-						<control type="button" id="550">
+						<control type="button" id="565">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Background image</label><label2>[COLOR=selected]Restore skin default[/COLOR]</label2>
+							<label>Reset library nodes to skin defaults</label><label2>Music, movies and TV shows · overwrite existing nodes</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homebackgrounddefault)</onclick>
-						</control>
-						<control type="radiobutton" id="551">
-							<description>Show playing artist fanart instead of the home skin background when available</description>
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Show fanart during playback</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>Skin.ToggleSetting(CCHomePlaybackFanart)</onclick>
-							<selected>Skin.HasSetting(CCHomePlaybackFanart)</selected>
-						</control>
-						<control type="button" id="549">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>No-cover image</label><label2>[COLOR=selected]$VAR[CCHomeNoCoverSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homenocover)</onclick>
-						</control>
-						<control type="button" id="519">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Music cover size</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverSizeSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecover)</onclick>
-						</control>
-						<control type="button" id="523">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Cover appearance</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverStyleSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecoverstyle)</onclick>
-						</control>
-						<control type="button" id="546">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Shadow width</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowwidth)</onclick>
-							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
-						</control>
-						<control type="button" id="547">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Shadow offset</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowoffset)</onclick>
-							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
-						</control>
-						<control type="button" id="520">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Bottom bar</label><label2>[COLOR=selected]$VAR[CCHomeFloorStyleSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homefloor)</onclick>
-						</control>
-						<control type="radiobutton" id="548">
-							<description>Hide playback controls above main menu</description>
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Hide playback controls above the menu bar</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>Skin.ToggleSetting(CCHideHomePlaybackControls)</onclick>
-							<selected>Skin.HasSetting(CCHideHomePlaybackControls)</selected>
-						</control>
-						<control type="button" id="521">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Reset home screen appearance</label><label2>Front · original cover · jewel case · frame · original bottom bar</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homereset)</onclick>
+							<onclick>RunScript(special://skin/resources/lib/library_nodes.py,reset)</onclick>
 						</control>
 					</control>
 					<control type="grouplist" id="5760">
