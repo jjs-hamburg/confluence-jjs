@@ -158,7 +158,7 @@
 						<label2>31200</label2>
 					</item>
 					<item id="5">
-						<label>Custom Confluence</label>
+						<label>Confluence-jjs</label>
 						<label2></label2>
 					</item>
 				</content>
@@ -1248,333 +1248,451 @@
 					</control>
 				</control>
 
-				<control type="grouplist" id="9005">
+				<control type="group" id="9005">
 					<visible>Container(9000).Hasfocus(5)</visible>
-					<left>435</left>
-					<top>90</top>
-					<width>1125</width>
-					<height>795</height>
-					<itemgap>-2</itemgap>
-					<scrolltime tween="linear">150</scrolltime>
-					<onleft>9000</onleft>
-					<onright>9005</onright>
-					<onup>9005</onup>
-					<ondown>9005</ondown>
-					<control type="button" id="498">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Auf Standard Confluence umschalten</label><label2>Custom-Einstellungen bleiben vollständig erhalten</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/skin_mode.py,standard)</onclick>
-						<visible>!Skin.HasSetting(CCStandardConfluence)</visible>
+					<left>435</left><top>90</top><width>1125</width><height>795</height>
+					<defaultcontrol>5701</defaultcontrol>
+					<control type="grouplist" id="5700">
+						<left>0</left><top>0</top><width>1125</width><height>52</height>
+						<orientation>horizontal</orientation><itemgap>8</itemgap>
+						<onleft>9000</onleft><onright>5700</onright><onup>5700</onup>
+						<control type="radiobutton" id="5701">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>General</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</selected>
+							<onclick>SetProperty(CCSettingsTab,general)</onclick>
+							<ondown>498</ondown>
+						</control>
+						<control type="radiobutton" id="5702">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>Menu editor</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEqual(Window.Property(CCSettingsTab),editor)</selected>
+							<onclick>SetProperty(CCSettingsTab,editor)</onclick>
+							<ondown>500</ondown>
+						</control>
+						<control type="radiobutton" id="5703">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>Main menu</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEqual(Window.Property(CCSettingsTab),main)</selected>
+							<onclick>SetProperty(CCSettingsTab,main)</onclick>
+							<ondown>505</ondown>
+						</control>
+						<control type="radiobutton" id="5704">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>Submenu</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEqual(Window.Property(CCSettingsTab),submenu)</selected>
+							<onclick>SetProperty(CCSettingsTab,submenu)</onclick>
+							<ondown>511</ondown>
+						</control>
+						<control type="radiobutton" id="5705">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>Home</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEqual(Window.Property(CCSettingsTab),home)</selected>
+							<onclick>SetProperty(CCSettingsTab,home)</onclick>
+							<ondown>518</ondown>
+						</control>
+						<control type="radiobutton" id="5706">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>Song popup</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEqual(Window.Property(CCSettingsTab),popup)</selected>
+							<onclick>SetProperty(CCSettingsTab,popup)</onclick>
+							<ondown>524</ondown>
+						</control>
+						<control type="radiobutton" id="5707">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>Playback</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEqual(Window.Property(CCSettingsTab),playback)</selected>
+							<onclick>SetProperty(CCSettingsTab,playback)</onclick>
+							<ondown>563</ondown>
+						</control>
+						<control type="radiobutton" id="5708">
+							<width>132</width><height>52</height><font>font12</font>
+							<label>Badges</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
+							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
+							<selected>String.IsEqual(Window.Property(CCSettingsTab),badges)</selected>
+							<onclick>SetProperty(CCSettingsTab,badges)</onclick>
+							<ondown>566</ondown>
+						</control>
 					</control>
-					<control type="button" id="499">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Auf Custom Confluence umschalten</label><label2>Gespeicherte Custom-Einstellungen wieder aktivieren</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/skin_mode.py,custom)</onclick>
-						<visible>Skin.HasSetting(CCStandardConfluence)</visible>
+					<control type="grouplist" id="5710">
+						<visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5710</onright><onup>5701</onup><ondown>5710</ondown>
+						<control type="button" id="498">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Switch to Standard Confluence</label><label2>Confluence-jjs settings remain fully preserved</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/skin_mode.py,standard)</onclick>
+							<visible>!Skin.HasSetting(CCStandardConfluence)</visible>
+						</control>
+						<control type="button" id="499">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Auf Confluence-jjs umschalten</label><label2>Restore saved Confluence-jjs settings</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/skin_mode.py,custom)</onclick>
+							<visible>Skin.HasSetting(CCStandardConfluence)</visible>
+						</control>
+						<control type="button" id="503">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Back up skin settings</label><label2>Save all Confluence-jjs settings</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/skin_settings_backup.py,save)</onclick>
+						</control>
+						<control type="button" id="504">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Restore skin settings</label><label2>Load a saved Confluence-jjs settings backup</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/skin_settings_backup.py,load)</onclick>
+						</control>
+						<control type="button" id="502">
+							<width>1125</width><height>150</height><font>font12</font><focusedcolor>grey2</focusedcolor>
+							<label>The backup contains all settings owned by this skin: backgrounds, visible main-menu items, labels, targets, submenus and other Confluence-jjs options. General Kodi settings are not changed.</label>
+							<textcolor>grey2</textcolor><align>left</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="button" id="565">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Reset library nodes to skin defaults</label><label2>Music, movies and TV shows · overwrite existing nodes</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/library_nodes.py,reset)</onclick>
+						</control>
 					</control>
-					<control type="button" id="500">
-						<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
-						<label>Confluence Menüeditor</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="button" id="501">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Menüeditor öffnen</label><label2>Untermenüs, Reihenfolge, Ziele und Namen</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/menu_editor.py)</onclick>
+					<control type="grouplist" id="5720">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),editor)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5720</onright><onup>5702</onup><ondown>5720</ondown>
+						<control type="button" id="500">
+							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+							<label>Confluence menu editor</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="button" id="501">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Open menu editor</label><label2>Submenus, order, targets and labels</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/menu_editor.py)</onclick>
+						</control>
+						<control type="button" id="554">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Exit button</label><label2>[COLOR=selected]$VAR[CCExitButtonSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,exitbutton)</onclick>
+						</control>
 					</control>
-					<control type="button" id="554">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Beenden-Button</label><label2>[COLOR=selected]$VAR[CCExitButtonSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,exitbutton)</onclick>
+					<control type="grouplist" id="5730">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),main)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5730</onright><onup>5703</onup><ondown>5730</ondown>
+						<control type="button" id="505">
+							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+							<label>Main menu appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="button" id="506">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font</label><label2>[COLOR=selected]$VAR[CCMainMenuFontFamilySetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,font)</onclick>
+						</control>
+						<control type="button" id="507">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font size</label><label2>[COLOR=selected]$VAR[CCMainMenuFontSizeSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,size)</onclick>
+						</control>
+						<control type="button" id="508">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font color (normal)</label><label2>[COLOR=selected]$VAR[CCMainMenuNormalColorSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,normalcolor)</onclick>
+						</control>
+						<control type="button" id="509">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font color (active)</label><label2>[COLOR=selected]$VAR[CCMainMenuActiveColorSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,activecolor)</onclick>
+						</control>
+						<control type="button" id="522">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Vertical menu position</label><label2>[COLOR=selected]$VAR[CCMainMenuYOffsetSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,yoffset)</onclick>
+						</control>
+						<control type="button" id="510">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Main menu appearance zurücksetzen</label><label2>Roboto Bold · 60 px · default colors · default position</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,reset)</onclick>
+						</control>
 					</control>
-					<control type="button" id="503">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Skin-Einstellungen sichern</label><label2>Alle Confluence-Custom-Einstellungen speichern</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/skin_settings_backup.py,save)</onclick>
+					<control type="grouplist" id="5740">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),submenu)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5740</onright><onup>5704</onup><ondown>5740</ondown>
+						<control type="button" id="511">
+							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+							<label>Submenu appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="button" id="512">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font</label><label2>[COLOR=selected]$VAR[CCSubMenuFontFamilySetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subfont)</onclick>
+						</control>
+						<control type="button" id="513">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font size</label><label2>[COLOR=selected]$VAR[CCSubMenuFontSizeSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subsize)</onclick>
+						</control>
+						<control type="button" id="514">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font color (normal)</label><label2>[COLOR=selected]$VAR[CCSubMenuNormalColorSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subnormalcolor)</onclick>
+						</control>
+						<control type="button" id="515">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font color (active)</label><label2>[COLOR=selected]$VAR[CCSubMenuActiveColorSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subactivecolor)</onclick>
+						</control>
+						<control type="button" id="517">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Submenu appearance zurücksetzen</label><label2>Skin default · Confluence colors</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subreset)</onclick>
+						</control>
 					</control>
-					<control type="button" id="504">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Skin-Einstellungen laden</label><label2>Gesicherte Confluence-Custom-Einstellungen laden</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/skin_settings_backup.py,load)</onclick>
+					<control type="grouplist" id="5750">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5750</onright><onup>5705</onup><ondown>5750</ondown>
+						<control type="button" id="518">
+							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+							<label>Home screen appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="button" id="550">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Background image</label><label2>[COLOR=selected]Restore skin default[/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homebackgrounddefault)</onclick>
+						</control>
+						<control type="radiobutton" id="551">
+							<description>Show playing artist fanart instead of the home skin background when available</description>
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Show fanart during playback</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>Skin.ToggleSetting(CCHomePlaybackFanart)</onclick>
+							<selected>Skin.HasSetting(CCHomePlaybackFanart)</selected>
+						</control>
+						<control type="button" id="549">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>No-cover image</label><label2>[COLOR=selected]$VAR[CCHomeNoCoverSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homenocover)</onclick>
+						</control>
+						<control type="button" id="519">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Music cover size</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverSizeSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecover)</onclick>
+						</control>
+						<control type="button" id="523">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Cover appearance</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverStyleSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecoverstyle)</onclick>
+						</control>
+						<control type="button" id="546">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Shadow width</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowwidth)</onclick>
+							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
+						</control>
+						<control type="button" id="547">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Shadow offset</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowoffset)</onclick>
+							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
+						</control>
+						<control type="button" id="520">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Bottom bar</label><label2>[COLOR=selected]$VAR[CCHomeFloorStyleSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homefloor)</onclick>
+						</control>
+						<control type="radiobutton" id="548">
+							<description>Hide playback controls above main menu</description>
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Hide playback controls above the menu bar</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>Skin.ToggleSetting(CCHideHomePlaybackControls)</onclick>
+							<selected>Skin.HasSetting(CCHideHomePlaybackControls)</selected>
+						</control>
+						<control type="button" id="521">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Home screen appearance zurücksetzen</label><label2>Front · original cover · jewel case · frame · original bottom bar</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homereset)</onclick>
+						</control>
 					</control>
-					<control type="button" id="502">
-						<width>1125</width><height>150</height><font>font12</font><focusedcolor>grey2</focusedcolor>
-						<label>Gesichert werden sämtliche Einstellungen dieses Skins: Hintergründe, sichtbare Hauptmenüs, Namen, Ziele, Untermenüs und sonstige Confluence-Schalter. Allgemeine Kodi-Einstellungen werden nicht verändert.</label>
-						<textcolor>grey2</textcolor><align>left</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="button" id="505">
-						<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
-						<label>Hauptmenü-Darstellung</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="button" id="506">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftart</label><label2>[COLOR=selected]$VAR[CCMainMenuFontFamilySetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,font)</onclick>
+					<control type="grouplist" id="5760">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),popup)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5760</onright><onup>5706</onup><ondown>5760</ondown>
+						<control type="button" id="524">
+							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+							<label>Song popup</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="button" id="525">
+							<width>1125</width><height>50</height><font>font13</font><focusedcolor>grey2</focusedcolor>
+							<label>Popup font is separate; colors follow the submenu.</label><textcolor>grey2</textcolor><align>left</align><aligny>center</aligny>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="radiobutton" id="529">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Song popup aktiv</label><selected>!String.IsEqual(Skin.String(CCSongSelectorEnabled),false)</selected>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songenabled)</onclick>
+						</control>
+						<control type="button" id="535">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font</label><label2>[COLOR=selected]$VAR[CCSongSelectorFontFamilySetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songfont)</onclick><enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
+						<control type="button" id="536">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Font size</label><label2>[COLOR=selected]$VAR[CCSongSelectorFontSizeSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songsize)</onclick><enable>$EXP[CCSongSelectorEnabled] + !String.IsEmpty(Skin.String(CCSongSelectorFontFamily)) + !String.IsEqual(Skin.String(CCSongSelectorFontFamily),default) + !String.IsEqual(Skin.String(CCSongSelectorFontFamily),submenu)</enable>
+						</control>
+						<control type="radiobutton" id="530">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Show track numbers</label><selected>String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true)</selected>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtracknumbers)</onclick>
+							<enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
+						<control type="radiobutton" id="543">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Open popup automatically during music playback</label><selected>String.IsEqual(Skin.String(CCSongSelectorAutoOpen),true)</selected>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songautoopen)</onclick>
+							<enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
+						<control type="radiobutton" id="544">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Center lyrics</label><selected>!String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)</selected>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songlyricscentered)</onclick>
+							<enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
+						<control type="button" id="545">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Lyrics sync delay</label><label2>[COLOR=selected]$VAR[CCSongSelectorLyricsSyncDelaySetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songlyricssyncdelay)</onclick>
+							<enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
+						<control type="button" id="542">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Return selection to current song</label><label2>[COLOR=selected]$VAR[CCSongSelectorSelectionTimeoutSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songselectiontimeout)</onclick><enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
+						<control type="button" id="534">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Song popup zurücksetzen</label><label2>Defaults</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songreset)</onclick>
+						</control>
 					</control>
-					<control type="button" id="507">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftgröße</label><label2>[COLOR=selected]$VAR[CCMainMenuFontSizeSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,size)</onclick>
+					<control type="grouplist" id="5770">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),playback)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5770</onright><onup>5707</onup><ondown>5770</ondown>
+						<control type="button" id="563">
+							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+							<label>Playback information</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						
+							<texturefocus/><texturenofocus/></control>
+						<control type="radiobutton" id="537"><width>1125</width><height>60</height><font>font13</font><label>Song time / duration</label><selected>!String.IsEqual(Skin.String(CCSongTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimecurrent)</onclick></control>
+						<control type="radiobutton" id="538"><width>1125</width><height>60</height><font>font13</font><label>Song remaining / duration</label><selected>!String.IsEqual(Skin.String(CCSongTimeRemaining),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimeremaining)</onclick></control>
+						<control type="radiobutton" id="539"><width>1125</width><height>60</height><font>font13</font><label>Album time / duration</label><selected>!String.IsEqual(Skin.String(CCAlbumTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumtimecurrent)</onclick></control>
+						<control type="radiobutton" id="540"><width>1125</width><height>60</height><font>font13</font><label>Album remaining / duration</label><selected>!String.IsEqual(Skin.String(CCAlbumTimeRemaining),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumtimeremaining)</onclick></control>
+						<control type="radiobutton" id="541"><width>1125</width><height>60</height><font>font13</font><label>Dim time displays</label><selected>String.IsEqual(Skin.String(CCPlayerTimesDimmed),true)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,timesdimmed)</onclick></control>
+						<control type="radiobutton" id="552">
+							<width>1125</width><height>60</height><font>font13</font><label>Show album year during playback</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>Skin.ToggleSetting(CCNowPlayingAlbumYear)</onclick><selected>Skin.HasSetting(CCNowPlayingAlbumYear)</selected>
+						</control>
+						<control type="button" id="564">
+							<width>1125</width><height>60</height><font>font13</font><label>Long album titles</label><label2>[COLOR=selected]$VAR[CCNowPlayingAlbumOverflowSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumoverflow)</onclick>
+						</control>
+						<control type="button" id="568">
+							<width>1125</width><height>60</height><font>font13</font><label>Long song titles</label><label2>[COLOR=selected]$VAR[CCNowPlayingSongOverflowSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songoverflow)</onclick>
+						</control>
 					</control>
-					<control type="button" id="508">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftfarbe (normal)</label><label2>[COLOR=selected]$VAR[CCMainMenuNormalColorSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,normalcolor)</onclick>
+					<control type="grouplist" id="5780">
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),badges)</visible>
+						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
+						<onleft>9000</onleft><onright>5780</onright><onup>5708</onup><ondown>5780</ondown>
+						<control type="radiobutton" id="566"><width>1125</width><height>60</height><font>font13</font><label>Show times in badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimesBadges)</onclick><selected>Skin.HasSetting(CCPlayerTimesBadges)</selected></control>
+						<control type="radiobutton" id="567"><width>1125</width><height>60</height><font>font13</font><label>Use equal-width time badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimeBadgesEqual)</onclick><selected>Skin.HasSetting(CCPlayerTimeBadgesEqual)</selected><enable>Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
+						<control type="radiobutton" id="553">
+							<width>1125</width><height>60</height><font>font13</font><label>Show audio badge during playback</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>Skin.ToggleSetting(CCNowPlayingAudioLogo)</onclick><selected>Skin.HasSetting(CCNowPlayingAudioLogo)</selected>
+						</control>
+						<control type="button" id="562"><width>1125</width><height>60</height><font>font13</font><label>Codec display</label><label2>[COLOR=selected]$VAR[CCAudioBadgeContentSetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgecontent)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo)</enable></control>
+						<control type="button" id="556"><width>1125</width><height>60</height><font>font13</font><label>Audio badge size</label><label2>[COLOR=selected]$VAR[CCAudioBadgeSizeSetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgesize)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo)</enable></control>
+						<control type="button" id="557"><width>1125</width><height>60</height><font>font13</font><label>Badge background</label><label2>[COLOR=selected]$VAR[CCAudioBadgeColorSetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgecolor)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
+						<control type="button" id="558"><width>1125</width><height>60</height><font>font13</font><label>Badge opacity</label><label2>[COLOR=selected]$VAR[CCAudioBadgeOpacitySetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgeopacity)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
+						<control type="radiobutton" id="560"><width>1125</width><height>60</height><font>font13</font><label>3D Badge</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadge3d)</onclick><selected>String.IsEqual(Skin.String(CCAudioBadge3D),true)</selected><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
+						<control type="button" id="561"><width>1125</width><height>60</height><font>font13</font><label>Playback information zurücksetzen</label><label2>Defaults</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,playbackreset)</onclick></control>
 					</control>
-					<control type="button" id="509">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftfarbe (aktiv)</label><label2>[COLOR=selected]$VAR[CCMainMenuActiveColorSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,activecolor)</onclick>
-					</control>
-					<control type="button" id="522">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Menüleiste vertikal</label><label2>[COLOR=selected]$VAR[CCMainMenuYOffsetSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,yoffset)</onclick>
-					</control>
-					<control type="button" id="510">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Hauptmenü-Darstellung zurücksetzen</label><label2>Roboto Bold · 60 px · Standardfarben · Standardposition</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,reset)</onclick>
-					</control>
-					<control type="button" id="511">
-						<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
-						<label>Untermenü-Darstellung</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="button" id="512">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftart</label><label2>[COLOR=selected]$VAR[CCSubMenuFontFamilySetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subfont)</onclick>
-					</control>
-					<control type="button" id="513">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftgröße</label><label2>[COLOR=selected]$VAR[CCSubMenuFontSizeSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subsize)</onclick>
-					</control>
-					<control type="button" id="514">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftfarbe (normal)</label><label2>[COLOR=selected]$VAR[CCSubMenuNormalColorSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subnormalcolor)</onclick>
-					</control>
-					<control type="button" id="515">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftfarbe (aktiv)</label><label2>[COLOR=selected]$VAR[CCSubMenuActiveColorSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subactivecolor)</onclick>
-					</control>
-					<control type="button" id="517">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Untermenü-Darstellung zurücksetzen</label><label2>Skin-Standard · Confluence-Farben</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subreset)</onclick>
-					</control>
-					<control type="button" id="565">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Library-Nodes auf Skin-Standard zurücksetzen</label><label2>Musik, Filme und Serien · vorhandene Nodes überschreiben</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/library_nodes.py,reset)</onclick>
-					</control>
-					<control type="button" id="518">
-						<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
-						<label>Startseiten-Darstellung</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="button" id="550">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Hintergrundbild</label><label2>[COLOR=selected]Skin-Default wiederherstellen[/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homebackgrounddefault)</onclick>
-					</control>
-					<control type="radiobutton" id="551">
-						<description>Show playing artist fanart instead of the home skin background when available</description>
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Fanart bei Wiedergabe</label>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>Skin.ToggleSetting(CCHomePlaybackFanart)</onclick>
-						<selected>Skin.HasSetting(CCHomePlaybackFanart)</selected>
-					</control>
-					<control type="button" id="549">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>No-Cover-Bild</label><label2>[COLOR=selected]$VAR[CCHomeNoCoverSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homenocover)</onclick>
-					</control>
-					
-					
-					<control type="button" id="519">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Covergröße bei Musikwiedergabe</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverSizeSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecover)</onclick>
-					</control>
-					<control type="button" id="523">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Coverdarstellung</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverStyleSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecoverstyle)</onclick>
-					</control>
-					<control type="button" id="546">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schattenbreite</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowwidth)</onclick>
-						<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
-					</control>
-					<control type="button" id="547">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schattenversatz</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowoffset)</onclick>
-						<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
-					</control>
-					<control type="button" id="520">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Unterer Balken</label><label2>[COLOR=selected]$VAR[CCHomeFloorStyleSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homefloor)</onclick>
-					</control>
-					<control type="radiobutton" id="548">
-						<description>Hide playback controls above main menu</description>
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Wiedergabe-Steuerelemente über Menüleiste ausblenden</label>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>Skin.ToggleSetting(CCHideHomePlaybackControls)</onclick>
-						<selected>Skin.HasSetting(CCHideHomePlaybackControls)</selected>
-					</control>
-					<control type="button" id="521">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Startseiten-Darstellung zurücksetzen</label><label2>Front · Original-Cover · Jewel Case · Rahmen · Original-Balken</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homereset)</onclick>
-					</control>
-					<control type="button" id="524">
-						<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
-						<label>Songselektor</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="button" id="525">
-						<width>1125</width><height>50</height><font>font13</font><focusedcolor>grey2</focusedcolor>
-						<label>Popup-Schrift separat; Farben wie Untermenü.</label><textcolor>grey2</textcolor><align>left</align><aligny>center</aligny>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="radiobutton" id="529">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Songselektor aktiv</label><selected>!String.IsEqual(Skin.String(CCSongSelectorEnabled),false)</selected>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songenabled)</onclick>
-					</control>
-					<control type="button" id="535">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftart</label><label2>[COLOR=selected]$VAR[CCSongSelectorFontFamilySetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songfont)</onclick><enable>$EXP[CCSongSelectorEnabled]</enable>
-					</control>
-					<control type="button" id="536">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Schriftgröße</label><label2>[COLOR=selected]$VAR[CCSongSelectorFontSizeSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songsize)</onclick><enable>$EXP[CCSongSelectorEnabled] + !String.IsEmpty(Skin.String(CCSongSelectorFontFamily)) + !String.IsEqual(Skin.String(CCSongSelectorFontFamily),default) + !String.IsEqual(Skin.String(CCSongSelectorFontFamily),submenu)</enable>
-					</control>
-					<control type="radiobutton" id="530">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Songnummern anzeigen</label><selected>String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true)</selected>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtracknumbers)</onclick>
-						<enable>$EXP[CCSongSelectorEnabled]</enable>
-					</control>
-					<control type="radiobutton" id="543">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Popup bei Musikwiedergabe automatisch einblenden</label><selected>String.IsEqual(Skin.String(CCSongSelectorAutoOpen),true)</selected>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songautoopen)</onclick>
-						<enable>$EXP[CCSongSelectorEnabled]</enable>
-					</control>
-					<control type="radiobutton" id="544">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Songtexte zentriert darstellen</label><selected>!String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)</selected>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songlyricscentered)</onclick>
-						<enable>$EXP[CCSongSelectorEnabled]</enable>
-					</control>
-					<control type="button" id="545">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Songtext-Synchronisation verzögern</label><label2>[COLOR=selected]$VAR[CCSongSelectorLyricsSyncDelaySetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songlyricssyncdelay)</onclick>
-						<enable>$EXP[CCSongSelectorEnabled]</enable>
-					</control>
-					
-					
-					
-					
-					
-					<control type="button" id="542">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Auswahl zurück auf laufenden Song</label><label2>[COLOR=selected]$VAR[CCSongSelectorSelectionTimeoutSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songselectiontimeout)</onclick><enable>$EXP[CCSongSelectorEnabled]</enable>
-					</control>
-					<control type="button" id="534">
-						<width>1125</width><height>60</height><font>font13</font>
-						<label>Songselektor zurücksetzen</label><label2>Standardwerte</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songreset)</onclick>
-					</control>
-					<control type="button" id="563">
-						<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
-						<label>Abspielinformationen</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-					
-						<texturefocus/><texturenofocus/></control>
-					<control type="radiobutton" id="537"><width>1125</width><height>60</height><font>font13</font><label>Songzeit / Songdauer</label><selected>!String.IsEqual(Skin.String(CCSongTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimecurrent)</onclick></control>
-					<control type="radiobutton" id="538"><width>1125</width><height>60</height><font>font13</font><label>Song-Restzeit / Songdauer</label><selected>!String.IsEqual(Skin.String(CCSongTimeRemaining),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimeremaining)</onclick></control>
-					<control type="radiobutton" id="539"><width>1125</width><height>60</height><font>font13</font><label>Albumzeit / Albumdauer</label><selected>!String.IsEqual(Skin.String(CCAlbumTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumtimecurrent)</onclick></control>
-					<control type="radiobutton" id="540"><width>1125</width><height>60</height><font>font13</font><label>Album-Restzeit / Albumdauer</label><selected>!String.IsEqual(Skin.String(CCAlbumTimeRemaining),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumtimeremaining)</onclick></control>
-					<control type="radiobutton" id="541"><width>1125</width><height>60</height><font>font13</font><label>Zeiten abgedunkelt darstellen</label><selected>String.IsEqual(Skin.String(CCPlayerTimesDimmed),true)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,timesdimmed)</onclick></control>
-					<control type="radiobutton" id="566"><width>1125</width><height>60</height><font>font13</font><label>Zeitangaben in Badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimesBadges)</onclick><selected>Skin.HasSetting(CCPlayerTimesBadges)</selected></control>
-					<control type="radiobutton" id="567"><width>1125</width><height>60</height><font>font13</font><label>Zeitbadges gleich breit</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimeBadgesEqual)</onclick><selected>Skin.HasSetting(CCPlayerTimeBadgesEqual)</selected><enable>Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
-					<control type="radiobutton" id="552">
-						<width>1125</width><height>60</height><font>font13</font><label>Albumjahr bei Wiedergabe</label>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>Skin.ToggleSetting(CCNowPlayingAlbumYear)</onclick><selected>Skin.HasSetting(CCNowPlayingAlbumYear)</selected>
-					</control>
-					<control type="button" id="564">
-						<width>1125</width><height>60</height><font>font13</font><label>Lange Albumtitel</label><label2>[COLOR=selected]$VAR[CCNowPlayingAlbumOverflowSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumoverflow)</onclick>
-					</control>
-					<control type="button" id="568">
-						<width>1125</width><height>60</height><font>font13</font><label>Lange Songtitel</label><label2>[COLOR=selected]$VAR[CCNowPlayingSongOverflowSetting][/COLOR]</label2>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songoverflow)</onclick>
-					</control>
-					<control type="radiobutton" id="553">
-						<width>1125</width><height>60</height><font>font13</font><label>Audio-Badge bei Wiedergabe</label>
-						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-						<onclick>Skin.ToggleSetting(CCNowPlayingAudioLogo)</onclick><selected>Skin.HasSetting(CCNowPlayingAudioLogo)</selected>
-					</control>
-					<control type="button" id="562"><width>1125</width><height>60</height><font>font13</font><label>Codec-Darstellung</label><label2>[COLOR=selected]$VAR[CCAudioBadgeContentSetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgecontent)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo)</enable></control>
-					<control type="button" id="556"><width>1125</width><height>60</height><font>font13</font><label>Audio-Badge Größe</label><label2>[COLOR=selected]$VAR[CCAudioBadgeSizeSetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgesize)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo)</enable></control>
-					<control type="button" id="557"><width>1125</width><height>60</height><font>font13</font><label>Badge-Hintergrund</label><label2>[COLOR=selected]$VAR[CCAudioBadgeColorSetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgecolor)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
-					<control type="button" id="558"><width>1125</width><height>60</height><font>font13</font><label>Badge-Deckkraft</label><label2>[COLOR=selected]$VAR[CCAudioBadgeOpacitySetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgeopacity)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
-					<control type="radiobutton" id="560"><width>1125</width><height>60</height><font>font13</font><label>3D Badge</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadge3d)</onclick><selected>String.IsEqual(Skin.String(CCAudioBadge3D),true)</selected><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
-					<control type="button" id="561"><width>1125</width><height>60</height><font>font13</font><label>Abspielinformationen zurücksetzen</label><label2>Standardwerte</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,playbackreset)</onclick></control>
 				</control>
 				<control type="scrollbar" id="61">
 					<left>1590</left>
