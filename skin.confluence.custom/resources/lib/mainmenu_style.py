@@ -118,26 +118,26 @@ MAIN_SIZES = ["42", "48", "54", "60", "66", "72"]
 MAIN_Y_OFFSETS = [str(v) for v in range(-250, 301, 25)]
 
 SUB_FONTS = [
-    ("default", "Skin-Standard"),
+    ("default", "Skin default"),
     ("roboto", "Roboto Regular"),
     ("robotobold", "Roboto Bold"),
     ("montserrat", "Montserrat Black"),
 ]
 SUB_SIZES = [str(v) for v in range(20, 31)]
 
-SONG_SELECTOR_FONTS = [("submenu", "Wie Untermenü"), ("roboto", "Roboto Regular"), ("robotobold", "Roboto Bold"), ("montserrat", "Montserrat Black")]
+SONG_SELECTOR_FONTS = [("submenu", "Same as submenu"), ("roboto", "Roboto Regular"), ("robotobold", "Roboto Bold"), ("montserrat", "Montserrat Black")]
 SONG_SELECTOR_SIZES = SUB_SIZES
-SONG_SELECTOR_BACKGROUNDS = [("submenu", "Wie Untermenü"), ("transparent", "Transparent (Grau)"), ("off", "Weg")]
-SONG_SELECTOR_TIME_BACKGROUNDS = [("submenu", "Wie Untermenü"), ("transparent", "Transparent (Grau)"), ("off", "Weg")]
-SONG_SELECTOR_SELECTION_TIMEOUTS = [("0", "Aus"), ("5", "5 s"), ("10", "10 s"), ("15", "15 s"), ("30", "30 s"), ("60", "60 s")]
-SONG_SELECTOR_FOCUS_TIMEOUTS = [("0", "Aus"), ("10", "10 s"), ("20", "20 s"), ("30", "30 s"), ("60", "60 s")]
-SONG_SELECTOR_HIGHLIGHT_TIMEOUTS = [("0", "Aus"), ("5", "5 s"), ("10", "10 s"), ("15", "15 s"), ("30", "30 s"), ("60", "60 s")]
+SONG_SELECTOR_BACKGROUNDS = [("submenu", "Same as submenu"), ("transparent", "Transparent (gray)"), ("off", "Off")]
+SONG_SELECTOR_TIME_BACKGROUNDS = [("submenu", "Same as submenu"), ("transparent", "Transparent (gray)"), ("off", "Off")]
+SONG_SELECTOR_SELECTION_TIMEOUTS = [("0", "Off"), ("5", "5 s"), ("10", "10 s"), ("15", "15 s"), ("30", "30 s"), ("60", "60 s")]
+SONG_SELECTOR_FOCUS_TIMEOUTS = [("0", "Off"), ("10", "10 s"), ("20", "20 s"), ("30", "30 s"), ("60", "60 s")]
+SONG_SELECTOR_HIGHLIGHT_TIMEOUTS = [("0", "Off"), ("5", "5 s"), ("10", "10 s"), ("15", "15 s"), ("30", "30 s"), ("60", "60 s")]
 SONG_SELECTOR_LYRICS_SYNC_DELAYS = [("{:.2f}".format(v / 100.0), "{:.2f} s".format(v / 100.0).replace(".", ",")) for v in range(0, 101, 5)]
 AUDIO_BADGE_SIZES = [(v, v + " %") for v in ("80", "90", "100", "110", "120", "130", "140", "150", "160", "170", "180")]
-AUDIO_BADGE_CONTENTS = [("logo", "Logo"), ("text", "Schrift")]
-AUDIO_BADGE_COLORS = [("black", "Schwarz"), ("anthracite", "Anthrazit"), ("blue", "Confluence-Blau"), ("submenu", "Wie Untermenü")]
+AUDIO_BADGE_CONTENTS = [("logo", "Logo"), ("text", "Text")]
+AUDIO_BADGE_COLORS = [("black", "Black"), ("anthracite", "Anthracite"), ("blue", "Confluence blue"), ("submenu", "Same as submenu")]
 AUDIO_BADGE_OPACITIES = [(v, v + " %") for v in ("25", "40", "55", "70", "85")]
-ALBUM_LINE_OVERFLOWS = [("truncate", "Abschneiden"), ("scroll", "Scrollen"), ("wrap", "Umbrechen")]
+ALBUM_LINE_OVERFLOWS = [("truncate", "Truncate"), ("scroll", "Scroll"), ("wrap", "Wrap")]
 
 HOME_COVER_SIZES = [
     ("195", "Original (195 px)"),
@@ -157,39 +157,39 @@ HOME_COVER_SIZES = [
     ("585", "585 px (3x)"),
 ]
 HOME_COVER_STYLES = [
-    ("frame", "Rahmen"),
-    ("hardshadow", "Schlagschatten hart"),
-    ("softshadow", "Schlagschatten weich"),
+    ("frame", "Frame"),
+    ("hardshadow", "Hard shadow"),
+    ("softshadow", "Soft shadow"),
 ]
 HOME_SHADOW_WIDTHS = [("6", "6 px"), ("10", "10 px"), ("14", "14 px"), ("18", "18 px"), ("22", "22 px"), ("26", "26 px"), ("30", "30 px"), ("34", "34 px"), ("38", "38 px")]
 HOME_SHADOW_OFFSETS = [("0", "0 px"), ("2", "2 px"), ("4", "4 px"), ("6", "6 px"), ("8", "8 px"), ("10", "10 px"), ("12", "12 px"), ("14", "14 px"), ("16", "16 px"), ("18", "18 px"), ("20", "20 px"), ("22", "22 px"), ("24", "24 px")]
 HOME_FLOOR_STYLES = [
     ("original", "Original"),
-    ("dark", "Dunkel"),
+    ("dark", "Dark"),
     ("transparent", "Transparent"),
-    ("off", "Aus"),
+    ("off", "Off"),
 ]
 HOME_NO_COVER_STYLES = [
     ("kodi", "Kodi Default"),
     ("custom", "ConfluenceCustom Default"),
-    ("free", "Freie Bildwahl"),
+    ("free", "Choose image"),
 ]
-EXIT_BUTTON_ACTIONS = [("quit", "Beenden"), ("power", "Herunterfahren")]
+EXIT_BUTTON_ACTIONS = [("quit", "Quit"), ("power", "Power menu")]
 
 # Name, ARGB. "Default" is supplied separately because normal/active and
 # main/submenu deliberately have different Confluence defaults.
 COLOR_PRESETS = [
-    ("Weiß", "FFFFFFFF"),
-    ("Hellgrau", "FFC0C0C0"),
-    ("Grau", "FF808080"),
-    ("Schwarz", "FF000000"),
-    ("Blau", "FF0066CC"),
-    ("Hellblau", "FF33B5E5"),
-    ("Rot", "FFE53935"),
-    ("Grün", "FF43A047"),
-    ("Gelb", "FFFDD835"),
+    ("White", "FFFFFFFF"),
+    ("Light gray", "FFC0C0C0"),
+    ("Gray", "FF808080"),
+    ("Black", "FF000000"),
+    ("Blue", "FF0066CC"),
+    ("Light blue", "FF33B5E5"),
+    ("Red", "FFE53935"),
+    ("Green", "FF43A047"),
+    ("Yellow", "FFFDD835"),
     ("Orange", "FFF57C00"),
-    ("Violett", "FF8E24AA"),
+    ("Purple", "FF8E24AA"),
 ]
 
 
@@ -293,12 +293,12 @@ def _choose(title, setting, values_and_labels, default):
 
 
 def choose_main_font():
-    _choose("Hauptmenü-Schriftart", MAIN_FONT_SETTING, MAIN_FONTS, DEFAULT_MAIN_FONT)
+    _choose("Main menu font", MAIN_FONT_SETTING, MAIN_FONTS, DEFAULT_MAIN_FONT)
 
 
 def choose_main_size():
     _choose(
-        "Hauptmenü-Schriftgröße",
+        "Main menu font size",
         MAIN_SIZE_SETTING,
         [(v, "{} px".format(v)) for v in MAIN_SIZES],
         DEFAULT_MAIN_SIZE,
@@ -310,22 +310,22 @@ def choose_main_y_offset():
     for v in MAIN_Y_OFFSETS:
         n = int(v)
         if n == 0:
-            label = "Standard"
+            label = "Default"
         elif n < 0:
-            label = "{} px höher".format(abs(n))
+            label = "{} px higher".format(abs(n))
         else:
-            label = "{} px tiefer".format(n)
+            label = "{} px lower".format(n)
         values.append((v, label))
-    _choose("Menüleiste vertikal verschieben", MAIN_Y_OFFSET_SETTING, values, DEFAULT_MAIN_Y_OFFSET)
+    _choose("Vertical menu position", MAIN_Y_OFFSET_SETTING, values, DEFAULT_MAIN_Y_OFFSET)
 
 
 def choose_sub_font():
-    _choose("Untermenü-Schriftart", SUB_FONT_SETTING, SUB_FONTS, DEFAULT_SUB_FONT)
+    _choose("Submenu font", SUB_FONT_SETTING, SUB_FONTS, DEFAULT_SUB_FONT)
 
 
 def choose_sub_size():
     _choose(
-        "Untermenü-Schriftgröße",
+        "Submenu font size",
         SUB_SIZE_SETTING,
         [(v, "{} px".format(v)) for v in SUB_SIZES],
         DEFAULT_SUB_SIZE,
@@ -349,7 +349,7 @@ def choose_color(title, setting, default_value):
 
 def choose_exit_button():
     _choose(
-        "Beenden-Button",
+        "Exit button",
         EXIT_BUTTON_SETTING,
         EXIT_BUTTON_ACTIONS,
         DEFAULT_EXIT_BUTTON,
@@ -358,7 +358,7 @@ def choose_exit_button():
 
 def choose_home_cover_size():
     _choose(
-        "Covergröße auf der Hauptseite",
+        "Home screen cover size",
         HOME_COVER_SIZE_SETTING,
         HOME_COVER_SIZES,
         DEFAULT_HOME_COVER_SIZE,
@@ -367,7 +367,7 @@ def choose_home_cover_size():
 
 def choose_home_cover_style():
     _choose(
-        "Coverdarstellung auf der Hauptseite",
+        "Home screen cover appearance",
         HOME_COVER_STYLE_SETTING,
         HOME_COVER_STYLES,
         DEFAULT_HOME_COVER_STYLE,
@@ -376,7 +376,7 @@ def choose_home_cover_style():
 
 def choose_home_shadow_width():
     _choose(
-        "Schattenbreite auf der Hauptseite",
+        "Home screen shadow width",
         HOME_SHADOW_WIDTH_SETTING,
         HOME_SHADOW_WIDTHS,
         DEFAULT_HOME_SHADOW_WIDTH,
@@ -385,7 +385,7 @@ def choose_home_shadow_width():
 
 def choose_home_shadow_offset():
     _choose(
-        "Schattenversatz auf der Hauptseite",
+        "Home screen shadow offset",
         HOME_SHADOW_OFFSET_SETTING,
         HOME_SHADOW_OFFSETS,
         DEFAULT_HOME_SHADOW_OFFSET,
@@ -394,7 +394,7 @@ def choose_home_shadow_offset():
 
 def choose_home_floor_style():
     _choose(
-        "Unterer Balken auf der Hauptseite",
+        "Home screen bottom bar",
         HOME_FLOOR_STYLE_SETTING,
         HOME_FLOOR_STYLES,
         DEFAULT_HOME_FLOOR_STYLE,
@@ -404,12 +404,12 @@ def choose_home_floor_style():
 def restore_skin_default_background():
     # The regular Confluence image picker intentionally stays untouched. This
     # action only provides a deterministic way back to the wallpaper shipped
-    # with JJS KODI Confluence Custom, for both normal and master profiles.
+    # with Confluence-jjs, for both normal and master profiles.
     _set("CustomBackgroundPath", SKIN_DEFAULT_BACKGROUND)
     _set("MasterCustomBackgroundPath", SKIN_DEFAULT_BACKGROUND)
     xbmc.executebuiltin("Skin.SetBool(UseCustomBackground,true)")
     xbmcgui.Dialog().notification(
-        "JJS KODI Confluence Custom", "Skin-Default-Hintergrund wiederhergestellt", xbmcgui.NOTIFICATION_INFO, 2500
+        "Confluence-jjs", "Skin default background restored", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 
@@ -425,36 +425,36 @@ def choose_home_no_cover():
         preselect = values.index(current)
     except ValueError:
         preselect = 1
-    index = xbmcgui.Dialog().select("No-Cover-Bild", labels, preselect=preselect)
+    index = xbmcgui.Dialog().select("No-cover image", labels, preselect=preselect)
     if index < 0:
         return
     mode = values[index]
     if mode == "free":
         image = xbmcgui.Dialog().browseSingle(
-            2, "No-Cover-Bild wählen", "files", ".png|.jpg|.jpeg|.webp|.bmp"
+            2, "Choose no-cover image", "files", ".png|.jpg|.jpeg|.webp|.bmp"
         )
         if not image:
             return
         if not save_free_image(image):
             xbmcgui.Dialog().notification(
-                "JJS KODI Confluence Custom", "Bild konnte nicht übernommen werden", xbmcgui.NOTIFICATION_ERROR, 3500
+                "Confluence-jjs", "Image could not be saved", xbmcgui.NOTIFICATION_ERROR, 3500
             )
             return
     applied_mode, ok = apply_no_cover(mode, reload_skin=True)
     if not ok:
         xbmcgui.Dialog().notification(
-            "JJS KODI Confluence Custom", "No-Cover-Bild konnte nicht aktiviert werden", xbmcgui.NOTIFICATION_ERROR, 3500
+            "Confluence-jjs", "No-cover image could not be activated", xbmcgui.NOTIFICATION_ERROR, 3500
         )
         return
 
 
 def choose_song_selector_font():
-    _choose("Songselektor-Schriftart", SONG_SELECTOR_FONT_SETTING, SONG_SELECTOR_FONTS, DEFAULT_SONG_SELECTOR_FONT)
+    _choose("Song popup font", SONG_SELECTOR_FONT_SETTING, SONG_SELECTOR_FONTS, DEFAULT_SONG_SELECTOR_FONT)
 
 
 def choose_song_selector_size():
     _choose(
-        "Songselektor-Schriftgröße",
+        "Song popup font size",
         SONG_SELECTOR_SIZE_SETTING,
         [(v, "{} px".format(v)) for v in SONG_SELECTOR_SIZES],
         DEFAULT_SONG_SELECTOR_SIZE,
@@ -470,7 +470,7 @@ def choose_song_selector_highlight_color():
         preselect = values.index(current.upper())
     except ValueError:
         preselect = 0
-    choice = xbmcgui.Dialog().select("Songselektor-Hervorhebung", labels, preselect=preselect)
+    choice = xbmcgui.Dialog().select("Song popup highlight", labels, preselect=preselect)
     if choice >= 0:
         _set(SONG_SELECTOR_HIGHLIGHT_COLOR_SETTING, choices[choice][0])
 
@@ -495,7 +495,7 @@ def toggle_song_selector_lyrics_centered():
 
 def choose_song_selector_lyrics_sync_delay():
     _choose(
-        "Songtext-Synchronisation verzögern",
+        "Lyrics sync delay",
         SONG_SELECTOR_LYRICS_SYNC_DELAY_SETTING,
         SONG_SELECTOR_LYRICS_SYNC_DELAYS,
         DEFAULT_SONG_SELECTOR_LYRICS_SYNC_DELAY,
@@ -503,22 +503,22 @@ def choose_song_selector_lyrics_sync_delay():
 
 
 def choose_song_selector_background():
-    _choose("Songselektor-Hintergrund", SONG_SELECTOR_BACKGROUND_SETTING, SONG_SELECTOR_BACKGROUNDS, DEFAULT_SONG_SELECTOR_BACKGROUND)
+    _choose("Song popup background", SONG_SELECTOR_BACKGROUND_SETTING, SONG_SELECTOR_BACKGROUNDS, DEFAULT_SONG_SELECTOR_BACKGROUND)
 
 
 def choose_song_selector_time_background():
-    _choose("Hintergrund der Zeitkacheln", SONG_SELECTOR_TIME_BACKGROUND_SETTING, SONG_SELECTOR_TIME_BACKGROUNDS, DEFAULT_SONG_SELECTOR_TIME_BACKGROUND)
+    _choose("Time badge background", SONG_SELECTOR_TIME_BACKGROUND_SETTING, SONG_SELECTOR_TIME_BACKGROUNDS, DEFAULT_SONG_SELECTOR_TIME_BACKGROUND)
 
 
 def choose_song_selector_selection_timeout():
-    _choose("Auswahl zurück auf laufenden Song", SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, SONG_SELECTOR_SELECTION_TIMEOUTS, DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT)
+    _choose("Return selection to current song", SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, SONG_SELECTOR_SELECTION_TIMEOUTS, DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT)
 
 
 def choose_song_selector_focus_timeout():
-    _choose("Fokus zurück in die Menüleiste", SONG_SELECTOR_FOCUS_TIMEOUT_SETTING, SONG_SELECTOR_FOCUS_TIMEOUTS, DEFAULT_SONG_SELECTOR_FOCUS_TIMEOUT)
+    _choose("Return focus to menu bar", SONG_SELECTOR_FOCUS_TIMEOUT_SETTING, SONG_SELECTOR_FOCUS_TIMEOUTS, DEFAULT_SONG_SELECTOR_FOCUS_TIMEOUT)
 
 def choose_song_selector_highlight_timeout():
-    _choose("Auswahl zurück auf laufenden Song", SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, SONG_SELECTOR_SELECTION_TIMEOUTS, DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT)
+    _choose("Return selection to current song", SONG_SELECTOR_SELECTION_TIMEOUT_SETTING, SONG_SELECTOR_SELECTION_TIMEOUTS, DEFAULT_SONG_SELECTOR_SELECTION_TIMEOUT)
 
 
 def _toggle_bool_setting(name, default="true"):
@@ -570,11 +570,11 @@ def choose_audio_badge_content():
 
 
 def choose_audio_badge_size():
-    _choose_audio_badge("Audio-Badge Größe", AUDIO_BADGE_SIZE_SETTING, AUDIO_BADGE_SIZES, DEFAULT_AUDIO_BADGE_SIZE)
+    _choose_audio_badge("Audio badge size", AUDIO_BADGE_SIZE_SETTING, AUDIO_BADGE_SIZES, DEFAULT_AUDIO_BADGE_SIZE)
 
 
 def choose_audio_badge_color():
-    _choose_audio_badge("Badge-Hintergrund", AUDIO_BADGE_COLOR_SETTING, AUDIO_BADGE_COLORS, DEFAULT_AUDIO_BADGE_COLOR)
+    _choose_audio_badge("Badge background", AUDIO_BADGE_COLOR_SETTING, AUDIO_BADGE_COLORS, DEFAULT_AUDIO_BADGE_COLOR)
 
 
 def choose_audio_badge_opacity():
@@ -605,7 +605,7 @@ def reset_playback_info():
     _set(AUDIO_BADGE_3D_SETTING, DEFAULT_AUDIO_BADGE_3D)
     _set(AUDIO_BADGE_CONTENT_SETTING, DEFAULT_AUDIO_BADGE_CONTENT)
     _update_audio_badge_texture()
-    xbmcgui.Dialog().notification("JJS KODI Confluence Custom", "Abspielinformationen zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500)
+    xbmcgui.Dialog().notification("Confluence-jjs", "Playback information reset", xbmcgui.NOTIFICATION_INFO, 2500)
 
 
 def reset_song_selector():
@@ -622,7 +622,7 @@ def reset_song_selector():
     _set(SONG_SELECTOR_FOCUS_TIMEOUT_SETTING, DEFAULT_SONG_SELECTOR_FOCUS_TIMEOUT)
     _set(SONG_SELECTOR_HIGHLIGHT_TIMEOUT_SETTING, DEFAULT_SONG_SELECTOR_HIGHLIGHT_TIMEOUT)
     xbmcgui.Dialog().notification(
-        "JJS KODI Confluence Custom", "Songselektor zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "Confluence-jjs", "Song popup reset", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 
@@ -640,7 +640,7 @@ def reset_home():
     apply_no_cover(DEFAULT_HOME_NO_COVER, reload_skin=False)
     xbmc.executebuiltin("ReloadSkin()")
     xbmcgui.Dialog().notification(
-        "JJS KODI Confluence Custom", "Startseiten-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "Confluence-jjs", "Home screen appearance reset", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 def reset_main():
@@ -650,7 +650,7 @@ def reset_main():
     _set(MAIN_ACTIVE_COLOR_SETTING, DEFAULT_MAIN_ACTIVE_COLOR)
     _set(MAIN_Y_OFFSET_SETTING, DEFAULT_MAIN_Y_OFFSET)
     xbmcgui.Dialog().notification(
-        "JJS KODI Confluence Custom", "Hauptmenü-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "Confluence-jjs", "Main menu appearance reset", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 
@@ -660,7 +660,7 @@ def reset_sub():
     _set(SUB_NORMAL_COLOR_SETTING, DEFAULT_SUB_NORMAL_COLOR)
     _set(SUB_ACTIVE_COLOR_SETTING, DEFAULT_SUB_ACTIVE_COLOR)
     xbmcgui.Dialog().notification(
-        "JJS KODI Confluence Custom", "Untermenü-Darstellung zurückgesetzt", xbmcgui.NOTIFICATION_INFO, 2500
+        "Confluence-jjs", "Submenu appearance reset", xbmcgui.NOTIFICATION_INFO, 2500
     )
 
 
@@ -672,9 +672,9 @@ def main():
     elif mode == "size":
         choose_main_size()
     elif mode == "normalcolor":
-        choose_color("Hauptmenüfarbe normal", MAIN_NORMAL_COLOR_SETTING, DEFAULT_MAIN_NORMAL_COLOR)
+        choose_color("Main menu normal color", MAIN_NORMAL_COLOR_SETTING, DEFAULT_MAIN_NORMAL_COLOR)
     elif mode == "activecolor":
-        choose_color("Hauptmenüfarbe aktiv", MAIN_ACTIVE_COLOR_SETTING, DEFAULT_MAIN_ACTIVE_COLOR)
+        choose_color("Main menu active color", MAIN_ACTIVE_COLOR_SETTING, DEFAULT_MAIN_ACTIVE_COLOR)
     elif mode == "yoffset":
         choose_main_y_offset()
     elif mode == "reset":
@@ -684,9 +684,9 @@ def main():
     elif mode == "subsize":
         choose_sub_size()
     elif mode == "subnormalcolor":
-        choose_color("Untermenüfarbe normal", SUB_NORMAL_COLOR_SETTING, DEFAULT_SUB_NORMAL_COLOR)
+        choose_color("Submenu normal color", SUB_NORMAL_COLOR_SETTING, DEFAULT_SUB_NORMAL_COLOR)
     elif mode == "subactivecolor":
-        choose_color("Untermenüfarbe aktiv", SUB_ACTIVE_COLOR_SETTING, DEFAULT_SUB_ACTIVE_COLOR)
+        choose_color("Submenu active color", SUB_ACTIVE_COLOR_SETTING, DEFAULT_SUB_ACTIVE_COLOR)
     elif mode == "subreset":
         reset_sub()
     elif mode == "songfont":
@@ -696,7 +696,7 @@ def main():
     elif mode == "songnormalcolor":
         choose_color("Songselektorfarbe normal", SONG_SELECTOR_NORMAL_COLOR_SETTING, DEFAULT_SONG_SELECTOR_NORMAL_COLOR)
     elif mode == "songcurrentcolor":
-        choose_color("Songselektorfarbe laufender Song", SONG_SELECTOR_CURRENT_COLOR_SETTING, DEFAULT_SONG_SELECTOR_CURRENT_COLOR)
+        choose_color("Current song color", SONG_SELECTOR_CURRENT_COLOR_SETTING, DEFAULT_SONG_SELECTOR_CURRENT_COLOR)
     elif mode == "songactivecolor":
         choose_color("Songselektorfarbe Fokus", SONG_SELECTOR_ACTIVE_COLOR_SETTING, DEFAULT_SONG_SELECTOR_ACTIVE_COLOR)
     elif mode == "songhighlightcolor":
