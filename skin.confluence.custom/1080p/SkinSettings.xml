@@ -1252,17 +1252,17 @@
 					<visible>Container(9000).Hasfocus(5)</visible>
 					<left>435</left><top>90</top><width>1125</width><height>795</height><defaultcontrol>5701</defaultcontrol>
 					<control type="image"><left>0</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
-					<control type="image"><left>0</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus2.png</texture><visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible></control>
+					<control type="image"><left>0</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus.png</texture><visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible></control>
 					<control type="image"><left>189</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
-					<control type="image"><left>189</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus2.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible></control>
+					<control type="image"><left>189</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible></control>
 					<control type="image"><left>378</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
-					<control type="image"><left>378</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus2.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible></control>
+					<control type="image"><left>378</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible></control>
 					<control type="image"><left>567</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
-					<control type="image"><left>567</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus2.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),popup)</visible></control>
+					<control type="image"><left>567</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),popup)</visible></control>
 					<control type="image"><left>756</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
-					<control type="image"><left>756</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus2.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),playback)</visible></control>
+					<control type="image"><left>756</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),playback)</visible></control>
 					<control type="image"><left>945</left><top>0</top><width>180</width><height>54</height><texture border="5">MenuItemNF.png</texture></control>
-					<control type="image"><left>945</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus2.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),badges)</visible></control>
+					<control type="image"><left>945</left><top>0</top><width>180</width><height>54</height><texture border="5">button-focus.png</texture><visible>String.IsEqual(Window.Property(CCSettingsTab),badges)</visible></control>
 					<control type="grouplist" id="5700">
 						<left>0</left><top>0</top><width>1125</width><height>54</height><orientation>horizontal</orientation><itemgap>9</itemgap>
 						<onleft>9000</onleft><onright>5700</onright><onup>5700</onup>
