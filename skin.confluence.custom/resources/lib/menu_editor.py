@@ -312,12 +312,12 @@ def choose_target(capture=None):
         "Select in Kodi (normal lists / long press)",
         "Confluence-jjs",
         "Browse Kodi settings",
-        "Video-Bibliothek durchsuchen",
-        "Musik-Bibliothek durchsuchen",
-        "Add-ons durchsuchen",
+        "Browse video library",
+        "Browse music library",
+        "Browse add-ons",
         "Kodi windows / dialogs",
         "Favorite",
-        "Benutzerdefinierte Kodi-Aktion",
+        "Custom Kodi action",
     ]
     c = select("Choose target", choices)
     if c < 0:
@@ -332,9 +332,9 @@ def choose_target(capture=None):
     if c == 2:
         return browse_settings()
     if c == 3:
-        return browse_path("library://video/", "Videos", "video", "Video-Bibliothek", "Video-Bibliothek")
+        return browse_path("library://video/", "Videos", "video", "Video library", "Video-Bibliothek")
     if c == 4:
-        return browse_path("library://music/", "Music", "music", "Musik-Bibliothek", "Musik-Bibliothek")
+        return browse_path("library://music/", "Music", "music", "Music library", "Musik-Bibliothek")
     if c == 5:
         return browse_addons()
     if c == 6:
@@ -342,7 +342,7 @@ def choose_target(capture=None):
     if c == 7:
         return choose_favourite()
     if c == 8:
-        action = input_text("Kodi-Aktion, z. B. ActivateWindow(Settings)", "")
+        action = input_text("Kodi action, e.g. ActivateWindow(Settings)", "")
         if not action or not action.strip():
             return None
         return ("Custom entry", action.strip())
@@ -958,14 +958,14 @@ def choose_pvr_target():
 
 def choose_kodi_window():
     groups = [
-        ("Hauptfenster", [
+        ("Main windows", [
             ("Home", "Home"), ("Programme", "Programs"), ("Bilder", "Pictures"), ("Dateimanager", "FileManager"),
             ("Settings", "Settings"), ("System information", "SystemInfo"), ("Calibrate display", "ScreenCalibration"),
             ("Videos", "Videos"), ("Musik", "Music"), ("Profile", "Profiles"), ("Skin konfigurieren", "SkinSettings"),
             ("Add-on-Browser", "AddonBrowser"), ("Ereignisprotokoll", "EventLog"), ("Favorites", "FavouritesBrowser"),
             ("Wetter", "Weather"), ("Spiele", "Games"),
         ]),
-        ("Einstellungsfenster", [
+        ("Settings windows", [
             ("System", "SystemSettings"), ("Dienste", "ServiceSettings"), ("TV / PVR", "PVRSettings"),
             ("Spiele", "GameSettings"), ("Player", "PlayerSettings"), ("Medien", "MediaSettings"),
             ("Interface", "InterfaceSettings"),
@@ -978,7 +978,7 @@ def choose_kodi_window():
             ("Musik OSD", "MusicOSD"), ("Player-Steuerung", "PlayerControls"),
             ("Player-Prozessinfo", "PlayerProcessInfo"), ("Seekbar", "SeekBar"),
         ]),
-        ("Dialoge", [
+        ("Dialogs", [
             ("Yes/No dialog", "YesNoDialog"), ("Progress dialog", "ProgressDialog"), ("Virtual keyboard", "VirtualKeyboard"),
             ("Volume bar", "VolumeBar"), ("Submenu dialog", "SubMenu"), ("Context menu", "ContextMenu"),
             ("Benachrichtigung", "Notification"), ("Numerische Eingabe", "NumericInput"), ("Gamepad-Eingabe", "GamepadInput"),
@@ -1021,7 +1021,7 @@ def choose_kodi_window():
             if not window or not window.strip():
                 continue
             window = window.strip()
-            path = input_text("Optionaler Pfad/Parameter (leer = keiner)", "")
+            path = input_text("Optional path/parameter (empty = none)", "")
             if path and path.strip():
                 return (window, activate_window(window, path.strip(), True))
             return (window, "ActivateWindow({})".format(window))
