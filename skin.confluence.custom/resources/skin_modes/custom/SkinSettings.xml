@@ -1351,7 +1351,7 @@
 						</control>
 						<control type="button" id="499">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Auf Confluence-jjs umschalten</label><label2>Restore saved Confluence-jjs settings</label2>
+							<label>Switch to Confluence-jjs</label><label2>Restore saved Confluence-jjs settings</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/skin_mode.py,custom)</onclick>
 							<visible>Skin.HasSetting(CCStandardConfluence)</visible>
@@ -1446,7 +1446,7 @@
 						</control>
 						<control type="button" id="510">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Main menu appearance zurücksetzen</label><label2>Roboto Bold · 60 px · default colors · default position</label2>
+							<label>Reset main menu appearance</label><label2>Roboto Bold · 60 px · default colors · default position</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,reset)</onclick>
 						</control>
@@ -1487,7 +1487,7 @@
 						</control>
 						<control type="button" id="517">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Submenu appearance zurücksetzen</label><label2>Skin default · Confluence colors</label2>
+							<label>Reset submenu appearance</label><label2>Skin default · Confluence colors</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,subreset)</onclick>
 						</control>
@@ -1564,7 +1564,7 @@
 						</control>
 						<control type="button" id="521">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Home screen appearance zurücksetzen</label><label2>Front · original cover · jewel case · frame · original bottom bar</label2>
+							<label>Reset home screen appearance</label><label2>Front · original cover · jewel case · frame · original bottom bar</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homereset)</onclick>
 						</control>
@@ -1638,7 +1638,7 @@
 						</control>
 						<control type="button" id="534">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Song popup zurücksetzen</label><label2>Defaults</label2>
+							<label>Reset song popup</label><label2>Defaults</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songreset)</onclick>
 						</control>
@@ -1691,7 +1691,7 @@
 						<control type="button" id="557"><width>1125</width><height>60</height><font>font13</font><label>Badge background</label><label2>[COLOR=selected]$VAR[CCAudioBadgeColorSetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgecolor)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
 						<control type="button" id="558"><width>1125</width><height>60</height><font>font13</font><label>Badge opacity</label><label2>[COLOR=selected]$VAR[CCAudioBadgeOpacitySetting][/COLOR]</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgeopacity)</onclick><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
 						<control type="radiobutton" id="560"><width>1125</width><height>60</height><font>font13</font><label>3D Badge</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadge3d)</onclick><selected>String.IsEqual(Skin.String(CCAudioBadge3D),true)</selected><enable>Skin.HasSetting(CCNowPlayingAudioLogo) | Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
-						<control type="button" id="561"><width>1125</width><height>60</height><font>font13</font><label>Playback information zurücksetzen</label><label2>Defaults</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,playbackreset)</onclick></control>
+						<control type="button" id="561"><width>1125</width><height>60</height><font>font13</font><label>Reset playback information</label><label2>Defaults</label2><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,playbackreset)</onclick></control>
 					</control>
 				</control>
 				<control type="scrollbar" id="61">
