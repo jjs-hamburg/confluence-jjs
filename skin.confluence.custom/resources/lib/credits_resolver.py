@@ -596,7 +596,7 @@ def resolve_musicbrainz(barcode, album_title="", album_artist=""):
     if not candidate:
         return {
             "status": "not_found", "source": "musicbrainz", "identifier": barcode,
-            "message": "Kein MusicBrainz-Release mit diesem Barcode gefunden.",
+            "message": "No MusicBrainz release found for this barcode.",
         }
     mbid = candidate.get("id")
     inc = "+".join([
@@ -1330,7 +1330,7 @@ def resolve_discogs_stage(identifier, album_title="", album_artist=""):
         if not candidate:
             return _finalize_sources({
                 "status": "not_found", "source": "discogs", "identifier": barcode,
-                "message": "Kein Discogs-Release mit diesem Barcode gefunden.",
+                "message": "No Discogs release found for this barcode.",
             })
         result = resolve_discogs(candidate.get("id"))
         if result.get("status") == "ok":
