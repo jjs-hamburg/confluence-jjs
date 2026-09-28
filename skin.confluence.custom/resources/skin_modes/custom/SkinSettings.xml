@@ -1269,32 +1269,32 @@
 						<control type="button" id="5701">
 							<width>180</width><height>54</height><font>font12</font><label>General</label><align>center</align><aligny>center</aligny>
 							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,general)</onclick><ondown>503</ondown>
+							<onfocus>SetProperty(CCSettingsTab,general)</onfocus><onclick>SetProperty(CCSettingsTab,general)</onclick><ondown>498</ondown>
 						</control>
 						<control type="button" id="5702">
 							<width>180</width><height>54</height><font>font12</font><label>Home</label><align>center</align><aligny>center</aligny>
 							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,home)</onclick><ondown>550</ondown>
+							<onfocus>SetProperty(CCSettingsTab,home)</onfocus><onclick>SetProperty(CCSettingsTab,home)</onclick><ondown>550</ondown>
 						</control>
 						<control type="button" id="5703">
 							<width>180</width><height>54</height><font>font12</font><label>Menus</label><align>center</align><aligny>center</aligny>
 							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,menus)</onclick><ondown>506</ondown>
+							<onfocus>SetProperty(CCSettingsTab,menus)</onfocus><onclick>SetProperty(CCSettingsTab,menus)</onclick><ondown>506</ondown>
 						</control>
 						<control type="button" id="5704">
 							<width>180</width><height>54</height><font>font12</font><label>Song popup</label><align>center</align><aligny>center</aligny>
 							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,popup)</onclick><ondown>529</ondown>
+							<onfocus>SetProperty(CCSettingsTab,popup)</onfocus><onclick>SetProperty(CCSettingsTab,popup)</onclick><ondown>529</ondown>
 						</control>
 						<control type="button" id="5705">
 							<width>180</width><height>54</height><font>font12</font><label>Playback</label><align>center</align><aligny>center</aligny>
 							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,playback)</onclick><ondown>537</ondown>
+							<onfocus>SetProperty(CCSettingsTab,playback)</onfocus><onclick>SetProperty(CCSettingsTab,playback)</onclick><ondown>537</ondown>
 						</control>
 						<control type="button" id="5706">
 							<width>180</width><height>54</height><font>font12</font><label>Badges</label><align>center</align><aligny>center</aligny>
 							<textcolor>white</textcolor><focusedcolor>white</focusedcolor><texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
-							<onclick>SetProperty(CCSettingsTab,badges)</onclick><ondown>566</ondown>
+							<onfocus>SetProperty(CCSettingsTab,badges)</onfocus><onclick>SetProperty(CCSettingsTab,badges)</onclick><ondown>566</ondown>
 						</control>
 					</control>
 					<control type="grouplist" id="5710">
