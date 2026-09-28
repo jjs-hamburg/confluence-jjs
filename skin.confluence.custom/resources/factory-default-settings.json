@@ -257,7 +257,7 @@
     {
       "id": "ccmenu_addons_1_label",
       "type": "string",
-      "value": "Benutzer-Addons"
+      "value": "User add-ons"
     },
     {
       "id": "CCMenu_addons_2_Action",
@@ -267,7 +267,7 @@
     {
       "id": "CCMenu_addons_2_Label",
       "type": "string",
-      "value": "Aus Repo installieren"
+      "value": "Install from repository"
     },
     {
       "id": "CCMenu_addons_3_Action",
@@ -277,7 +277,7 @@
     {
       "id": "CCMenu_addons_3_Label",
       "type": "string",
-      "value": "Aus ZIP installieren"
+      "value": "Install from zip file"
     },
     {
       "id": "CCMenu_addons_4_Action",
@@ -332,7 +332,7 @@
     {
       "id": "ccmenu_movies_1_label",
       "type": "string",
-      "value": "Zuletzt hinzugefügt"
+      "value": "Recently added"
     },
     {
       "id": "CCMenu_movies_2_Action",
@@ -392,7 +392,7 @@
     {
       "id": "ccmenu_music_1_label",
       "type": "string",
-      "value": "Zuletzt hinzugefügt"
+      "value": "Recently added"
     },
     {
       "id": "CCMenu_music_2_Action",
@@ -402,7 +402,7 @@
     {
       "id": "CCMenu_music_2_Label",
       "type": "string",
-      "value": "Zuletzt gehört"
+      "value": "Recently played"
     },
     {
       "id": "CCMenu_music_3_Action",
@@ -412,7 +412,7 @@
     {
       "id": "CCMenu_music_3_Label",
       "type": "string",
-      "value": "Interpreten"
+      "value": "Artists"
     },
     {
       "id": "CCMenu_music_4_Action",
@@ -422,7 +422,7 @@
     {
       "id": "CCMenu_music_4_Label",
       "type": "string",
-      "value": "Dateien"
+      "value": "Files"
     },
     {
       "id": "CCMenu_music_5_Action",
@@ -442,7 +442,7 @@
     {
       "id": "CCMenu_music_6_Label",
       "type": "string",
-      "value": "Jahre"
+      "value": "Years"
     },
     {
       "id": "CCMenu_pictures_1_Action",
@@ -512,7 +512,7 @@
     {
       "id": "ccmenu_radio_1_label",
       "type": "string",
-      "value": "Sender"
+      "value": "Channels"
     },
     {
       "id": "CCMenu_radio_2_Action",
@@ -522,7 +522,7 @@
     {
       "id": "CCMenu_radio_2_Label",
       "type": "string",
-      "value": "Programmübersicht"
+      "value": "Guide"
     },
     {
       "id": "CCMenu_radio_3_Action",
@@ -532,7 +532,7 @@
     {
       "id": "CCMenu_radio_3_Label",
       "type": "string",
-      "value": "Aufnahmen"
+      "value": "Recordings"
     },
     {
       "id": "CCMenu_radio_4_Action",
@@ -542,7 +542,7 @@
     {
       "id": "CCMenu_radio_4_Label",
       "type": "string",
-      "value": "Timerregeln"
+      "value": "Timer rules"
     },
     {
       "id": "CCMenu_radio_5_Action",
@@ -562,7 +562,7 @@
     {
       "id": "CCMenu_radio_6_Label",
       "type": "string",
-      "value": "Suchen"
+      "value": "Search"
     },
     {
       "id": "CCMenu_system_1_Action",
@@ -572,7 +572,7 @@
     {
       "id": "ccmenu_system_1_label",
       "type": "string",
-      "value": "Dateimanager"
+      "value": "File manager"
     },
     {
       "id": "CCMenu_system_2_Action",
@@ -582,7 +582,7 @@
     {
       "id": "CCMenu_system_2_Label",
       "type": "string",
-      "value": "Einstellungen"
+      "value": "Settings"
     },
     {
       "id": "CCMenu_system_3_Action",
@@ -592,7 +592,7 @@
     {
       "id": "CCMenu_system_3_Label",
       "type": "string",
-      "value": "Skin konfigurieren"
+      "value": "Configure skin"
     },
     {
       "id": "CCMenu_system_4_Action",
@@ -602,7 +602,7 @@
     {
       "id": "CCMenu_system_4_Label",
       "type": "string",
-      "value": "Menu Editor"
+      "value": "Menu editor"
     },
     {
       "id": "CCMenu_system_5_Action",
@@ -612,7 +612,7 @@
     {
       "id": "CCMenu_system_5_Label",
       "type": "string",
-      "value": "Systeminfo"
+      "value": "System information"
     },
     {
       "id": "CCMenu_system_6_Action",
@@ -632,7 +632,7 @@
     {
       "id": "ccmenu_tv_1_label",
       "type": "string",
-      "value": "Sender"
+      "value": "Channels"
     },
     {
       "id": "CCMenu_tv_2_Action",
@@ -642,7 +642,7 @@
     {
       "id": "CCMenu_tv_2_Label",
       "type": "string",
-      "value": "Programmübersicht"
+      "value": "Guide"
     },
     {
       "id": "CCMenu_tv_3_Action",
@@ -652,7 +652,7 @@
     {
       "id": "CCMenu_tv_3_Label",
       "type": "string",
-      "value": "Aufnahmen"
+      "value": "Recordings"
     },
     {
       "id": "CCMenu_tv_4_Action",
@@ -662,7 +662,7 @@
     {
       "id": "CCMenu_tv_4_Label",
       "type": "string",
-      "value": "Timerregeln"
+      "value": "Timer rules"
     },
     {
       "id": "CCMenu_tv_5_Action",
@@ -682,7 +682,7 @@
     {
       "id": "CCMenu_tv_6_Label",
       "type": "string",
-      "value": "Suchen"
+      "value": "Search"
     },
     {
       "id": "CCMenu_tvshows_1_Action",
@@ -692,7 +692,7 @@
     {
       "id": "ccmenu_tvshows_1_label",
       "type": "string",
-      "value": "Zuletzt hinzugefügt"
+      "value": "Recently added"
     },
     {
       "id": "CCMenu_tvshows_2_Action",
@@ -732,7 +732,7 @@
     {
       "id": "CCMenu_tvshows_5_Label",
       "type": "string",
-      "value": "Jahre"
+      "value": "Years"
     },
     {
       "id": "CCMenu_tvshows_6_Action",
@@ -742,7 +742,7 @@
     {
       "id": "CCMenu_tvshows_6_Label",
       "type": "string",
-      "value": "In Bearbeitung"
+      "value": "In progress"
     },
     {
       "id": "CCMenu_videos_1_Action",
@@ -752,27 +752,27 @@
     {
       "id": "ccmenu_videos_1_label",
       "type": "string",
-      "value": "Dateien"
+      "value": "Files"
     },
     {
       "id": "CCMenu_videos_2_Action",
       "type": "string",
-      "value": "ActivateWindow(Videos,\"smb://SYNOLOGY1/video/Musik/\",return)"
+      "value": "ActivateWindow(Videos,\"smb://SYNOLOGY1/video/Music/\",return)"
     },
     {
       "id": "CCMenu_videos_2_Label",
       "type": "string",
-      "value": "Musik"
+      "value": "Music"
     },
     {
       "id": "CCMenu_videos_3_Action",
       "type": "string",
-      "value": "ActivateWindow(Videos,Addons,return)"
+      "value": "ActivateWindow(Videos,Add-ons,return)"
     },
     {
       "id": "CCMenu_videos_3_Label",
       "type": "string",
-      "value": "Addons"
+      "value": "Add-ons"
     },
     {
       "id": "CCMenu_videos_4_Action",
@@ -977,7 +977,7 @@
     {
       "id": "defaulthomefocusitem",
       "type": "string",
-      "value": "MUSIK"
+      "value": "MUSIC"
     },
     {
       "id": "firsttimerun",
