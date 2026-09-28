@@ -2,15 +2,16 @@
 
 Confluence-jjs is a customized **Confluence skin for Kodi 21 (Omega)**, based on the original work by **Jezz_X / Team Kodi**.
 
-The goal is to keep the simple Confluence layout while extending it mainly for music playback, large libraries and remote-control use.
+The main goal is to preserve the simple and direct Confluence experience while improving music presentation and configurability.
 
 ## Main additions
 
+- improved artwork display, including optional back covers
+- configurable fonts, colors and font sizes
+- more information about the currently playing music, including timing, format, DOR, lyrics and credits
 - configurable home screen, main menu and submenus
+- menu options that standard Confluence does not expose, such as **Files** in the Music submenu
 - integrated menu editor without Skin Shortcuts
-- extended music cover display, including front/back cover handling
-- configurable playback information, time displays and audio badges
-- song popup with playlist, credits and synchronized lyrics
 - selectable **Confluence-jjs** and **Standard Confluence** modes
 - skin-settings backup/restore and bundled library-node defaults
 
