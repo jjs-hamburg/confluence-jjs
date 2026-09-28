@@ -666,7 +666,7 @@ def _update_lyrics_debug(home, raw_lyrics):
         "Kodi Artist: " + _debug_value(kodi_artist),
         "Kodi Titel: " + _debug_value(kodi_title),
         "Kodi Album: " + _debug_value(kodi_album),
-        "Kodi file: " + _debug_value(kodi_file),
+        "Kodi Datei: " + _debug_value(kodi_file),
         "Skin LyricScript_Path: " + _debug_value(lyric_script),
         "CU LRC running: " + _debug_value(home.getProperty(CULRC_RUNNING_PROP)),
         "CU LRC source: " + _debug_value(home.getProperty(CULRC_SOURCE_PROP)),
@@ -678,8 +678,8 @@ def _update_lyrics_debug(home, raw_lyrics):
         "CU LRC lyrics roh: {} Zeichen".format(len(raw_lyrics or "")),
         "Popup LyricsText: {} Zeichen".format(len(cleaned)),
         "",
-        "--- Lyrics ---",
-        cleaned if cleaned else ("Searching for lyrics …" if home.getProperty(CULRC_RUNNING_PROP) == "true" else "No lyrics available."),
+        "--- Songtext ---",
+        cleaned if cleaned else ("Songtext wird gesucht …" if home.getProperty(CULRC_RUNNING_PROP) == "true" else "Kein Songtext verfügbar."),
     ]
     home.setProperty(LYRICS_DEBUG_PROP, "[CR]".join(lines))
 
