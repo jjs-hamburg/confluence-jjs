@@ -1,5 +1,5 @@
 <node order="10" type="filter" visible="Library.HasContent(Music)">
-	<label>Zuletzt hinzugefügt</label>
+	<label>Recently added</label>
 	<icon>DefaultMusicRecentlyAdded.png</icon>
 	<content>albums</content>
 	<limit>50</limit>
