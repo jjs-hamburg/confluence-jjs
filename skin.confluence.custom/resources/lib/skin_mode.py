@@ -82,7 +82,7 @@ def _copy_mode(mode):
         source = os.path.join(src, name)
         target = os.path.join(dst, name)
         if not os.path.isfile(source):
-            raise RuntimeError("Modusdatei fehlt: {}".format(name))
+            raise RuntimeError("Mode file is missing: {}".format(name))
         payload[name] = _bytes(source)
         if os.path.isfile(target):
             old[name] = _bytes(target)
@@ -100,7 +100,7 @@ def _copy_mode(mode):
                     pass
             staged.append(temp)
             if _sha(temp) != hashlib.sha256(payload[name]).hexdigest():
-                raise RuntimeError("Prüfung fehlgeschlagen: {}".format(name))
+                raise RuntimeError("Verification failed: {}".format(name))
 
         for name in MANAGED:
             target = os.path.join(dst, name)
@@ -146,9 +146,9 @@ def switch(mode, show_error=True):
         xbmc.executebuiltin("ReloadSkin()")
         return True
     except Exception as exc:
-        xbmc.log("JJS KODI Confluence Custom mode switch failed: {}".format(exc), xbmc.LOGERROR)
+        xbmc.log("Confluence-jjs mode switch failed: {}".format(exc), xbmc.LOGERROR)
         if show_error:
-            xbmcgui.Dialog().ok("Custom Confluence", "Umschalten fehlgeschlagen:[CR]{}".format(exc))
+            xbmcgui.Dialog().ok("Confluence-jjs", "Mode switch failed:[CR]{}".format(exc))
         return False
 
 
@@ -159,11 +159,11 @@ def ensure_mode():
         return False
     try:
         _copy_mode(mode)
-        xbmc.log("JJS KODI Confluence Custom: XML-Satz für Modus {} wiederhergestellt".format(mode), xbmc.LOGINFO)
+        xbmc.log("Confluence-jjs: restored XML set for mode {}".format(mode), xbmc.LOGINFO)
         xbmc.executebuiltin("ReloadSkin()")
         return True
     except Exception as exc:
-        xbmc.log("JJS KODI Confluence Custom ensure mode failed: {}".format(exc), xbmc.LOGERROR)
+        xbmc.log("Confluence-jjs ensure mode failed: {}".format(exc), xbmc.LOGERROR)
         return False
 
 
