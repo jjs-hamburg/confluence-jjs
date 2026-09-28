@@ -678,7 +678,7 @@ def _update_lyrics_debug(home, raw_lyrics):
         "CU LRC lyrics roh: {} Zeichen".format(len(raw_lyrics or "")),
         "Popup LyricsText: {} Zeichen".format(len(cleaned)),
         "",
-        "--- Songtext ---",
+        "--- Lyrics ---",
         cleaned if cleaned else ("Searching for lyrics …" if home.getProperty(CULRC_RUNNING_PROP) == "true" else "No lyrics available."),
     ]
     home.setProperty(LYRICS_DEBUG_PROP, "[CR]".join(lines))
