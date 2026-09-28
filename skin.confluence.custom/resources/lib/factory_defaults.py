@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Apply the bundled JJS KODI Confluence Custom snapshot only on a genuine fresh install.
+"""Apply the bundled Confluence-jjs snapshot only on a genuine fresh install.
 
 Existing installations must never be overwritten by a later skin update.  The
 first startup therefore decides, before any migration/default code runs,
-whether this profile already contains JJS KODI Confluence Custom skin settings.  Fresh
+whether this profile already contains Confluence-jjs skin settings.  Fresh
 installs get a small pending marker so an interrupted first run can safely be
 retried.
 """
@@ -25,7 +25,7 @@ PENDING_FILE = ".factory-defaults-v1.pending"
 
 
 def _log(message, level=xbmc.LOGINFO):
-    xbmc.log("[JJS KODI Confluence Custom] {}".format(message), level)
+    xbmc.log("[Confluence-jjs] {}".format(message), level)
 
 
 def _profile_dir():
@@ -92,10 +92,10 @@ def begin():
         return True
     if _existing_skin_settings():
         _write(state, "skipped-existing\n")
-        _log("Factory defaults not applied: existing JJS KODI Confluence Custom settings found")
+        _log("Factory defaults not applied: existing Confluence-jjs settings found")
         return False
     _write(pending, "fresh-install\n")
-    _log("Fresh JJS KODI Confluence Custom install detected; factory defaults scheduled")
+    _log("Fresh Confluence-jjs install detected; factory defaults scheduled")
     return True
 
 
@@ -135,11 +135,11 @@ def _fallback_set(item):
 def _load_defaults():
     payload = json.loads(_read(xbmcvfs.translatePath(DEFAULTS_FILE)))
     if not isinstance(payload, dict):
-        raise RuntimeError("Ungültige Factory-Defaults-Datei")
+        raise RuntimeError("Invalid factory-defaults file")
     if payload.get("format") != FORMAT or int(payload.get("format_version") or 0) != FORMAT_VERSION:
         raise RuntimeError("Falsches Factory-Defaults-Format")
     if payload.get("skin") != SKIN_ID:
-        raise RuntimeError("Factory-Defaults gehören nicht zu JJS KODI Confluence Custom")
+        raise RuntimeError("Factory defaults do not belong to Confluence-jjs")
     result = []
     seen = set()
     for item in payload.get("settings") or []:
@@ -157,7 +157,7 @@ def _load_defaults():
         result.append({"id": setting_id, "type": setting_type, "value": value})
         seen.add(setting_id)
     if not result:
-        raise RuntimeError("Factory-Defaults enthalten keine Einstellungen")
+        raise RuntimeError("Factory defaults contain no settings")
     return result
 
 
@@ -196,7 +196,7 @@ def apply():
 
     if errors:
         raise RuntimeError(
-            "{} Factory-Defaults konnten nicht gesetzt werden: {}".format(
+            "{} factory defaults could not be applied: {}".format(
                 len(errors), "; ".join(errors[:5])
             )
         )
@@ -206,5 +206,5 @@ def apply():
     except Exception:
         pass
     _write(_path(STATE_FILE), "applied\n")
-    _log("Applied {} JJS KODI Confluence Custom factory defaults".format(len(defaults)))
+    _log("Applied {} Confluence-jjs factory defaults".format(len(defaults)))
     return True
