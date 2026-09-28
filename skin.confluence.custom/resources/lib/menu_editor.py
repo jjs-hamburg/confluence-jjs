@@ -263,7 +263,7 @@ def group_editor(group):
         actions = [
             ("submenu", "Edit submenu ({} items)".format(submenu_count)),
             ("rename", "Rename main menu" + (" – {}".format(custom) if custom else "")),
-            ("target", "Hauptmenü-Change target" + (" – customized" if main_action else "")),
+            ("target", "Change main-menu target" + (" – customized" if main_action else "")),
         ]
         if position > 0:
             actions.append(("left", "Move main menu left"))
@@ -307,7 +307,7 @@ def group_editor(group):
 def choose_target(capture=None):
     # Preferred universal path: Kodi itself is the browser. The old
     # structured browsers remain as a fallback for places without ListItem
-    # Context menu bzw. für echte kodi.context.item-Aktionen erhalten.
+    # context menus and for real kodi.context.item actions.
     choices = [
         "Select in Kodi (normal lists / long press)",
         "Confluence-jjs",
@@ -315,8 +315,8 @@ def choose_target(capture=None):
         "Video-Bibliothek durchsuchen",
         "Musik-Bibliothek durchsuchen",
         "Add-ons durchsuchen",
-        "Kodi-Fenster / Dialoge",
-        "Favorit",
+        "Kodi windows / dialogs",
+        "Favorite",
         "Benutzerdefinierte Kodi-Aktion",
     ]
     c = select("Choose target", choices)
@@ -324,7 +324,7 @@ def choose_target(capture=None):
         return None
     if c == 0:
         if not capture:
-            D.ok("Kodi selection", "Für diesen Bearbeitungsschritt steht der direkte Kodi selectionmodus nicht zur Verfügung.")
+            D.ok("Kodi selection", "Direct Kodi selection is not available for this editing step.")
             return None
         begin_capture(capture.get("group", ""), capture.get("mode", ""), capture.get("index", -1))
     if c == 1:
@@ -345,7 +345,7 @@ def choose_target(capture=None):
         action = input_text("Kodi-Aktion, z. B. ActivateWindow(Settings)", "")
         if not action or not action.strip():
             return None
-        return ("Eigener Eintrag", action.strip())
+        return ("Custom entry", action.strip())
     return None
 
 
@@ -484,7 +484,7 @@ def browse_settings():
     if not sections:
         return choose_settings_fallback()
     while True:
-        options = ["[Diesen Punkt übernehmen]  Settings"]
+        options = ["[Use this item]  Settings"]
         options += [(sec.get("label") or sec.get("id") or "Bereich") for sec in sections]
         c = select("Settings", options)
         if c < 0:
@@ -526,7 +526,7 @@ def browse_path(root, window, media, heading, root_label):
                 continue
             if entry.get("filetype") == "directory" or target.endswith("/") or target.startswith(("library://", "videodb://", "musicdb://", "plugin://", "special://", "sources://", "addons://")):
                 dirs.append((name, target))
-        options = ["[Diesen Punkt übernehmen]  {}".format(label)]
+        options = ["[Use this item]  {}".format(label)]
         if len(stack) > 1:
             options.append("[..] Go up one level")
         options.extend([name for name, _ in dirs])
@@ -882,7 +882,7 @@ def browse_addon_entry(addon, category=None):
         if atype in ("xbmc.python.script", "xbmc.addon.executable"):
             options.append("[Use direct add-on launch]  {}".format(label))
             rows.append(("run", None))
-        options.append("[Add-on-Settings übernehmen]  {}".format(label))
+        options.append("[Use add-on settings]  {}".format(label))
         rows.append(("settings", None))
         options.append("Back")
         rows.append(("back", None))
@@ -1007,7 +1007,7 @@ def choose_kodi_window():
         ("Enter window name or ID manually", "manual"),
     ]
     while True:
-        g = select("Kodi-Fenster / Dialoge", [x[0] for x in groups])
+        g = select("Kodi windows / dialogs", [x[0] for x in groups])
         if g < 0:
             return None
         label, targets = groups[g]
@@ -1043,7 +1043,7 @@ def choose_favourite():
     usable = []
     for fav in favs:
         ftype = fav.get("type")
-        title = fav.get("title") or "Favorit"
+        title = fav.get("title") or "Favorite"
         action = ""
         if ftype == "window" and fav.get("window"):
             param = fav.get("windowparameter") or ""
@@ -1058,7 +1058,7 @@ def choose_favourite():
         if action:
             usable.append((title, action))
     if not usable:
-        D.ok("Favorites", "Keine verwendbaren Favorites gefunden.")
+        D.ok("Favorites", "No usable favorites found.")
         return None
     c = select("Choose favorite", [x[0] for x in usable])
     return usable[c] if c >= 0 else None
@@ -1132,4 +1132,4 @@ if __name__ == "__main__":
         pass
     except Exception as exc:
         log("Editor failed: {}".format(exc), xbmc.LOGERROR)
-        D.ok("Confluence-jjs menu editor", "Fehler im Menu editor:\n{}".format(exc))
+        D.ok("Confluence-jjs menu editor", "Menu editor error:\n{}".format(exc))
