@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Credits resolver embedded in JJS KODI Confluence Custom.
+"""Credits resolver embedded in Confluence-jjs.
 
 This module deliberately has no database side effects. It resolves one barcode
 or Discogs release id into structured, normalized performance credits. The
@@ -169,7 +169,7 @@ _INSTRUMENT_ALIASES = {
     "viola": "Viola",
     "cello": "Cello",
     "violoncello": "Cello",
-    "flute": "Flöte",
+    "flute": "Flute",
     "clarinet": "Klarinette",
     "saxophone": "Saxophon",
     "tenor saxophone": "Tenorsaxophon",
@@ -368,7 +368,7 @@ def _mb_json(path, params=None):
                 text = str(exc)
                 if not ("HTTP 503" in text or "HTTP 429" in text):
                     raise
-    raise last_exc or RuntimeError("MusicBrainz antwortet nicht.")
+    raise last_exc or RuntimeError("MusicBrainz is not responding.")
 
 
 def _discogs_json(path, params=None):
@@ -753,7 +753,7 @@ def resolve_musicbrainz_album(album_title, album_artist):
     if not group:
         return {
             "status": "not_found", "source": "musicbrainz", "identifier": identifier,
-            "message": "Kein passendes MusicBrainz-Album für Artist/Titel gefunden.",
+            "message": "No matching MusicBrainz album found for artist/title.",
         }
     group_id = _text(group.get("id"))
     group_detail = _mb_json(
@@ -764,7 +764,7 @@ def resolve_musicbrainz_album(album_title, album_artist):
     if not candidate:
         return {
             "status": "not_found", "source": "musicbrainz", "identifier": identifier,
-            "message": "MusicBrainz-Album gefunden, aber kein Release als Credits-Träger.",
+            "message": "MusicBrainz album found, but no release carries credits data.",
         }
 
     mbid = candidate.get("id")
@@ -1153,7 +1153,7 @@ def resolve_discogs_album(album_title, album_artist, master_ids=None, release_id
             return result
     return {
         "status": "not_found", "source": "discogs", "identifier": identifier,
-        "message": "Kein passendes Discogs-Album für Artist/Titel gefunden.",
+        "message": "No matching Discogs album found for artist/title.",
     }
 
 
@@ -1208,7 +1208,7 @@ def _source_error_message(source, exc):
     if source == "discogs" and "HTTP 401" in text:
         return "Discogs-Datenbanksuche verlangt derzeit Authentifizierung/API-Token (HTTP 401)."
     if source == "musicbrainz" and ("HTTP 503" in text or "HTTP 429" in text):
-        return "MusicBrainz ist trotz Wiederholungen vorübergehend ausgelastet."
+        return "MusicBrainz is temporarily busy despite retries."
     return text
 
 
@@ -1221,7 +1221,7 @@ def _finalize_sources(result, source_errors=None):
     return result
 
 
-_NO_COMPACT_DATA_PREFIX = "Keine für die kompakte Anzeige geeigneten Besetzungsdaten gefunden."
+_NO_COMPACT_DATA_PREFIX = "No credits suitable for the compact display were found."
 
 
 def useful_display_text(value):
@@ -1231,7 +1231,7 @@ def useful_display_text(value):
         return False
     if text.startswith(_NO_COMPACT_DATA_PREFIX):
         return False
-    if text == "Keine Besetzungsdaten gefunden.":
+    if text == "No credits found.":
         return False
     return True
 
@@ -1284,7 +1284,7 @@ def combine_source_results(identifier, discogs_result=None, musicbrainz_result=N
         # and release-identification details are retained in the raw import.
         out = dict(dg or mb or {
             "status": "not_found", "identifier": identifier,
-            "message": "Keine Besetzungsdaten gefunden.",
+            "message": "No credits found.",
         })
 
     sources = []
@@ -1300,7 +1300,7 @@ def combine_source_results(identifier, discogs_result=None, musicbrainz_result=N
 
     # A clean release hit without useful credits is not a successful credits hit.
     out["status"] = "partial" if errors else "not_found"
-    out["message"] = "Keine Besetzungsdaten gefunden."
+    out["message"] = "No credits found."
     return out
 
 
@@ -1341,7 +1341,7 @@ def resolve_discogs_stage(identifier, album_title="", album_artist=""):
     except Exception as exc:
         return _finalize_sources({
             "status": "error", "source": "discogs", "identifier": parsed.get("value") or identifier,
-            "message": "Keine Discogs-Daten gefunden.",
+            "message": "No Discogs data found.",
         }, {"discogs": _source_error_message("discogs", exc)})
 
 
@@ -1351,14 +1351,14 @@ def resolve_musicbrainz_stage(barcode, album_title="", album_artist=""):
     if not barcode:
         return _finalize_sources({
             "status": "not_found", "source": "musicbrainz", "identifier": "",
-            "message": "Kein Barcode für MusicBrainz vorhanden.",
+            "message": "No barcode available for MusicBrainz.",
         })
     try:
         return _finalize_sources(resolve_musicbrainz(barcode, album_title, album_artist))
     except Exception as exc:
         return _finalize_sources({
             "status": "error", "source": "musicbrainz", "identifier": barcode,
-            "message": "Keine MusicBrainz-Daten gefunden.",
+            "message": "No MusicBrainz data found.",
         }, {"musicbrainz": _source_error_message("musicbrainz", exc)})
 
 
@@ -1369,14 +1369,14 @@ def resolve_musicbrainz_album_stage(album_title, album_artist):
     if not identifier:
         return _finalize_sources({
             "status": "invalid", "source": "musicbrainz", "identifier": "",
-            "message": "Artist und Albumtitel werden für den Fallback benötigt.",
+            "message": "Artist and album title are required for fallback matching.",
         })
     try:
         return _finalize_sources(resolve_musicbrainz_album(album_title, album_artist))
     except Exception as exc:
         return _finalize_sources({
             "status": "error", "source": "musicbrainz", "identifier": identifier,
-            "message": "Keine MusicBrainz-Daten gefunden.",
+            "message": "No MusicBrainz data found.",
         }, {"musicbrainz": _source_error_message("musicbrainz", exc)})
 
 
@@ -1386,7 +1386,7 @@ def resolve_discogs_album_stage(album_title, album_artist, musicbrainz_result=No
     if not identifier:
         return _finalize_sources({
             "status": "invalid", "source": "discogs", "identifier": "",
-            "message": "Artist und Albumtitel werden für den Fallback benötigt.",
+            "message": "Artist and album title are required for fallback matching.",
         })
     release = (musicbrainz_result or {}).get("release") or {}
     try:
@@ -1399,7 +1399,7 @@ def resolve_discogs_album_stage(album_title, album_artist, musicbrainz_result=No
     except Exception as exc:
         return _finalize_sources({
             "status": "error", "source": "discogs", "identifier": identifier,
-            "message": "Keine Discogs-Daten gefunden.",
+            "message": "No Discogs data found.",
         }, {"discogs": _source_error_message("discogs", exc)})
 
 
@@ -1499,7 +1499,7 @@ def display_lines(result):
     complete resolver result for diagnosis.
     """
     if result.get("status") != "ok":
-        return [result.get("message") or "Keine Besetzungsdaten gefunden."]
+        return [result.get("message") or "No credits found."]
 
     credits = list(result.get("credits") or [])
     ensembles = list(result.get("ensembles") or [])
@@ -1634,5 +1634,5 @@ def display_lines(result):
             seen.add(key)
             lines.append(recording_line)
 
-    return lines or ["Keine für die kompakte Anzeige geeigneten Besetzungsdaten gefunden."]
+    return lines or ["No credits suitable for the compact display were found."]
 
