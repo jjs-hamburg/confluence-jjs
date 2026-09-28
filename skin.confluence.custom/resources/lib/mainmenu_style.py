@@ -694,11 +694,11 @@ def main():
     elif mode == "songsize":
         choose_song_selector_size()
     elif mode == "songnormalcolor":
-        choose_color("Songselektorfarbe normal", SONG_SELECTOR_NORMAL_COLOR_SETTING, DEFAULT_SONG_SELECTOR_NORMAL_COLOR)
+        choose_color("Song selector normal color", SONG_SELECTOR_NORMAL_COLOR_SETTING, DEFAULT_SONG_SELECTOR_NORMAL_COLOR)
     elif mode == "songcurrentcolor":
         choose_color("Current song color", SONG_SELECTOR_CURRENT_COLOR_SETTING, DEFAULT_SONG_SELECTOR_CURRENT_COLOR)
     elif mode == "songactivecolor":
-        choose_color("Songselektorfarbe Fokus", SONG_SELECTOR_ACTIVE_COLOR_SETTING, DEFAULT_SONG_SELECTOR_ACTIVE_COLOR)
+        choose_color("Song selector focus color", SONG_SELECTOR_ACTIVE_COLOR_SETTING, DEFAULT_SONG_SELECTOR_ACTIVE_COLOR)
     elif mode == "songhighlightcolor":
         choose_song_selector_highlight_color()
     elif mode == "songenabled":
