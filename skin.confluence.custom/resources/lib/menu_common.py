@@ -42,13 +42,13 @@ MAIN_ORDER_PREFIX = "CCMainOrder_"
 
 # Fallbacks are used only if a Kodi core localization happens to be empty.
 LOC_FALLBACK = {
-    5: "Settings", 7: "File manager", 130: "System information",
+    5: "Einstellungen", 7: "Dateimanager", 130: "Systeminformationen",
     137: "Suche", 342: "Filme", 744: "Dateien", 13200: "Profile",
-    14022: "Library", 14111: "Event log", 19019: "Channels",
+    14022: "Bibliothek", 14111: "Ereignisprotokoll", 19019: "Kanäle",
     19040: "Timer", 19138: "Timerregeln", 19163: "Aufnahmen",
-    20343: "TV shows", 20389: "Music videos", 22020: "Guide",
+    20343: "Serien", 20389: "Musikvideos", 22020: "Programmführer",
     24001: "Add-ons", 24033: "Aus Repository installieren",
-    24041: "Install from zip file", 24998: "My add-ons",
+    24041: "Aus ZIP-Datei installieren", 24998: "Meine Add-ons",
 }
 
 
