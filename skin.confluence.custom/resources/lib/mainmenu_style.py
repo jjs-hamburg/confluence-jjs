@@ -132,7 +132,7 @@ SONG_SELECTOR_TIME_BACKGROUNDS = [("submenu", "Same as submenu"), ("transparent"
 SONG_SELECTOR_SELECTION_TIMEOUTS = [("0", "Off"), ("5", "5 s"), ("10", "10 s"), ("15", "15 s"), ("30", "30 s"), ("60", "60 s")]
 SONG_SELECTOR_FOCUS_TIMEOUTS = [("0", "Off"), ("10", "10 s"), ("20", "20 s"), ("30", "30 s"), ("60", "60 s")]
 SONG_SELECTOR_HIGHLIGHT_TIMEOUTS = [("0", "Off"), ("5", "5 s"), ("10", "10 s"), ("15", "15 s"), ("30", "30 s"), ("60", "60 s")]
-SONG_SELECTOR_LYRICS_SYNC_DELAYS = [("{:.2f}".format(v / 100.0), "{:.2f} s".format(v / 100.0).replace(".", ",")) for v in range(0, 101, 5)]
+SONG_SELECTOR_LYRICS_SYNC_DELAYS = [("{:.2f}".format(v / 100.0), "{:.2f} s".format(v / 100.0)) for v in range(0, 101, 5)]
 AUDIO_BADGE_SIZES = [(v, v + " %") for v in ("80", "90", "100", "110", "120", "130", "140", "150", "160", "170", "180")]
 AUDIO_BADGE_CONTENTS = [("logo", "Logo"), ("text", "Text")]
 AUDIO_BADGE_COLORS = [("black", "Black"), ("anthracite", "Anthracite"), ("blue", "Confluence blue"), ("submenu", "Same as submenu")]
@@ -171,7 +171,7 @@ HOME_FLOOR_STYLES = [
 ]
 HOME_NO_COVER_STYLES = [
     ("kodi", "Kodi Default"),
-    ("custom", "ConfluenceCustom Default"),
+    ("custom", "Confluence-jjs default"),
     ("free", "Choose image"),
 ]
 EXIT_BUTTON_ACTIONS = [("quit", "Quit"), ("power", "Power menu")]
@@ -578,7 +578,7 @@ def choose_audio_badge_color():
 
 
 def choose_audio_badge_opacity():
-    _choose_audio_badge("Badge-Deckkraft", AUDIO_BADGE_OPACITY_SETTING, AUDIO_BADGE_OPACITIES, DEFAULT_AUDIO_BADGE_OPACITY)
+    _choose_audio_badge("Badge opacity", AUDIO_BADGE_OPACITY_SETTING, AUDIO_BADGE_OPACITIES, DEFAULT_AUDIO_BADGE_OPACITY)
 
 
 def toggle_audio_badge_3d():
