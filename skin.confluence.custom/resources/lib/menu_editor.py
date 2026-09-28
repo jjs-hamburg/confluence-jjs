@@ -60,12 +60,12 @@ def begin_capture(group, mode, index=-1):
     _capture_set("Group", group)
     _capture_set("Index", index)
     D.ok(
-        "Ziel in Kodi auswählen",
-        "Diese Methode funktioniert bei normalen Kodi-Listen und Add-on-Listen.\n\n"
-        "Navigiere bis zu der Ebene, auf der der gewünschte Eintrag sichtbar ist. Dann auf der Shield-Fernbedienung "
-        "das Kodi-Kontextmenü (Long-Press/Context-Taste) öffnen und [B]Diesen Eintrag als Menüpunkt übernehmen[/B].\n\n"
-        "Hinweis: Skin-Einstellungen und manche Python-Dialoge bestehen aus Controls statt ListItems. Dort kann Kodi die "
-        "Linksklick-Aktion nicht an ein Context-Add-on übergeben; dafür bitte die direkten Zielbrowser im Editor verwenden."
+        "Select target in Kodi",
+        "This method works with normal Kodi lists and add-on lists.\n\n"
+        "Navigate to the level where the desired entry is visible. Then use the Shield remote "
+        "to open the Kodi context menu (long press/context key) and choose [B]Use this entry as menu item[/B].\n\n"
+        "Note: Skin settings and some Python dialogs use controls instead of ListItems. Kodi cannot "
+        "pass the left-click action to a context add-on there; use the direct target browsers in the editor instead."
     )
     xbmc.executebuiltin("ActivateWindow(Home)")
     raise CaptureModeStarted()
@@ -89,7 +89,7 @@ def input_text(heading, current=""):
 
 def select(heading, options):
     if not options:
-        D.ok(heading, "Keine Einträge verfügbar.")
+        D.ok(heading, "No entries available.")
         return -1
     return D.select(heading, options)
 
@@ -101,7 +101,7 @@ def main_label(group):
 
 def edit_main_label(group):
     current = skin_string(main_label_key(group)) or GROUP_LABEL[group]
-    value = input_text("Hauptmenü umbenennen", current)
+    value = input_text("Rename main menu", current)
     if value and value.strip():
         set_skin_string(main_label_key(group), value.strip())
 
@@ -149,12 +149,12 @@ def edit_item(group, index, items):
             return items
         item = items[index]
         choices = [
-            "Bezeichnung ändern",
-            "Ziel ändern",
+            "Change label",
+            "Change target",
             "Nach links verschieben",
             "Nach rechts verschieben",
-            "Eintrag löschen",
-            "Ziel anzeigen: {}".format(action_summary(item.get("action", ""))),
+            "Delete item",
+            "Show target: {}".format(action_summary(item.get("action", ""))),
         ]
         choice = select("{} – {}".format(GROUP_LABEL[group], item["label"]), choices)
         if choice < 0:
@@ -180,7 +180,7 @@ def edit_item(group, index, items):
                 set_items(group, items)
                 index += 1
         elif choice == 4:
-            if D.yesno("Eintrag löschen", "'{}' wirklich löschen?".format(item["label"])):
+            if D.yesno("Delete item", "Really delete '{}'?".format(item["label"])):
                 del items[index]
                 set_items(group, items)
                 # Returning this list makes the very next Dialog.select use the
@@ -198,8 +198,8 @@ def edit_submenu(group):
         add_index = None
         if len(items) < MAX_ITEMS:
             add_index = len(options)
-            options.append("+ Eintrag hinzufügen")
-        choice = select("{} – Untermenü ({} von max. {})".format(GROUP_LABEL[group], len(items), MAX_ITEMS), options)
+            options.append("+ Add item")
+        choice = select("{} – Submenu ({} of max. {})".format(GROUP_LABEL[group], len(items), MAX_ITEMS), options)
         if choice < 0:
             return
         if add_index is not None and choice == add_index:
@@ -207,7 +207,7 @@ def edit_submenu(group):
             if not target:
                 continue
             suggested, action = target
-            label = input_text("Bezeichnung des neuen Menüpunktes", suggested)
+            label = input_text("Label for new menu item", suggested)
             if not label or not label.strip():
                 continue
             items.append({"label": label.strip(), "action": action})
@@ -261,21 +261,21 @@ def group_editor(group):
             position = -1
 
         actions = [
-            ("submenu", "Untermenü bearbeiten ({} Einträge)".format(submenu_count)),
-            ("rename", "Hauptmenü umbenennen" + (" – {}".format(custom) if custom else "")),
-            ("target", "Hauptmenü-Ziel ändern" + (" – angepasst" if main_action else "")),
+            ("submenu", "Edit submenu ({} items)".format(submenu_count)),
+            ("rename", "Rename main menu" + (" – {}".format(custom) if custom else "")),
+            ("target", "Hauptmenü-Change target" + (" – customized" if main_action else "")),
         ]
         if position > 0:
-            actions.append(("left", "Hauptmenü nach links verschieben"))
+            actions.append(("left", "Move main menu left"))
         if 0 <= position < len(order) - 1:
-            actions.append(("right", "Hauptmenü nach rechts verschieben"))
+            actions.append(("right", "Move main menu right"))
         actions += [
-            ("reset_label", "Hauptmenüname auf Standard zurücksetzen"),
-            ("reset_target", "Hauptmenü-Ziel auf Standard zurücksetzen"),
-            ("reset_submenu", "Untermenü auf Confluence-Standard zurücksetzen"),
+            ("reset_label", "Reset main-menu name to default"),
+            ("reset_target", "Reset main-menu target to default"),
+            ("reset_submenu", "Reset submenu to Confluence default"),
         ]
 
-        title = "Menü: {}".format(main_label(group))
+        title = "Menu: {}".format(main_label(group))
         if position >= 0:
             title += "  ·  Position {}/{}".format(position + 1, len(order))
         choice = select(title, [label for _action, label in actions])
@@ -298,20 +298,20 @@ def group_editor(group):
             reset_main_action(group)
         elif action == "reset_submenu":
             if D.yesno(
-                "Untermenü zurücksetzen",
-                "Die Einträge von '{}' auf den Startzustand zurücksetzen?".format(GROUP_LABEL[group]),
+                "Reset submenu",
+                "Reset the entries of '{}' to their initial state?".format(GROUP_LABEL[group]),
             ):
                 set_items_synced(group, default_items(group))
 
 
 def choose_target(capture=None):
-    # Bevorzugter universeller Weg: Kodi selbst ist der Browser. Die alten
-    # strukturierten Browser bleiben als Fallback für Stellen ohne ListItem-
-    # Kontextmenü bzw. für echte kodi.context.item-Aktionen erhalten.
+    # Preferred universal path: Kodi itself is the browser. The old
+    # structured browsers remain as a fallback for places without ListItem
+    # Context menu bzw. für echte kodi.context.item-Aktionen erhalten.
     choices = [
-        "In Kodi auswählen (normale Listen / Long-Press)",
-        "JJS KODI Confluence Custom",
-        "Kodi-Einstellungen durchsuchen",
+        "Select in Kodi (normal lists / long press)",
+        "Confluence-jjs",
+        "Browse Kodi settings",
         "Video-Bibliothek durchsuchen",
         "Musik-Bibliothek durchsuchen",
         "Add-ons durchsuchen",
@@ -319,12 +319,12 @@ def choose_target(capture=None):
         "Favorit",
         "Benutzerdefinierte Kodi-Aktion",
     ]
-    c = select("Ziel wählen", choices)
+    c = select("Choose target", choices)
     if c < 0:
         return None
     if c == 0:
         if not capture:
-            D.ok("Kodi-Auswahl", "Für diesen Bearbeitungsschritt steht der direkte Kodi-Auswahlmodus nicht zur Verfügung.")
+            D.ok("Kodi selection", "Für diesen Bearbeitungsschritt steht der direkte Kodi selectionmodus nicht zur Verfügung.")
             return None
         begin_capture(capture.get("group", ""), capture.get("mode", ""), capture.get("index", -1))
     if c == 1:
@@ -351,11 +351,11 @@ def choose_target(capture=None):
 
 def choose_confluence_target():
     targets = [
-        ("Confluence Menüeditor öffnen", "RunScript(special://skin/resources/lib/menu_editor.py)"),
+        ("Open Confluence-jjs menu editor", "RunScript(special://skin/resources/lib/menu_editor.py)"),
         ("Skin konfigurieren", "ActivateWindow(SkinSettings)"),
         ("Kodi Home", "ActivateWindow(Home)"),
     ]
-    c = select("JJS KODI Confluence Custom", [x[0] for x in targets])
+    c = select("Confluence-jjs", [x[0] for x in targets])
     return targets[c] if c >= 0 else None
 
 
@@ -394,21 +394,21 @@ def setting_action(setting):
 def browse_skin_settings():
     while True:
         options = [
-            "[Diesen Punkt übernehmen]  Skin konfigurieren",
-            "Confluence Menüeditor  >",
+            "[Use this item]  Configure skin",
+            "Confluence-jjs menu editor  >",
         ]
-        c = select("Einstellungen – Benutzeroberfläche – Skin konfigurieren", options)
+        c = select("Settings – Interface – Configure skin", options)
         if c < 0:
             return None
         if c == 0:
             return ("Skin konfigurieren", "ActivateWindow(SkinSettings)")
         if c == 1:
-            d = select("JJS Confluence Menüeditor", [
-                "[Diesen Eintrag übernehmen]  Confluence Menüeditor",
-                "Zurück",
+            d = select("Confluence-jjs menu editor", [
+                "[Use this entry]  Confluence-jjs menu editor",
+                "Back",
             ])
             if d == 0:
-                return ("Menüeditor", "RunScript(special://skin/resources/lib/menu_editor.py)")
+                return ("Menu editor", "RunScript(special://skin/resources/lib/menu_editor.py)")
             if d < 0 or d == 1:
                 continue
 
@@ -421,7 +421,7 @@ def browse_setting_category(section, category):
     window = setting_window(section_id)
     while True:
         settings = settings_for_category(section_id, category_id)
-        options = ["[Diesen Bereich übernehmen]  {} – {}".format(section_label, category_label)]
+        options = ["[Use this section]  {} – {}".format(section_label, category_label)]
         rows = []
         is_skin_category = "skin" in category_id.lower() or "lookandfeel" in category_id.lower() or "skin" in category_label.lower()
         if is_skin_category:
@@ -445,7 +445,7 @@ def browse_setting_category(section, category):
             continue
         action = setting_action(payload)
         if not action:
-            D.ok("Kein eigener Einsprungpunkt", "Diese Zeile ist eine einzelne Einstellung, für die Kodi keinen direkt aufrufbaren Dialog/Aktionspunkt meldet.\n\nDu kannst den übergeordneten Bereich übernehmen.")
+            D.ok("No direct entry point", "This row is a single setting for which Kodi exposes no directly callable dialog/action.\n\nYou can use the parent section instead.")
             continue
         label = payload.get("label") or payload.get("id") or "Einstellung"
         if "skinsettings" in (payload.get("id") or "").lower():
@@ -454,8 +454,8 @@ def browse_setting_category(section, category):
                 return result
             continue
         d = select(label, [
-            "[Diesen Eintrag übernehmen]  {}".format(label),
-            "Zurück",
+            "[Use this entry]  {}".format(label),
+            "Back",
         ])
         if d == 0:
             return (label, action)
@@ -463,13 +463,13 @@ def browse_setting_category(section, category):
 
 def browse_setting_section(section):
     section_id = section.get("id") or ""
-    label = section.get("label") or section_id or "Einstellungen"
+    label = section.get("label") or section_id or "Settings"
     window = setting_window(section_id)
     while True:
         cats = section.get("categories") or settings_categories(section_id)
-        options = ["[Diesen Bereich übernehmen]  {}".format(label)]
+        options = ["[Use this section]  {}".format(label)]
         options += [(cat.get("label") or cat.get("id") or "Kategorie") for cat in cats]
-        c = select("Einstellungen – {}".format(label), options)
+        c = select("Settings – {}".format(label), options)
         if c < 0:
             return None
         if c == 0:
@@ -484,13 +484,13 @@ def browse_settings():
     if not sections:
         return choose_settings_fallback()
     while True:
-        options = ["[Diesen Punkt übernehmen]  Einstellungen"]
+        options = ["[Diesen Punkt übernehmen]  Settings"]
         options += [(sec.get("label") or sec.get("id") or "Bereich") for sec in sections]
-        c = select("Einstellungen", options)
+        c = select("Settings", options)
         if c < 0:
             return None
         if c == 0:
-            return ("Einstellungen", "ActivateWindow(Settings)")
+            return ("Settings", "ActivateWindow(Settings)")
         result = browse_setting_section(sections[c - 1])
         if result:
             return result
@@ -498,18 +498,18 @@ def browse_settings():
 
 def choose_settings_fallback():
     targets = [
-        ("Einstellungen", "ActivateWindow(Settings)"),
+        ("Settings", "ActivateWindow(Settings)"),
         ("Player", "ActivateWindow(PlayerSettings)"),
         ("Medien", "ActivateWindow(MediaSettings)"),
         ("TV / PVR", "ActivateWindow(PVRSettings)"),
         ("Dienste", "ActivateWindow(ServiceSettings)"),
         ("Spiele", "ActivateWindow(GameSettings)"),
-        ("Benutzeroberfläche", "ActivateWindow(InterfaceSettings)"),
+        ("Interface", "ActivateWindow(InterfaceSettings)"),
         ("System", "ActivateWindow(SystemSettings)"),
         ("Skin konfigurieren", "ActivateWindow(SkinSettings)"),
-        ("Menüeditor", "RunScript(special://skin/resources/lib/menu_editor.py)"),
+        ("Menu editor", "RunScript(special://skin/resources/lib/menu_editor.py)"),
     ]
-    c = select("Einstellungen", [x[0] for x in targets])
+    c = select("Settings", [x[0] for x in targets])
     return targets[c] if c >= 0 else None
 
 
@@ -528,7 +528,7 @@ def browse_path(root, window, media, heading, root_label):
                 dirs.append((name, target))
         options = ["[Diesen Punkt übernehmen]  {}".format(label)]
         if len(stack) > 1:
-            options.append("[..] Eine Ebene zurück")
+            options.append("[..] Go up one level")
         options.extend([name for name, _ in dirs])
         c = select("{} – {}".format(heading, label), options)
         if c < 0:
@@ -627,21 +627,21 @@ def _addon_categories():
         ("Skins / Erscheinungsbild", {"xbmc.gui.skin", "xbmc.ui.screensaver", "xbmc.player.musicviz", "kodi.resource.images", "kodi.resource.uisounds", "kodi.resource.font"}),
         ("Dienste", {"xbmc.service"}),
         ("Untertitel / Liedtexte / Wetter", {"xbmc.subtitle.module", "xbmc.python.lyrics", "xbmc.python.weather"}),
-        ("Kontextmenüs", {"kodi.context.item"}),
+        ("Context menus", {"kodi.context.item"}),
         ("InputStream / VFS / Decoder", {"kodi.inputstream", "kodi.vfs", "kodi.audiodecoder", "kodi.imagedecoder", "kodi.audioencoder"}),
         ("Spiele / Controller", {"kodi.addon.game", "kodi.game.controller", "kodi.resource.games"}),
         ("Repositories", {"xbmc.addon.repository"}),
         ("Webinterfaces", {"xbmc.webinterface"}),
         ("Peripherie", {"kodi.peripheral"}),
         ("Sprachen", {"kodi.resource.language"}),
-        ("Module / Abhängigkeiten", {"xbmc.python.module", "xbmc.python.library"}),
+        ("Modules / dependencies", {"xbmc.python.module", "xbmc.python.library"}),
     ]
     for label, types in type_groups:
         members = sorted([a for a in all_addons if (a.get("type") or "") in types], key=lambda a: (a.get("name") or a.get("addonid") or "").lower())
         if members:
             categories.append({
                 "label": label, "members": members, "window": None, "media": "files", "browser_path": None,
-                "is_context": label == "Kontextmenüs",
+                "is_context": label == "Context menus",
             })
             claimed.update(a.get("addonid") for a in members if a.get("addonid"))
 
@@ -809,8 +809,8 @@ def _take_context_action(item, addon_label):
     """Confirm a concrete leaf only after the user has navigated to it."""
     while True:
         options = [
-            "[Diesen Eintrag übernehmen]  {}".format(item["label"]),
-            "Kodi-Aktion anzeigen",
+            "[Use this entry]  {}".format(item["label"]),
+            "Show Kodi action",
         ]
         c = select("{} – {}".format(addon_label, item["label"]), options)
         if c < 0:
@@ -823,7 +823,7 @@ def _take_context_action(item, addon_label):
 def browse_context_actions(addonid, addon_label):
     actions = _context_menu_actions(addonid)
     if not actions:
-        D.ok("Kontextmenü-Aktionen", "Dieses Add-on definiert keine einzeln auslesbaren kodi.context.item-Aktionen.")
+        D.ok("Context-menu actions", "This add-on does not expose individually readable kodi.context.item actions.")
         return None
 
     stack = [[]]
@@ -833,7 +833,7 @@ def browse_context_actions(addonid, addon_label):
         options, rows = [], []
 
         if path:
-            options.append("[..] Eine Ebene zurück")
+            options.append("[..] Go up one level")
             rows.append(("back", None))
 
         for name in child_menus:
@@ -844,7 +844,7 @@ def browse_context_actions(addonid, addon_label):
             options.append(item["label"] + "  >")
             rows.append(("item", item))
 
-        level_label = " › ".join(path) if path else "Kontextmenü"
+        level_label = " › ".join(path) if path else "Context menu"
         c = select("{} – {}".format(addon_label, level_label), options)
         if c < 0:
             if path:
@@ -875,16 +875,16 @@ def browse_addon_entry(addon, category=None):
         options, rows = [], []
         for ctx_label, window, media in contexts:
             root = "plugin://{}/".format(aid)
-            options.append("[Dieses Add-on übernehmen]  {} ({})".format(label, ctx_label))
+            options.append("[Use this add-on]  {} ({})".format(label, ctx_label))
             rows.append(("take_plugin", (window, media, root)))
             options.append("In '{}' navigieren ({})  >".format(label, ctx_label))
             rows.append(("browse_plugin", (window, media, root)))
         if atype in ("xbmc.python.script", "xbmc.addon.executable"):
-            options.append("[Add-on direkt starten übernehmen]  {}".format(label))
+            options.append("[Use direct add-on launch]  {}".format(label))
             rows.append(("run", None))
-        options.append("[Add-on-Einstellungen übernehmen]  {}".format(label))
+        options.append("[Add-on-Settings übernehmen]  {}".format(label))
         rows.append(("settings", None))
-        options.append("Zurück")
+        options.append("Back")
         rows.append(("back", None))
         c = select("Add-on – {}".format(label), options)
         if c < 0:
@@ -895,7 +895,7 @@ def browse_addon_entry(addon, category=None):
         if kind == "run":
             return (label, "RunAddon({})".format(aid))
         if kind == "settings":
-            return ("{} – Einstellungen".format(label), "Addon.OpenSettings({})".format(aid))
+            return ("{} – Settings".format(label), "Addon.OpenSettings({})".format(aid))
         window, media, root = payload
         if kind == "take_plugin":
             return (label, activate_window(window, root, True))
@@ -907,16 +907,16 @@ def browse_addon_entry(addon, category=None):
 def browse_addons():
     categories = _addon_categories()
     if not categories:
-        D.ok("Add-ons", "Keine installierten Add-ons gefunden.")
+        D.ok("Add-ons", "No installed add-ons found.")
         return None
     while True:
-        c = select("Meine Add-ons – Kategorie wählen", [x["label"] for x in categories])
+        c = select("My add-ons – choose category", [x["label"] for x in categories])
         if c < 0:
             return None
         category = categories[c]
         options, rows = [], []
         if category.get("browser_path"):
-            options.append("[Diese Kategorie übernehmen]  {}".format(category["label"]))
+            options.append("[Use this category]  {}".format(category["label"]))
             rows.append(("take_category", None))
         for addon in category.get("members") or []:
             name = addon.get("name") or addon.get("addonid") or "Add-on"
@@ -939,14 +939,14 @@ def browse_addons():
 
 def choose_pvr_target():
     targets = [
-        ("TV – Kanäle", "ActivateWindow(TVChannels)"),
-        ("TV – Programmführer", "ActivateWindow(TVGuide)"),
+        ("TV – Channels", "ActivateWindow(TVChannels)"),
+        ("TV – Guide", "ActivateWindow(TVGuide)"),
         ("TV – Aufnahmen", "ActivateWindow(TVRecordings)"),
         ("TV – Timer", "ActivateWindow(TVTimers)"),
         ("TV – Timerregeln", "ActivateWindow(TVTimerRules)"),
         ("TV – Suche", "ActivateWindow(TVSearch)"),
-        ("Radio – Kanäle", "ActivateWindow(RadioChannels)"),
-        ("Radio – Programmführer", "ActivateWindow(RadioGuide)"),
+        ("Radio – Channels", "ActivateWindow(RadioChannels)"),
+        ("Radio – Guide", "ActivateWindow(RadioGuide)"),
         ("Radio – Aufnahmen", "ActivateWindow(RadioRecordings)"),
         ("Radio – Timer", "ActivateWindow(RadioTimers)"),
         ("Radio – Timerregeln", "ActivateWindow(RadioTimerRules)"),
@@ -960,18 +960,18 @@ def choose_kodi_window():
     groups = [
         ("Hauptfenster", [
             ("Home", "Home"), ("Programme", "Programs"), ("Bilder", "Pictures"), ("Dateimanager", "FileManager"),
-            ("Einstellungen", "Settings"), ("Systeminformationen", "SystemInfo"), ("Bildschirm kalibrieren", "ScreenCalibration"),
+            ("Settings", "Settings"), ("System information", "SystemInfo"), ("Calibrate display", "ScreenCalibration"),
             ("Videos", "Videos"), ("Musik", "Music"), ("Profile", "Profiles"), ("Skin konfigurieren", "SkinSettings"),
-            ("Add-on-Browser", "AddonBrowser"), ("Ereignisprotokoll", "EventLog"), ("Favoriten", "FavouritesBrowser"),
+            ("Add-on-Browser", "AddonBrowser"), ("Ereignisprotokoll", "EventLog"), ("Favorites", "FavouritesBrowser"),
             ("Wetter", "Weather"), ("Spiele", "Games"),
         ]),
         ("Einstellungsfenster", [
             ("System", "SystemSettings"), ("Dienste", "ServiceSettings"), ("TV / PVR", "PVRSettings"),
             ("Spiele", "GameSettings"), ("Player", "PlayerSettings"), ("Medien", "MediaSettings"),
-            ("Benutzeroberfläche", "InterfaceSettings"),
+            ("Interface", "InterfaceSettings"),
         ]),
         ("TV / Radio", None),
-        ("Wiedergabe / Playlists", [
+        ("Playback / playlists", [
             ("Video-Wiedergabeliste", "VideoPlaylist"), ("Musik-Wiedergabeliste", "MusicPlaylist"),
             ("Musik-Playlisteditor", "MusicPlaylistEditor"), ("Vollbildvideo", "FullscreenVideo"),
             ("Visualisierung", "Visualisation"), ("Diashow", "Slideshow"), ("Video OSD", "VideoOSD"),
@@ -979,32 +979,32 @@ def choose_kodi_window():
             ("Player-Prozessinfo", "PlayerProcessInfo"), ("Seekbar", "SeekBar"),
         ]),
         ("Dialoge", [
-            ("Ja/Nein-Dialog", "YesNoDialog"), ("Fortschrittsdialog", "ProgressDialog"), ("Virtuelle Tastatur", "VirtualKeyboard"),
-            ("Lautstärkebalken", "VolumeBar"), ("Untermenü-Dialog", "SubMenu"), ("Kontextmenü", "ContextMenu"),
+            ("Yes/No dialog", "YesNoDialog"), ("Progress dialog", "ProgressDialog"), ("Virtual keyboard", "VirtualKeyboard"),
+            ("Volume bar", "VolumeBar"), ("Submenu dialog", "SubMenu"), ("Context menu", "ContextMenu"),
             ("Benachrichtigung", "Notification"), ("Numerische Eingabe", "NumericInput"), ("Gamepad-Eingabe", "GamepadInput"),
-            ("Beenden-Menü", "ShutdownMenu"), ("Visualisierungs-Presets", "VisualisationPresetList"),
-            ("Video-OSD-Einstellungen", "OSDVideoSettings"), ("Audio-OSD-Einstellungen", "OSDAudioSettings"),
+            ("Shutdown menu", "ShutdownMenu"), ("Visualization presets", "VisualisationPresetList"),
+            ("Video-OSD-Settings", "OSDVideoSettings"), ("Audio-OSD-Settings", "OSDAudioSettings"),
             ("Video-Lesezeichen", "VideoBookmarks"), ("Dateibrowser", "FileBrowser"), ("Netzwerk einrichten", "NetworkSetup"),
             ("Medienquelle", "MediaSource"), ("Profileinstellungen", "ProfileSettings"), ("Sperreinstellungen", "LockSettings"),
             ("Inhalt festlegen", "ContentSettings"), ("Bibliothek exportieren", "LibExportSettings"),
-            ("Song-Information", "SongInformation"), ("Smart-Playlist-Editor", "SmartPlaylistEditor"),
-            ("Smart-Playlist-Regel", "SmartPlaylistRule"), ("Bildinformation", "PictureInfo"), ("Add-on-Einstellungen", "AddonSettings"),
+            ("Song information", "SongInformation"), ("Smart-Playlist-Editor", "SmartPlaylistEditor"),
+            ("Smart playlist rule", "SmartPlaylistRule"), ("Picture information", "PictureInfo"), ("Add-on-Settings", "AddonSettings"),
             ("Vollbildinformation", "FullscreenInfo"), ("Slider-Dialog", "SliderDialog"), ("Add-on-Information", "AddonInformation"),
-            ("Textanzeige", "TextViewer"), ("Peripheriegeräte", "Peripherals"), ("Peripherie-Einstellungen", "PeripheralSettings"),
+            ("Text viewer", "TextViewer"), ("Peripherals", "Peripherals"), ("Peripherie-Settings", "PeripheralSettings"),
             ("Erweiterter Fortschritt", "ExtendedProgressDialog"), ("Medienfilter", "MediaFilter"), ("Untertitelsuche", "SubtitleSearch"),
-            ("CMS-OSD-Einstellungen", "OSDCMSSettings"), ("Informationsanbieter-Einstellungen", "InfoProviderSettings"),
-            ("Untertitel-OSD-Einstellungen", "OSDSubtitleSettings"), ("Musikinformation", "MusicInformation"),
+            ("CMS-OSD-Settings", "OSDCMSSettings"), ("Informationsanbieter-Settings", "InfoProviderSettings"),
+            ("Untertitel-OSD-Settings", "OSDSubtitleSettings"), ("Music information", "MusicInformation"),
             ("OK-Dialog", "OKDialog"), ("Filminformation", "MovieInformation"), ("Videoversionen verwalten", "ManageVideoVersions"),
-            ("Farbauswahl", "DialogColorPicker"), ("Videoversion wählen", "SelectVideoVersion"),
-            ("Video-Extra wählen", "SelectVideoExtra"), ("Video-Extras verwalten", "ManageVideoExtras"),
+            ("Color picker", "DialogColorPicker"), ("Choose video version", "SelectVideoVersion"),
+            ("Choose video extra", "SelectVideoExtra"), ("Manage video extras", "ManageVideoExtras"),
             ("Auswahldialog", "SelectDialog"), ("Busy-Dialog", "BusyDialog"), ("Busy-Dialog ohne Abbruch", "BusyDialogNoCancel"),
             ("PVR-Guide-Information", "PVRGuideInfo"), ("Teletext", "Teletext"),
-            ("Game-Stretch-Modus", "GameStretchMode"), ("Game-Lautstärke", "GameVolume"),
-            ("Erweiterte Game-Einstellungen", "GameAdvancedSettings"), ("Game-Videodrehung", "GameVideoRotation"),
+            ("Game stretch mode", "GameStretchMode"), ("Game volume", "GameVolume"),
+            ("Erweiterte Game-Settings", "GameAdvancedSettings"), ("Game video rotation", "GameVideoRotation"),
             ("Game-Ports", "GamePorts"), ("In-Game-Saves", "InGameSaves"), ("Game-Saves", "GameSaves"), ("Game-Agents", "GameAgents"),
         ]),
-        ("JJS KODI Confluence Custom", [("JJS Confluence Menüeditor", "__MENUEDITOR__")]),
-        ("Fenstername oder ID manuell eingeben", "manual"),
+        ("Confluence-jjs", [("Confluence-jjs menu editor", "__MENUEDITOR__")]),
+        ("Enter window name or ID manually", "manual"),
     ]
     while True:
         g = select("Kodi-Fenster / Dialoge", [x[0] for x in groups])
@@ -1017,7 +1017,7 @@ def choose_kodi_window():
                 return result
             continue
         if targets == "manual":
-            window = input_text("Kodi-Fenstername oder numerische Window-ID", "")
+            window = input_text("Kodi window name or numeric window ID", "")
             if not window or not window.strip():
                 continue
             window = window.strip()
@@ -1058,15 +1058,15 @@ def choose_favourite():
         if action:
             usable.append((title, action))
     if not usable:
-        D.ok("Favoriten", "Keine verwendbaren Favoriten gefunden.")
+        D.ok("Favorites", "Keine verwendbaren Favorites gefunden.")
         return None
-    c = select("Favorit wählen", [x[0] for x in usable])
+    c = select("Choose favorite", [x[0] for x in usable])
     return usable[c] if c >= 0 else None
 
 
 def run():
     if xbmc.getSkinDir() != "skin.confluence.custom":
-        D.ok("JJS Confluence Menüeditor", "Der Editor kann nur mit JJS KODI Confluence Custom verwendet werden.")
+        D.ok("Confluence-jjs menu editor", "The editor can only be used with Confluence-jjs.")
         return
     ensure_initialised(False)
 
@@ -1082,9 +1082,9 @@ def run():
     # make the pending state explicit instead of leaving a hidden context item
     # active indefinitely.
     if _capture_get("Active"):
-        c = select("Kodi-Zielauswahl ist noch aktiv", [
-            "Weiter in Kodi auswählen",
-            "Auswahl abbrechen und Editor öffnen",
+        c = select("Kodi target selection is still active", [
+            "Continue selecting in Kodi",
+            "Cancel selection and open editor",
         ])
         if c < 0 or c == 0:
             xbmc.executebuiltin("ActivateWindow(Home)")
@@ -1114,12 +1114,12 @@ def run():
             custom = skin_string(main_label_key(group))
             shown = custom or default_label
             options.append(
-                "{}. {}   ({} Untermenüpunkte)".format(
+                "{}. {}   ({} submenu items)".format(
                     position, shown, len(get_items(group))
                 )
             )
             keys.append(group)
-        c = select("JJS Confluence Menüeditor", options)
+        c = select("Confluence-jjs menu editor", options)
         if c < 0:
             return
         group_editor(keys[c])
@@ -1132,4 +1132,4 @@ if __name__ == "__main__":
         pass
     except Exception as exc:
         log("Editor failed: {}".format(exc), xbmc.LOGERROR)
-        D.ok("JJS Confluence Menüeditor", "Fehler im Menüeditor:\n{}".format(exc))
+        D.ok("Confluence-jjs menu editor", "Fehler im Menu editor:\n{}".format(exc))
