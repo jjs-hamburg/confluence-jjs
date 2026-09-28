@@ -19,14 +19,14 @@ def run():
     labels = []
     actions = []
     if xbmc.getCondVisibility("System.CanPowerDown"):
-        labels.append("Herunterfahren")
+        labels.append("Power off")
         actions.append("Powerdown()")
     if xbmc.getCondVisibility("System.CanReboot"):
-        labels.append("Neustart")
+        labels.append("Restart")
         actions.append("Reboot()")
     if not actions:
         xbmcgui.Dialog().notification(
-            "JJS KODI Confluence Custom", "Keine System-Aktion verfügbar", xbmcgui.NOTIFICATION_WARNING, 3000
+            "Confluence-jjs", "No system action is available", xbmcgui.NOTIFICATION_WARNING, 3000
         )
         return
     choice = xbmcgui.Dialog().select("System", labels)
