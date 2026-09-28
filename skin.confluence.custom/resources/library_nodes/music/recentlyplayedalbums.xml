@@ -1,5 +1,5 @@
 <node order="20" type="filter" visible="Library.HasContent(Music)">
-	<label>Zuletzt gehört</label>
+	<label>Recently played</label>
 	<icon>DefaultMusicRecentlyPlayed.png</icon>
 	<content>albums</content>
 	<match>all</match>
