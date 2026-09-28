@@ -2692,44 +2692,44 @@
 	<variable name="CCMainMenuNormalColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCMainMenuColorNormal))">Default</value>
 		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF505050)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFFFFFFF)">Weiß</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFFFFFFF)">White</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorNormal),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCMainMenuColorNormal)]</value>
 	</variable>
 	<variable name="CCMainMenuActiveColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCMainMenuColorActive))">Default</value>
 		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF0084FF)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFFFFFFF)">Weiß</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFFFFFFF)">White</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCMainMenuColorActive),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCMainMenuColorActive)]</value>
 	</variable>
 	<variable name="CCMainMenuYOffsetSetting">
-		<value condition="String.IsEmpty(Skin.String(CCMainMenuYOffset)) | String.IsEqual(Skin.String(CCMainMenuYOffset),0)">Standard</value>
+		<value condition="String.IsEmpty(Skin.String(CCMainMenuYOffset)) | String.IsEqual(Skin.String(CCMainMenuYOffset),0)">Default</value>
 		<value>$INFO[Skin.String(CCMainMenuYOffset)] px</value>
 	</variable>
 	<variable name="CCSubMenuFontFamilySetting">
 		<value condition="String.IsEqual(Skin.String(CCSubMenuFontFamily),montserrat)">Montserrat Black</value>
 		<value condition="String.IsEqual(Skin.String(CCSubMenuFontFamily),robotobold)">Roboto Bold</value>
 		<value condition="String.IsEqual(Skin.String(CCSubMenuFontFamily),roboto)">Roboto Regular</value>
-		<value>Skin-Standard</value>
+		<value>Skin default</value>
 	</variable>
 	<variable name="CCSubMenuFontSizeSetting">
 		<value condition="!String.IsEmpty(Skin.String(CCSubMenuFontSize))">$INFO[Skin.String(CCSubMenuFontSize)] px</value>
@@ -2738,17 +2738,17 @@
 	<variable name="CCSubMenuNormalColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCSubMenuColorNormal))">Default</value>
 		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF999999)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFFFFFFF)">Weiß</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFFFFFFF)">White</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorNormal),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCSubMenuColorNormal)]</value>
 	</variable>
 	<variable name="CCSubMenuNormalRenderColor">
@@ -2762,77 +2762,77 @@
 	<variable name="CCSubMenuActiveColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCSubMenuColorActive))">Default</value>
 		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFFFFFFF)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFFFFFFF)">Weiß</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFFFFFFF)">White</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCSubMenuColorActive),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCSubMenuColorActive)]</value>
 	</variable>
 
 
 	<variable name="CCSongSelectorFontFamilySetting">
-		<value condition="String.IsEmpty(Skin.String(CCSongSelectorFontFamily)) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),default) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),submenu)">Wie Untermenü</value>
+		<value condition="String.IsEmpty(Skin.String(CCSongSelectorFontFamily)) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),default) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),submenu)">Same as submenu</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorFontFamily),montserrat)">Montserrat Black</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorFontFamily),robotobold)">Roboto Bold</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorFontFamily),roboto)">Roboto Regular</value>
-		<value>Skin-Standard</value>
+		<value>Skin default</value>
 	</variable>
 	<variable name="CCSongSelectorFontSizeSetting">
-		<value condition="String.IsEmpty(Skin.String(CCSongSelectorFontFamily)) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),default) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),submenu)">Wie Untermenü</value>
+		<value condition="String.IsEmpty(Skin.String(CCSongSelectorFontFamily)) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),default) | String.IsEqual(Skin.String(CCSongSelectorFontFamily),submenu)">Same as submenu</value>
 		<value condition="!String.IsEmpty(Skin.String(CCSongSelectorFontSize))">$INFO[Skin.String(CCSongSelectorFontSize)] px</value>
 		<value>26 px</value>
 	</variable>
 	<variable name="CCSongSelectorNormalColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCSongSelectorColorNormal))">Default</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF999999)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFFFFFFF)">Weiß</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFFFFFFF)">White</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorNormal),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCSongSelectorColorNormal)]</value>
 	</variable>
 	<variable name="CCSongSelectorCurrentColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCSongSelectorColorCurrent))">Default</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFFFFFFF)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorCurrent),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCSongSelectorColorCurrent)]</value>
 	</variable>
 	<variable name="CCSongSelectorActiveColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCSongSelectorColorActive))">Default</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFFFFFFF)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorColorActive),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCSongSelectorColorActive)]</value>
 	</variable>
 	<variable name="CCSongSelectorNormalRenderColor">
@@ -2849,90 +2849,90 @@
 	</variable>
 	<variable name="CCSongSelectorHighlightColorSetting">
 		<value condition="String.IsEmpty(Skin.String(CCSongSelectorHighlightColor)) | String.IsEqual(Skin.String(CCSongSelectorHighlightColor),default)">Default</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFFFFFFF)">Weiß</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFC0C0C0)">Hellgrau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF808080)">Grau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF000000)">Schwarz</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF0066CC)">Blau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF33B5E5)">Hellblau</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFE53935)">Rot</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF43A047)">Grün</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFFDD835)">Gelb</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFFFFFFF)">White</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFC0C0C0)">Light gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF808080)">Gray</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF000000)">Black</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF0066CC)">Blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF33B5E5)">Light blue</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFE53935)">Red</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF43A047)">Green</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFFDD835)">Yellow</value>
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FFF57C00)">Orange</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF8E24AA)">Violett</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightColor),FF8E24AA)">Purple</value>
 		<value>$INFO[Skin.String(CCSongSelectorHighlightColor)]</value>
 	</variable>
 	<variable name="CCSongSelectorEnabledSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorEnabled),false)">Aus</value>
-		<value>Ein</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorEnabled),false)">Off</value>
+		<value>On</value>
 	</variable>
 	<variable name="CCSongSelectorTrackNumbersSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true)">Ein</value>
-		<value>Aus</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true)">On</value>
+		<value>Off</value>
 	</variable>
 	<variable name="CCSongSelectorAutoOpenSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorAutoOpen),true)">Ein</value>
-		<value>Aus</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorAutoOpen),true)">On</value>
+		<value>Off</value>
 	</variable>
 	<variable name="CCSongSelectorLyricsCenteredSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)">Aus</value>
-		<value>Ein</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsCentered),false)">Off</value>
+		<value>On</value>
 	</variable>
 	<variable name="CCSongSelectorLyricsSyncDelaySetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.00)">0,00 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.05)">0,05 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.10)">0,10 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.15)">0,15 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.20)">0,20 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.25)">0,25 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.30)">0,30 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.35)">0,35 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.40)">0,40 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.45)">0,45 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.50)">0,50 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.55)">0,55 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.60)">0,60 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.65)">0,65 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.70)">0,70 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.75)">0,75 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.80)">0,80 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.85)">0,85 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.90)">0,90 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.95)">0,95 s</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),1.00)">1,00 s</value>
-		<value condition="String.IsEmpty(Skin.String(CCSongSelectorLyricsSyncDelay))">0,25 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.00)">0.00 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.05)">0.05 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.10)">0.10 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.15)">0.15 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.20)">0.20 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.25)">0.25 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.30)">0.30 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.35)">0.35 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.40)">0.40 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.45)">0.45 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.50)">0.50 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.55)">0.55 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.60)">0.60 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.65)">0.65 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.70)">0.70 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.75)">0.75 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.80)">0.80 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.85)">0.85 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.90)">0.90 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),0.95)">0.95 s</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorLyricsSyncDelay),1.00)">1.00 s</value>
+		<value condition="String.IsEmpty(Skin.String(CCSongSelectorLyricsSyncDelay))">0.25 s</value>
 		<value>$INFO[Skin.String(CCSongSelectorLyricsSyncDelay)] s</value>
 	</variable>
 	<variable name="CCSongSelectorBackgroundSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorBackground),transparent)">Transparent (Grau)</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorBackground),off)">Weg</value>
-		<value>Wie Untermenü</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorBackground),transparent)">Transparent (gray)</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorBackground),off)">Off</value>
+		<value>Same as submenu</value>
 	</variable>
 	<variable name="CCSongSelectorTimeBackgroundSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorTimeBackground),submenu)">Wie Untermenü</value>
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorTimeBackground),off)">Weg</value>
-		<value>Transparent (Grau)</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorTimeBackground),submenu)">Same as submenu</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorTimeBackground),off)">Off</value>
+		<value>Transparent (gray)</value>
 	</variable>
 	<variable name="CCSongSelectorHighlightTimeoutSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightTimeout),0)">Aus</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorHighlightTimeout),0)">Off</value>
 		<value condition="String.IsEmpty(Skin.String(CCSongSelectorHighlightTimeout))">10 s</value>
 		<value>$INFO[Skin.String(CCSongSelectorHighlightTimeout)] s</value>
 	</variable>
-	<variable name="CCSongTimeCurrentSetting"><value condition="String.IsEqual(Skin.String(CCSongTimeCurrent),false)">Aus</value><value>Ein</value></variable>
-	<variable name="CCSongTimeRemainingSetting"><value condition="String.IsEqual(Skin.String(CCSongTimeRemaining),false)">Aus</value><value>Ein</value></variable>
-	<variable name="CCAlbumTimeCurrentSetting"><value condition="String.IsEqual(Skin.String(CCAlbumTimeCurrent),false)">Aus</value><value>Ein</value></variable>
-	<variable name="CCAlbumTimeRemainingSetting"><value condition="String.IsEqual(Skin.String(CCAlbumTimeRemaining),false)">Aus</value><value>Ein</value></variable>
-	<variable name="CCPlayerTimesDimmedSetting"><value condition="String.IsEqual(Skin.String(CCPlayerTimesDimmed),true)">Ein</value><value>Aus</value></variable>
+	<variable name="CCSongTimeCurrentSetting"><value condition="String.IsEqual(Skin.String(CCSongTimeCurrent),false)">Off</value><value>On</value></variable>
+	<variable name="CCSongTimeRemainingSetting"><value condition="String.IsEqual(Skin.String(CCSongTimeRemaining),false)">Off</value><value>On</value></variable>
+	<variable name="CCAlbumTimeCurrentSetting"><value condition="String.IsEqual(Skin.String(CCAlbumTimeCurrent),false)">Off</value><value>On</value></variable>
+	<variable name="CCAlbumTimeRemainingSetting"><value condition="String.IsEqual(Skin.String(CCAlbumTimeRemaining),false)">Off</value><value>On</value></variable>
+	<variable name="CCPlayerTimesDimmedSetting"><value condition="String.IsEqual(Skin.String(CCPlayerTimesDimmed),true)">On</value><value>Off</value></variable>
 	<variable name="CCNowPlayingTimeTextColor"><value condition="String.IsEqual(Skin.String(CCPlayerTimesDimmed),true)">FF9A9A9A</value><value>FFFFFFFF</value></variable>
 	<variable name="CCNowPlayingSongTitle"><value condition="String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true)">$INFO[MusicPlayer.TrackNumber,,. ]$INFO[Player.Title]</value><value>$INFO[Player.Title]</value></variable>
 	<variable name="CCNowPlayingTimeSeparatorColor"><value condition="String.IsEqual(Skin.String(CCPlayerTimesDimmed),true)">779A9A9A</value><value>BBFFFFFF</value></variable>
 	<variable name="CCSongSelectorSelectionTimeoutSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorSelectionTimeout),0)">Aus</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorSelectionTimeout),0)">Off</value>
 		<value condition="String.IsEmpty(Skin.String(CCSongSelectorSelectionTimeout))">5 s</value>
 		<value>$INFO[Skin.String(CCSongSelectorSelectionTimeout)] s</value>
 	</variable>
 	<variable name="CCSongSelectorFocusTimeoutSetting">
-		<value condition="String.IsEqual(Skin.String(CCSongSelectorFocusTimeout),0)">Aus</value>
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorFocusTimeout),0)">Off</value>
 		<value condition="String.IsEmpty(Skin.String(CCSongSelectorFocusTimeout))">30 s</value>
 		<value>$INFO[Skin.String(CCSongSelectorFocusTimeout)] s</value>
 	</variable>
@@ -3285,7 +3285,7 @@
 		<value condition="String.IsEmpty(Skin.String(CCHomeFloorStyle)) | String.IsEqual(Skin.String(CCHomeFloorStyle),original)">Original</value>
 		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),dark)">Dunkel</value>
 		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),transparent)">Transparent</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),off)">Aus</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),off)">Off</value>
 		<value>$INFO[Skin.String(CCHomeFloorStyle)]</value>
 	</variable>
 
@@ -3312,12 +3312,12 @@
 	</variable>
 
 	<variable name="CCExitButtonSetting">
-		<value condition="String.IsEqual(Skin.String(CCExitButtonAction),power)">Herunterfahren</value>
-		<value>Beenden</value>
+		<value condition="String.IsEqual(Skin.String(CCExitButtonAction),power)">Power menu</value>
+		<value>Quit</value>
 	</variable>
 	<variable name="CCExitButtonLabel">
-		<value condition="String.IsEqual(Skin.String(CCExitButtonAction),power)">Herunterfahren</value>
-		<value>Beenden</value>
+		<value condition="String.IsEqual(Skin.String(CCExitButtonAction),power)">Power menu</value>
+		<value>Quit</value>
 	</variable>
 	<variable name="CCMusicPlayerYearInfo">
 		<value condition="String.IsEmpty(MusicPlayer.Year) | String.IsEqual(MusicPlayer.Year,0) | String.IsEqual(MusicPlayer.Year,0000)"></value>
@@ -3331,14 +3331,14 @@
 		<value>$INFO[MusicPlayer.Artist,, - ]$INFO[MusicPlayer.Album]$VAR[CCNowPlayingYearText]$INFO[musicplayer.discnumber, - $LOCALIZE[427]:]</value>
 	</variable>
 	<variable name="CCNowPlayingAlbumOverflowSetting">
-		<value condition="String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate)">Abschneiden</value>
-		<value condition="String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)">Umbrechen</value>
-		<value>Scrollen</value>
+		<value condition="String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate)">Truncate</value>
+		<value condition="String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)">Wrap</value>
+		<value>Scroll</value>
 	</variable>
 	<variable name="CCNowPlayingSongOverflowSetting">
-		<value condition="String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate)">Abschneiden</value>
-		<value condition="String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll)">Scrollen</value>
-		<value>Umbrechen</value>
+		<value condition="String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate)">Truncate</value>
+		<value condition="String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll)">Scroll</value>
+		<value>Wrap</value>
 	</variable>
 	<!-- Use the raw channel count and map it ourselves. This avoids Kodi versions/builds
 	     that expose 6 instead of 5.1 through MusicPlayer.Channels(DefaultLayout). -->
@@ -3431,10 +3431,10 @@
 		<value>$VAR[CCMusicCodecLabel]   $VAR[CCMusicChannelLabel]</value>
 	</variable>
 	<variable name="CCAudioBadgeSizeSetting"><value condition="String.IsEmpty(Skin.String(CCAudioBadgeSize))">90 %</value><value>$INFO[Skin.String(CCAudioBadgeSize)] %</value></variable>
-	<variable name="CCAudioBadgeContentSetting"><value condition="String.IsEqual(Skin.String(CCAudioBadgeContentMode),text)">Schrift</value><value>Logo</value></variable>
-	<variable name="CCAudioBadgeColorSetting"><value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),submenu)">Wie Untermenü</value><value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),blue)">Confluence-Blau</value><value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),anthracite)">Anthrazit</value><value>Schwarz</value></variable>
+	<variable name="CCAudioBadgeContentSetting"><value condition="String.IsEqual(Skin.String(CCAudioBadgeContentMode),text)">Text</value><value>Logo</value></variable>
+	<variable name="CCAudioBadgeColorSetting"><value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),submenu)">Same as submenu</value><value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),blue)">Confluence blue</value><value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),anthracite)">Anthracite</value><value>Black</value></variable>
 	<variable name="CCAudioBadgeOpacitySetting"><value condition="String.IsEmpty(Skin.String(CCAudioBadgeOpacity))">55 %</value><value>$INFO[Skin.String(CCAudioBadgeOpacity)] %</value></variable>
-	<variable name="CCAudioBadge3DSetting"><value condition="String.IsEqual(Skin.String(CCAudioBadge3D),true)">Ein</value><value>Aus</value></variable>
+	<variable name="CCAudioBadge3DSetting"><value condition="String.IsEqual(Skin.String(CCAudioBadge3D),true)">On</value><value>Off</value></variable>
 	<variable name="CCAudioBadgeTexturePath">
 		<value condition="!String.IsEmpty(Skin.String(CCAudioBadgeTextureV117))">$INFO[Skin.String(CCAudioBadgeTextureV117)]</value>
 		<value>CCAudioBadgeBase_s90_o55_r30.png</value>
@@ -3444,7 +3444,7 @@
 		<value>CCAudioBadge3D_s90_r30.png</value>
 	</variable>
 	<variable name="CCAudioBadgeColorDiffuse">
-		<!-- "Wie Untermenü" follows the same highlight color as the submenu: the
+		<!-- "Same as submenu" follows the same highlight color as the submenu: the
 		     active main-menu text color. -->
 		<value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),submenu) + String.IsEmpty(Skin.String(CCMainMenuColorActive))">FF0084FF</value>
 		<value condition="String.IsEqual(Skin.String(CCAudioBadgeColor),submenu)">$INFO[Skin.String(CCMainMenuColorActive)]</value>
