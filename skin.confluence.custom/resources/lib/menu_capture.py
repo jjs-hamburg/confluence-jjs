@@ -147,7 +147,7 @@ def _label(li):
                 return value
         except Exception:
             pass
-    return xbmc.getInfoLabel("ListItem.Label") or "Menüpunkt"
+    return xbmc.getInfoLabel("ListItem.Label") or "Menu item"
 
 
 def _addon_id_from_uri(path):
@@ -169,7 +169,7 @@ def infer_action(li):
     """Best-effort reconstruction of the selected item's normal left-click target."""
     path = _path(li)
     if xbmc.getCondVisibility("ListItem.IsParentFolder"):
-        return "", path, "Übergeordnete '..'-Einträge können nicht übernommen werden."
+        return "", path, "Parent '..' entries cannot be captured."
 
     try:
         is_folder = bool(xbmc.getCondVisibility("ListItem.IsFolder"))
@@ -182,8 +182,8 @@ def infer_action(li):
 
     if not path:
         return "", path, (
-            "Kodi stellt für diesen Eintrag keinen adressierbaren Pfad bereit. "
-            "Solche transienten Dialog-/Aktionszeilen können nicht automatisch übernommen werden."
+            "Kodi does not provide an addressable path for this entry. "
+            "Transient dialog/action rows like this cannot be captured automatically."
         )
 
     lower = path.lower()
@@ -195,7 +195,7 @@ def infer_action(li):
         "special://", "smb://", "nfs://", "upnp://", "ftp://", "dav://", "davs://",
     )):
         if not window:
-            return "", path, "Das zugehörige Kodi-Fenster konnte nicht bestimmt werden."
+            return "", path, "The associated Kodi window could not be determined."
         return _activate(window, path), path, ""
 
     if lower.startswith("plugin://"):
@@ -242,7 +242,7 @@ def _cancel():
     except ValueError:
         index = -1
     _clear()
-    D.notification("JJS Confluence Menüeditor", "Zielauswahl abgebrochen", time=1800)
+    D.notification("Confluence-jjs menu editor", "Target selection cancelled", time=1800)
     if group:
         _resume(mode, group, index)
 
@@ -261,13 +261,13 @@ def _take():
     label = _label(li)
     action, path, error = infer_action(li)
     if not action:
-        D.ok("Eintrag kann nicht übernommen werden", error or "Für diesen Eintrag konnte keine Linksklick-Aktion bestimmt werden.")
+        D.ok("Entry cannot be captured", error or "No left-click action could be determined for this entry.")
         return
 
     if mode == "add":
         items = get_items(group)
         if len(items) >= MAX_ITEMS:
-            D.ok("Untermenü voll", "Es sind bereits {} Untermenüpunkte vorhanden.".format(MAX_ITEMS))
+            D.ok("Submenu full", "There are already {} submenu items.".format(MAX_ITEMS))
             return
         items.append({"label": label, "action": action})
         set_items(group, items)
@@ -275,12 +275,12 @@ def _take():
     elif mode == "replace":
         items = get_items(group)
         if index < 0 or index >= len(items):
-            D.ok("Menüeditor", "Der ursprüngliche Untermenüpunkt existiert nicht mehr.")
+            D.ok("Menu editor", "The original submenu item no longer exists.")
             _clear()
             _resume("submenu", group, -1)
             return
         # Changing a target keeps the user's existing menu label, exactly like
-        # the normal editor's "Ziel ändern" function.
+        # the normal editor's "Change target" function.
         items[index]["action"] = action
         set_items(group, items)
         resume_index = index
@@ -288,11 +288,11 @@ def _take():
         set_skin_string("CCMain_{}_Action".format(group), action)
         resume_index = -1
     else:
-        D.ok("Menüeditor", "Unbekannter Auswahlmodus: {}".format(mode))
+        D.ok("Menu editor", "Unknown selection mode: {}".format(mode))
         return
 
     _clear()
-    D.notification("JJS Confluence Menüeditor", "Übernommen: {}".format(label), time=1800)
+    D.notification("Confluence-jjs menu editor", "Captured: {}".format(label), time=1800)
     _resume(mode, group, resume_index)
 
 
