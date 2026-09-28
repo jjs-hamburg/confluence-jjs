@@ -1,0 +1,127 @@
+name: "Validate Confluence-jjs cleanup"
+
+on:
+  push:
+    branches:
+      - cleanup/confluence-jjs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate skin
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root_dir = Path("skin.confluence.custom")
+          addon_xml = root_dir / "addon.xml"
+          root = ET.parse(addon_xml).getroot()
+
+          addon_id = root.attrib["id"]
+          version = root.attrib["version"]
+          name = root.attrib["name"]
+
+          assert addon_id == "skin.confluence.custom", addon_id
+          assert name == "Confluence-jjs", name
+          assert version, "Missing skin version"
+          assert any(
+              e.attrib.get("point") == "xbmc.gui.skin"
+              for e in root.findall("extension")
+          ), "Missing xbmc.gui.skin extension"
+
+          required = [
+              root_dir / "1080p" / "Home.xml",
+              root_dir / "1080p" / "Includes.xml",
+              root_dir / "1080p" / "SkinSettings.xml",
+              root_dir / "resources" / "skin_modes" / "custom" / "Home.xml",
+              root_dir / "resources" / "skin_modes" / "custom" / "Includes.xml",
+              root_dir / "resources" / "skin_modes" / "custom" / "SkinSettings.xml",
+              root_dir / "resources" / "skin_modes" / "standard" / "Home.xml",
+              root_dir / "resources" / "lib" / "songselector_service.py",
+              root_dir / "resources" / "lib" / "credits_resolver.py",
+              root_dir / "resources" / "lib" / "credits_runtime.py",
+              root_dir / "resources" / "lib" / "menu_editor.py",
+              root_dir / "resources" / "lib" / "skin_mode.py",
+              root_dir / "resources" / "factory-default-settings.json",
+              root_dir / "LICENSE.txt",
+          ]
+          for item in required:
+              assert item.is_file() and item.stat().st_size > 0, f"Missing/empty: {item}"
+
+          assert (root_dir / "1080p" / "SkinSettings.xml").read_bytes() == (
+              root_dir / "resources" / "skin_modes" / "custom" / "SkinSettings.xml"
+          ).read_bytes(), "Active/custom SkinSettings.xml differ"
+
+          assert (root_dir / "1080p" / "Includes.xml").read_bytes() == (
+              root_dir / "resources" / "skin_modes" / "custom" / "Includes.xml"
+          ).read_bytes(), "Active/custom Includes.xml differ"
+
+          for item in sorted((root_dir / "resources" / "lib").rglob("*.py")):
+              py_compile.compile(str(item), doraise=True)
+
+          for xml_dir in [
+              root_dir / "1080p",
+              root_dir / "resources" / "skin_modes" / "custom",
+              root_dir / "resources" / "skin_modes" / "standard",
+          ]:
+              for item in sorted(xml_dir.glob("*.xml")):
+                  ET.parse(item)
+
+          Path("skin-version.txt").write_text(version, encoding="utf-8")
+          print(f"{addon_id} {version} {name}")
+          PY
+
+      - name: Build test ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(cat skin-version.txt)"
+          ZIP="skin.confluence.custom-${VERSION}.zip"
+
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+
+          zip -qr "$ZIP" skin.confluence.custom -x "*/__pycache__/*" "*.pyc"
+
+          python - "$ZIP" <<'PY'
+          import sys
+          import zipfile
+
+          zip_path = sys.argv[1]
+          with zipfile.ZipFile(zip_path) as zf:
+              names = zf.namelist()
+              roots = {name.split("/", 1)[0] for name in names if name}
+              assert roots == {"skin.confluence.custom"}, roots
+              assert "skin.confluence.custom/addon.xml" in names
+              assert zf.testzip() is None
+          print("ZIP structure OK:", zip_path)
+          PY
+
+          echo "SKIN_ZIP=$ZIP" >> "$GITHUB_ENV"
+
+      - name: Upload test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: confluence-jjs-test
+          path: ${{ env.SKIN_ZIP }}
+          if-no-files-found: error
