@@ -1,5 +1,5 @@
 <node order="10" type="filter">
-	<label>Zuletzt hinzugefügt</label>
+	<label>Recently added</label>
 	<icon>DefaultRecentlyAddedEpisodes.png</icon>
 	<content>tvshows</content>
 	<order direction="descending">dateadded</order>
