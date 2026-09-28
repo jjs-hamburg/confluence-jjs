@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Skin-owned playback credits runtime for JJS KODI Confluence Custom.
+"""Skin-owned playback credits runtime for Confluence-jjs.
 
 Credits are resolved from Discogs/MusicBrainz without any dependency on
 JJS Music Library Manager.  The cache is deliberately album-oriented JSON;
@@ -322,7 +322,7 @@ def _write_cache(data):
             json.dump(data, fh, ensure_ascii=False, sort_keys=True)
         os.replace(tmp, _CACHE_FILE)
     except Exception as exc:
-        _log("Cache konnte nicht geschrieben werden: {!r}".format(exc), xbmc.LOGWARNING)
+        _log("Cache could not be written: {!r}".format(exc), xbmc.LOGWARNING)
         try:
             if os.path.exists(tmp):
                 os.remove(tmp)
@@ -471,12 +471,12 @@ class CreditsRuntime:
             if self._still_current(generation, album_id) and not published_useful:
                 state = "empty" if final and final.get("status") in {"ok", "not_found"} else "error"
                 self._queue_publish(generation, album_id, identifier, state,
-                                    "Keine Besetzungsdaten gefunden.", album_title)
+                                    "No credits found.", album_title)
         except Exception as exc:
             _log("Resolverfehler: {!r}".format(exc), xbmc.LOGWARNING)
             if self._still_current(generation, album_id) and not published_useful:
                 self._queue_publish(generation, album_id, identifier, "error",
-                                    "Keine Besetzungsdaten gefunden.", album_title)
+                                    "No credits found.", album_title)
 
     def _load_album(self, album_id):
         hint_title, hint_artist = _current_album_hints()
@@ -491,14 +491,14 @@ class CreditsRuntime:
             else:
                 album_key = make_album_lookup_identifier(info.get("album_title"), info.get("album_artist"))
                 if not album_key:
-                    _publish(album_id, "", "missing_identifier", "Keine Besetzungsdaten gefunden.", info.get("album_title") or "")
+                    _publish(album_id, "", "missing_identifier", "No credits found.", info.get("album_title") or "")
                     return
                 info["identifier"] = album_key
                 info["lookup_mode"] = "album"
         else:
             album_key = make_album_lookup_identifier(hint_title, hint_artist)
             if not album_key:
-                _publish(album_id, "", "missing_identifier", "Keine Besetzungsdaten gefunden.", hint_title)
+                _publish(album_id, "", "missing_identifier", "No credits found.", hint_title)
                 return
             info = {
                 "identifier": album_key,
@@ -519,14 +519,14 @@ class CreditsRuntime:
                          _result_names(cached))
                 return
             if status == "not_found":
-                _publish(album_id, identifier, "empty", "Keine Besetzungsdaten gefunden.", info.get("album_title") or "")
+                _publish(album_id, identifier, "empty", "No credits found.", info.get("album_title") or "")
                 return
             age = max(0.0, time.time() - float(cached.get("_cached_at") or 0.0))
             if age < ERROR_CACHE_SECONDS:
-                _publish(album_id, identifier, "error", "Keine Besetzungsdaten gefunden.", info.get("album_title") or "")
+                _publish(album_id, identifier, "error", "No credits found.", info.get("album_title") or "")
                 return
 
-        _publish(album_id, identifier, "loading", "Besetzungsdaten werden geladen …", info.get("album_title") or "")
+        _publish(album_id, identifier, "loading", "Loading credits …", info.get("album_title") or "")
         with self._lock:
             generation = self._generation
         self._worker = threading.Thread(
