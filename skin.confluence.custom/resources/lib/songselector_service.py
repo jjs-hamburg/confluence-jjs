@@ -693,7 +693,7 @@ def _selection_target(home):
         return int(value)
     except Exception:
         home.clearProperty(SELECTION_TARGET_PROP)
-                home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
         return None
 
 
@@ -1150,7 +1150,7 @@ def run():
                 home.clearProperty(LYRICS_TEXT_PROP)
                 home.clearProperty(LYRICS_SYNC_PROP)
                 home.clearProperty(SELECTION_TARGET_PROP)
-            home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+                home.clearProperty(SELECTION_GOTO_PENDING_PROP)
                 lyrics_sync_entries = []
                 lyrics_sync_times = []
                 lyrics_line_count = 0
@@ -1403,6 +1403,8 @@ def run():
                 if audio_missing_since is None:
                     audio_missing_since = now
                 if now - audio_missing_since >= 2.5:
+                    home.clearProperty(SELECTION_TARGET_PROP)
+                    home.clearProperty(SELECTION_GOTO_PENDING_PROP)
                     close_popup()
                     _close_dialog()
                     opened = False
@@ -1445,7 +1447,7 @@ def run():
                         last_list_position = playing
                     if selected_target is not None:
                         home.clearProperty(SELECTION_TARGET_PROP)
-                    home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+                        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
 
                 selection_timeout = _seconds(SELECTION_TIMEOUT_SETTING, 5)
                 if (not detail_view() and selection_timeout and _list_focused()
