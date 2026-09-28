@@ -158,7 +158,7 @@
 						<label2>31200</label2>
 					</item>
 					<item id="5">
-						<label>Custom Confluence</label>
+						<label>Confluence-jjs</label>
 						<label2></label2>
 					</item>
 				</content>
@@ -1425,7 +1425,7 @@
 					<ondown>9005</ondown>
 					<control type="button" id="499">
 						<width>1125</width><height>60</height><font>font13</font>
-						<label>Auf Custom Confluence umschalten</label><label2>Gespeicherte Custom-Einstellungen wieder aktivieren</label2>
+						<label>Auf Confluence-jjs umschalten</label><label2>Restore saved Confluence-jjs settings</label2>
 						<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 						<onclick>RunScript(special://skin/resources/lib/skin_mode.py,custom)</onclick>
 					</control>
