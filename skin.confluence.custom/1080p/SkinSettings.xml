@@ -1310,6 +1310,7 @@
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<selected>Skin.HasSetting(CCStandardConfluence)</selected>
 							<onclick condition="!Skin.HasSetting(CCStandardConfluence)">RunScript(special://skin/resources/lib/skin_mode.py,standard)</onclick>
+							<onup>5701</onup>
 						</control>
 						<control type="radiobutton" id="499">
 							<width>1125</width><height>60</height><font>font13</font><label>Confluence-jjs</label>
@@ -1363,6 +1364,7 @@
 							<label>Background image</label><label2>[COLOR=selected]Restore skin default[/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homebackgrounddefault)</onclick>
+							<onup>5702</onup>
 						</control>
 						<control type="radiobutton" id="551">
 							<description>Show playing artist fanart instead of the home skin background when available</description>
@@ -1438,6 +1440,7 @@
 							<label>Font</label><label2>[COLOR=selected]$VAR[CCMainMenuFontFamilySetting][/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,font)</onclick>
+							<onup>5703</onup>
 						</control>
 						<control type="button" id="507">
 							<width>1125</width><height>60</height><font>font13</font>
@@ -1529,6 +1532,7 @@
 							<label>Enable song popup</label><selected>!String.IsEqual(Skin.String(CCSongSelectorEnabled),false)</selected>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songenabled)</onclick>
+							<onup>5704</onup>
 						</control>
 						<control type="button" id="535">
 							<width>1125</width><height>60</height><font>font13</font>
@@ -1592,7 +1596,7 @@
 							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Playback information</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
 						</control>
-						<control type="radiobutton" id="537"><width>1125</width><height>60</height><font>font13</font><label>Song time / duration</label><selected>!String.IsEqual(Skin.String(CCSongTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimecurrent)</onclick></control>
+						<control type="radiobutton" id="537"><width>1125</width><height>60</height><font>font13</font><label>Song time / duration</label><selected>!String.IsEqual(Skin.String(CCSongTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimecurrent)</onclick><onup>5705</onup></control>
 						<control type="radiobutton" id="538"><width>1125</width><height>60</height><font>font13</font><label>Song remaining / duration</label><selected>!String.IsEqual(Skin.String(CCSongTimeRemaining),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimeremaining)</onclick></control>
 						<control type="radiobutton" id="539"><width>1125</width><height>60</height><font>font13</font><label>Album time / duration</label><selected>!String.IsEqual(Skin.String(CCAlbumTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumtimecurrent)</onclick></control>
 						<control type="radiobutton" id="540"><width>1125</width><height>60</height><font>font13</font><label>Album remaining / duration</label><selected>!String.IsEqual(Skin.String(CCAlbumTimeRemaining),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumtimeremaining)</onclick></control>
@@ -1622,7 +1626,7 @@
 							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Badges</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
 						</control>
-						<control type="radiobutton" id="566"><width>1125</width><height>60</height><font>font13</font><label>Show times in badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimesBadges)</onclick><selected>Skin.HasSetting(CCPlayerTimesBadges)</selected></control>
+						<control type="radiobutton" id="566"><width>1125</width><height>60</height><font>font13</font><label>Show times in badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimesBadges)</onclick><selected>Skin.HasSetting(CCPlayerTimesBadges)</selected><onup>5706</onup></control>
 						<control type="radiobutton" id="567"><width>1125</width><height>60</height><font>font13</font><label>Use equal-width time badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimeBadgesEqual)</onclick><selected>Skin.HasSetting(CCPlayerTimeBadgesEqual)</selected><enable>Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
 						<control type="radiobutton" id="553">
 							<width>1125</width><height>60</height><font>font13</font><label>Show audio badge during playback</label>
