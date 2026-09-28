@@ -1,18 +1,17 @@
-Confluence Custom
-=================
+Confluence-jjs
+==============
 
-Basis: die vom Benutzer bereitgestellte Confluence-Version 5.0.9 für Kodi Omega.
+Base: Confluence for Kodi Omega, originally by Jezz_X / Team Kodi.
 
-Diese Testversion ist ein separater Skin (skin.confluence.custom); das originale
-skin.confluence bleibt unangetastet. Beim ersten Start werden die vorhandenen
-Confluence-Skin-Einstellungen einmalig übernommen.
+Confluence-jjs is installed as a separate skin using the technical add-on ID
+skin.confluence.custom. The original skin.confluence installation remains
+untouched. Existing Confluence settings can be imported once on first startup.
 
-Menüsystem ab 5.0.20:
-- kein Skin Shortcuts erforderlich
-- eigener Editor mit normalen Kodi-Dialogen
-- Untermenüs frei editierbar, bis zu 7 Einträge
-- Library-Nodes, Favoriten und Add-on-Einsprungpunkte als Ziele
-- Hauptmenünamen und optional auch Hauptmenü-Ziele editierbar
+Menu system:
+- no Skin Shortcuts dependency required
+- integrated editor using normal Kodi dialogs
+- freely editable submenus with up to seven entries
+- library nodes, favorites and add-on entry points can be used as targets
+- editable main-menu labels and optional custom main-menu targets
 
-
-5.0.21: eigener Menüeditor mit normalen Kodi-Dialogen; dynamische Untermenüs ohne Skin Shortcuts.
+The current project documentation is maintained in the repository README.md.
