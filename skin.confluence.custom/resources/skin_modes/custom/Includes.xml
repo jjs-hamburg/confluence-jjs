@@ -2951,14 +2951,14 @@
 		<value>$INFO[Skin.String(CCHomeMusicCoverSize)] px</value>
 	</variable>
 	<variable name="CCHomeMusicCoverStyleSetting">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow)">Schlagschatten hart</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)">Schlagschatten weich</value>
-		<value>Rahmen</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow)">Hard shadow</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)">Soft shadow</value>
+		<value>Frame</value>
 	</variable>
 	<variable name="CCHomeNoCoverSetting">
-		<value condition="String.IsEqual(Skin.String(CCHomeNoCoverStyle),kodi) | String.IsEqual(Skin.String(CCHomeNoCoverStyle),standard)">Kodi Default</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeNoCoverStyle),free)">Freie Bildwahl</value>
-		<value>ConfluenceCustom Default</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeNoCoverStyle),kodi) | String.IsEqual(Skin.String(CCHomeNoCoverStyle),standard)">Kodi default</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeNoCoverStyle),free)">Choose image</value>
+		<value>Confluence-jjs default</value>
 	</variable>
 	<variable name="CCHomeMusicShadowWidthSetting">
 		<value condition="String.IsEmpty(Skin.String(CCHomeMusicShadowWidth))">14 px</value>
@@ -3283,7 +3283,7 @@
 	</variable>
 	<variable name="CCHomeFloorStyleSetting">
 		<value condition="String.IsEmpty(Skin.String(CCHomeFloorStyle)) | String.IsEqual(Skin.String(CCHomeFloorStyle),original)">Original</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),dark)">Dunkel</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),dark)">Dark</value>
 		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),transparent)">Transparent</value>
 		<value condition="String.IsEqual(Skin.String(CCHomeFloorStyle),off)">Off</value>
 		<value>$INFO[Skin.String(CCHomeFloorStyle)]</value>
@@ -3312,11 +3312,11 @@
 	</variable>
 
 	<variable name="CCExitButtonSetting">
-		<value condition="String.IsEqual(Skin.String(CCExitButtonAction),power)">Power menu</value>
+		<value condition="System.Platform.Linux + !System.Platform.Android">Power menu</value>
 		<value>Quit</value>
 	</variable>
 	<variable name="CCExitButtonLabel">
-		<value condition="String.IsEqual(Skin.String(CCExitButtonAction),power)">Power menu</value>
+		<value condition="System.Platform.Linux + !System.Platform.Android">Power menu</value>
 		<value>Quit</value>
 	</variable>
 	<variable name="CCMusicPlayerYearInfo">

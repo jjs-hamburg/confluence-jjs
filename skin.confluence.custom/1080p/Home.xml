@@ -4632,7 +4632,7 @@
 					<height>68</height>
 					<label>1036</label>
 					<font/>
-					<onclick>ActivateWindow(ShutdownMenu)</onclick>
+					<onclick>RunScript(special://skin/resources/lib/power_action.py)</onclick>
 					<texturefocus border="5">floor_buttonFO.png</texturefocus>
 					<texturenofocus border="5">floor_button.png</texturenofocus>
 					<onleft>22</onleft>

@@ -1252,96 +1252,122 @@
 					<visible>Container(9000).Hasfocus(5)</visible>
 					<left>435</left><top>90</top><width>1125</width><height>795</height>
 					<defaultcontrol>5701</defaultcontrol>
+					<control type="image">
+						<left>0</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="image">
+						<left>0</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible>
+					</control>
+					<control type="image">
+						<left>189</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="image">
+						<left>189</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible>
+					</control>
+					<control type="image">
+						<left>378</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="image">
+						<left>378</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible>
+					</control>
+					<control type="image">
+						<left>567</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="image">
+						<left>567</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),popup)</visible>
+					</control>
+					<control type="image">
+						<left>756</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="image">
+						<left>756</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),playback)</visible>
+					</control>
+					<control type="image">
+						<left>945</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="image">
+						<left>945</left><top>0</top><width>180</width><height>54</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),badges)</visible>
+					</control>
 					<control type="grouplist" id="5700">
-						<left>0</left><top>0</top><width>1125</width><height>52</height>
-						<orientation>horizontal</orientation><itemgap>8</itemgap>
+						<left>0</left><top>0</top><width>1125</width><height>54</height>
+						<orientation>horizontal</orientation><itemgap>9</itemgap>
 						<onleft>9000</onleft><onright>5700</onright><onup>5700</onup>
-						<control type="radiobutton" id="5701">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>General</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</selected>
+						<control type="button" id="5701">
+							<width>180</width><height>54</height><font>font12</font>
+							<label>General</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
+							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
 							<onclick>SetProperty(CCSettingsTab,general)</onclick>
-							<ondown>498</ondown>
+							<ondown>503</ondown>
 						</control>
-						<control type="radiobutton" id="5702">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>Menu editor</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEqual(Window.Property(CCSettingsTab),editor)</selected>
-							<onclick>SetProperty(CCSettingsTab,editor)</onclick>
-							<ondown>500</ondown>
+						<control type="button" id="5702">
+							<width>180</width><height>54</height><font>font12</font>
+							<label>Menus</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
+							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
+							<onclick>SetProperty(CCSettingsTab,menus)</onclick>
+							<ondown>506</ondown>
 						</control>
-						<control type="radiobutton" id="5703">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>Main menu</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEqual(Window.Property(CCSettingsTab),main)</selected>
-							<onclick>SetProperty(CCSettingsTab,main)</onclick>
-							<ondown>505</ondown>
-						</control>
-						<control type="radiobutton" id="5704">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>Submenu</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEqual(Window.Property(CCSettingsTab),submenu)</selected>
-							<onclick>SetProperty(CCSettingsTab,submenu)</onclick>
-							<ondown>511</ondown>
-						</control>
-						<control type="radiobutton" id="5705">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>Home</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEqual(Window.Property(CCSettingsTab),home)</selected>
+						<control type="button" id="5703">
+							<width>180</width><height>54</height><font>font12</font>
+							<label>Home</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
+							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
 							<onclick>SetProperty(CCSettingsTab,home)</onclick>
-							<ondown>518</ondown>
+							<ondown>550</ondown>
 						</control>
-						<control type="radiobutton" id="5706">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>Song popup</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEqual(Window.Property(CCSettingsTab),popup)</selected>
+						<control type="button" id="5704">
+							<width>180</width><height>54</height><font>font12</font>
+							<label>Song popup</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
+							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
 							<onclick>SetProperty(CCSettingsTab,popup)</onclick>
-							<ondown>524</ondown>
+							<ondown>529</ondown>
 						</control>
-						<control type="radiobutton" id="5707">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>Playback</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEqual(Window.Property(CCSettingsTab),playback)</selected>
+						<control type="button" id="5705">
+							<width>180</width><height>54</height><font>font12</font>
+							<label>Playback</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
+							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
 							<onclick>SetProperty(CCSettingsTab,playback)</onclick>
-							<ondown>563</ondown>
+							<ondown>537</ondown>
 						</control>
-						<control type="radiobutton" id="5708">
-							<width>132</width><height>52</height><font>font12</font>
-							<label>Badges</label>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><selectedcolor>white</selectedcolor>
-							<texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<textureradioon/><textureradiooff/><textureradioonfocus/><textureradioofffocus/>
-							<selected>String.IsEqual(Window.Property(CCSettingsTab),badges)</selected>
+						<control type="button" id="5706">
+							<width>180</width><height>54</height><font>font12</font>
+							<label>Badges</label><align>center</align><aligny>center</aligny>
+							<textcolor>white</textcolor><focusedcolor>white</focusedcolor>
+							<texturefocus border="5">MenuItemFO.png</texturefocus><texturenofocus/>
 							<onclick>SetProperty(CCSettingsTab,badges)</onclick>
 							<ondown>566</ondown>
 						</control>
 					</control>
 					<control type="grouplist" id="5710">
 						<visible>String.IsEmpty(Window.Property(CCSettingsTab)) | String.IsEqual(Window.Property(CCSettingsTab),general)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<left>0</left><top>70</top><width>1125</width><height>725</height>
 						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
 						<onleft>9000</onleft><onright>5710</onright><onup>5701</onup><ondown>5710</ondown>
+						<control type="label" id="497">
+							<width>1125</width><height>68</height><font>font13_title</font>
+							<label>General</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						</control>
 						<control type="button" id="498">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Switch to Standard Confluence</label><label2>Confluence-jjs settings remain fully preserved</label2>
@@ -1368,52 +1394,37 @@
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/skin_settings_backup.py,load)</onclick>
 						</control>
-						<control type="button" id="502">
-							<width>1125</width><height>150</height><font>font12</font><focusedcolor>grey2</focusedcolor>
+						<control type="label" id="502">
+							<width>1125</width><height>135</height><font>font12</font>
 							<label>The backup contains all settings owned by this skin: backgrounds, visible main-menu items, labels, targets, submenus and other Confluence-jjs options. General Kodi settings are not changed.</label>
 							<textcolor>grey2</textcolor><align>left</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline>
-						
-							<texturefocus/><texturenofocus/></control>
+						</control>
 						<control type="button" id="565">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Reset library nodes to skin defaults</label><label2>Music, movies and TV shows · overwrite existing nodes</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/library_nodes.py,reset)</onclick>
 						</control>
-					</control>
-					<control type="grouplist" id="5720">
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),editor)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
-						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5720</onright><onup>5702</onup><ondown>5720</ondown>
-						<control type="button" id="500">
-							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
-							<label>Confluence menu editor</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-						
-							<texturefocus/><texturenofocus/></control>
+						<control type="label" id="500">
+							<width>1125</width><height>68</height><font>font13_title</font>
+							<label>Menu editor</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						</control>
 						<control type="button" id="501">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Open menu editor</label><label2>Submenus, order, targets and labels</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/menu_editor.py)</onclick>
 						</control>
-						<control type="button" id="554">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Exit button</label><label2>[COLOR=selected]$VAR[CCExitButtonSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,exitbutton)</onclick>
-						</control>
 					</control>
 					<control type="grouplist" id="5730">
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),main)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<visible>String.IsEqual(Window.Property(CCSettingsTab),menus)</visible>
+						<left>0</left><top>70</top><width>1125</width><height>725</height>
 						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5730</onright><onup>5703</onup><ondown>5730</ondown>
-						<control type="button" id="505">
-							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+						<onleft>9000</onleft><onright>5730</onright><onup>5702</onup><ondown>5730</ondown>
+						<control type="label" id="505">
+							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Main menu appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-						
-							<texturefocus/><texturenofocus/></control>
+						</control>
 						<control type="button" id="506">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Font</label><label2>[COLOR=selected]$VAR[CCMainMenuFontFamilySetting][/COLOR]</label2>
@@ -1450,17 +1461,10 @@
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,reset)</onclick>
 						</control>
-					</control>
-					<control type="grouplist" id="5740">
-						<visible>String.IsEqual(Window.Property(CCSettingsTab),submenu)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
-						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5740</onright><onup>5704</onup><ondown>5740</ondown>
-						<control type="button" id="511">
-							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+						<control type="label" id="511">
+							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Submenu appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-						
-							<texturefocus/><texturenofocus/></control>
+						</control>
 						<control type="button" id="512">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Font</label><label2>[COLOR=selected]$VAR[CCSubMenuFontFamilySetting][/COLOR]</label2>
@@ -1494,14 +1498,13 @@
 					</control>
 					<control type="grouplist" id="5750">
 						<visible>String.IsEqual(Window.Property(CCSettingsTab),home)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<left>0</left><top>70</top><width>1125</width><height>725</height>
 						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5750</onright><onup>5705</onup><ondown>5750</ondown>
-						<control type="button" id="518">
-							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+						<onleft>9000</onleft><onright>5750</onright><onup>5703</onup><ondown>5750</ondown>
+						<control type="label" id="518">
+							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Home screen appearance</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-						
-							<texturefocus/><texturenofocus/></control>
+						</control>
 						<control type="button" id="550">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Background image</label><label2>[COLOR=selected]Restore skin default[/COLOR]</label2>
@@ -1571,19 +1574,14 @@
 					</control>
 					<control type="grouplist" id="5760">
 						<visible>String.IsEqual(Window.Property(CCSettingsTab),popup)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<left>0</left><top>70</top><width>1125</width><height>725</height>
 						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5760</onright><onup>5706</onup><ondown>5760</ondown>
-						<control type="button" id="524">
-							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+						<onleft>9000</onleft><onright>5760</onright><onup>5704</onup><ondown>5760</ondown>
+						<control type="label" id="524">
+							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Song popup</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-						
-							<texturefocus/><texturenofocus/></control>
-						<control type="button" id="525">
-							<width>1125</width><height>50</height><font>font13</font><focusedcolor>grey2</focusedcolor>
-							<label>Popup font is separate; colors follow the submenu.</label><textcolor>grey2</textcolor><align>left</align><aligny>center</aligny>
-						
-							<texturefocus/><texturenofocus/></control>
+						</control>
+
 						<control type="radiobutton" id="529">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Enable song popup</label><selected>!String.IsEqual(Skin.String(CCSongSelectorEnabled),false)</selected>
@@ -1645,14 +1643,13 @@
 					</control>
 					<control type="grouplist" id="5770">
 						<visible>String.IsEqual(Window.Property(CCSettingsTab),playback)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<left>0</left><top>70</top><width>1125</width><height>725</height>
 						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5770</onright><onup>5707</onup><ondown>5770</ondown>
-						<control type="button" id="563">
-							<width>1125</width><height>68</height><font>font13_title</font><focusedcolor>blue</focusedcolor>
+						<onleft>9000</onleft><onright>5770</onright><onup>5705</onup><ondown>5770</ondown>
+						<control type="label" id="563">
+							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Playback information</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
-						
-							<texturefocus/><texturenofocus/></control>
+						</control>
 						<control type="radiobutton" id="537"><width>1125</width><height>60</height><font>font13</font><label>Song time / duration</label><selected>!String.IsEqual(Skin.String(CCSongTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimecurrent)</onclick></control>
 						<control type="radiobutton" id="538"><width>1125</width><height>60</height><font>font13</font><label>Song remaining / duration</label><selected>!String.IsEqual(Skin.String(CCSongTimeRemaining),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtimeremaining)</onclick></control>
 						<control type="radiobutton" id="539"><width>1125</width><height>60</height><font>font13</font><label>Album time / duration</label><selected>!String.IsEqual(Skin.String(CCAlbumTimeCurrent),false)</selected><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,albumtimecurrent)</onclick></control>
@@ -1676,9 +1673,13 @@
 					</control>
 					<control type="grouplist" id="5780">
 						<visible>String.IsEqual(Window.Property(CCSettingsTab),badges)</visible>
-						<left>0</left><top>68</top><width>1125</width><height>727</height>
+						<left>0</left><top>70</top><width>1125</width><height>725</height>
 						<itemgap>-2</itemgap><scrolltime tween="linear">150</scrolltime>
-						<onleft>9000</onleft><onright>5780</onright><onup>5708</onup><ondown>5780</ondown>
+						<onleft>9000</onleft><onright>5780</onright><onup>5706</onup><ondown>5780</ondown>
+						<control type="label" id="569">
+							<width>1125</width><height>68</height><font>font13_title</font>
+							<label>Badges</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						</control>
 						<control type="radiobutton" id="566"><width>1125</width><height>60</height><font>font13</font><label>Show times in badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimesBadges)</onclick><selected>Skin.HasSetting(CCPlayerTimesBadges)</selected></control>
 						<control type="radiobutton" id="567"><width>1125</width><height>60</height><font>font13</font><label>Use equal-width time badges</label><textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus><onclick>Skin.ToggleSetting(CCPlayerTimeBadgesEqual)</onclick><selected>Skin.HasSetting(CCPlayerTimeBadgesEqual)</selected><enable>Skin.HasSetting(CCPlayerTimesBadges)</enable></control>
 						<control type="radiobutton" id="553">
