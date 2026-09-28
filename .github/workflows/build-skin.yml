@@ -124,7 +124,7 @@ jobs:
         run: |
           set -euo pipefail
           TAG="v${SKIN_VERSION}"
-          TITLE="JJS KODI Confluence Custom ${SKIN_VERSION}"
+          TITLE="Confluence-jjs ${SKIN_VERSION}"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$SKIN_ZIP" --clobber
