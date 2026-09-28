@@ -1586,7 +1586,7 @@
 							<texturefocus/><texturenofocus/></control>
 						<control type="radiobutton" id="529">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Song popup aktiv</label><selected>!String.IsEqual(Skin.String(CCSongSelectorEnabled),false)</selected>
+							<label>Enable song popup</label><selected>!String.IsEqual(Skin.String(CCSongSelectorEnabled),false)</selected>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songenabled)</onclick>
 						</control>
