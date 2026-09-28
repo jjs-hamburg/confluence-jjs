@@ -105,7 +105,7 @@ _LRC_META_RE = re.compile(r"^\[(?:ar|al|ti|au|by|offset|re|ve|length|id):.*\]$",
 def _lyrics_sync_delay_seconds():
     """Return the user-configured extra delay for the highlighted LRC line.
 
-    Stored as a Skin.String so it can be tuned from JJS KODI Confluence Custom settings
+    Stored as a Skin.String so it can be tuned from Confluence-jjs settings
     without restarting the service.  Invalid values fall back safely.
     """
     try:
@@ -666,7 +666,7 @@ def _update_lyrics_debug(home, raw_lyrics):
         "Kodi Artist: " + _debug_value(kodi_artist),
         "Kodi Titel: " + _debug_value(kodi_title),
         "Kodi Album: " + _debug_value(kodi_album),
-        "Kodi Datei: " + _debug_value(kodi_file),
+        "Kodi file: " + _debug_value(kodi_file),
         "Skin LyricScript_Path: " + _debug_value(lyric_script),
         "CU LRC running: " + _debug_value(home.getProperty(CULRC_RUNNING_PROP)),
         "CU LRC source: " + _debug_value(home.getProperty(CULRC_SOURCE_PROP)),
@@ -679,7 +679,7 @@ def _update_lyrics_debug(home, raw_lyrics):
         "Popup LyricsText: {} Zeichen".format(len(cleaned)),
         "",
         "--- Songtext ---",
-        cleaned if cleaned else ("Songtext wird gesucht …" if home.getProperty(CULRC_RUNNING_PROP) == "true" else "Kein Songtext verfügbar."),
+        cleaned if cleaned else ("Searching for lyrics …" if home.getProperty(CULRC_RUNNING_PROP) == "true" else "No lyrics available."),
     ]
     home.setProperty(LYRICS_DEBUG_PROP, "[CR]".join(lines))
 
