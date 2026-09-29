@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window id="1116" type="dialog">
-	<defaultcontrol>9131</defaultcontrol>
+	<defaultcontrol>9110</defaultcontrol>
 	<depth>DepthDialog</depth>
 	<animation effect="fade" start="0" end="100" time="100">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="100">WindowClose</animation>
@@ -11,18 +11,21 @@
 			<control type="image">
 				<left>0</left><top>0</top><width>588</width><height>620</height><texture border="34">CCSongPopupBackground.png</texture>
 			</control>
-			<!-- Display-only native Kodi list over playlistmusic://.
-			     Input focus always stays on proxy 9131. Up/Down move this control
-			     through Control.Move(), so unrelated keys can never reach its
-			     DirectoryProvider and are free to fall through to Kodi. -->
+			<!-- Native Kodi list over playlistmusic://. Up/Down and scrolling stay entirely
+			     inside the GUI thread; Python is only used when a song is selected. -->
 			<control type="list" id="9110">
 				<visible>String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.CreditsView)) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.SongSelector.LyricsView))</visible>
 				<left>20</left><top>16</top><width>548</width><height>598</height>
 				<orientation>vertical</orientation>
 				<scrolltime tween="cubic" easing="out">80</scrolltime>
 				<preloaditems>2</preloaditems>
-				<!-- Failsafe: the list itself must never become the input target. -->
-				<onfocus>SetFocus(9131)</onfocus>
+				<!-- Horizontal navigation is cyclic in both directions:
+                     Left goes backwards to lyrics, Right forwards to credits. -->
+				<onleft>RunScript(special://skin/resources/lib/songselector_action.py,lyrics)</onleft>
+				<onright>RunScript(special://skin/resources/lib/songselector_action.py,credits)</onright>
+				<onup>9110</onup>
+				<ondown>9110</ondown>
+				<onclick>RunScript(special://skin/resources/lib/songselector_action.py,playfocused)</onclick>
 				<!-- Use Kodi's normal playlist label/selected-color model, just like the
 				     original Confluence music lists. This avoids the blank current row
 				     seen when Title/IsPlaying were evaluated on playlistmusic://. -->
@@ -58,7 +61,7 @@
 					<control type="image">
 						<left>0</left><top>2</top><width>548</width><height>42</height>
 						<texture border="20" colordiffuse="66D0D0D0">CCSongTileFocusNeutral.png</texture>
-						<visible>Control.HasFocus(9131) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.Highlight),1)</visible>
+						<visible>Control.HasFocus(9110) + String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.Highlight),1)</visible>
 					</control>
 					<control type="label">
 						<left>18</left><top>2</top><width>512</width><height>42</height>
@@ -1074,17 +1077,14 @@
 			<onup>RunScript(special://skin/resources/lib/songselector_action.py,lyricsup)</onup><ondown>RunScript(special://skin/resources/lib/songselector_action.py,lyricsdown)</ondown>
 		</control>
 
-		<!-- Permanent track-page input proxy. Only popup navigation is handled here.
-		     All unrelated actions return unhandled and fall through to Kodi itself. -->
+		<!-- Legacy neutral proxy retained for backwards compatibility; normal track focus now stays on 9110. -->
 		<control type="button" id="9131">
 			<left>-22</left><top>-22</top><width>1</width><height>1</height><label /><font />
 			<texturefocus /><texturenofocus />
-			<onup>Control.Move(9110,-1)</onup>
-			<ondown>Control.Move(9110,1)</ondown>
+			<onup>RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</onup>
+			<ondown>RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</ondown>
 			<onleft>RunScript(special://skin/resources/lib/songselector_action.py,lyrics)</onleft>
 			<onright>RunScript(special://skin/resources/lib/songselector_action.py,credits)</onright>
-			<onclick>RunScript(special://skin/resources/lib/songselector_action.py,playfocused)</onclick>
-			<onback>RunScript(special://skin/resources/lib/songselector_action.py,close)</onback>
 		</control>
 	</controls>
 </window>
