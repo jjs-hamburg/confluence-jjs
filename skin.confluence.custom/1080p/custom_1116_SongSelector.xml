@@ -1081,8 +1081,10 @@
 		<control type="button" id="9131">
 			<left>-22</left><top>-22</top><width>1</width><height>1</height><label /><font />
 			<texturefocus /><texturenofocus />
-			<onup>RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</onup>
-			<ondown>RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</ondown>
+			<onup condition="String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.PauseGuard),1)">RunScript(special://skin/resources/lib/songselector_action.py,pausemove,-1)</onup>
+			<onup condition="!String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.PauseGuard),1)">RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</onup>
+			<ondown condition="String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.PauseGuard),1)">RunScript(special://skin/resources/lib/songselector_action.py,pausemove,1)</ondown>
+			<ondown condition="!String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.PauseGuard),1)">RunScript(special://skin/resources/lib/songselector_action.py,reactivate)</ondown>
 			<onleft>RunScript(special://skin/resources/lib/songselector_action.py,lyrics)</onleft>
 			<onright>RunScript(special://skin/resources/lib/songselector_action.py,credits)</onright>
 		</control>

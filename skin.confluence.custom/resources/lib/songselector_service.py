@@ -11,7 +11,7 @@ import xbmcgui
 from cover_display_action import COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
 from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
 from nocover_manager import sync_on_startup
-from songselector_action import detail_view, focus_current, lyrics_view, open_popup, show_credits
+from songselector_action import (clear_pause_guard, detail_view, focus_current, guard_pause_focus, lyrics_view, open_popup, restore_pause_focus, show_credits)
 from songselector_state import (
     close_popup,
     current,
@@ -976,6 +976,7 @@ class _PlaybackEvents(xbmc.Player):
         self.start_serial = 0
 
     def onPlayBackStopped(self):
+        clear_pause_guard()
         xbmc.log(
             "[CC-TRANSITION] callback=onPlayBackStopped idx={} title={!r} file={!r}".format(
                 current(),
@@ -999,6 +1000,26 @@ class _PlaybackEvents(xbmc.Player):
         # natural playlist transitions; final playback end is still handled by
         # the existing Player.HasAudio timeout.
         pass
+
+    def onPlayBackPaused(self):
+        xbmc.log(
+            "[CC-TRANSITION] callback=onPlayBackPaused idx={} title={!r}".format(
+                current(),
+                xbmc.getInfoLabel("Player.Title") or "",
+            ),
+            xbmc.LOGINFO,
+        )
+        guard_pause_focus()
+
+    def onPlayBackResumed(self):
+        xbmc.log(
+            "[CC-TRANSITION] callback=onPlayBackResumed idx={} title={!r}".format(
+                current(),
+                xbmc.getInfoLabel("Player.Title") or "",
+            ),
+            xbmc.LOGINFO,
+        )
+        restore_pause_focus()
 
     def onPlayBackStarted(self):
         xbmc.log(
@@ -1100,6 +1121,15 @@ def run():
         now = time.monotonic()
         audio = _audio_active()
         auto_open_enabled = _auto_open_enabled()
+
+        # Safety net for the pause guard. The callbacks above normally move
+        # focus immediately; this also protects against another GUI action
+        # reclaiming the native playlist while playback remains paused.
+        if xbmc.getCondVisibility("Player.Paused"):
+            if popup_open() and not detail_view() and _list_focused():
+                guard_pause_focus()
+        else:
+            restore_pause_focus()
 
         # Diagnostic only: record the exact Kodi runtime state whenever one of
         # the values that drives the footer/popup changes. This does not mutate
@@ -1468,6 +1498,7 @@ def run():
             home.clearProperty(LYRICS_SYNC_PROP)
             home.clearProperty(SELECTION_TARGET_PROP)
             home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+            clear_pause_guard()
             lyrics_sync_entries = []
             lyrics_sync_times = []
             lyrics_line_count = 0

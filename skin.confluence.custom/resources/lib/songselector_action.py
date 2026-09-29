@@ -8,7 +8,7 @@ import time
 import xbmc
 import xbmcgui
 
-from songselector_state import close_popup, current, set_popup_open, size
+from songselector_state import close_popup, current, popup_open, set_popup_open, size
 
 HOME_ID = 10000
 DIALOG_ID = 1116
@@ -37,6 +37,8 @@ SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
 SELECTION_GOTO_PENDING_PROP = "ConfluenceCustom.SongSelector.GoToPending"
 HIGHLIGHT_PROP = "ConfluenceCustom.SongSelector.Highlight"
 PROGRAMMATIC_UNTIL_PROP = "ConfluenceCustom.SongSelector.ProgrammaticUntil"
+PAUSE_GUARD_PROP = "ConfluenceCustom.SongSelector.PauseGuard"
+PAUSE_SELECTION_PROP = "ConfluenceCustom.SongSelector.PauseSelection"
 NEUTRAL_CONTROL_ID = 9131
 VISIBLE_ROWS = 13
 HISTORY_ROWS = 4
@@ -189,6 +191,130 @@ def _native_list_control():
     return None, None
 
 
+def _dialog_control(control_id):
+    for window_id in (DIALOG_ID + 10000, DIALOG_ID):
+        try:
+            window = xbmcgui.Window(window_id)
+            control = window.getControl(int(control_id))
+            if control is not None:
+                return window, control
+        except Exception:
+            pass
+    return None, None
+
+
+def _native_list_index():
+    try:
+        current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
+    except Exception:
+        return None
+    return current_item - 1 if current_item > 0 else None
+
+
+def clear_pause_guard():
+    home = _home()
+    home.clearProperty(PAUSE_GUARD_PROP)
+    home.clearProperty(PAUSE_SELECTION_PROP)
+
+
+def guard_pause_focus():
+    """Protect paused playback from Kodi's focused-list ACTION_PLAYER_PLAY path.
+
+    Kodi maps PlayPause to ACTION_PLAYER_PLAY when resuming from Pause. A native
+    directory-backed list handles that action as "play the focused item" before
+    the global player sees it. Temporarily parking focus on the neutral proxy
+    keeps the playlist intact; the list itself and its selection are untouched.
+    """
+    if not popup_open() or detail_view():
+        return False
+    if not xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)):
+        return False
+
+    home = _home()
+    index = _native_list_index()
+    if index is not None:
+        home.setProperty(PAUSE_SELECTION_PROP, str(index))
+    home.setProperty(PAUSE_GUARD_PROP, "1")
+
+    window, proxy = _dialog_control(NEUTRAL_CONTROL_ID)
+    if window is None or proxy is None:
+        clear_pause_guard()
+        return False
+    try:
+        window.setFocus(proxy)
+        return True
+    except Exception:
+        clear_pause_guard()
+        return False
+
+
+def restore_pause_focus():
+    """Restore the exact pre-pause row after Kodi has resumed playback."""
+    home = _home()
+    if home.getProperty(PAUSE_GUARD_PROP) != "1":
+        return False
+    raw = home.getProperty(PAUSE_SELECTION_PROP)
+    clear_pause_guard()
+
+    if not popup_open() or detail_view():
+        return False
+    if not xbmc.getCondVisibility("Window.IsActive({}) + Control.IsVisible({})".format(DIALOG_ID, LIST_ID)):
+        return False
+
+    window, control = _native_list_control()
+    if window is None or control is None:
+        return False
+    try:
+        index = int(raw)
+    except Exception:
+        index = _native_list_index()
+    count = size()
+    if index is not None and count > 0:
+        index = min(max(int(index), 0), count - 1)
+        try:
+            control.selectItem(index)
+        except Exception:
+            pass
+    try:
+        window.setFocus(control)
+        _set_highlight(True)
+        return True
+    except Exception:
+        return False
+
+
+def pause_move(delta):
+    """Browse the native playlist while paused without giving it Play focus."""
+    home = _home()
+    if home.getProperty(PAUSE_GUARD_PROP) != "1":
+        return
+    if not xbmc.getCondVisibility("Player.Paused + Window.IsActive({})".format(DIALOG_ID)):
+        return
+    count = size()
+    if count <= 0:
+        return
+    try:
+        index = int(home.getProperty(PAUSE_SELECTION_PROP))
+    except Exception:
+        index = _native_list_index()
+        if index is None:
+            index = current()
+    target = min(max(int(index) + int(delta), 0), count - 1)
+
+    window, control = _native_list_control()
+    if window is None or control is None:
+        return
+    try:
+        control.selectItem(target)
+        home.setProperty(PAUSE_SELECTION_PROP, str(target))
+        _touch()
+        proxy_window, proxy = _dialog_control(NEUTRAL_CONTROL_ID)
+        if proxy_window is not None and proxy is not None:
+            proxy_window.setFocus(proxy)
+    except Exception:
+        pass
+
+
 def focus_current(take_focus=False):
     """Position the native playlist on the playing song without a visible focus jump.
 
@@ -302,9 +428,12 @@ def open_popup():
     xbmc.executebuiltin("ActivateWindow({})".format(DIALOG_ID))
     focus_current(take_focus=True)
     _set_highlight(True)
+    if xbmc.getCondVisibility("Player.Paused"):
+        guard_pause_focus()
 
 
 def show_credits():
+    clear_pause_guard()
     _set_highlight(False)
     if not xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)):
         return
@@ -326,6 +455,7 @@ def show_credits():
 
 
 def show_lyrics():
+    clear_pause_guard()
     _set_highlight(False)
     if not xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)):
         return
@@ -427,6 +557,8 @@ def show_tracks():
     if not _focus_existing_track_selection():
         focus_current(take_focus=True)
     _set_highlight(True)
+    if xbmc.getCondVisibility("Player.Paused"):
+        guard_pause_focus()
 
 
 def reactivate():
@@ -435,11 +567,15 @@ def reactivate():
     if detail_view():
         return
     _set_highlight(True)
+    if xbmc.getCondVisibility("Player.Paused"):
+        guard_pause_focus()
+        return
     if focus_current(take_focus=True):
         _touch()
 
 
 def close_dialog():
+    clear_pause_guard()
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
@@ -452,6 +588,7 @@ def close_dialog():
 
 
 def closed():
+    clear_pause_guard()
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
@@ -569,6 +706,11 @@ def main():
         closed()
     elif mode == "reactivate":
         reactivate()
+    elif mode == "pausemove":
+        try:
+            pause_move(int(sys.argv[2]) if len(sys.argv) > 2 else 0)
+        except Exception:
+            pass
     elif mode == "togglelyricsync":
         toggle_lyrics_sync()
     elif mode == "lyricsup":
