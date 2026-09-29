@@ -5,6 +5,7 @@ import sys
 
 import xbmc
 import xbmcgui
+import xbmcaddon
 
 from nocover_manager import apply as apply_no_cover, save_free_image
 
@@ -207,6 +208,15 @@ def _set(name, value):
 
 
 def ensure_defaults():
+    if not _get("DefaultHomeFocus"):
+        _set("DefaultHomeFocus", "5")
+    if not _get("DefaultHomeFocusItem"):
+        try:
+            label = xbmcaddon.Addon("skin.confluence.custom").getLocalizedString(31956)
+        except Exception:
+            label = ""
+        _set("DefaultHomeFocusItem", label or "Music")
+
     defaults = (
         (MAIN_FONT_SETTING, DEFAULT_MAIN_FONT),
         (MAIN_SIZE_SETTING, DEFAULT_MAIN_SIZE),

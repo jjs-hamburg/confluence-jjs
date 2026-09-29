@@ -2,1417 +2,174 @@
   "format": "confluence-custom-skin-settings",
   "format_version": 1,
   "skin": "skin.confluence.custom",
-  "created": "2026-09-16 (factory defaults updated for 5.0.118 fixed 30px badge and menu settings)",
+  "created": "2026-09-29 (publication defaults; menu labels/actions initialized dynamically for Kodi language)",
   "settings": [
-    {
-      "id": "autoscroll",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "BackgroundInterval",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "BackgroundPath",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "BlurContainer",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "BlurRadius",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "BlurSaturation",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccalbumtimecurrent",
-      "type": "string",
-      "value": "false"
-    },
-    {
-      "id": "ccalbumtimeremaining",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccaudiobadge3d",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "ccaudiobadgecontentmode",
-      "type": "string",
-      "value": "logo"
-    },
-    {
-      "id": "ccaudiobadgecolor",
-      "type": "string",
-      "value": "submenu"
-    },
-    {
-      "id": "ccaudiobadgeopacity",
-      "type": "string",
-      "value": "55"
-    },
-    {
-      "id": "ccaudiobadgeradius",
-      "type": "string",
-      "value": "30"
-    },
-    {
-      "id": "ccaudiobadgesize",
-      "type": "string",
-      "value": "90"
-    },
-    {
-      "id": "ccaudiobadgetexturev117",
-      "type": "string",
-      "value": "CCAudioBadgeBase_s90_o55_r30.png"
-    },
-    {
-      "id": "ccaudiobadgeoverlayv117",
-      "type": "string",
-      "value": "CCAudioBadge3D_s90_r30.png"
-    },
-    {
-      "id": "ccaudiobadgetexture",
-      "type": "string",
-      "value": "CCAudioBadge_black_55_r14_flat.png"
-    },
-    {
-      "id": "ccexitbuttonaction",
-      "type": "string",
-      "value": "quit"
-    },
-    {
-      "id": "cchidehomeplaybackcontrols",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "cchomefloorstyle",
-      "type": "string",
-      "value": "off"
-    },
-    {
-      "id": "cchomemusiccoversize",
-      "type": "string",
-      "value": "540"
-    },
-    {
-      "id": "cchomemusiccoverstyle",
-      "type": "string",
-      "value": "softshadow"
-    },
-    {
-      "id": "cchomemusicshadowoffset",
-      "type": "string",
-      "value": "24"
-    },
-    {
-      "id": "cchomemusicshadowwidth",
-      "type": "string",
-      "value": "6"
-    },
-    {
-      "id": "cchomenocoverstyle",
-      "type": "string",
-      "value": "custom"
-    },
-    {
-      "id": "cchomeplaybackfanart",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "CCMain_addons_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_addons_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_movies_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_movies_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_music_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_music_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_pictures_Action",
-      "type": "string",
-      "value": "RunAddon(script.jjs.pictureviewer)"
-    },
-    {
-      "id": "ccmain_pictures_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_radio_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_radio_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_system_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_system_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_tv_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_tv_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_tvshows_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_tvshows_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMain_videos_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmain_videos_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMainMenuColorActive",
-      "type": "string",
-      "value": "FF33B5E5"
-    },
-    {
-      "id": "CCMainMenuColorNormal",
-      "type": "string",
-      "value": "FF505050"
-    },
-    {
-      "id": "ccmainmenufontfamily",
-      "type": "string",
-      "value": "montserrat"
-    },
-    {
-      "id": "ccmainmenufontsize",
-      "type": "string",
-      "value": "72"
-    },
-    {
-      "id": "ccmainmenuyoffset",
-      "type": "string",
-      "value": "75"
-    },
-    {
-      "id": "CCMenu_addons_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(addonbrowser,addons://user,return)"
-    },
-    {
-      "id": "ccmenu_addons_1_label",
-      "type": "string",
-      "value": "Benutzer-Addons"
-    },
-    {
-      "id": "CCMenu_addons_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(addonbrowser,addons://repos/,return)"
-    },
-    {
-      "id": "CCMenu_addons_2_Label",
-      "type": "string",
-      "value": "Aus Repo installieren"
-    },
-    {
-      "id": "CCMenu_addons_3_Action",
-      "type": "string",
-      "value": "InstallFromZip"
-    },
-    {
-      "id": "CCMenu_addons_3_Label",
-      "type": "string",
-      "value": "Aus ZIP installieren"
-    },
-    {
-      "id": "CCMenu_addons_4_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_addons_4_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_addons_5_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_addons_5_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_addons_6_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_addons_6_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmenu_initialized_v3",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "ccmenu_migrated_5_0_22",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "ccmenu_migrated_5_0_28",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "CCMenu_movies_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/movies/recentlyaddedmovies.xml/\",return)"
-    },
-    {
-      "id": "ccmenu_movies_1_label",
-      "type": "string",
-      "value": "Zuletzt hinzugefügt"
-    },
-    {
-      "id": "CCMenu_movies_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/movies/titles.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_movies_2_Label",
-      "type": "string",
-      "value": "Titel"
-    },
-    {
-      "id": "CCMenu_movies_3_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/movies/xstream.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_movies_3_Label",
-      "type": "string",
-      "value": "xStream"
-    },
-    {
-      "id": "CCMenu_movies_4_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/movies/filmpalast.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_movies_4_Label",
-      "type": "string",
-      "value": "Filmpalast"
-    },
-    {
-      "id": "CCMenu_movies_5_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/movies/mediathekview.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_movies_5_Label",
-      "type": "string",
-      "value": "Mediathekview"
-    },
-    {
-      "id": "CCMenu_movies_6_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/movies/genres.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_movies_6_Label",
-      "type": "string",
-      "value": "Genre"
-    },
-    {
-      "id": "CCMenu_music_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(Music,\"library://music/recentlyaddedalbums.xml/\",return)"
-    },
-    {
-      "id": "ccmenu_music_1_label",
-      "type": "string",
-      "value": "Zuletzt hinzugefügt"
-    },
-    {
-      "id": "CCMenu_music_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(Music,\"library://music/recentlyplayedalbums.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_music_2_Label",
-      "type": "string",
-      "value": "Zuletzt gehört"
-    },
-    {
-      "id": "CCMenu_music_3_Action",
-      "type": "string",
-      "value": "ActivateWindow(Music,\"library://music/artists.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_music_3_Label",
-      "type": "string",
-      "value": "Interpreten"
-    },
-    {
-      "id": "CCMenu_music_4_Action",
-      "type": "string",
-      "value": "ActivateWindow(Music,\"library://music/files.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_music_4_Label",
-      "type": "string",
-      "value": "Dateien"
-    },
-    {
-      "id": "CCMenu_music_5_Action",
-      "type": "string",
-      "value": "ActivateWindow(Music,\"library://music/genres.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_music_5_Label",
-      "type": "string",
-      "value": "Genre"
-    },
-    {
-      "id": "CCMenu_music_6_Action",
-      "type": "string",
-      "value": "ActivateWindow(Music,\"library://music/years.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_music_6_Label",
-      "type": "string",
-      "value": "Jahre"
-    },
-    {
-      "id": "CCMenu_pictures_1_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmenu_pictures_1_label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_2_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_2_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_3_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_3_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_4_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_4_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_5_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_5_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_6_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_pictures_6_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_radio_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(RadioChannels)"
-    },
-    {
-      "id": "ccmenu_radio_1_label",
-      "type": "string",
-      "value": "Sender"
-    },
-    {
-      "id": "CCMenu_radio_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(RadioGuide)"
-    },
-    {
-      "id": "CCMenu_radio_2_Label",
-      "type": "string",
-      "value": "Programmübersicht"
-    },
-    {
-      "id": "CCMenu_radio_3_Action",
-      "type": "string",
-      "value": "ActivateWindow(RadioRecordings)"
-    },
-    {
-      "id": "CCMenu_radio_3_Label",
-      "type": "string",
-      "value": "Aufnahmen"
-    },
-    {
-      "id": "CCMenu_radio_4_Action",
-      "type": "string",
-      "value": "ActivateWindow(RadioTimerRules)"
-    },
-    {
-      "id": "CCMenu_radio_4_Label",
-      "type": "string",
-      "value": "Timerregeln"
-    },
-    {
-      "id": "CCMenu_radio_5_Action",
-      "type": "string",
-      "value": "ActivateWindow(RadioTimers)"
-    },
-    {
-      "id": "CCMenu_radio_5_Label",
-      "type": "string",
-      "value": "Timer"
-    },
-    {
-      "id": "CCMenu_radio_6_Action",
-      "type": "string",
-      "value": "ActivateWindow(RadioSearch)"
-    },
-    {
-      "id": "CCMenu_radio_6_Label",
-      "type": "string",
-      "value": "Suchen"
-    },
-    {
-      "id": "CCMenu_system_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(FileManager)"
-    },
-    {
-      "id": "ccmenu_system_1_label",
-      "type": "string",
-      "value": "Dateimanager"
-    },
-    {
-      "id": "CCMenu_system_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(Settings)"
-    },
-    {
-      "id": "CCMenu_system_2_Label",
-      "type": "string",
-      "value": "Einstellungen"
-    },
-    {
-      "id": "CCMenu_system_3_Action",
-      "type": "string",
-      "value": "ActivateWindow(SkinSettings)"
-    },
-    {
-      "id": "CCMenu_system_3_Label",
-      "type": "string",
-      "value": "Skin konfigurieren"
-    },
-    {
-      "id": "CCMenu_system_4_Action",
-      "type": "string",
-      "value": "RunScript(special://skin/resources/lib/menu_editor.py)"
-    },
-    {
-      "id": "CCMenu_system_4_Label",
-      "type": "string",
-      "value": "Menu Editor"
-    },
-    {
-      "id": "CCMenu_system_5_Action",
-      "type": "string",
-      "value": "ActivateWindow(SystemInfo)"
-    },
-    {
-      "id": "CCMenu_system_5_Label",
-      "type": "string",
-      "value": "Systeminfo"
-    },
-    {
-      "id": "CCMenu_system_6_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_system_6_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_tv_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(TVChannels)"
-    },
-    {
-      "id": "ccmenu_tv_1_label",
-      "type": "string",
-      "value": "Sender"
-    },
-    {
-      "id": "CCMenu_tv_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(TVGuide)"
-    },
-    {
-      "id": "CCMenu_tv_2_Label",
-      "type": "string",
-      "value": "Programmübersicht"
-    },
-    {
-      "id": "CCMenu_tv_3_Action",
-      "type": "string",
-      "value": "ActivateWindow(TVRecordings)"
-    },
-    {
-      "id": "CCMenu_tv_3_Label",
-      "type": "string",
-      "value": "Aufnahmen"
-    },
-    {
-      "id": "CCMenu_tv_4_Action",
-      "type": "string",
-      "value": "ActivateWindow(TVTimerRules)"
-    },
-    {
-      "id": "CCMenu_tv_4_Label",
-      "type": "string",
-      "value": "Timerregeln"
-    },
-    {
-      "id": "CCMenu_tv_5_Action",
-      "type": "string",
-      "value": "ActivateWindow(TVTimers)"
-    },
-    {
-      "id": "CCMenu_tv_5_Label",
-      "type": "string",
-      "value": "Timer"
-    },
-    {
-      "id": "CCMenu_tv_6_Action",
-      "type": "string",
-      "value": "ActivateWindow(TVSearch)"
-    },
-    {
-      "id": "CCMenu_tv_6_Label",
-      "type": "string",
-      "value": "Suchen"
-    },
-    {
-      "id": "CCMenu_tvshows_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/tvshows/recentlyaddedtvshows.xml/\",return)"
-    },
-    {
-      "id": "ccmenu_tvshows_1_label",
-      "type": "string",
-      "value": "Zuletzt hinzugefügt"
-    },
-    {
-      "id": "CCMenu_tvshows_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/tvshows/titles.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_tvshows_2_Label",
-      "type": "string",
-      "value": "Titel"
-    },
-    {
-      "id": "CCMenu_tvshows_3_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/tvshows/genres.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_tvshows_3_Label",
-      "type": "string",
-      "value": "Genre"
-    },
-    {
-      "id": "CCMenu_tvshows_4_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/tvshows/studios.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_tvshows_4_Label",
-      "type": "string",
-      "value": "Studios"
-    },
-    {
-      "id": "CCMenu_tvshows_5_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/tvshows/years.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_tvshows_5_Label",
-      "type": "string",
-      "value": "Jahre"
-    },
-    {
-      "id": "CCMenu_tvshows_6_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"library://video/tvshows/inprogressshows.xml/\",return)"
-    },
-    {
-      "id": "CCMenu_tvshows_6_Label",
-      "type": "string",
-      "value": "In Bearbeitung"
-    },
-    {
-      "id": "CCMenu_videos_1_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,Files,return)"
-    },
-    {
-      "id": "ccmenu_videos_1_label",
-      "type": "string",
-      "value": "Dateien"
-    },
-    {
-      "id": "CCMenu_videos_2_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,\"smb://SYNOLOGY1/video/Musik/\",return)"
-    },
-    {
-      "id": "CCMenu_videos_2_Label",
-      "type": "string",
-      "value": "Musik"
-    },
-    {
-      "id": "CCMenu_videos_3_Action",
-      "type": "string",
-      "value": "ActivateWindow(Videos,Addons,return)"
-    },
-    {
-      "id": "CCMenu_videos_3_Label",
-      "type": "string",
-      "value": "Addons"
-    },
-    {
-      "id": "CCMenu_videos_4_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_videos_4_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_videos_5_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_videos_5_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_videos_6_Action",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCMenu_videos_6_Label",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccmusicartworkmode",
-      "type": "string",
-      "value": "both"
-    },
-    {
-      "id": "ccnowplayingalbumyear",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "CCNowPlayingAlbumOverflow",
-      "type": "string",
-      "value": "wrap"
-    },
-    {
-      "id": "CCNowPlayingSongOverflow",
-      "type": "string",
-      "value": "wrap"
-    },
-    {
-      "id": "ccnowplayingaudiologo",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "ccplayertimesdimmed",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "CCSongSelectorAutoOpen",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "ccsongselectorbackground",
-      "type": "string",
-      "value": "submenu"
-    },
-    {
-      "id": "ccsongselectorcoloractive",
-      "type": "string",
-      "value": "FFFFFFFF"
-    },
-    {
-      "id": "ccsongselectorcolorcurrent",
-      "type": "string",
-      "value": "FFFFFFFF"
-    },
-    {
-      "id": "ccsongselectorcolornormal",
-      "type": "string",
-      "value": "FF999999"
-    },
-    {
-      "id": "ccsongselectorenabled",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "CCSongSelectorFocusTimeout",
-      "type": "string",
-      "value": "30"
-    },
-    {
-      "id": "ccsongselectorfontfamily",
-      "type": "string",
-      "value": "roboto"
-    },
-    {
-      "id": "ccsongselectorfontsize",
-      "type": "string",
-      "value": "24"
-    },
-    {
-      "id": "ccsongselectorhighlightcolor",
-      "type": "string",
-      "value": "default"
-    },
-    {
-      "id": "ccsongselectorhighlighttimeout",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "CCSongSelectorLyricsCentered",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "CCSongSelectorLyricsSyncDelay",
-      "type": "string",
-      "value": "0.25"
-    },
-    {
-      "id": "CCSongSelectorPopupTimeout",
-      "type": "string",
-      "value": "0"
-    },
-    {
-      "id": "CCSongSelectorSelectionTimeout",
-      "type": "string",
-      "value": "5"
-    },
-    {
-      "id": "CCSongSelectorShowTrackNumbers",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "CCSongSelectorTimeBackground",
-      "type": "string",
-      "value": "submenu"
-    },
-    {
-      "id": "ccsongtimecurrent",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "ccsongtimeremaining",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "ccstandardconfluence",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "CCSubMenuColorActive",
-      "type": "string",
-      "value": "FFFFFFFF"
-    },
-    {
-      "id": "CCSubMenuColorNormal",
-      "type": "string",
-      "value": "FF999999"
-    },
-    {
-      "id": "ccsubmenufontfamily",
-      "type": "string",
-      "value": "montserrat"
-    },
-    {
-      "id": "ccsubmenufontsize",
-      "type": "string",
-      "value": "22"
-    },
-    {
-      "id": "CustomBackground",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "custombackgroundpath",
-      "type": "string",
-      "value": "special://skin/backgrounds/DefaultWallpaper.jpg"
-    },
-    {
-      "id": "debuggrid",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "DefaultHomeFocus",
-      "type": "string",
-      "value": "5"
-    },
-    {
-      "id": "defaulthomefocusitem",
-      "type": "string",
-      "value": "MUSIK"
-    },
-    {
-      "id": "firsttimerun",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "hidebackgroundfanart",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "hideepgwithrds",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "hidefilenameflagging",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "hidevisualizationfanart",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "Home_Custom_Background",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeBackground",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeFanart",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeGameButton1",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeGameButton2",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeGameButton3",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeGameButton4",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeGameButton5",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeMenuMoviePlaylist",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "homemenumovieuseplaylist",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "HomeMenuMusicPlaylist",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "homemenumusicuseplaylist",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunogamesbutton",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "homemenunomoviebutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunomusicbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunopicturesbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunoprogramsbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunoradiobutton",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "homemenunosystembutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunotvbutton",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "homemenunotvshowbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunovideosbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homemenunoweatherbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "HomeMenuTVShowPlaylist",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "homemenutvshowuseplaylist",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "HomeMusicButton1",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeMusicButton2",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeMusicButton3",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeMusicButton4",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeMusicButton5",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "homepagehidefavourite",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "homepagehiderecentlyaddedalbums",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "homepagehiderecentlyaddedvideo",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "homepagehidesearch",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "homepagemusicinfo",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homepagevideoinfo",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "homepageweatherinfo",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "HomePictureButton1",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomePictureButton2",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomePictureButton3",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomePictureButton4",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomePictureButton5",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeProgramButton1",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeProgramButton2",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeProgramButton3",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeProgramButton4",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeProgramButton5",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeVideosButton1",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeVideosButton2",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeVideosButton3",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeVideosButton4",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "HomeVideosButton5",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "LyricScript_Path",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "MasterCustomBackgroundPath",
-      "type": "string",
-      "value": "special://skin/backgrounds/DefaultWallpaper.jpg"
-    },
-    {
-      "id": "masterhomemenunogamesbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "masterhomemenunomoviebutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "masterhomemenunomusicbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "masterhomemenunopicturesbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "masterhomemenunoprogramsbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "masterhomemenunoradiobutton",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "masterhomemenunotvbutton",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "masterhomemenunotvshowbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "masterhomemenunovideosbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "masterhomemenunoweatherbutton",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "ServiceInterval",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "show_profileavatar",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "show_profilename",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "show_slideshow_paused",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "showbackgroundvideo",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "showbackgroundvis",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "showposterinsteadthumb",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "SkinShortcuts-FullMenu",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "skinshortcuts-sharedmenu",
-      "type": "string",
-      "value": "true"
-    },
-    {
-      "id": "titleformat_1st",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "titleformat_2nd",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "titleformat_only",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "TMDbHelper.Blur.Radius",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "TMDbHelper.Blur.Size",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "id": "usecustombackground",
-      "type": "boolean",
-      "value": true
-    },
-    {
-      "id": "view508hideinfo",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "view509hideinfo",
-      "type": "boolean",
-      "value": false
-    },
-    {
-      "id": "windowedtrailer",
-      "type": "boolean",
-      "value": false
-    }
+    {"id":"autoscroll","type":"boolean","value":true},
+    {"id":"BackgroundInterval","type":"string","value":""},
+    {"id":"BackgroundPath","type":"string","value":""},
+    {"id":"BlurContainer","type":"string","value":""},
+    {"id":"BlurRadius","type":"string","value":""},
+    {"id":"BlurSaturation","type":"string","value":""},
+    {"id":"ccalbumtimecurrent","type":"string","value":"false"},
+    {"id":"ccalbumtimeremaining","type":"string","value":""},
+    {"id":"ccaudiobadge3d","type":"string","value":"true"},
+    {"id":"ccaudiobadgecolor","type":"string","value":"submenu"},
+    {"id":"ccaudiobadgecontentmode","type":"string","value":"logo"},
+    {"id":"CCAudioBadgeOpacity","type":"string","value":"40"},
+    {"id":"ccaudiobadgeoverlayv117","type":"string","value":"CCAudioBadge3D_s90_r30.png"},
+    {"id":"CCAudioBadgeRadius","type":"string","value":"30"},
+    {"id":"ccaudiobadgesize","type":"string","value":"90"},
+    {"id":"CCAudioBadgeTexture","type":"string","value":"CCAudioBadge_blue_25_r30_3d.png"},
+    {"id":"ccaudiobadgetexturev117","type":"string","value":"CCAudioBadgeBase_s90_o40_r30.png"},
+    {"id":"ccexitbuttonaction","type":"string","value":"quit"},
+    {"id":"cchidehomeplaybackcontrols","type":"boolean","value":true},
+    {"id":"cchomefloorstyle","type":"string","value":"off"},
+    {"id":"cchomemusiccoversize","type":"string","value":"585"},
+    {"id":"cchomemusiccoverstyle","type":"string","value":"softshadow"},
+    {"id":"cchomemusicshadowoffset","type":"string","value":"24"},
+    {"id":"cchomemusicshadowwidth","type":"string","value":"6"},
+    {"id":"cchomenocoverstyle","type":"string","value":"custom"},
+    {"id":"cchomeplaybackfanart","type":"boolean","value":false},
+    {"id":"CCMainMenuColorActive","type":"string","value":"FF33B5E5"},
+    {"id":"CCMainMenuColorNormal","type":"string","value":"FF505050"},
+    {"id":"ccmainmenufontfamily","type":"string","value":"montserrat"},
+    {"id":"ccmainmenufontsize","type":"string","value":"66"},
+    {"id":"ccmainmenuyoffset","type":"string","value":"75"},
+    {"id":"ccmainorder_1","type":"string","value":"pictures"},
+    {"id":"ccmainorder_2","type":"string","value":"radio"},
+    {"id":"ccmainorder_3","type":"string","value":"tv"},
+    {"id":"ccmainorder_4","type":"string","value":"tvshows"},
+    {"id":"ccmainorder_5","type":"string","value":"videos"},
+    {"id":"ccmainorder_6","type":"string","value":"movies"},
+    {"id":"ccmainorder_7","type":"string","value":"music"},
+    {"id":"ccmainorder_8","type":"string","value":"addons"},
+    {"id":"ccmainorder_9","type":"string","value":"system"},
+    {"id":"ccmusicartworkmode","type":"string","value":"both"},
+    {"id":"ccnocoverfreepath","type":"string","value":""},
+    {"id":"ccnowplayingalbumoverflow","type":"string","value":"wrap"},
+    {"id":"ccnowplayingalbumyear","type":"boolean","value":true},
+    {"id":"ccnowplayingaudiologo","type":"boolean","value":true},
+    {"id":"ccnowplayingsongoverflow","type":"string","value":"wrap"},
+    {"id":"ccnowplayingyeardelimiter","type":"string","value":"pipe"},
+    {"id":"ccplayertimebadgesequal","type":"boolean","value":false},
+    {"id":"ccplayertimesbadges","type":"boolean","value":true},
+    {"id":"ccplayertimesdimmed","type":"string","value":"true"},
+    {"id":"CCSongSelectorAutoOpen","type":"string","value":"false"},
+    {"id":"CCSongSelectorBackground","type":"string","value":"submenu"},
+    {"id":"CCSongSelectorColorActive","type":"string","value":"FFFFFFFF"},
+    {"id":"CCSongSelectorColorCurrent","type":"string","value":"FFFFFFFF"},
+    {"id":"CCSongSelectorColorNormal","type":"string","value":"FF999999"},
+    {"id":"ccsongselectorenabled","type":"string","value":"true"},
+    {"id":"CCSongSelectorFocusTimeout","type":"string","value":"30"},
+    {"id":"CCSongSelectorFontFamily","type":"string","value":"roboto"},
+    {"id":"CCSongSelectorFontSize","type":"string","value":"24"},
+    {"id":"CCSongSelectorHighlightColor","type":"string","value":"default"},
+    {"id":"ccsongselectorhighlighttimeout","type":"string","value":""},
+    {"id":"CCSongSelectorLyricsCentered","type":"string","value":"true"},
+    {"id":"CCSongSelectorLyricsSyncDelay","type":"string","value":"0.25"},
+    {"id":"CCSongSelectorPopupTimeout","type":"string","value":"0"},
+    {"id":"CCSongSelectorReturnV127Migrated","type":"string","value":"1"},
+    {"id":"CCSongSelectorSelectionTimeout","type":"string","value":"5"},
+    {"id":"ccsongselectorshowtracknumbers","type":"string","value":"true"},
+    {"id":"CCSongSelectorTimeBackground","type":"string","value":"submenu"},
+    {"id":"ccsongtimecurrent","type":"string","value":"true"},
+    {"id":"ccsongtimeremaining","type":"string","value":""},
+    {"id":"ccstandardconfluence","type":"boolean","value":false},
+    {"id":"ccsubmenucoloractive","type":"string","value":"FFFFFFFF"},
+    {"id":"CCSubMenuColorNormal","type":"string","value":"FF999999"},
+    {"id":"ccsubmenufontfamily","type":"string","value":"montserrat"},
+    {"id":"ccsubmenufontsize","type":"string","value":"22"},
+    {"id":"ccsubmenuhighlightcolor","type":"string","value":"FF33B5E5"},
+    {"id":"CustomBackground","type":"string","value":""},
+    {"id":"CustomBackgroundPath","type":"string","value":"special://skin/backgrounds/DefaultWallpaper.jpg"},
+    {"id":"debuggrid","type":"boolean","value":false},
+    {"id":"DefaultHomeFocus","type":"string","value":"5"},
+    {"id":"firsttimerun","type":"boolean","value":true},
+    {"id":"hidebackgroundfanart","type":"boolean","value":false},
+    {"id":"hideepgwithrds","type":"boolean","value":false},
+    {"id":"hidefilenameflagging","type":"boolean","value":false},
+    {"id":"hidevisualizationfanart","type":"boolean","value":true},
+    {"id":"Home_Custom_Background","type":"string","value":""},
+    {"id":"HomeBackground","type":"string","value":""},
+    {"id":"HomeFanart","type":"string","value":""},
+    {"id":"HomeGameButton1","type":"string","value":""},
+    {"id":"HomeGameButton2","type":"string","value":""},
+    {"id":"HomeGameButton3","type":"string","value":""},
+    {"id":"HomeGameButton4","type":"string","value":""},
+    {"id":"HomeGameButton5","type":"string","value":""},
+    {"id":"HomeMenuMoviePlaylist","type":"string","value":""},
+    {"id":"homemenumovieuseplaylist","type":"boolean","value":false},
+    {"id":"HomeMenuMusicPlaylist","type":"string","value":""},
+    {"id":"homemenumusicuseplaylist","type":"boolean","value":false},
+    {"id":"homemenunogamesbutton","type":"boolean","value":true},
+    {"id":"homemenunomoviebutton","type":"boolean","value":false},
+    {"id":"homemenunomusicbutton","type":"boolean","value":false},
+    {"id":"homemenunopicturesbutton","type":"boolean","value":false},
+    {"id":"homemenunoprogramsbutton","type":"boolean","value":false},
+    {"id":"homemenunoradiobutton","type":"boolean","value":true},
+    {"id":"homemenunosystembutton","type":"boolean","value":false},
+    {"id":"homemenunotvbutton","type":"boolean","value":true},
+    {"id":"homemenunotvshowbutton","type":"boolean","value":false},
+    {"id":"homemenunovideosbutton","type":"boolean","value":false},
+    {"id":"homemenunoweatherbutton","type":"boolean","value":false},
+    {"id":"HomeMenuTVShowPlaylist","type":"string","value":""},
+    {"id":"homemenutvshowuseplaylist","type":"boolean","value":false},
+    {"id":"HomeMusicButton1","type":"string","value":""},
+    {"id":"HomeMusicButton2","type":"string","value":""},
+    {"id":"HomeMusicButton3","type":"string","value":""},
+    {"id":"HomeMusicButton4","type":"string","value":""},
+    {"id":"HomeMusicButton5","type":"string","value":""},
+    {"id":"homepagehidefavourite","type":"boolean","value":true},
+    {"id":"homepagehiderecentlyaddedalbums","type":"boolean","value":true},
+    {"id":"homepagehiderecentlyaddedvideo","type":"boolean","value":true},
+    {"id":"homepagehidesearch","type":"boolean","value":true},
+    {"id":"homepagemusicinfo","type":"boolean","value":false},
+    {"id":"homepagevideoinfo","type":"boolean","value":false},
+    {"id":"homepageweatherinfo","type":"boolean","value":false},
+    {"id":"HomePictureButton1","type":"string","value":""},
+    {"id":"HomePictureButton2","type":"string","value":""},
+    {"id":"HomePictureButton3","type":"string","value":""},
+    {"id":"HomePictureButton4","type":"string","value":""},
+    {"id":"HomePictureButton5","type":"string","value":""},
+    {"id":"HomeProgramButton1","type":"string","value":""},
+    {"id":"HomeProgramButton2","type":"string","value":""},
+    {"id":"HomeProgramButton3","type":"string","value":""},
+    {"id":"HomeProgramButton4","type":"string","value":""},
+    {"id":"HomeProgramButton5","type":"string","value":""},
+    {"id":"HomeVideosButton1","type":"string","value":""},
+    {"id":"HomeVideosButton2","type":"string","value":""},
+    {"id":"HomeVideosButton3","type":"string","value":""},
+    {"id":"HomeVideosButton4","type":"string","value":""},
+    {"id":"HomeVideosButton5","type":"string","value":""},
+    {"id":"LyricScript_Path","type":"string","value":""},
+    {"id":"MasterCustomBackgroundPath","type":"string","value":"special://skin/backgrounds/DefaultWallpaper.jpg"},
+    {"id":"masterhomemenunogamesbutton","type":"boolean","value":false},
+    {"id":"masterhomemenunomoviebutton","type":"boolean","value":false},
+    {"id":"masterhomemenunomusicbutton","type":"boolean","value":false},
+    {"id":"masterhomemenunopicturesbutton","type":"boolean","value":false},
+    {"id":"masterhomemenunoprogramsbutton","type":"boolean","value":false},
+    {"id":"masterhomemenunoradiobutton","type":"boolean","value":true},
+    {"id":"masterhomemenunotvbutton","type":"boolean","value":true},
+    {"id":"masterhomemenunotvshowbutton","type":"boolean","value":false},
+    {"id":"masterhomemenunovideosbutton","type":"boolean","value":false},
+    {"id":"masterhomemenunoweatherbutton","type":"boolean","value":false},
+    {"id":"ServiceInterval","type":"string","value":""},
+    {"id":"show_profileavatar","type":"boolean","value":false},
+    {"id":"show_profilename","type":"boolean","value":false},
+    {"id":"show_slideshow_paused","type":"boolean","value":false},
+    {"id":"showbackgroundvideo","type":"boolean","value":true},
+    {"id":"showbackgroundvis","type":"boolean","value":true},
+    {"id":"showposterinsteadthumb","type":"boolean","value":false},
+    {"id":"SkinShortcuts-FullMenu","type":"boolean","value":true},
+    {"id":"skinshortcuts-sharedmenu","type":"string","value":"true"},
+    {"id":"titleformat_1st","type":"boolean","value":false},
+    {"id":"titleformat_2nd","type":"boolean","value":false},
+    {"id":"titleformat_only","type":"boolean","value":false},
+    {"id":"TMDbHelper.Blur.Radius","type":"string","value":""},
+    {"id":"TMDbHelper.Blur.Size","type":"string","value":""},
+    {"id":"usecustombackground","type":"boolean","value":true},
+    {"id":"view508hideinfo","type":"boolean","value":false},
+    {"id":"view509hideinfo","type":"boolean","value":false},
+    {"id":"windowedtrailer","type":"boolean","value":false}
   ]
 }

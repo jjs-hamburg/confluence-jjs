@@ -10,6 +10,7 @@ import json
 
 import xbmc
 import xbmcgui
+import xbmcaddon
 
 TARGET_SKIN = "skin.confluence.custom"
 MAX_ITEMS = 6
@@ -19,10 +20,10 @@ MIGRATION_5028 = "CCMenu_Migrated_5_0_28"
 
 GROUPS = [
     ("videos", "Videos", 31953),
-    ("movies", "Filme", 31954),
+    ("movies", "Movies", 31954),
     ("tvshows", "TV shows", 31955),
-    ("music", "Musik", 31956),
-    ("pictures", "Bilder", 31951),
+    ("music", "Music", 31956),
+    ("pictures", "Pictures", 31951),
     ("tv", "TV", 31952),
     ("radio", "Radio", 31960),
     ("addons", "Add-ons", 31957),
@@ -42,13 +43,13 @@ MAIN_ORDER_PREFIX = "CCMainOrder_"
 
 # Fallbacks are used only if a Kodi core localization happens to be empty.
 LOC_FALLBACK = {
-    5: "Einstellungen", 7: "Dateimanager", 130: "Systeminformationen",
-    137: "Suche", 342: "Filme", 744: "Dateien", 13200: "Profile",
-    14022: "Bibliothek", 14111: "Ereignisprotokoll", 19019: "Kanäle",
-    19040: "Timer", 19138: "Timerregeln", 19163: "Aufnahmen",
-    20343: "Serien", 20389: "Musikvideos", 22020: "Programmführer",
-    24001: "Add-ons", 24033: "Aus Repository installieren",
-    24041: "Aus ZIP-Datei installieren", 24998: "Meine Add-ons",
+    5: "Settings", 7: "File manager", 130: "System information",
+    137: "Search", 342: "Movies", 744: "Files", 13200: "Profiles",
+    14022: "Library", 14111: "Event log", 19019: "Channels",
+    19040: "Timers", 19138: "Timer rules", 19163: "Recordings",
+    20343: "TV shows", 20389: "Music videos", 22020: "Guide",
+    24001: "Add-ons", 24033: "Install from repository",
+    24041: "Install from zip file", 24998: "My add-ons",
 }
 
 
@@ -175,6 +176,14 @@ def cond(condition):
         return False
 
 
+def skin_loc(string_id, fallback):
+    try:
+        value = xbmcaddon.Addon(TARGET_SKIN).getLocalizedString(int(string_id))
+    except Exception:
+        value = ""
+    return value or fallback
+
+
 def rpc(method, params=None):
     request = {"jsonrpc": "2.0", "id": 1, "method": method}
     if params is not None:
@@ -233,39 +242,27 @@ def default_items(group):
     if group == "music":
         return _node_defaults("library://music/", "Music", "music", 6)
 
+    # Publication defaults deliberately keep these menus small and predictable.
+    # Labels are resolved at first start from Kodi's current language.
     if group == "videos":
-        items = []
-        if cond("Library.HasContent(Movies)") and cond("Skin.HasSetting(HomeMenuNoMovieButton)"):
-            items.append({"label": loc(342), "action": "ActivateWindow(Videos,MovieTitles,return)"})
-        if cond("Library.HasContent(TVShows)") and cond("Skin.HasSetting(HomeMenuNoTVShowButton)"):
-            items.append({"label": loc(20343), "action": "ActivateWindow(Videos,TvShowTitles,return)"})
-        if cond("Library.HasContent(MusicVideos)"):
-            items.append({"label": loc(20389), "action": "ActivateWindow(Videos,MusicVideoTitles,return)"})
-        items.append({"label": loc(744), "action": "ActivateWindow(Videos,Files,return)"})
-        if cond("Library.HasContent(Video)"):
-            items.append({"label": loc(14022), "action": "ActivateWindow(Videos,Root)"})
-        items.append({"label": loc(24001), "action": "ActivateWindow(Videos,Addons,return)"})
-        return items[:MAX_ITEMS]
+        return [
+            {"label": loc(744), "action": "ActivateWindow(Videos,Files,return)"},
+            {"label": loc(24001), "action": "ActivateWindow(Videos,Addons,return)"},
+        ]
+
+    if group == "pictures":
+        return []
 
     if group == "system":
-        items = [{"label": loc(5), "action": "ActivateWindow(Settings)"}]
-        if cond("System.AddonIsEnabled(service.libreelec.settings)"):
-            items.append({"label": "LibreELEC", "action": "RunAddon(service.libreelec.settings)"})
-        if cond("System.AddonIsEnabled(service.coreelec.settings)"):
-            items.append({"label": "CoreELEC", "action": "RunAddon(service.coreelec.settings)"})
-        items += [
+        return [
             {"label": loc(7), "action": "ActivateWindow(FileManager)"},
-            {"label": loc(13200), "action": "ActivateWindow(Profiles)"},
+            {"label": loc(5), "action": "ActivateWindow(Settings)"},
+            {"label": skin_loc(31965, "Configure skin"), "action": "ActivateWindow(SkinSettings)"},
+            {"label": skin_loc(31966, "Menu editor"), "action": "RunScript(special://skin/resources/lib/menu_editor.py)"},
             {"label": loc(130), "action": "ActivateWindow(SystemInfo)"},
         ]
-        if cond("System.GetBool(eventlog.enabled)") or cond("system.getbool(eventlog.enabled)"):
-            items.append({"label": loc(14111), "action": "ActivateWindow(EventLog,events://,return)"})
-        return items[:MAX_ITEMS]
 
     fixed = {
-        "pictures": [
-            (24001, "ActivateWindow(Pictures,Addons,return)"),
-        ],
         "tv": [
             (19019, "ActivateWindow(TVChannels)"),
             (22020, "ActivateWindow(TVGuide)"),
@@ -286,11 +283,9 @@ def default_items(group):
             (24998, "ActivateWindow(addonbrowser,addons://user,return)"),
             (24033, "ActivateWindow(addonbrowser,addons://repos/,return)"),
             (24041, "InstallFromZip"),
-            (137, "ActivateWindow(addonbrowser,addons://search,return)"),
         ],
     }
     return [{"label": loc(lid), "action": action} for lid, action in fixed.get(group, [])]
-
 
 def migrate_5022():
     """Repair path actions written by 5.0.21 without resetting user menus."""

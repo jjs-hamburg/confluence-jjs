@@ -756,3 +756,11 @@ msgstr "Profilname"
 msgctxt "#31964"
 msgid "Profile avatar"
 msgstr "Profil-Avatar"
+
+msgctxt "#31965"
+msgid "Configure skin"
+msgstr "Skin konfigurieren"
+
+msgctxt "#31966"
+msgid "Menu editor"
+msgstr "Menü-Editor"
