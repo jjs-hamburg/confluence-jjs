@@ -17,9 +17,42 @@ def _start_background_services():
         xbmc.executebuiltin("RunScript(special://skin/resources/lib/culrc_runner.py)", wait=False)
 
 
+def _wait_for_skin_switch_confirmation():
+    """Keep first-run work out of Kodi's timed Keep Skin confirmation window."""
+    if not factory_defaults.needs_first_run_settle():
+        return xbmc.getSkinDir() == factory_defaults.SKIN_ID
+
+    monitor = xbmc.Monitor()
+    dialog_seen = False
+    log("Fresh-install startup waiting for Kodi skin confirmation")
+
+    # Home.xml is loaded before Kodi opens the timed yes/no confirmation. Give
+    # that core dialog enough time to appear while doing no initialization work.
+    for _ in range(50):
+        if xbmc.getSkinDir() != factory_defaults.SKIN_ID:
+            return False
+        if xbmc.getCondVisibility("Window.IsActive(yesnodialog)"):
+            dialog_seen = True
+            break
+        if monitor.waitForAbort(0.1):
+            return False
+
+    if dialog_seen:
+        while xbmc.getCondVisibility("Window.IsActive(yesnodialog)"):
+            if monitor.waitForAbort(0.1):
+                return False
+
+    # A negative/timeout answer queues the switch back immediately after the
+    # dialog closes. Let Kodi finish that switch before deciding whether to run.
+    if monitor.waitForAbort(0.5):
+        return False
+    return xbmc.getSkinDir() == factory_defaults.SKIN_ID
+
 
 if __name__ == "__main__":
     try:
+        if not _wait_for_skin_switch_confirmation():
+            raise SystemExit
         apply_factory_defaults = factory_defaults.begin()
         if apply_factory_defaults:
             try:
@@ -33,12 +66,6 @@ if __name__ == "__main__":
             raise SystemExit
         import_confluence_settings.run()
         if apply_factory_defaults:
-            # Do not reload here. On a genuine fresh skin switch Kodi is still
-            # showing its own "keep these settings" confirmation dialog.
-            # ReloadSkin() at this point steals that dialog's focus and lets the
-            # confirmation time out, which makes Kodi fall back to the old skin.
-            # Skin settings written below are live, so initialization can safely
-            # continue without a reload.
             factory_defaults.apply()
         ensure_initialised(False)
         ensure_defaults()

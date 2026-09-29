@@ -43,7 +43,7 @@ MAIN_ORDER_PREFIX = "CCMainOrder_"
 
 # Fallbacks are used only if a Kodi core localization happens to be empty.
 LOC_FALLBACK = {
-    5: "Settings", 7: "File manager", 130: "System information",
+    5: "Settings", 7: "File manager", 130: "System information", 14261: "Configure skin...",
     137: "Search", 342: "Movies", 744: "Files", 13200: "Profiles",
     14022: "Library", 14111: "Event log", 19019: "Channels",
     19040: "Timers", 19138: "Timer rules", 19163: "Recordings",
@@ -184,6 +184,12 @@ def skin_loc(string_id, fallback):
     return value or fallback
 
 
+def configure_skin_label():
+    """Return Kodi's UI-language label without the settings-dialog ellipsis."""
+    value = loc(14261).strip().rstrip(" .…").rstrip()
+    return value or "Configure skin"
+
+
 def rpc(method, params=None):
     request = {"jsonrpc": "2.0", "id": 1, "method": method}
     if params is not None:
@@ -257,7 +263,7 @@ def default_items(group):
         return [
             {"label": loc(7), "action": "ActivateWindow(FileManager)"},
             {"label": loc(5), "action": "ActivateWindow(Settings)"},
-            {"label": skin_loc(31965, "Configure skin"), "action": "ActivateWindow(SkinSettings)"},
+            {"label": configure_skin_label(), "action": "ActivateWindow(SkinSettings)"},
             {"label": "Menu Editor", "action": "RunScript(special://skin/resources/lib/menu_editor.py)"},
             {"label": loc(130), "action": "ActivateWindow(SystemInfo)"},
         ]
@@ -361,11 +367,13 @@ def refresh_system_default_labels():
     """
     configure_action = "ActivateWindow(SkinSettings)"
     editor_action = "RunScript(special://skin/resources/lib/menu_editor.py)"
-    configure_label = skin_loc(31965, "Configure skin")
+    configure_label = configure_skin_label()
     editor_label = "Menu Editor"
     known_configure = {
         "configure skin",
+        "configure skin...",
         "skin konfigurieren",
+        "skin konfigurieren...",
         configure_label.strip().casefold(),
     }
     known_editor = {

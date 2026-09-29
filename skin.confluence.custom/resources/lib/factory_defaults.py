@@ -80,6 +80,13 @@ def _existing_skin_settings():
         return True
 
 
+def needs_first_run_settle():
+    """Return True until the first-run factory-default decision is persisted."""
+    if xbmc.getSkinDir() != SKIN_ID:
+        return False
+    return not xbmcvfs.exists(os.path.join(_profile_dir(), STATE_FILE))
+
+
 def begin():
     """Capture fresh-install state before any migration/default code changes it."""
     if xbmc.getSkinDir() != SKIN_ID:
