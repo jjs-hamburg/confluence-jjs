@@ -1,0 +1,41 @@
+name: "Cleanup published branches"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/cleanup-published-branches.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Delete merged development branches
+        uses: actions/checkout@v5
+
+      - name: Remove branches already contained in main
+        shell: bash
+        run: |
+          set -euo pipefail
+          branches=(
+            "cleanup/confluence-jjs"
+            "diag/fix-popup-open-import-5.0.140"
+            "diag/natural-transition-5.0.142"
+            "diag/song-overflow-popup-5.0.139"
+            "fix/popup-selection-5.0.141"
+            "fix/service-popup-overflow-5.0.137"
+            "fix/song-overflow-popup-5.0.136"
+            "fix/song-title-5.0.135"
+            "recovery/5.0.138-stable-baseline"
+          )
+
+          for branch in "${branches[@]}"; do
+            if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+              git push origin --delete "$branch"
+            fi
+          done
