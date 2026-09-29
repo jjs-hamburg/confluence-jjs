@@ -11,7 +11,7 @@ import xbmcgui
 from cover_display_action import COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
 from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
 from nocover_manager import sync_on_startup
-from songselector_action import (clear_pause_guard, detail_view, focus_current, guard_pause_focus, lyrics_view, open_popup, restore_pause_focus, show_credits)
+from songselector_action import detail_view, focus_current, lyrics_view, open_popup, show_credits
 from songselector_state import (
     close_popup,
     current,
@@ -924,12 +924,16 @@ def _set_times(home, items, playing):
     _publish_time_badge_classes(home)
 
 
-def _list_focused():
-    return xbmc.getCondVisibility("Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, 9110))
+def _track_navigation_focused():
+    # The native playlist is display-only. 9131 is the permanent input proxy
+    # for the track page, so only that focus state represents track navigation.
+    return xbmc.getCondVisibility(
+        "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)
+    )
 
 
 def _container_position():
-    if not _list_focused():
+    if not _track_navigation_focused():
         return None
     try:
         current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
@@ -1000,26 +1004,6 @@ class _PlaybackEvents(xbmc.Player):
         # natural playlist transitions; final playback end is still handled by
         # the existing Player.HasAudio timeout.
         pass
-
-    def onPlayBackPaused(self):
-        xbmc.log(
-            "[CC-TRANSITION] callback=onPlayBackPaused idx={} title={!r}".format(
-                current(),
-                xbmc.getInfoLabel("Player.Title") or "",
-            ),
-            xbmc.LOGINFO,
-        )
-        guard_pause_focus()
-
-    def onPlayBackResumed(self):
-        xbmc.log(
-            "[CC-TRANSITION] callback=onPlayBackResumed idx={} title={!r}".format(
-                current(),
-                xbmc.getInfoLabel("Player.Title") or "",
-            ),
-            xbmc.LOGINFO,
-        )
-        restore_pause_focus()
 
     def onPlayBackStarted(self):
         xbmc.log(
@@ -1121,15 +1105,6 @@ def run():
         now = time.monotonic()
         audio = _audio_active()
         auto_open_enabled = _auto_open_enabled()
-
-        # Safety net for the pause guard. The callbacks above normally move
-        # focus immediately; this also protects against another GUI action
-        # reclaiming the native playlist while playback remains paused.
-        if xbmc.getCondVisibility("Player.Paused"):
-            if popup_open() and not detail_view() and _list_focused():
-                guard_pause_focus()
-        else:
-            restore_pause_focus()
 
         # Diagnostic only: record the exact Kodi runtime state whenever one of
         # the values that drives the footer/popup changes. This does not mutate
@@ -1473,18 +1448,18 @@ def run():
                 if was_open and not detail_view() and last_playing >= 0 and playing != last_playing:
                     position = _container_position()
                     if explicit_selection or position == last_playing or position == playing:
-                        focus_current(take_focus=True)
+                        focus_current()
                         last_list_position = playing
                     if selected_target is not None:
                         home.clearProperty(SELECTION_TARGET_PROP)
                         home.clearProperty(SELECTION_GOTO_PENDING_PROP)
 
                 selection_timeout = _seconds(SELECTION_TIMEOUT_SETTING, 5)
-                if (not detail_view() and selection_timeout and _list_focused()
+                if (not detail_view() and selection_timeout and _track_navigation_focused()
                         and now - last_user_activity >= selection_timeout):
                     position = _container_position()
                     if position is not None and position != playing:
-                        focus_current(take_focus=True)
+                        focus_current()
                         last_list_position = playing
                     # Keep the permanent navigation highlight active. Reset the
                     # timer so we do not repeatedly reposition the same row.
@@ -1498,7 +1473,6 @@ def run():
             home.clearProperty(LYRICS_SYNC_PROP)
             home.clearProperty(SELECTION_TARGET_PROP)
             home.clearProperty(SELECTION_GOTO_PENDING_PROP)
-            clear_pause_guard()
             lyrics_sync_entries = []
             lyrics_sync_times = []
             lyrics_line_count = 0

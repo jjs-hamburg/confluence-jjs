@@ -8,7 +8,7 @@ import time
 import xbmc
 import xbmcgui
 
-from songselector_state import close_popup, current, popup_open, set_popup_open, size
+from songselector_state import close_popup, current, set_popup_open, size
 
 HOME_ID = 10000
 DIALOG_ID = 1116
@@ -37,8 +37,6 @@ SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
 SELECTION_GOTO_PENDING_PROP = "ConfluenceCustom.SongSelector.GoToPending"
 HIGHLIGHT_PROP = "ConfluenceCustom.SongSelector.Highlight"
 PROGRAMMATIC_UNTIL_PROP = "ConfluenceCustom.SongSelector.ProgrammaticUntil"
-PAUSE_GUARD_PROP = "ConfluenceCustom.SongSelector.PauseGuard"
-PAUSE_SELECTION_PROP = "ConfluenceCustom.SongSelector.PauseSelection"
 NEUTRAL_CONTROL_ID = 9131
 VISIBLE_ROWS = 13
 HISTORY_ROWS = 4
@@ -191,18 +189,6 @@ def _native_list_control():
     return None, None
 
 
-def _dialog_control(control_id):
-    for window_id in (DIALOG_ID + 10000, DIALOG_ID):
-        try:
-            window = xbmcgui.Window(window_id)
-            control = window.getControl(int(control_id))
-            if control is not None:
-                return window, control
-        except Exception:
-            pass
-    return None, None
-
-
 def _native_list_index():
     try:
         current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
@@ -211,117 +197,13 @@ def _native_list_index():
     return current_item - 1 if current_item > 0 else None
 
 
-def clear_pause_guard():
-    home = _home()
-    home.clearProperty(PAUSE_GUARD_PROP)
-    home.clearProperty(PAUSE_SELECTION_PROP)
-
-
-def guard_pause_focus():
-    """Protect paused playback from Kodi's focused-list ACTION_PLAYER_PLAY path.
-
-    Kodi maps PlayPause to ACTION_PLAYER_PLAY when resuming from Pause. A native
-    directory-backed list handles that action as "play the focused item" before
-    the global player sees it. Temporarily parking focus on the neutral proxy
-    keeps the playlist intact; the list itself and its selection are untouched.
-    """
-    if not popup_open() or detail_view():
-        return False
-    if not xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)):
-        return False
-
-    home = _home()
-    index = _native_list_index()
-    if index is not None:
-        home.setProperty(PAUSE_SELECTION_PROP, str(index))
-    home.setProperty(PAUSE_GUARD_PROP, "1")
-
-    window, proxy = _dialog_control(NEUTRAL_CONTROL_ID)
-    if window is None or proxy is None:
-        clear_pause_guard()
-        return False
-    try:
-        window.setFocus(proxy)
-        return True
-    except Exception:
-        clear_pause_guard()
-        return False
-
-
-def restore_pause_focus():
-    """Restore the exact pre-pause row after Kodi has resumed playback."""
-    home = _home()
-    if home.getProperty(PAUSE_GUARD_PROP) != "1":
-        return False
-    raw = home.getProperty(PAUSE_SELECTION_PROP)
-    clear_pause_guard()
-
-    if not popup_open() or detail_view():
-        return False
-    if not xbmc.getCondVisibility("Window.IsActive({}) + Control.IsVisible({})".format(DIALOG_ID, LIST_ID)):
-        return False
-
-    window, control = _native_list_control()
-    if window is None or control is None:
-        return False
-    try:
-        index = int(raw)
-    except Exception:
-        index = _native_list_index()
-    count = size()
-    if index is not None and count > 0:
-        index = min(max(int(index), 0), count - 1)
-        try:
-            control.selectItem(index)
-        except Exception:
-            pass
-    try:
-        window.setFocus(control)
-        _set_highlight(True)
-        return True
-    except Exception:
-        return False
-
-
-def pause_move(delta):
-    """Browse the native playlist while paused without giving it Play focus."""
-    home = _home()
-    if home.getProperty(PAUSE_GUARD_PROP) != "1":
-        return
-    if not xbmc.getCondVisibility("Player.Paused + Window.IsActive({})".format(DIALOG_ID)):
-        return
-    count = size()
-    if count <= 0:
-        return
-    try:
-        index = int(home.getProperty(PAUSE_SELECTION_PROP))
-    except Exception:
-        index = _native_list_index()
-        if index is None:
-            index = current()
-    target = min(max(int(index) + int(delta), 0), count - 1)
-
-    window, control = _native_list_control()
-    if window is None or control is None:
-        return
-    try:
-        control.selectItem(target)
-        home.setProperty(PAUSE_SELECTION_PROP, str(target))
-        _touch()
-        proxy_window, proxy = _dialog_control(NEUTRAL_CONTROL_ID)
-        if proxy_window is not None and proxy is not None:
-            proxy_window.setFocus(proxy)
-    except Exception:
-        pass
-
-
 def focus_current(take_focus=False):
-    """Position the native playlist on the playing song without a visible focus jump.
+    """Position the display-only playlist while keeping input on the proxy control.
 
-    Kodi needs the short selectItem(start/end/current) sequence to build the wanted
-    13-row viewport. While that purely programmatic sequence runs, suppress only the
-    grey navigation tile; the separately coloured currently-playing row remains
-    visible. The grey tile is restored on the final row afterwards.
+    The take_focus argument is retained for compatibility with older callers but
+    is deliberately ignored. The native playlist must never receive GUI focus:
+    Kodi gives a focused directory list special ACTION_PLAYER_PLAY semantics,
+    which can replace the album playlist when PlayPause resumes playback.
     """
     home = _home()
     restore_highlight = home.getProperty(HIGHLIGHT_PROP) == "1"
@@ -350,10 +232,9 @@ def focus_current(take_focus=False):
             xbmc.sleep(80)
             control.selectItem(playing)
             xbmc.sleep(35)
-            if take_focus:
-                window.setFocus(control)
-            else:
-                _focus(NEUTRAL_CONTROL_ID)
+            # Never focus the native directory-backed playlist. The dedicated
+            # proxy is the sole input target for the track page.
+            _focus(NEUTRAL_CONTROL_ID)
         except Exception:
             return False
         return True
@@ -365,34 +246,16 @@ def focus_current(take_focus=False):
 
 
 def _focus_existing_track_selection():
-    """Return from credits/lyrics to the already-positioned track list.
-
-    The native list keeps its selected row and viewport while hidden. Reusing that
-    state avoids replaying the slower viewport-positioning sequence and makes the
-    grey navigation tile available on the first practical GUI frame.
-    """
-    window, control = _native_list_control()
-    if control is not None:
-        try:
-            window.setFocus(control)
-            if xbmc.getCondVisibility(
-                    "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
-                return True
-        except Exception:
-            pass
-
+    """Return to the track page without ever focusing the native playlist."""
     deadline = time.time() + 0.35
     while time.time() < deadline:
-        window, control = _native_list_control()
-        if control is not None and xbmc.getCondVisibility(
+        if xbmc.getCondVisibility(
                 "Window.IsActive({}) + Control.IsVisible({})".format(DIALOG_ID, LIST_ID)):
-            try:
-                window.setFocus(control)
-                if xbmc.getCondVisibility(
-                        "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
-                    return True
-            except Exception:
-                pass
+            _focus(NEUTRAL_CONTROL_ID)
+            xbmc.sleep(5)
+            if xbmc.getCondVisibility(
+                    "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)):
+                return True
         xbmc.sleep(5)
     return False
 
@@ -426,14 +289,11 @@ def open_popup():
     set_popup_open(True)
     _touch()
     xbmc.executebuiltin("ActivateWindow({})".format(DIALOG_ID))
-    focus_current(take_focus=True)
+    focus_current()
     _set_highlight(True)
-    if xbmc.getCondVisibility("Player.Paused"):
-        guard_pause_focus()
 
 
 def show_credits():
-    clear_pause_guard()
     _set_highlight(False)
     if not xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)):
         return
@@ -455,7 +315,6 @@ def show_credits():
 
 
 def show_lyrics():
-    clear_pause_guard()
     _set_highlight(False)
     if not xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)):
         return
@@ -555,27 +414,21 @@ def show_tracks():
     _set_lyrics_view(False)
     _touch()
     if not _focus_existing_track_selection():
-        focus_current(take_focus=True)
+        _focus(NEUTRAL_CONTROL_ID)
     _set_highlight(True)
-    if xbmc.getCondVisibility("Player.Paused"):
-        guard_pause_focus()
 
 
 def reactivate():
-    # Backwards-compatible entry point for older XML. The track page now keeps
-    # its selection highlight active continuously.
+    # Backwards-compatible entry point for older XML. The native playlist is
+    # display-only; all track-page input belongs to the proxy control.
     if detail_view():
         return
     _set_highlight(True)
-    if xbmc.getCondVisibility("Player.Paused"):
-        guard_pause_focus()
-        return
-    if focus_current(take_focus=True):
-        _touch()
+    _focus(NEUTRAL_CONTROL_ID)
+    _touch()
 
 
 def close_dialog():
-    clear_pause_guard()
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
@@ -588,7 +441,6 @@ def close_dialog():
 
 
 def closed():
-    clear_pause_guard()
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
@@ -641,18 +493,17 @@ def play_path(path):
 
 
 def play_focused():
-    """Play the row currently focused in Kodi's native playlist container.
+    """Play the row selected in the display-only native playlist.
 
-    Kodi's Container.Position is the focused viewport position, not the absolute
-    playlist index once the list has scrolled. Container.CurrentItem is the
-    absolute current item (1-based), so convert it to the playlist's 0-based index.
+    The proxy owns GUI focus. Container.CurrentItem still exposes the selected
+    absolute row (1-based), so OK can invoke Player.GoTo without giving the
+    directory provider any input action.
     """
-    if not xbmc.getCondVisibility("Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
+    if not xbmc.getCondVisibility(
+            "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)):
         return
-    try:
-        current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
-        target = current_item - 1
-    except Exception:
+    target = _native_list_index()
+    if target is None:
         return
     count = size()
     if target < 0 or target >= count:
@@ -706,11 +557,6 @@ def main():
         closed()
     elif mode == "reactivate":
         reactivate()
-    elif mode == "pausemove":
-        try:
-            pause_move(int(sys.argv[2]) if len(sys.argv) > 2 else 0)
-        except Exception:
-            pass
     elif mode == "togglelyricsync":
         toggle_lyrics_sync()
     elif mode == "lyricsup":
