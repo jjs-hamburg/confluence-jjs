@@ -71,6 +71,18 @@ The visible skin name is **Confluence-jjs**, but the technical add-on ID intenti
 
 This preserves normal update behavior and existing skin settings. Changing the ID would make Kodi treat it as a different skin.
 
+## Private project and disclaimer
+
+Confluence-jjs was created solely for my own private use. I make it available to interested users in case it is useful to them as well.
+
+The software is provided **as is** and is used entirely at your own risk. No warranty or guarantee is given regarding functionality, reliability, compatibility, fitness for a particular purpose or freedom from errors.
+
+To the extent permitted by applicable law, I accept no liability for direct or indirect damage, data loss, system problems, incompatibilities or other consequences resulting from the installation or use of this project.
+
+There is **no obligation to provide support, maintenance, bug fixes, compatibility updates or future releases**. Development may be changed, paused or discontinued at any time without notice.
+
+Nothing in this disclaimer overrides the terms of the applicable license or any liability that cannot legally be excluded.
+
 ## Development
 
 The release workflow validates the skin XML, Python files and ZIP structure before publishing a directly installable release package.
