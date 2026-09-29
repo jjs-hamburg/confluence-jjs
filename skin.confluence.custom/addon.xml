@@ -29,7 +29,7 @@
 			<screenshot>resources/screenshot-08.jpg</screenshot>
 			<screenshot>resources/screenshot-09.jpg</screenshot>
 		</assets>
-		<news>5.0.164 test: Isolate Song Popup input from playlistmusic:// while preserving native list movement and viewport behavior. Popup navigation is handled through a neutral proxy; unrelated player actions fall through to Kodi.</news>
+		<news>5.0.164: Isolate Song Popup input from playlistmusic:// while preserving native list movement and viewport behavior. Popup navigation is handled through a neutral proxy; unrelated player actions fall through to Kodi.</news>
 		<summary lang="en_GB">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="en_US">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="de_DE">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
