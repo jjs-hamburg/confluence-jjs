@@ -144,9 +144,22 @@
 					<height>360</height>
 					<aspectratio>keep</aspectratio>
 					<fadetime>200</fadetime>
+					<texture background="true">special://skin/resources/screenshot-01.webp</texture>
+					<bordertexture infill="false" border="8">ThumbShadow.png</bordertexture>
+					<bordersize>8</bordersize>
+					<visible>String.IsEqual(ListItem.AddonName,Confluence-jjs)</visible>
+				</control>
+				<control type="image">
+					<left>15</left>
+					<top>45</top>
+					<width>735</width>
+					<height>360</height>
+					<aspectratio>keep</aspectratio>
+					<fadetime>200</fadetime>
 					<texture background="true">$INFO[ListItem.Icon]</texture>
 					<bordertexture infill="false" border="8">ThumbShadow.png</bordertexture>
 					<bordersize>8</bordersize>
+					<visible>!String.IsEqual(ListItem.AddonName,Confluence-jjs)</visible>
 				</control>
 				<control type="group">
 					<top>420</top>

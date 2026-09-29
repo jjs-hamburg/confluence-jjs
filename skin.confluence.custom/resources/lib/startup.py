@@ -51,9 +51,12 @@ def _wait_for_skin_switch_confirmation():
 
 if __name__ == "__main__":
     try:
+        # Decide whether this is a genuine fresh install before Kodi has had
+        # time to persist any skin settings. begin() only creates the small
+        # pending/state marker; all real initialization still happens later.
+        apply_factory_defaults = factory_defaults.begin()
         if not _wait_for_skin_switch_confirmation():
             raise SystemExit
-        apply_factory_defaults = factory_defaults.begin()
         if apply_factory_defaults:
             try:
                 library_nodes.install_missing_defaults()

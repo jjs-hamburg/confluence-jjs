@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addon id="skin.confluence.custom" version="5.0.157" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
+<addon id="skin.confluence.custom" version="5.0.158" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
 		<import addon="xbmc.python" version="3.0.0" />
@@ -29,12 +29,12 @@
 			<screenshot>resources/screenshot-08.jpg</screenshot>
 			<screenshot>resources/screenshot-09.jpg</screenshot>
 		</assets>
-		<news>5.0.157: Show Confluence-jjs artwork in Add-on Information, use Kodi UI localization for Configure skin, and defer fresh-install initialization until the skin confirmation is complete.</news>
+		<news>5.0.158: Apply fresh-install defaults after Kodi confirmation, show the Confluence-jjs artwork in the Add-on Browser, and keep the add-on description in English.</news>
 		<summary lang="en_GB">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="en_US">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
-		<summary lang="de_DE">Confluence-jjs – erweiterter Confluence-Skin für Musikwiedergabe, Coverdarstellung und konfigurierbare Menüs.</summary>
-		<description lang="en_GB">Confluence-jjs preserves the simple and direct Confluence interface while extending it with scalable front and back artwork, a song popup with track selection, synchronized lyrics and credits, configurable playback information, fonts and colors, an integrated Menu Editor, settings backup and restore, and selectable Confluence-jjs and Standard Confluence modes. Based on Confluence by Jezz_X / Team Kodi.</description>
-		<description lang="en_US">Confluence-jjs preserves the simple and direct Confluence interface while extending it with scalable front and back artwork, a song popup with track selection, synchronized lyrics and credits, configurable playback information, fonts and colors, an integrated Menu Editor, settings backup and restore, and selectable Confluence-jjs and Standard Confluence modes. Based on Confluence by Jezz_X / Team Kodi.</description>
-		<description lang="de_DE">Confluence-jjs bewahrt die einfache und direkte Bedienung von Confluence und erweitert sie um skalierbare Front- und Backcover, ein Song-Popup mit Titelauswahl, synchronisierte Liedtexte und Credits, konfigurierbare Wiedergabeinformationen, Schriften und Farben, einen integrierten Menu Editor, Backup und Restore der Skin-Einstellungen sowie umschaltbare Confluence-jjs- und Standard-Confluence-Modi. Basiert auf Confluence von Jezz_X / Team Kodi.</description>
+		<summary lang="de_DE">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
+		<description lang="en_GB">Confluence-jjs preserves the simple and direct Confluence interface while extending it with scalable front and back artwork, a song popup with track selection, synchronized lyrics and credits, configurable playback information, fonts and colors, an integrated Menu Editor, and settings backup and restore. Based on Confluence by Jezz_X / Team Kodi.</description>
+		<description lang="en_US">Confluence-jjs preserves the simple and direct Confluence interface while extending it with scalable front and back artwork, a song popup with track selection, synchronized lyrics and credits, configurable playback information, fonts and colors, an integrated Menu Editor, and settings backup and restore. Based on Confluence by Jezz_X / Team Kodi.</description>
+		<description lang="de_DE">Confluence-jjs preserves the simple and direct Confluence interface while extending it with scalable front and back artwork, a song popup with track selection, synchronized lyrics and credits, configurable playback information, fonts and colors, an integrated Menu Editor, and settings backup and restore. Based on Confluence by Jezz_X / Team Kodi.</description>
 	</extension>
 </addon>

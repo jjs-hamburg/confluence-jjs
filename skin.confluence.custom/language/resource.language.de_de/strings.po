@@ -19,11 +19,11 @@ msgstr ""
 
 msgctxt "Addon Summary"
 msgid "Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus."
-msgstr "Confluence-jjs – erweiterter Confluence-Skin für Musikwiedergabe, Coverdarstellung und konfigurierbare Menüs."
+msgstr "Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus."
 
 msgctxt "Addon Description"
 msgid "Confluence-jjs preserves the simple and direct Confluence interface while adding enhanced music playback, artwork, a song popup, lyrics, credits and configurable menus."
-msgstr "Confluence-jjs bewahrt die einfache und direkte Bedienung von Confluence und erweitert sie um Musikwiedergabe, Coverdarstellung, Song-Popup, Liedtexte, Credits und konfigurierbare Menüs."
+msgstr "Confluence-jjs preserves the simple and direct Confluence interface while adding enhanced music playback, artwork, a song popup, lyrics, credits and configurable menus."
 
 msgctxt "#31000"
 msgid "Change your"
