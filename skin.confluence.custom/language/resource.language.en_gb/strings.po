@@ -17,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgctxt "Addon Summary"
-msgid "Confluence skin by Jezz_X."
+msgid "Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus."
 msgstr ""
 
 msgctxt "Addon Description"
-msgid "Confluence is a combination of concepts from many popular skins, and attempts to embrace and integrate their good ideas into a skin that should be easy for first time Kodi users to understand and use."
+msgid "Confluence-jjs preserves the simple and direct Confluence interface while adding enhanced music playback, artwork, a song popup, lyrics, credits and configurable menus."
 msgstr ""
 
 msgctxt "#31000"
@@ -781,5 +781,5 @@ msgid "Configure skin"
 msgstr ""
 
 msgctxt "#31966"
-msgid "Menu editor"
+msgid "Menu Editor"
 msgstr ""

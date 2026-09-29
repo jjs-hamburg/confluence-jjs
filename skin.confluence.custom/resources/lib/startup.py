@@ -32,10 +32,14 @@ if __name__ == "__main__":
         if ensure_mode():
             raise SystemExit
         import_confluence_settings.run()
-        if apply_factory_defaults and factory_defaults.apply():
-            xbmc.sleep(150)
-            xbmc.executebuiltin("ReloadSkin()")
-            raise SystemExit
+        if apply_factory_defaults:
+            # Do not reload here. On a genuine fresh skin switch Kodi is still
+            # showing its own "keep these settings" confirmation dialog.
+            # ReloadSkin() at this point steals that dialog's focus and lets the
+            # confirmation time out, which makes Kodi fall back to the old skin.
+            # Skin settings written below are live, so initialization can safely
+            # continue without a reload.
+            factory_defaults.apply()
         ensure_initialised(False)
         ensure_defaults()
         _start_background_services()

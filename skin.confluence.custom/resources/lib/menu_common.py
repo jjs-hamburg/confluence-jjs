@@ -258,7 +258,7 @@ def default_items(group):
             {"label": loc(7), "action": "ActivateWindow(FileManager)"},
             {"label": loc(5), "action": "ActivateWindow(Settings)"},
             {"label": skin_loc(31965, "Configure skin"), "action": "ActivateWindow(SkinSettings)"},
-            {"label": skin_loc(31966, "Menu editor"), "action": "RunScript(special://skin/resources/lib/menu_editor.py)"},
+            {"label": "Menu Editor", "action": "RunScript(special://skin/resources/lib/menu_editor.py)"},
             {"label": loc(130), "action": "ActivateWindow(SystemInfo)"},
         ]
 
@@ -353,6 +353,47 @@ def migrate_5028():
     return bool(changed)
 
 
+def refresh_system_default_labels():
+    """Keep built-in System entries aligned with the active UI language.
+
+    Only known default labels are touched. User-renamed menu entries are left
+    unchanged even when they point to the same action.
+    """
+    configure_action = "ActivateWindow(SkinSettings)"
+    editor_action = "RunScript(special://skin/resources/lib/menu_editor.py)"
+    configure_label = skin_loc(31965, "Configure skin")
+    editor_label = "Menu Editor"
+    known_configure = {
+        "configure skin",
+        "skin konfigurieren",
+        configure_label.strip().casefold(),
+    }
+    known_editor = {
+        "menu editor",
+        "menü-editor",
+        "menü editor",
+    }
+    changed = 0
+    for slot in range(1, MAX_ITEMS + 1):
+        label_key = item_key("system", slot, "Label")
+        action = skin_string(item_key("system", slot, "Action"))
+        label = skin_string(label_key)
+        normalized = label.strip().casefold()
+
+        if action == configure_action and (not label or normalized in known_configure):
+            if label != configure_label:
+                set_skin_string(label_key, configure_label)
+                changed += 1
+        elif action == editor_action and (not label or normalized in known_editor):
+            if label != editor_label:
+                set_skin_string(label_key, editor_label)
+                changed += 1
+
+    if changed:
+        log("System menu labels refreshed ({} updated)".format(changed))
+    return bool(changed)
+
+
 def ensure_initialised(force=False):
     if xbmc.getSkinDir() != TARGET_SKIN:
         return False
@@ -365,6 +406,7 @@ def ensure_initialised(force=False):
         initialised = True
     migrate_5022()
     migrate_5028()
+    refresh_system_default_labels()
     ensure_main_order()
     return initialised
 
