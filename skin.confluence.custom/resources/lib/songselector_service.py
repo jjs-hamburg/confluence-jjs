@@ -11,7 +11,7 @@ import xbmcgui
 from cover_display_action import COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
 from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
 from nocover_manager import sync_on_startup
-from songselector_action import detail_view, focus_current, lyrics_view, open_popup, show_credits
+from songselector_action import _native_list_index, detail_view, focus_current, lyrics_view, open_popup, show_credits
 from songselector_state import (
     close_popup,
     current,
@@ -924,18 +924,20 @@ def _set_times(home, items, playing):
     _publish_time_badge_classes(home)
 
 
-def _list_focused():
-    return xbmc.getCondVisibility("Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, 9110))
+def _track_navigation_focused():
+    # The native playlist is display-only. 9131 is the permanent input proxy
+    # for the track page, so only that focus state represents track navigation.
+    return xbmc.getCondVisibility(
+        "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)
+    )
 
 
 def _container_position():
-    if not _list_focused():
+    if not _track_navigation_focused():
         return None
-    try:
-        current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
-        return current_item - 1 if current_item > 0 else None
-    except Exception:
-        return None
+    # Track-page input lives on proxy 9131, so Container.CurrentItem is not a
+    # reliable cursor source. Read the native list's real selected row instead.
+    return _native_list_index()
 
 
 def _close_dialog():
@@ -976,6 +978,7 @@ class _PlaybackEvents(xbmc.Player):
         self.start_serial = 0
 
     def onPlayBackStopped(self):
+        clear_pause_guard()
         xbmc.log(
             "[CC-TRANSITION] callback=onPlayBackStopped idx={} title={!r} file={!r}".format(
                 current(),
@@ -1443,18 +1446,18 @@ def run():
                 if was_open and not detail_view() and last_playing >= 0 and playing != last_playing:
                     position = _container_position()
                     if explicit_selection or position == last_playing or position == playing:
-                        focus_current(take_focus=True)
+                        focus_current()
                         last_list_position = playing
                     if selected_target is not None:
                         home.clearProperty(SELECTION_TARGET_PROP)
                         home.clearProperty(SELECTION_GOTO_PENDING_PROP)
 
                 selection_timeout = _seconds(SELECTION_TIMEOUT_SETTING, 5)
-                if (not detail_view() and selection_timeout and _list_focused()
+                if (not detail_view() and selection_timeout and _track_navigation_focused()
                         and now - last_user_activity >= selection_timeout):
                     position = _container_position()
                     if position is not None and position != playing:
-                        focus_current(take_focus=True)
+                        focus_current()
                         last_list_position = playing
                     # Keep the permanent navigation highlight active. Reset the
                     # timer so we do not repeatedly reposition the same row.

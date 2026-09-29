@@ -189,13 +189,33 @@ def _native_list_control():
     return None, None
 
 
-def focus_current(take_focus=False):
-    """Position the native playlist on the playing song without a visible focus jump.
+def _native_list_index():
+    """Return the native playlist selection without requiring list focus."""
+    _window, control = _native_list_control()
+    if control is not None:
+        try:
+            selected = int(control.getSelectedPosition())
+            if selected >= 0:
+                return selected
+        except Exception:
+            pass
 
-    Kodi needs the short selectItem(start/end/current) sequence to build the wanted
-    13-row viewport. While that purely programmatic sequence runs, suppress only the
-    grey navigation tile; the separately coloured currently-playing row remains
-    visible. The grey tile is restored on the final row afterwards.
+    # Fallback only. Container.CurrentItem is focus-sensitive and therefore
+    # cannot be the primary source while the proxy owns track-page input.
+    try:
+        current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
+    except Exception:
+        return None
+    return current_item - 1 if current_item > 0 else None
+
+
+def focus_current(take_focus=False):
+    """Position the display-only playlist while keeping input on the proxy control.
+
+    The take_focus argument is retained for compatibility with older callers but
+    is deliberately ignored. The native playlist must never receive GUI focus:
+    Kodi gives a focused directory list special ACTION_PLAYER_PLAY semantics,
+    which can replace the album playlist when PlayPause resumes playback.
     """
     home = _home()
     restore_highlight = home.getProperty(HIGHLIGHT_PROP) == "1"
@@ -224,10 +244,9 @@ def focus_current(take_focus=False):
             xbmc.sleep(80)
             control.selectItem(playing)
             xbmc.sleep(35)
-            if take_focus:
-                window.setFocus(control)
-            else:
-                _focus(NEUTRAL_CONTROL_ID)
+            # Never focus the native directory-backed playlist. The dedicated
+            # proxy is the sole input target for the track page.
+            _focus(NEUTRAL_CONTROL_ID)
         except Exception:
             return False
         return True
@@ -239,34 +258,16 @@ def focus_current(take_focus=False):
 
 
 def _focus_existing_track_selection():
-    """Return from credits/lyrics to the already-positioned track list.
-
-    The native list keeps its selected row and viewport while hidden. Reusing that
-    state avoids replaying the slower viewport-positioning sequence and makes the
-    grey navigation tile available on the first practical GUI frame.
-    """
-    window, control = _native_list_control()
-    if control is not None:
-        try:
-            window.setFocus(control)
-            if xbmc.getCondVisibility(
-                    "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
-                return True
-        except Exception:
-            pass
-
+    """Return to the track page without ever focusing the native playlist."""
     deadline = time.time() + 0.35
     while time.time() < deadline:
-        window, control = _native_list_control()
-        if control is not None and xbmc.getCondVisibility(
+        if xbmc.getCondVisibility(
                 "Window.IsActive({}) + Control.IsVisible({})".format(DIALOG_ID, LIST_ID)):
-            try:
-                window.setFocus(control)
-                if xbmc.getCondVisibility(
-                        "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
-                    return True
-            except Exception:
-                pass
+            _focus(NEUTRAL_CONTROL_ID)
+            xbmc.sleep(5)
+            if xbmc.getCondVisibility(
+                    "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)):
+                return True
         xbmc.sleep(5)
     return False
 
@@ -300,7 +301,7 @@ def open_popup():
     set_popup_open(True)
     _touch()
     xbmc.executebuiltin("ActivateWindow({})".format(DIALOG_ID))
-    focus_current(take_focus=True)
+    focus_current()
     _set_highlight(True)
 
 
@@ -425,18 +426,18 @@ def show_tracks():
     _set_lyrics_view(False)
     _touch()
     if not _focus_existing_track_selection():
-        focus_current(take_focus=True)
+        _focus(NEUTRAL_CONTROL_ID)
     _set_highlight(True)
 
 
 def reactivate():
-    # Backwards-compatible entry point for older XML. The track page now keeps
-    # its selection highlight active continuously.
+    # Backwards-compatible entry point for older XML. The native playlist is
+    # display-only; all track-page input belongs to the proxy control.
     if detail_view():
         return
     _set_highlight(True)
-    if focus_current(take_focus=True):
-        _touch()
+    _focus(NEUTRAL_CONTROL_ID)
+    _touch()
 
 
 def close_dialog():
@@ -504,18 +505,17 @@ def play_path(path):
 
 
 def play_focused():
-    """Play the row currently focused in Kodi's native playlist container.
+    """Play the row selected in the display-only native playlist.
 
-    Kodi's Container.Position is the focused viewport position, not the absolute
-    playlist index once the list has scrolled. Container.CurrentItem is the
-    absolute current item (1-based), so convert it to the playlist's 0-based index.
+    The proxy owns GUI focus. Container.CurrentItem still exposes the selected
+    absolute row (1-based), so OK can invoke Player.GoTo without giving the
+    directory provider any input action.
     """
-    if not xbmc.getCondVisibility("Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, LIST_ID)):
+    if not xbmc.getCondVisibility(
+            "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)):
         return
-    try:
-        current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
-        target = current_item - 1
-    except Exception:
+    target = _native_list_index()
+    if target is None:
         return
     count = size()
     if target < 0 or target >= count:
