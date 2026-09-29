@@ -3312,12 +3312,12 @@
 	</variable>
 
 	<variable name="CCExitButtonSetting">
-		<value condition="System.Platform.Linux + !System.Platform.Android">Power menu</value>
-		<value>Quit</value>
+		<value condition="System.Platform.Linux + !System.Platform.Android">$LOCALIZE[31003]</value>
+		<value>$LOCALIZE[13009]</value>
 	</variable>
 	<variable name="CCExitButtonLabel">
-		<value condition="System.Platform.Linux + !System.Platform.Android">Power menu</value>
-		<value>Quit</value>
+		<value condition="System.Platform.Linux + !System.Platform.Android">$LOCALIZE[31003]</value>
+		<value>$LOCALIZE[13009]</value>
 	</variable>
 	<variable name="CCMusicPlayerYearInfo">
 		<value condition="String.IsEmpty(MusicPlayer.Year) | String.IsEqual(MusicPlayer.Year,0) | String.IsEqual(MusicPlayer.Year,0000)"></value>
