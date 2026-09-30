@@ -978,7 +978,6 @@ class _PlaybackEvents(xbmc.Player):
         self.start_serial = 0
 
     def onPlayBackStopped(self):
-        clear_pause_guard()
         xbmc.log(
             "[CC-TRANSITION] callback=onPlayBackStopped idx={} title={!r} file={!r}".format(
                 current(),
