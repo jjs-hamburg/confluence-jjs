@@ -1444,6 +1444,13 @@
 							<onclick>Skin.ToggleSetting(CCHomeMusicDisplayAboveMenu)</onclick>
 							<selected>Skin.HasSetting(CCHomeMusicDisplayAboveMenu)</selected>
 						</control>
+						<control type="button" id="526">
+							<description>Shared margin for non-centered music views</description>
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Music view margin</label><label2>[COLOR=selected]$VAR[CCHomeMusicViewMarginSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homemusicviewmargin)</onclick>
+						</control>
 						<control type="button" id="521">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Reset home screen appearance</label><label2>Front · original cover · jewel case · frame · original bottom bar</label2>
