@@ -1,0 +1,73 @@
+name: "Build selection-stop-order test ZIP"
+
+on:
+  push:
+    branches:
+      - test-5.0.167-selection-stop-order
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate skin
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root_dir = Path("skin.confluence.custom")
+          root = ET.parse(root_dir / "addon.xml").getroot()
+          assert root.attrib["version"] == "5.0.167"
+          assert any(e.attrib.get("point") == "xbmc.gui.skin" for e in root.findall("extension"))
+          assert not any(e.attrib.get("point") == "xbmc.service" for e in root.findall("extension"))
+
+          for item in sorted((root_dir / "resources" / "lib").rglob("*.py")):
+              py_compile.compile(str(item), doraise=True)
+
+          for xml_dir in [
+              root_dir / "1080p",
+              root_dir / "resources" / "skin_modes" / "custom",
+              root_dir / "resources" / "skin_modes" / "standard",
+          ]:
+              for item in sorted(xml_dir.glob("*.xml")):
+                  ET.parse(item)
+          PY
+
+      - name: Build direct-install ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+          zip -qr skin.confluence.custom-5.0.167-test-selection-stop-order.zip skin.confluence.custom
+          python - <<'PY'
+          import zipfile
+          path = "skin.confluence.custom-5.0.167-test-selection-stop-order.zip"
+          with zipfile.ZipFile(path) as zf:
+              assert zf.testzip() is None
+              assert {n.split("/", 1)[0] for n in zf.namelist() if n} == {"skin.confluence.custom"}
+              assert "skin.confluence.custom/addon.xml" in zf.namelist()
+          PY
+
+      - name: Upload test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.167-test-selection-stop-order
+          path: skin.confluence.custom-5.0.167-test-selection-stop-order.zip
+          if-no-files-found: error
