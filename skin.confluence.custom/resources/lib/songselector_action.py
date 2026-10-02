@@ -526,15 +526,11 @@ def play_focused():
     # confusing that move with manual Up/Down navigation.
     home = _home()
     previous_playing = current()
-    if target != previous_playing:
-        home.setProperty(SELECTION_TARGET_PROP, str(target))
-        # Player.GoTo may make PAPPlayer emit onPlayBackStopped before Kodi has
-        # updated the playlist position. Mark that one expected callback before
-        # issuing GoTo so the service can distinguish it from a real Stop.
-        home.setProperty(SELECTION_GOTO_PENDING_PROP, "{:.6f}".format(time.time()))
-    else:
-        home.clearProperty(SELECTION_TARGET_PROP)
-        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+    home.setProperty(SELECTION_TARGET_PROP, str(target))
+    # Player.GoTo can emit onPlayBackStopped even when the selected row is the
+    # already playing track. Mark every explicit popup selection before GoTo so
+    # the service never mistakes a same-track restart for a real Stop button.
+    home.setProperty(SELECTION_GOTO_PENDING_PROP, "{:.6f}".format(time.time()))
 
     request = {
         "jsonrpc": "2.0",
