@@ -97,7 +97,7 @@ jobs:
           assert "_footer_text_width" in album_block and "_estimated_text_width" not in album_block
           assert "_footer_text_width" in song_block and "_estimated_text_width" not in song_block
           assert r'\|\s+(\d{4})' in album_block
-          assert '"|\u00a0"' in album_block
+          assert '"|\\u00a0"' in album_block
 
           # Exercise the dependency-free TrueType parser against the actual shipped fonts.
           sys.modules["xbmcvfs"] = types.SimpleNamespace(File=None)
