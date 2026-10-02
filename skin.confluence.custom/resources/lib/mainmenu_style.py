@@ -647,6 +647,7 @@ def reset_home():
     _set(HOME_ARTWORK_MODE_SETTING, DEFAULT_HOME_ARTWORK_MODE)
     _set(HOME_NO_COVER_SETTING, DEFAULT_HOME_NO_COVER)
     xbmc.executebuiltin("Skin.Reset(CCHomePlaybackFanart)")
+    xbmc.executebuiltin("Skin.Reset(CCHomeMusicDisplayAboveMenu)")
     apply_no_cover(DEFAULT_HOME_NO_COVER, reload_skin=False)
     xbmc.executebuiltin("ReloadSkin()")
     xbmcgui.Dialog().notification(
