@@ -13,12 +13,20 @@ SETTING = "CCMusicArtworkMode"
 HOME_ID = 10000
 BACK_PROP = "ConfluenceCustom.MusicBackArt"
 COMPACT_WIDTH_PROP = "ConfluenceCustom.NowPlaying.CompactCoverWidth"
+INFO_FRONT_WIDTH_PROP = "ConfluenceCustom.NowPlaying.InfoFrontWidth"
+INFO_BACK_WIDTH_PROP = "ConfluenceCustom.NowPlaying.InfoBackWidth"
+INFO_BACK_SHIFT_PROP = "ConfluenceCustom.NowPlaying.InfoBackShift"
+INFO_TEXT_SHIFT_PROP = "ConfluenceCustom.NowPlaying.InfoTextShift"
+INFO_MARGIN = 10
+INFO_DEFAULT_HEIGHT = 302
+INFO_MAX_IMAGE_WIDTH = 552
 COMPACT_HEIGHT = 115
 COMPACT_WIDTH_STEP = 10
 COMPACT_WIDTH_MIN = 30
 COMPACT_WIDTH_MAX = 800
 COMPACT_WIDTH_FALLBACK = 120
 _COMPACT_WIDTH_CACHE = {}
+_ART_RATIO_CACHE = {}
 
 
 def _home():
@@ -175,6 +183,99 @@ def _image_size(data):
     return None
 
 
+def _art_ratio(art):
+    """Return image width/height, cached from the existing lightweight header reader."""
+    cache_key = str(art or "")
+    if not cache_key:
+        return 1.0
+    if cache_key in _ART_RATIO_CACHE:
+        return _ART_RATIO_CACHE[cache_key]
+
+    ratio = 1.0
+    for path in _image_candidates(art):
+        size = _image_size(_read_image_header(path))
+        if size:
+            width, height = size
+            if width and height:
+                ratio = float(width) / float(height)
+            break
+
+    if len(_ART_RATIO_CACHE) >= 128:
+        try:
+            _ART_RATIO_CACHE.pop(next(iter(_ART_RATIO_CACHE)))
+        except Exception:
+            _ART_RATIO_CACHE.clear()
+    _ART_RATIO_CACHE[cache_key] = ratio
+    return ratio
+
+
+def _info_cover_height():
+    """Free height between submenu and screen edge with the same 10 px margin top/bottom."""
+    try:
+        offset = int((xbmc.getInfoLabel("Skin.String(CCMainMenuYOffset)") or "0").strip())
+    except Exception:
+        offset = 0
+    return max(2, int(INFO_DEFAULT_HEIGHT - offset))
+
+
+def _info_art_width(art, height):
+    # The XML image box is height x height with aspectratio=keep. Portrait/longbox
+    # artwork therefore uses the full available height and becomes proportionally
+    # narrower. Wider artwork is limited by that same box, matching Kodi's render.
+    width = int(round(_art_ratio(art) * float(height)))
+    return max(1, min(int(height), width, INFO_MAX_IMAGE_WIDTH))
+
+
+def _set_shift_digits(home, base, value):
+    value = max(0, min(1999, int(value)))
+    digits = (
+        ("Thousands", value // 1000),
+        ("Hundreds", (value // 100) % 10),
+        ("Tens", (value // 10) % 10),
+        ("Ones", value % 10),
+    )
+    for suffix, digit in digits:
+        home.setProperty(base + suffix, str(digit))
+
+
+def sync_info_cover_geometry(mode=None):
+    """Publish exact rendered widths and equal-margin horizontal shifts."""
+    home = _home()
+    height = _info_cover_height()
+    front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
+    back_art = home.getProperty(BACK_PROP) or ""
+
+    front_width = _info_art_width(front_art, height)
+    back_width = _info_art_width(back_art, height) if back_art else 0
+
+    # Parent footer starts at screen x=30, while artwork starts at x=10.
+    # With M=10: text after one cover moves by front_width-10; after two
+    # covers by front_width+back_width. Back itself moves front_width+10.
+    single_shift = max(0, front_width - INFO_MARGIN)
+    pair_shift = max(0, front_width + back_width)
+    back_shift = max(0, front_width + INFO_MARGIN)
+
+    if mode is None:
+        mode = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
+    if mode == "infofront":
+        text_shift = single_shift
+    elif mode == "infoboth":
+        text_shift = pair_shift if back_art else single_shift
+    else:
+        text_shift = 0
+
+    home.setProperty(INFO_FRONT_WIDTH_PROP, str(front_width))
+    if back_art:
+        home.setProperty(INFO_BACK_WIDTH_PROP, str(back_width))
+    else:
+        home.clearProperty(INFO_BACK_WIDTH_PROP)
+    home.setProperty(INFO_BACK_SHIFT_PROP, str(back_shift))
+    home.setProperty(INFO_TEXT_SHIFT_PROP, str(text_shift))
+    _set_shift_digits(home, INFO_BACK_SHIFT_PROP, back_shift)
+    _set_shift_digits(home, INFO_TEXT_SHIFT_PROP, text_shift)
+    return text_shift
+
+
 def compact_cover_width(art=None):
     art = art or xbmc.getInfoLabel("Player.Art(thumb)") or ""
     cache_key = str(art or "")
@@ -216,6 +317,13 @@ def clear_back_art():
     home = _home()
     home.clearProperty(BACK_PROP)
     home.clearProperty(COMPACT_WIDTH_PROP)
+    for prop in (
+        INFO_FRONT_WIDTH_PROP, INFO_BACK_WIDTH_PROP, INFO_BACK_SHIFT_PROP, INFO_TEXT_SHIFT_PROP,
+    ):
+        home.clearProperty(prop)
+    for base in (INFO_BACK_SHIFT_PROP, INFO_TEXT_SHIFT_PROP):
+        for suffix in ("Thousands", "Hundreds", "Tens", "Ones"):
+            home.clearProperty(base + suffix)
 
 
 def main():
@@ -238,6 +346,7 @@ def main():
     else:
         new_mode = "front"
     xbmc.executebuiltin("Skin.SetString({},{})".format(SETTING, new_mode))
+    sync_info_cover_geometry(mode=new_mode)
 
 
 if __name__ == "__main__":
