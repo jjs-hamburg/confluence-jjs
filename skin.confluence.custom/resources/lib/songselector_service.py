@@ -8,7 +8,7 @@ import time
 import xbmc
 import xbmcgui
 
-from cover_display_action import BACK_PROP, COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
+from cover_display_action import BACK_PROP, COMPACT_WIDTH_PROP, INFO_TEXT_SHIFT_PROP, clear_back_art, sync_back_art, sync_compact_cover_width, sync_info_cover_geometry
 from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
 from nocover_manager import sync_on_startup
 from songselector_action import _native_list_index, detail_view, focus_current, lyrics_view, open_popup, show_credits
@@ -56,8 +56,6 @@ ALBUM_WRAP_FONT_SIGNATURE = ("roboto", 26)
 SONG_WRAP_CUSTOM_WIDTH_PX = 1830.0
 SONG_WRAP_STANDARD_WIDTH_PX = 1500.0
 SONG_WRAP_FONT_SIGNATURE = ("robotobold", 30)
-INFO_ARTWORK_MARGIN_PX = 10.0
-INFO_ARTWORK_DEFAULT_HEIGHT_PX = 302.0
 DIALOG_ID = 1116
 LIST_ID = 9110
 NEUTRAL_CONTROL_ID = 9131
@@ -314,24 +312,11 @@ def _split_album_wrap(text, width_px):
     return upper, lower
 
 
-def _info_artwork_cover_size():
-    """Height available below the submenu, preserving 10 px top/bottom margins."""
+def _info_artwork_text_shift(home):
     try:
-        offset = int((xbmc.getInfoLabel("Skin.String(CCMainMenuYOffset)") or "0").strip())
+        return max(0.0, float(home.getProperty(INFO_TEXT_SHIFT_PROP) or 0))
     except Exception:
-        offset = 0
-    return max(2.0, INFO_ARTWORK_DEFAULT_HEIGHT_PX - float(offset))
-
-
-def _info_artwork_text_shift(home, mode):
-    size = _info_artwork_cover_size()
-    if mode == "infofront":
-        return max(0.0, size - INFO_ARTWORK_MARGIN_PX)
-    if mode == "infoboth":
-        if home.getProperty(BACK_PROP):
-            return max(0.0, size * 2.0)
-        return max(0.0, size - INFO_ARTWORK_MARGIN_PX)
-    return 0.0
+        return 0.0
 
 
 def _update_album_wrap_properties(home):
@@ -351,7 +336,7 @@ def _update_album_wrap_properties(home):
                 compact_width = 120.0
             width = max(240.0, width - compact_width - 15.0)
         elif mode in ("infofront", "infoboth"):
-            width = max(240.0, width - _info_artwork_text_shift(home, mode))
+            width = max(240.0, width - _info_artwork_text_shift(home))
     upper, lower = _split_album_wrap(text, width)
     if upper:
         home.setProperty(ALBUM_WRAP_UPPER_PROP, upper)
@@ -418,7 +403,7 @@ def _update_song_wrap_properties(home):
                 compact_width = 120.0
             width = max(240.0, width - compact_width - 15.0)
         elif mode in ("infofront", "infoboth"):
-            width = max(240.0, width - _info_artwork_text_shift(home, mode))
+            width = max(240.0, width - _info_artwork_text_shift(home))
     upper, lower = _split_song_wrap(text, width)
     if upper:
         home.setProperty(SONG_WRAP_UPPER_PROP, upper)
@@ -1112,6 +1097,9 @@ def run():
     auto_open_pending = bool(playback_session_active and last_auto_open_setting)
 
     while not monitor.abortRequested():
+        # Keep artwork geometry current so the footer wrap width matches the
+        # real image edge after menu-position or artwork changes.
+        sync_info_cover_geometry()
         # Keep the album wrap properties current in both Custom and Standard mode.
         # The rest of the service remains inert in Standard mode as before.
         _update_album_wrap_properties(home)
@@ -1440,6 +1428,7 @@ def run():
                 if playing_file and playing_file != last_art_file:
                     sync_back_art()
                     sync_compact_cover_width()
+                    sync_info_cover_geometry()
                     last_art_file = playing_file
                 if now - last_time_update >= 0.50:
                     _set_times(home, meta, playing)
