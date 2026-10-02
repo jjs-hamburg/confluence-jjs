@@ -7,13 +7,16 @@ from menu_common import ensure_initialised, log
 from mainmenu_style import ensure_defaults
 from skin_mode import ensure_mode
 import xbmcgui
+from worker_lock import worker_is_running
 
 
 def _start_background_services():
     home = xbmcgui.Window(10000)
-    if home.getProperty("ConfluenceCustom.SongSelector.ServiceRunning") != "1":
+    if (home.getProperty("ConfluenceCustom.SongSelector.ServiceRunning") != "1"
+            and not worker_is_running("songselector")):
         xbmc.executebuiltin("RunScript(special://skin/resources/lib/songselector_service.py)", wait=False)
-    if home.getProperty("ConfluenceCustom.Lyrics.ServiceRunning") != "1":
+    if (home.getProperty("ConfluenceCustom.Lyrics.ServiceRunning") != "1"
+            and not worker_is_running("lyrics")):
         xbmc.executebuiltin("RunScript(special://skin/resources/lib/culrc_runner.py)", wait=False)
 
 
