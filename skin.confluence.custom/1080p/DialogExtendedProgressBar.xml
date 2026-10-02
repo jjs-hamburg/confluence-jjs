@@ -34,6 +34,7 @@
 				<width>555</width>
 				<height>30</height>
 				<font>font10</font>
+				<haspath>true</haspath>
 				<align>left</align>
 				<aligny>center</aligny>
 			</control>
