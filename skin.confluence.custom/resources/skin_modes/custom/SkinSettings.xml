@@ -1318,6 +1318,22 @@
 							<selected>!Skin.HasSetting(CCStandardConfluence)</selected>
 							<onclick condition="Skin.HasSetting(CCStandardConfluence)">RunScript(special://skin/resources/lib/skin_mode.py,custom)</onclick>
 						</control>
+						<control type="label" id="570">
+							<width>1125</width><height>68</height><font>font13_title</font>
+							<label>Progress path display</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
+						</control>
+						<control type="radiobutton" id="571">
+							<width>1125</width><height>60</height><font>font13</font><label>Path optimized</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<selected>!Skin.HasSetting(CCProgressPathStandard)</selected>
+							<onclick condition="Skin.HasSetting(CCProgressPathStandard)">Skin.ToggleSetting(CCProgressPathStandard)</onclick>
+						</control>
+						<control type="radiobutton" id="572">
+							<width>1125</width><height>60</height><font>font13</font><label>Kodi standard</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<selected>Skin.HasSetting(CCProgressPathStandard)</selected>
+							<onclick condition="!Skin.HasSetting(CCProgressPathStandard)">Skin.ToggleSetting(CCProgressPathStandard)</onclick>
+						</control>
 						<control type="label" id="500">
 							<width>1125</width><height>68</height><font>font13_title</font>
 							<label>Settings backup / restore</label><textcolor>blue</textcolor><shadowcolor>black</shadowcolor><align>left</align><aligny>center</aligny>
