@@ -219,13 +219,19 @@ def clear_back_art():
 
 
 def main():
-    # 5.0.126: front -> front+back -> compact -> none.
+    # 5.0.170: centered front -> centered front+back -> large front beside
+    # info -> large front+back beside info -> compact footer cover -> none.
+    # Back-art states are skipped when the current album has no back artwork.
     has_back = bool(sync_back_art())
     sync_compact_cover_width()
     mode = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
     if mode == "front":
-        new_mode = "both" if has_back else "compact"
+        new_mode = "both" if has_back else "infofront"
     elif mode == "both":
+        new_mode = "infofront"
+    elif mode == "infofront":
+        new_mode = "infoboth" if has_back else "compact"
+    elif mode == "infoboth":
         new_mode = "compact"
     elif mode == "compact":
         new_mode = "none"
