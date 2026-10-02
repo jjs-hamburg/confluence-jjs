@@ -1,0 +1,87 @@
+name: "Build 5.0.168 combined test ZIP"
+
+on:
+  push:
+    branches:
+      - test-5.0.168-combined
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate combined test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root_dir = Path("skin.confluence.custom")
+          addon = ET.parse(root_dir / "addon.xml").getroot()
+          assert addon.attrib["version"] == "5.0.168"
+          assert any(e.attrib.get("point") == "xbmc.gui.skin" for e in addon.findall("extension"))
+          assert not any(e.attrib.get("point") == "xbmc.service" for e in addon.findall("extension"))
+
+          progress = ET.parse(root_dir / "1080p" / "DialogExtendedProgressBar.xml").getroot()
+          label31 = None
+          for control in progress.iter("control"):
+              if control.attrib.get("id") == "31":
+                  label31 = control
+                  break
+          assert label31 is not None
+          assert (label31.findtext("haspath") or "").strip().lower() == "true"
+
+          action_text = (root_dir / "resources" / "lib" / "songselector_action.py").read_text(encoding="utf-8")
+          assert "if target != previous_playing:" not in action_text
+          assert 'home.setProperty(SELECTION_TARGET_PROP, str(target))' in action_text
+          assert 'home.setProperty(SELECTION_GOTO_PENDING_PROP' in action_text
+
+          for item in sorted((root_dir / "resources" / "lib").rglob("*.py")):
+              py_compile.compile(str(item), doraise=True)
+
+          for xml_dir in [
+              root_dir / "1080p",
+              root_dir / "resources" / "skin_modes" / "custom",
+              root_dir / "resources" / "skin_modes" / "standard",
+          ]:
+              for item in sorted(xml_dir.glob("*.xml")):
+                  ET.parse(item)
+          PY
+
+      - name: Build direct-install ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+          zip -qr skin.confluence.custom-5.0.168-test-combined.zip skin.confluence.custom
+          python - <<'PY'
+          import zipfile
+          path = "skin.confluence.custom-5.0.168-test-combined.zip"
+          with zipfile.ZipFile(path) as zf:
+              assert zf.testzip() is None
+              assert {n.split("/", 1)[0] for n in zf.namelist() if n} == {"skin.confluence.custom"}
+              assert "skin.confluence.custom/addon.xml" in zf.namelist()
+          PY
+
+      - name: Upload test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.168-test-combined
+          path: skin.confluence.custom-5.0.168-test-combined.zip
+          if-no-files-found: error
