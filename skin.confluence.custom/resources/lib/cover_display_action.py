@@ -19,7 +19,7 @@ INFO_BACK_SHIFT_PROP = "ConfluenceCustom.NowPlaying.InfoBackShift"
 INFO_TEXT_SHIFT_PROP = "ConfluenceCustom.NowPlaying.InfoTextShift"
 INFO_MARGIN = 10
 INFO_DEFAULT_HEIGHT = 302
-INFO_MAX_IMAGE_WIDTH = 900
+INFO_MAX_IMAGE_WIDTH = 1800
 COMPACT_HEIGHT = 115
 COMPACT_WIDTH_STEP = 10
 COMPACT_WIDTH_MIN = 30
@@ -219,11 +219,11 @@ def _info_cover_height():
 
 
 def _info_art_width(art, height):
-    # The XML image box is height x height with aspectratio=keep. Portrait/longbox
-    # artwork therefore uses the full available height and becomes proportionally
-    # narrower. Wider artwork is limited by that same box, matching Kodi's render.
+    # Width is measured independently for every artwork from its own aspect
+    # ratio. Front and back may therefore differ. Do not impose a square-cover
+    # assumption: landscape artwork can legitimately be wider than its height.
     width = int(round(_art_ratio(art) * float(height)))
-    return max(1, min(int(height), width, INFO_MAX_IMAGE_WIDTH))
+    return max(1, min(width, INFO_MAX_IMAGE_WIDTH))
 
 
 def _set_shift_digits(home, base, value):
