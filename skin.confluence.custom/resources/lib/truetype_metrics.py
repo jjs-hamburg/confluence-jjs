@@ -469,7 +469,7 @@ def _read_font(path):
     handle = None
     try:
         handle = xbmcvfs.File(path)
-        data = handle.readBytes()
+        data = handle.readBytes(4 * 1024 * 1024)
         if isinstance(data, str):
             data = data.encode("latin1", "ignore")
         return bytes(data or b"")
