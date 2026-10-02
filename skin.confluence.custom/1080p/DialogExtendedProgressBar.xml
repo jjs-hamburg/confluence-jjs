@@ -28,15 +28,40 @@
 				<aligny>center</aligny>
 			</control>
 			<control type="label" id="31">
-				<description>Title Label</description>
+				<description>Title Label Source</description>
 				<left>23</left>
 				<top>30</top>
 				<width>555</width>
 				<height>30</height>
 				<font>font10</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<visible>false</visible>
+			</control>
+			<control type="label">
+				<description>Title Label - Path optimized</description>
+				<left>23</left>
+				<top>30</top>
+				<width>555</width>
+				<height>30</height>
+				<font>font10</font>
+				<label>$INFO[Control.GetLabel(31)]</label>
 				<haspath>true</haspath>
 				<align>left</align>
 				<aligny>center</aligny>
+				<visible>!Skin.HasSetting(CCProgressPathStandard)</visible>
+			</control>
+			<control type="label">
+				<description>Title Label - Kodi standard</description>
+				<left>23</left>
+				<top>30</top>
+				<width>555</width>
+				<height>30</height>
+				<font>font10</font>
+				<label>$INFO[Control.GetLabel(31)]</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<visible>Skin.HasSetting(CCProgressPathStandard)</visible>
 			</control>
 			<control type="progress" id="32">
 				<description>progress control</description>
