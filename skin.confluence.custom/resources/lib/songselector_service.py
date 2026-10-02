@@ -8,7 +8,7 @@ import time
 import xbmc
 import xbmcgui
 
-from cover_display_action import COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
+from cover_display_action import BACK_PROP, COMPACT_WIDTH_PROP, clear_back_art, sync_back_art, sync_compact_cover_width
 from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
 from nocover_manager import sync_on_startup
 from songselector_action import _native_list_index, detail_view, focus_current, lyrics_view, open_popup, show_credits
@@ -56,6 +56,8 @@ ALBUM_WRAP_FONT_SIGNATURE = ("roboto", 26)
 SONG_WRAP_CUSTOM_WIDTH_PX = 1830.0
 SONG_WRAP_STANDARD_WIDTH_PX = 1500.0
 SONG_WRAP_FONT_SIGNATURE = ("robotobold", 30)
+INFO_ARTWORK_MARGIN_PX = 10.0
+INFO_ARTWORK_DEFAULT_HEIGHT_PX = 302.0
 DIALOG_ID = 1116
 LIST_ID = 9110
 NEUTRAL_CONTROL_ID = 9131
@@ -312,6 +314,26 @@ def _split_album_wrap(text, width_px):
     return upper, lower
 
 
+def _info_artwork_cover_size():
+    """Height available below the submenu, preserving 10 px top/bottom margins."""
+    try:
+        offset = int((xbmc.getInfoLabel("Skin.String(CCMainMenuYOffset)") or "0").strip())
+    except Exception:
+        offset = 0
+    return max(2.0, INFO_ARTWORK_DEFAULT_HEIGHT_PX - float(offset))
+
+
+def _info_artwork_text_shift(home, mode):
+    size = _info_artwork_cover_size()
+    if mode == "infofront":
+        return max(0.0, size - INFO_ARTWORK_MARGIN_PX)
+    if mode == "infoboth":
+        if home.getProperty(BACK_PROP):
+            return max(0.0, size * 2.0)
+        return max(0.0, size - INFO_ARTWORK_MARGIN_PX)
+    return 0.0
+
+
 def _update_album_wrap_properties(home):
     text = _album_line_text()
     if not text:
@@ -320,14 +342,16 @@ def _update_album_wrap_properties(home):
         return
     standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
     width = ALBUM_WRAP_STANDARD_WIDTH_PX if standard else ALBUM_WRAP_CUSTOM_WIDTH_PX
-    if not standard and xbmc.getCondVisibility(
-        "String.IsEqual(Skin.String(CCMusicArtworkMode),compact)"
-    ):
-        try:
-            compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
-        except Exception:
-            compact_width = 120.0
-        width = max(240.0, width - compact_width - 15.0)
+    if not standard:
+        mode = (xbmc.getInfoLabel("Skin.String(CCMusicArtworkMode)") or "front").strip().lower()
+        if mode == "compact":
+            try:
+                compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
+            except Exception:
+                compact_width = 120.0
+            width = max(240.0, width - compact_width - 15.0)
+        elif mode in ("infofront", "infoboth"):
+            width = max(240.0, width - _info_artwork_text_shift(home, mode))
     upper, lower = _split_album_wrap(text, width)
     if upper:
         home.setProperty(ALBUM_WRAP_UPPER_PROP, upper)
@@ -385,14 +409,16 @@ def _update_song_wrap_properties(home):
         return
     standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
     width = SONG_WRAP_STANDARD_WIDTH_PX if standard else SONG_WRAP_CUSTOM_WIDTH_PX
-    if not standard and xbmc.getCondVisibility(
-        "String.IsEqual(Skin.String(CCMusicArtworkMode),compact)"
-    ):
-        try:
-            compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
-        except Exception:
-            compact_width = 120.0
-        width = max(240.0, width - compact_width - 15.0)
+    if not standard:
+        mode = (xbmc.getInfoLabel("Skin.String(CCMusicArtworkMode)") or "front").strip().lower()
+        if mode == "compact":
+            try:
+                compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
+            except Exception:
+                compact_width = 120.0
+            width = max(240.0, width - compact_width - 15.0)
+        elif mode in ("infofront", "infoboth"):
+            width = max(240.0, width - _info_artwork_text_shift(home, mode))
     upper, lower = _split_song_wrap(text, width)
     if upper:
         home.setProperty(SONG_WRAP_UPPER_PROP, upper)
