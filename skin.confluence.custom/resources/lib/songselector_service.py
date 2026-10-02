@@ -329,13 +329,7 @@ def _update_album_wrap_properties(home):
     width = ALBUM_WRAP_STANDARD_WIDTH_PX if standard else ALBUM_WRAP_CUSTOM_WIDTH_PX
     if not standard:
         mode = (xbmc.getInfoLabel("Skin.String(CCMusicArtworkMode)") or "front").strip().lower()
-        if mode == "compact":
-            try:
-                compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
-            except Exception:
-                compact_width = 120.0
-            width = max(240.0, width - compact_width - 15.0)
-        elif mode in ("infofront", "infoboth"):
+        if mode in ("compact", "infofront", "infoboth"):
             width = max(240.0, width - _info_artwork_text_shift(home))
     upper, lower = _split_album_wrap(text, width)
     if upper:
