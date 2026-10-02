@@ -27,6 +27,7 @@ HOME_SHADOW_OFFSET_SETTING = "CCHomeMusicShadowOffset"
 HOME_FLOOR_STYLE_SETTING = "CCHomeFloorStyle"
 HOME_ARTWORK_MODE_SETTING = "CCMusicArtworkMode"
 HOME_NO_COVER_SETTING = "CCHomeNoCoverStyle"
+HOME_MUSIC_VIEW_MARGIN_SETTING = "CCHomeMusicViewMargin"
 EXIT_BUTTON_SETTING = "CCExitButtonAction"
 SKIN_DEFAULT_BACKGROUND = "special://skin/backgrounds/DefaultWallpaper.jpg"
 
@@ -81,6 +82,7 @@ DEFAULT_HOME_SHADOW_OFFSET = "4"
 DEFAULT_HOME_FLOOR_STYLE = "original"
 DEFAULT_HOME_ARTWORK_MODE = "front"
 DEFAULT_HOME_NO_COVER = "custom"
+DEFAULT_HOME_MUSIC_VIEW_MARGIN = "10"
 DEFAULT_EXIT_BUTTON = "quit"
 
 DEFAULT_SONG_SELECTOR_FONT = "submenu"
@@ -170,6 +172,7 @@ HOME_FLOOR_STYLES = [
     ("transparent", "Transparent"),
     ("off", "Off"),
 ]
+HOME_MUSIC_VIEW_MARGINS = [(v, v + " px") for v in ("6", "10", "14", "18", "22", "26", "30")]
 HOME_NO_COVER_STYLES = [
     ("kodi", "Kodi Default"),
     ("custom", "Confluence-jjs default"),
@@ -234,6 +237,7 @@ def ensure_defaults():
         (HOME_FLOOR_STYLE_SETTING, DEFAULT_HOME_FLOOR_STYLE),
         (HOME_ARTWORK_MODE_SETTING, DEFAULT_HOME_ARTWORK_MODE),
         (HOME_NO_COVER_SETTING, DEFAULT_HOME_NO_COVER),
+        (HOME_MUSIC_VIEW_MARGIN_SETTING, DEFAULT_HOME_MUSIC_VIEW_MARGIN),
         (EXIT_BUTTON_SETTING, DEFAULT_EXIT_BUTTON),
         (SONG_SELECTOR_FONT_SETTING, DEFAULT_SONG_SELECTOR_FONT),
         (SONG_SELECTOR_SIZE_SETTING, DEFAULT_SONG_SELECTOR_SIZE),
@@ -408,6 +412,15 @@ def choose_home_floor_style():
         HOME_FLOOR_STYLE_SETTING,
         HOME_FLOOR_STYLES,
         DEFAULT_HOME_FLOOR_STYLE,
+    )
+
+
+def choose_home_music_view_margin():
+    _choose(
+        "Music view margin",
+        HOME_MUSIC_VIEW_MARGIN_SETTING,
+        HOME_MUSIC_VIEW_MARGINS,
+        DEFAULT_HOME_MUSIC_VIEW_MARGIN,
     )
 
 
@@ -646,6 +659,7 @@ def reset_home():
     _set(HOME_FLOOR_STYLE_SETTING, DEFAULT_HOME_FLOOR_STYLE)
     _set(HOME_ARTWORK_MODE_SETTING, DEFAULT_HOME_ARTWORK_MODE)
     _set(HOME_NO_COVER_SETTING, DEFAULT_HOME_NO_COVER)
+    _set(HOME_MUSIC_VIEW_MARGIN_SETTING, DEFAULT_HOME_MUSIC_VIEW_MARGIN)
     xbmc.executebuiltin("Skin.Reset(CCHomePlaybackFanart)")
     xbmc.executebuiltin("Skin.Reset(CCHomeMusicDisplayAboveMenu)")
     apply_no_cover(DEFAULT_HOME_NO_COVER, reload_skin=False)
@@ -778,6 +792,8 @@ def main():
         choose_home_shadow_offset()
     elif mode == "homefloor":
         choose_home_floor_style()
+    elif mode == "homemusicviewmargin":
+        choose_home_music_view_margin()
     elif mode == "homereset":
         reset_home()
 
