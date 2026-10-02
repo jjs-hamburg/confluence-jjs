@@ -5,6 +5,7 @@ import xbmc
 import xbmcgui
 
 from culrc.gui import MAIN
+from worker_lock import WorkerLock
 
 
 HOME_ID = 10000
@@ -17,7 +18,8 @@ def run():
 
 if __name__ == "__main__":
     home = xbmcgui.Window(HOME_ID)
-    if home.getProperty(SERVICE_RUNNING_PROP) != "1":
+    worker_lock = WorkerLock("lyrics")
+    if worker_lock.acquire():
         home.setProperty(SERVICE_RUNNING_PROP, "1")
         try:
             run()
@@ -25,3 +27,7 @@ if __name__ == "__main__":
             xbmc.log("[ConfluenceCustom] Embedded lyrics runtime failed: {!r}".format(exc), xbmc.LOGERROR)
         finally:
             home.clearProperty(SERVICE_RUNNING_PROP)
+            worker_lock.release()
+    else:
+        xbmc.log("[ConfluenceCustom] Embedded lyrics worker already running; duplicate start suppressed",
+                 xbmc.LOGINFO)
