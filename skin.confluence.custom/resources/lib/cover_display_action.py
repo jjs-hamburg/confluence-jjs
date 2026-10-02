@@ -17,8 +17,9 @@ INFO_FRONT_WIDTH_PROP = "ConfluenceCustom.NowPlaying.InfoFrontWidth"
 INFO_BACK_WIDTH_PROP = "ConfluenceCustom.NowPlaying.InfoBackWidth"
 INFO_BACK_SHIFT_PROP = "ConfluenceCustom.NowPlaying.InfoBackShift"
 INFO_TEXT_SHIFT_PROP = "ConfluenceCustom.NowPlaying.InfoTextShift"
-INFO_MARGIN = 10
-INFO_DEFAULT_HEIGHT = 302
+INFO_MARGIN_SETTING = "CCHomeMusicViewMargin"
+INFO_MARGIN_DEFAULT = 10
+INFO_DEFAULT_HEIGHT = 322
 INFO_MAX_IMAGE_WIDTH = 1800
 COMPACT_HEIGHT = 115
 COMPACT_WIDTH_STEP = 10
@@ -209,13 +210,22 @@ def _art_ratio(art):
     return ratio
 
 
+def music_view_margin():
+    try:
+        value = int((xbmc.getInfoLabel("Skin.String({})".format(INFO_MARGIN_SETTING)) or str(INFO_MARGIN_DEFAULT)).strip())
+    except Exception:
+        value = INFO_MARGIN_DEFAULT
+    return max(0, min(60, value))
+
+
 def _info_cover_height():
-    """Free height between submenu and screen edge with the same 10 px margin top/bottom."""
+    """Free height between submenu and screen edge using one shared margin."""
     try:
         offset = int((xbmc.getInfoLabel("Skin.String(CCMainMenuYOffset)") or "0").strip())
     except Exception:
         offset = 0
-    return max(2, int(INFO_DEFAULT_HEIGHT - offset))
+    margin = music_view_margin()
+    return max(2, int(INFO_DEFAULT_HEIGHT - offset - (2 * margin)))
 
 
 def _info_art_width(art, height):
@@ -247,13 +257,14 @@ def sync_info_cover_geometry(mode=None):
 
     front_width = _info_art_width(front_art, height)
     back_width = _info_art_width(back_art, height) if back_art else 0
+    margin = music_view_margin()
 
-    # Parent footer starts at screen x=30, while artwork starts at x=10.
-    # With M=10: text after one cover moves by front_width-10; after two
-    # covers by front_width+back_width. Back itself moves front_width+10.
-    single_shift = max(0, front_width - INFO_MARGIN)
-    pair_shift = max(0, front_width + back_width)
-    back_shift = max(0, front_width + INFO_MARGIN)
+    # Footer origin is x=30. Artwork starts at x=margin, so all following
+    # positions are derived from the real rendered image edges plus the same
+    # configured margin. Front and back widths remain fully independent.
+    single_shift = max(0, front_width + (2 * margin) - 30)
+    pair_shift = max(0, front_width + back_width + (3 * margin) - 30)
+    back_shift = max(0, front_width + margin)
 
     if mode is None:
         mode = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
@@ -261,6 +272,12 @@ def sync_info_cover_geometry(mode=None):
         text_shift = single_shift
     elif mode == "infoboth":
         text_shift = pair_shift if back_art else single_shift
+    elif mode == "compact":
+        try:
+            compact_width = int(home.getProperty(COMPACT_WIDTH_PROP) or COMPACT_WIDTH_FALLBACK)
+        except Exception:
+            compact_width = COMPACT_WIDTH_FALLBACK
+        text_shift = max(0, compact_width + (2 * margin) - 30)
     else:
         text_shift = 0
 
