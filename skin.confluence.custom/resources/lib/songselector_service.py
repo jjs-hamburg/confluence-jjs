@@ -12,6 +12,7 @@ from cover_display_action import COMPACT_WIDTH_PROP, clear_back_art, sync_back_a
 from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
 from nocover_manager import sync_on_startup
 from songselector_action import _native_list_index, detail_view, focus_current, lyrics_view, open_popup, show_credits
+from worker_lock import WorkerLock
 from songselector_state import (
     close_popup,
     current,
@@ -1509,9 +1510,14 @@ SERVICE_RUNNING_PROP = "ConfluenceCustom.SongSelector.ServiceRunning"
 
 if __name__ == "__main__":
     _service_home = xbmcgui.Window(HOME_ID)
-    if _service_home.getProperty(SERVICE_RUNNING_PROP) != "1":
+    _service_lock = WorkerLock("songselector")
+    if _service_lock.acquire():
         _service_home.setProperty(SERVICE_RUNNING_PROP, "1")
         try:
             run()
         finally:
             _service_home.clearProperty(SERVICE_RUNNING_PROP)
+            _service_lock.release()
+    else:
+        xbmc.log("[ConfluenceCustom] Song selector worker already running; duplicate start suppressed",
+                 xbmc.LOGINFO)
