@@ -1436,6 +1436,14 @@
 							<onclick>Skin.ToggleSetting(CCHideHomePlaybackControls)</onclick>
 							<selected>Skin.HasSetting(CCHideHomePlaybackControls)</selected>
 						</control>
+						<control type="radiobutton" id="525">
+							<description>Place all non-centered music display modes above the menu bar</description>
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Music display above the menu bar</label>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>Skin.ToggleSetting(CCHomeMusicDisplayAboveMenu)</onclick>
+							<selected>Skin.HasSetting(CCHomeMusicDisplayAboveMenu)</selected>
+						</control>
 						<control type="button" id="521">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Reset home screen appearance</label><label2>Front · original cover · jewel case · frame · original bottom bar</label2>
