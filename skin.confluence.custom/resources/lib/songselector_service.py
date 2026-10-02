@@ -698,22 +698,32 @@ def _selection_target(home):
         return None
 
 
-def _consume_selection_goto_pending(home, max_age=3.0):
-    """Consume the one Stop callback expected from a popup Player.GoTo request.
+def _selection_goto_pending_active(home, max_age=3.0):
+    """Return whether an explicit popup Player.GoTo still owns its Stop marker.
 
-    PAPPlayer can emit onPlayBackStopped before Kodi updates the playlist index.
-    The old target==current check therefore raced with that index update and
-    intermittently treated a song selection as a real Stop, closing the popup.
+    Kodi can expose the new playlist index before PAPPlayer emits the matching
+    onPlayBackStopped callback. The marker therefore belongs to that callback,
+    not to the playlist-position update. Only stale markers are cleared here.
     """
     raw = home.getProperty(SELECTION_GOTO_PENDING_PROP)
-    home.clearProperty(SELECTION_GOTO_PENDING_PROP)
     if not raw:
         return False
     try:
         age = time.time() - float(raw)
     except Exception:
+        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
         return False
-    return 0.0 <= age <= float(max_age)
+    if 0.0 <= age <= float(max_age):
+        return True
+    home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+    return False
+
+
+def _consume_selection_goto_pending(home, max_age=3.0):
+    """Consume the one Stop callback expected from a popup Player.GoTo request."""
+    active = _selection_goto_pending_active(home, max_age)
+    home.clearProperty(SELECTION_GOTO_PENDING_PROP)
+    return active
 
 
 def _skin_string(name, default=""):
@@ -1143,6 +1153,12 @@ def run():
                 and selection_target is not None
                 and goto_stop_expected
             )
+            xbmc.log(
+                "[CC-POPUP] stop classified popup_open={} target={} goto_expected={} selection_in_progress={}".format(
+                    popup_open(), selection_target, goto_stop_expected, selection_in_progress
+                ),
+                xbmc.LOGINFO,
+            )
             if not selection_in_progress:
                 playback_session_active = False
                 playback_missing_since = None
@@ -1448,9 +1464,11 @@ def run():
                     if explicit_selection or position == last_playing or position == playing:
                         focus_current()
                         last_list_position = playing
-                    if selected_target is not None:
+                    if selected_target is not None and not _selection_goto_pending_active(home):
+                        # Clear the selection only after its Stop callback has
+                        # consumed GoToPending (or the marker has gone stale).
+                        # Kodi may publish the new playlist index first.
                         home.clearProperty(SELECTION_TARGET_PROP)
-                        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
 
                 selection_timeout = _seconds(SELECTION_TIMEOUT_SETTING, 5)
                 if (not detail_view() and selection_timeout and _track_navigation_focused()
