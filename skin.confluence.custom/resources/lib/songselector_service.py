@@ -13,6 +13,7 @@ from credits_runtime import CreditsRuntime, clear_properties as clear_credits_pr
 from nocover_manager import sync_on_startup
 from songselector_action import _native_list_index, detail_view, focus_current, lyrics_view, open_popup, show_credits
 from worker_lock import WorkerLock
+from truetype_metrics import text_width as truetype_text_width
 from songselector_state import (
     close_popup,
     current,
@@ -52,10 +53,10 @@ SONG_WRAP_UPPER_PROP = "ConfluenceCustom.NowPlaying.SongWrapUpper"
 SONG_WRAP_LOWER_PROP = "ConfluenceCustom.NowPlaying.SongWrapLower"
 ALBUM_WRAP_CUSTOM_WIDTH_PX = 1830.0
 ALBUM_WRAP_STANDARD_WIDTH_PX = 1500.0
-ALBUM_WRAP_FONT_SIGNATURE = ("roboto", 26)
+ALBUM_WRAP_FONT = ("Roboto-Regular.ttf", 26)
 SONG_WRAP_CUSTOM_WIDTH_PX = 1830.0
 SONG_WRAP_STANDARD_WIDTH_PX = 1500.0
-SONG_WRAP_FONT_SIGNATURE = ("robotobold", 30)
+SONG_WRAP_FONT = ("Roboto-Bold.ttf", 30)
 DIALOG_ID = 1116
 LIST_ID = 9110
 NEUTRAL_CONTROL_ID = 9131
@@ -258,6 +259,11 @@ def _estimated_text_width(text, font_signature=None):
     return units * float(size) * family_factor
 
 
+def _footer_text_width(text, font_spec):
+    filename, pixel_size = font_spec
+    return truetype_text_width(str(text or ""), filename, pixel_size)
+
+
 def _album_line_text():
     artist = (xbmc.getInfoLabel("MusicPlayer.Artist") or "").strip()
     album = (xbmc.getInfoLabel("MusicPlayer.Album") or "").strip()
@@ -289,9 +295,7 @@ def _split_album_wrap(text, width_px):
     text = str(text or "").strip()
     if not text:
         return "", ""
-    # Slightly favour staying on one line. This prevents an estimate that is a
-    # few pixels too wide from moving a title upward even though Kodi still fits it.
-    if _estimated_text_width(text, ALBUM_WRAP_FONT_SIGNATURE) <= (width_px * 1.015):
+    if _footer_text_width(text, ALBUM_WRAP_FONT) <= width_px:
         return "", text
     # Keep the album-year suffix together while wrapping. The visible
     # text remains "| 2008", but the separator can never be stranded at the
@@ -304,7 +308,7 @@ def _split_album_wrap(text, width_px):
     split_at = 0
     for i, word in enumerate(words):
         trial = _append_word(upper, word)
-        if upper and _estimated_text_width(trial, ALBUM_WRAP_FONT_SIGNATURE) > width_px:
+        if upper and _footer_text_width(trial, ALBUM_WRAP_FONT) > width_px:
             split_at = i
             break
         upper = trial
@@ -363,7 +367,7 @@ def _split_song_wrap(text, width_px):
     text = str(text or "").strip()
     if not text:
         return "", ""
-    if _estimated_text_width(text, SONG_WRAP_FONT_SIGNATURE) <= (width_px * 1.015):
+    if _footer_text_width(text, SONG_WRAP_FONT) <= width_px:
         return "", text
     words = text.split()
     if len(words) <= 1:
@@ -372,7 +376,7 @@ def _split_song_wrap(text, width_px):
     split_at = 0
     for i, word in enumerate(words):
         trial = _append_word(upper, word)
-        if upper and _estimated_text_width(trial, SONG_WRAP_FONT_SIGNATURE) > width_px:
+        if upper and _footer_text_width(trial, SONG_WRAP_FONT) > width_px:
             split_at = i
             break
         upper = trial
@@ -394,13 +398,7 @@ def _update_song_wrap_properties(home):
     width = SONG_WRAP_STANDARD_WIDTH_PX if standard else SONG_WRAP_CUSTOM_WIDTH_PX
     if not standard:
         mode = (xbmc.getInfoLabel("Skin.String(CCMusicArtworkMode)") or "front").strip().lower()
-        if mode == "compact":
-            try:
-                compact_width = float(home.getProperty(COMPACT_WIDTH_PROP) or 120)
-            except Exception:
-                compact_width = 120.0
-            width = max(240.0, width - compact_width - 15.0)
-        elif mode in ("infofront", "infoboth"):
+        if mode in ("compact", "infofront", "infoboth"):
             width = max(240.0, width - _info_artwork_text_shift(home))
     upper, lower = _split_song_wrap(text, width)
     if upper:
