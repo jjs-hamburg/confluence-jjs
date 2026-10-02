@@ -8,13 +8,46 @@ The main goal is to preserve the simple and direct Confluence experience while i
 
 Confluence-jjs keeps the familiar Confluence home screen while adding more information about the currently playing music and extended artwork options.
 
-The artwork display can be enlarged and can show the front and back cover together.
+The music display can be configured for different artwork and information layouts, including single-cover and double-cover views, compact and enlarged artwork, overlay layouts, a text-only presentation and optional artist background artwork. Shared music-view margins can also be adjusted to fit the preferred layout.
 
-![Confluence-jjs front and back cover](docs/screenshots/overview-artwork.webp)
+### Featured artwork view
 
-Three additional playback layouts show a large cover, compact cover and an information-only view.
+<p align="center">
+  <a href="docs/screenshots/view-double-cover-large.webp">
+    <img src="docs/screenshots/view-double-cover-large.webp" width="900" alt="Confluence-jjs large double-cover music view">
+  </a>
+</p>
 
-![Confluence-jjs playback layouts](docs/screenshots/overview-playback.webp)
+### Music view gallery
+
+<p align="center">
+  <a href="docs/screenshots/view-single-cover-compact.webp">
+    <img src="docs/screenshots/view-single-cover-compact.webp" width="220" alt="Compact single-cover music view">
+  </a>
+  <a href="docs/screenshots/view-single-cover-bottom.webp">
+    <img src="docs/screenshots/view-single-cover-bottom.webp" width="220" alt="Single-cover bottom music view">
+  </a>
+  <a href="docs/screenshots/view-double-cover-bottom.webp">
+    <img src="docs/screenshots/view-double-cover-bottom.webp" width="220" alt="Double-cover bottom music view">
+  </a>
+  <a href="docs/screenshots/view-single-cover-overlay.webp">
+    <img src="docs/screenshots/view-single-cover-overlay.webp" width="220" alt="Single-cover overlay music view">
+  </a>
+</p>
+
+<p align="center">
+  <a href="docs/screenshots/view-double-cover-overlay.webp">
+    <img src="docs/screenshots/view-double-cover-overlay.webp" width="220" alt="Double-cover overlay music view">
+  </a>
+  <a href="docs/screenshots/view-artist-background.webp">
+    <img src="docs/screenshots/view-artist-background.webp" width="220" alt="Music view with artist background artwork">
+  </a>
+  <a href="docs/screenshots/view-text-only.webp">
+    <img src="docs/screenshots/view-text-only.webp" width="220" alt="Text-only music view">
+  </a>
+</p>
+
+Click any thumbnail to open the full-size screenshot.
 
 ## Main additions
 
