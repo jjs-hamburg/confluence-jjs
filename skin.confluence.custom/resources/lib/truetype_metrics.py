@@ -7,6 +7,7 @@ import xbmcvfs
 
 
 _FONT_CACHE = {}
+_WIDTH_CACHE = {}
 
 
 def _u16(data, offset):
@@ -499,4 +500,11 @@ def _font(filename):
 
 
 def text_width(text, filename, pixel_size):
-    return _font(filename).width(text, pixel_size)
+    key = (str(filename or ""), int(pixel_size), str(text or ""))
+    if key in _WIDTH_CACHE:
+        return _WIDTH_CACHE[key]
+    width = _font(filename).width(key[2], key[1])
+    if len(_WIDTH_CACHE) >= 512:
+        _WIDTH_CACHE.clear()
+    _WIDTH_CACHE[key] = width
+    return width
