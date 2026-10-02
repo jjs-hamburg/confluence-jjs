@@ -293,7 +293,11 @@ def _split_album_wrap(text, width_px):
     # few pixels too wide from moving a title upward even though Kodi still fits it.
     if _estimated_text_width(text, ALBUM_WRAP_FONT_SIGNATURE) <= (width_px * 1.015):
         return "", text
-    words = text.split()
+    # Keep the album-year suffix together while wrapping. The visible
+    # text remains "| 2008", but the separator can never be stranded at the
+    # end of the previous row.
+    wrap_text = re.sub(r"\|\s+(\d{4})(?=\s|$)", lambda m: "|\u00a0" + m.group(1), text)
+    words = [word for word in wrap_text.split(" ") if word]
     if len(words) <= 1:
         return "", text
     upper = ""
@@ -309,7 +313,7 @@ def _split_album_wrap(text, width_px):
     lower = " ".join(words[split_at:]).strip()
     if not upper or not lower:
         return "", text
-    return upper, lower
+    return upper.replace("\u00a0", " "), lower.replace("\u00a0", " ")
 
 
 def _info_artwork_text_shift(home):
