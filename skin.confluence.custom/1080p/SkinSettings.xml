@@ -1400,7 +1400,7 @@
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Music cover size</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverSizeSetting][/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecover)</onclick>
+							<onclick>RunScript(special://skin/resources/lib/live_home_adjust.py,cover)</onclick>
 						</control>
 						<control type="button" id="523">
 							<width>1125</width><height>60</height><font>font13</font>
@@ -1421,6 +1421,12 @@
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowoffset)</onclick>
 							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
+						</control>
+						<control type="button" id="522">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Vertical menu position</label><label2>[COLOR=selected]$VAR[CCMainMenuYOffsetSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/live_home_adjust.py,yoffset)</onclick>
 						</control>
 						<control type="button" id="520">
 							<width>1125</width><height>60</height><font>font13</font>
@@ -1490,12 +1496,6 @@
 							<label>Font color (active)</label><label2>[COLOR=selected]$VAR[CCMainMenuActiveColorSetting][/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,activecolor)</onclick>
-						</control>
-						<control type="button" id="522">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Vertical menu position</label><label2>[COLOR=selected]$VAR[CCMainMenuYOffsetSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,yoffset)</onclick>
 						</control>
 						<control type="button" id="510">
 							<width>1125</width><height>60</height><font>font13</font>
