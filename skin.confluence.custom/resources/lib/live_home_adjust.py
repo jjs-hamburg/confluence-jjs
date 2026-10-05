@@ -26,6 +26,7 @@ ACTION_NAV_BACK = 92
 DIALOG_XML = "CustomLiveHomeAdjust.xml"
 BADGE_TITLE_PROP = "ConfluenceCustom.LiveAdjust.Title"
 BADGE_HELP_PROP = "ConfluenceCustom.LiveAdjust.Help"
+ADJUST_ACTIVE_PROP = "ConfluenceCustom.LiveAdjust.Active"
 
 ID_MAIN_FRAME = 9301
 ID_MAIN_SHADOW_COVER = 9302
@@ -224,6 +225,14 @@ def _clear_badge():
     home.clearProperty(BADGE_HELP_PROP)
 
 
+def _set_adjust_active(enabled):
+    home = xbmcgui.Window(HOME_WINDOW_ID)
+    if enabled:
+        home.setProperty(ADJUST_ACTIVE_PROP, "true")
+    else:
+        home.clearProperty(ADJUST_ACTIVE_PROP)
+
+
 class AdjustDialog(xbmcgui.WindowXMLDialog):
     def configure(self, mode, value, on_change, on_cancel):
         self.mode = mode
@@ -330,19 +339,23 @@ def run(mode):
                 _set_string(COVER_SIZE_SETTING, original)
                 _set_dynamic(False)
 
-    if not _activate_home():
-        return
+    _set_adjust_active(True)
+    try:
+        if not _activate_home():
+            return
 
-    if mode == "cover":
-        _set_dynamic(True)
-        _set_string(COVER_SIZE_SETTING, current)
-        apply_dynamic_cover(current)
+        if mode == "cover":
+            _set_dynamic(True)
+            _set_string(COVER_SIZE_SETTING, current)
+            apply_dynamic_cover(current)
 
-    confirmed = _open_adjust_dialog(mode, current, on_change, on_cancel)
+        confirmed = _open_adjust_dialog(mode, current, on_change, on_cancel)
 
-    if confirmed and mode == "cover":
-        _set_dynamic(True)
-        apply_dynamic_cover(_skin_int(COVER_SIZE_SETTING, current))
+        if confirmed and mode == "cover":
+            _set_dynamic(True)
+            apply_dynamic_cover(_skin_int(COVER_SIZE_SETTING, current))
+    finally:
+        _set_adjust_active(False)
 
     # Return to the setup window after OK or Back.
     if previous_window and previous_window != HOME_WINDOW_ID:
