@@ -24,6 +24,7 @@ HOME_COVER_SIZE_SETTING = "CCHomeMusicCoverSize"
 HOME_COVER_STYLE_SETTING = "CCHomeMusicCoverStyle"
 HOME_SHADOW_WIDTH_SETTING = "CCHomeMusicShadowWidth"
 HOME_SHADOW_OFFSET_SETTING = "CCHomeMusicShadowOffset"
+HOME_SOFT_SHADOW_INTENSITY_SETTING = "CCHomeMusicSoftShadowIntensity"
 HOME_FLOOR_STYLE_SETTING = "CCHomeFloorStyle"
 HOME_ARTWORK_MODE_SETTING = "CCMusicArtworkMode"
 HOME_NO_COVER_SETTING = "CCHomeNoCoverStyle"
@@ -39,6 +40,7 @@ SONG_SELECTOR_ACTIVE_COLOR_SETTING = "CCSongSelectorColorActive"
 SONG_SELECTOR_HIGHLIGHT_COLOR_SETTING = "CCSongSelectorHighlightColor"
 SONG_SELECTOR_ENABLED_SETTING = "CCSongSelectorEnabled"
 SONG_SELECTOR_TRACK_SETTING = "CCSongSelectorShowTrackNumbers"
+SONG_SELECTOR_TRACK_TIME_SETTING = "CCSongSelectorShowTrackTimes"
 SONG_SELECTOR_AUTO_OPEN_SETTING = "CCSongSelectorAutoOpen"
 SONG_SELECTOR_LYRICS_CENTERED_SETTING = "CCSongSelectorLyricsCentered"
 SONG_SELECTOR_LYRICS_SYNC_DELAY_SETTING = "CCSongSelectorLyricsSyncDelay"
@@ -79,6 +81,7 @@ DEFAULT_HOME_COVER_SIZE = "195"
 DEFAULT_HOME_COVER_STYLE = "frame"
 DEFAULT_HOME_SHADOW_WIDTH = "14"
 DEFAULT_HOME_SHADOW_OFFSET = "4"
+DEFAULT_HOME_SOFT_SHADOW_INTENSITY = "medium"
 DEFAULT_HOME_FLOOR_STYLE = "original"
 DEFAULT_HOME_ARTWORK_MODE = "front"
 DEFAULT_HOME_NO_COVER = "custom"
@@ -93,6 +96,7 @@ DEFAULT_SONG_SELECTOR_ACTIVE_COLOR = "FFFFFFFF"
 DEFAULT_SONG_SELECTOR_HIGHLIGHT_COLOR = "default"
 DEFAULT_SONG_SELECTOR_ENABLED = "true"
 DEFAULT_SONG_SELECTOR_TRACK = "false"
+DEFAULT_SONG_SELECTOR_TRACK_TIME = "false"
 DEFAULT_SONG_SELECTOR_AUTO_OPEN = "false"
 DEFAULT_SONG_SELECTOR_LYRICS_CENTERED = "true"
 DEFAULT_SONG_SELECTOR_LYRICS_SYNC_DELAY = "0.25"
@@ -164,8 +168,16 @@ HOME_COVER_STYLES = [
     ("hardshadow", "Hard shadow"),
     ("softshadow", "Soft shadow"),
 ]
+HOME_COVER_APPEARANCES = [
+    ("frame", None, "Frame"),
+    ("hardshadow", None, "Hard shadow"),
+    ("softshadow", "dark", "Soft shadow - Dark"),
+    ("softshadow", "medium", "Soft shadow - Medium"),
+    ("softshadow", "light", "Soft shadow - Light"),
+]
 HOME_SHADOW_WIDTHS = [("6", "6 px"), ("10", "10 px"), ("14", "14 px"), ("18", "18 px"), ("22", "22 px"), ("26", "26 px"), ("30", "30 px"), ("34", "34 px"), ("38", "38 px")]
 HOME_SHADOW_OFFSETS = [("0", "0 px"), ("2", "2 px"), ("4", "4 px"), ("6", "6 px"), ("8", "8 px"), ("10", "10 px"), ("12", "12 px"), ("14", "14 px"), ("16", "16 px"), ("18", "18 px"), ("20", "20 px"), ("22", "22 px"), ("24", "24 px")]
+HOME_SOFT_SHADOW_INTENSITIES = [("dark", "Dark"), ("medium", "Medium"), ("light", "Light")]
 HOME_FLOOR_STYLES = [
     ("original", "Original"),
     ("dark", "Dark"),
@@ -234,6 +246,7 @@ def ensure_defaults():
         (HOME_COVER_STYLE_SETTING, DEFAULT_HOME_COVER_STYLE),
         (HOME_SHADOW_WIDTH_SETTING, DEFAULT_HOME_SHADOW_WIDTH),
         (HOME_SHADOW_OFFSET_SETTING, DEFAULT_HOME_SHADOW_OFFSET),
+        (HOME_SOFT_SHADOW_INTENSITY_SETTING, DEFAULT_HOME_SOFT_SHADOW_INTENSITY),
         (HOME_FLOOR_STYLE_SETTING, DEFAULT_HOME_FLOOR_STYLE),
         (HOME_ARTWORK_MODE_SETTING, DEFAULT_HOME_ARTWORK_MODE),
         (HOME_NO_COVER_SETTING, DEFAULT_HOME_NO_COVER),
@@ -247,6 +260,7 @@ def ensure_defaults():
         (SONG_SELECTOR_HIGHLIGHT_COLOR_SETTING, DEFAULT_SONG_SELECTOR_HIGHLIGHT_COLOR),
         (SONG_SELECTOR_ENABLED_SETTING, DEFAULT_SONG_SELECTOR_ENABLED),
         (SONG_SELECTOR_TRACK_SETTING, DEFAULT_SONG_SELECTOR_TRACK),
+        (SONG_SELECTOR_TRACK_TIME_SETTING, DEFAULT_SONG_SELECTOR_TRACK_TIME),
         (SONG_SELECTOR_AUTO_OPEN_SETTING, DEFAULT_SONG_SELECTOR_AUTO_OPEN),
         (SONG_SELECTOR_LYRICS_CENTERED_SETTING, DEFAULT_SONG_SELECTOR_LYRICS_CENTERED),
         (SONG_SELECTOR_LYRICS_SYNC_DELAY_SETTING, DEFAULT_SONG_SELECTOR_LYRICS_SYNC_DELAY),
@@ -269,6 +283,8 @@ def ensure_defaults():
     # Legacy: the old single shadow mode is the soft shadow mode.
     if _get(HOME_COVER_STYLE_SETTING).lower() == "shadow":
         _set(HOME_COVER_STYLE_SETTING, "softshadow")
+    if _get(HOME_SOFT_SHADOW_INTENSITY_SETTING).lower() == "verylight":
+        _set(HOME_SOFT_SHADOW_INTENSITY_SETTING, "light")
 
     # 5.0.32 used a near-white value as submenu focus default.
     # Confluence itself uses pure white; migrate only that legacy default.
@@ -380,12 +396,33 @@ def choose_home_cover_size():
 
 
 def choose_home_cover_style():
-    _choose(
-        "Home screen cover appearance",
-        HOME_COVER_STYLE_SETTING,
-        HOME_COVER_STYLES,
-        DEFAULT_HOME_COVER_STYLE,
+    current_style = _get(HOME_COVER_STYLE_SETTING, DEFAULT_HOME_COVER_STYLE).lower()
+    if current_style == "shadow":
+        current_style = "softshadow"
+    current_intensity = _get(
+        HOME_SOFT_SHADOW_INTENSITY_SETTING,
+        DEFAULT_HOME_SOFT_SHADOW_INTENSITY,
+    ).lower()
+
+    preselect = 0
+    for index, (style, intensity, _label) in enumerate(HOME_COVER_APPEARANCES):
+        if style != current_style:
+            continue
+        if style != "softshadow" or intensity == current_intensity:
+            preselect = index
+            break
+
+    labels = [item[2] for item in HOME_COVER_APPEARANCES]
+    selected = xbmcgui.Dialog().select(
+        "Home screen cover appearance", labels, preselect=preselect
     )
+    if selected < 0:
+        return
+
+    style, intensity, _label = HOME_COVER_APPEARANCES[selected]
+    _set(HOME_COVER_STYLE_SETTING, style)
+    if intensity:
+        _set(HOME_SOFT_SHADOW_INTENSITY_SETTING, intensity)
 
 
 def choose_home_shadow_width():
@@ -506,6 +543,11 @@ def toggle_song_selector():
 def toggle_song_selector_track_numbers():
     current = _get(SONG_SELECTOR_TRACK_SETTING, DEFAULT_SONG_SELECTOR_TRACK).lower()
     _set(SONG_SELECTOR_TRACK_SETTING, "false" if current == "true" else "true")
+
+
+def toggle_song_selector_track_times():
+    current = _get(SONG_SELECTOR_TRACK_TIME_SETTING, DEFAULT_SONG_SELECTOR_TRACK_TIME).lower()
+    _set(SONG_SELECTOR_TRACK_TIME_SETTING, "false" if current == "true" else "true")
 
 
 def toggle_song_selector_auto_open():
@@ -730,6 +772,8 @@ def main():
         toggle_song_selector()
     elif mode == "songtracknumbers":
         toggle_song_selector_track_numbers()
+    elif mode == "songtracktimes":
+        toggle_song_selector_track_times()
     elif mode == "songautoopen":
         toggle_song_selector_auto_open()
     elif mode == "songlyricscentered":

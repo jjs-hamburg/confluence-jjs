@@ -1396,12 +1396,6 @@
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homenocover)</onclick>
 						</control>
-						<control type="button" id="519">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Music cover size</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverSizeSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homecover)</onclick>
-						</control>
 						<control type="button" id="523">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Cover appearance</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverStyleSetting][/COLOR]</label2>
@@ -1410,17 +1404,16 @@
 						</control>
 						<control type="button" id="546">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Shadow width</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting][/COLOR]</label2>
+							<label>Shadow</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting] / $VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowwidth)</onclick>
+							<onclick>RunScript(special://skin/resources/lib/live_home_adjust.py,shadow)</onclick>
 							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
 						</control>
-						<control type="button" id="547">
+						<control type="button" id="522">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Shadow offset</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
+							<label>Vertical menu position</label><label2>[COLOR=selected]$VAR[CCMainMenuYOffsetSetting][/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowoffset)</onclick>
-							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
+							<onclick>RunScript(special://skin/resources/lib/live_home_adjust.py,yoffset)</onclick>
 						</control>
 						<control type="button" id="520">
 							<width>1125</width><height>60</height><font>font13</font>
@@ -1490,12 +1483,6 @@
 							<label>Font color (active)</label><label2>[COLOR=selected]$VAR[CCMainMenuActiveColorSetting][/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,activecolor)</onclick>
-						</control>
-						<control type="button" id="522">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Vertical menu position</label><label2>[COLOR=selected]$VAR[CCMainMenuYOffsetSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,yoffset)</onclick>
 						</control>
 						<control type="button" id="510">
 							<width>1125</width><height>60</height><font>font13</font>
@@ -1582,6 +1569,13 @@
 							<label>Show track numbers</label><selected>String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true)</selected>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtracknumbers)</onclick>
+							<enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
+						<control type="radiobutton" id="548">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Show track times</label><selected>String.IsEqual(Skin.String(CCSongSelectorShowTrackTimes),true)</selected>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtracktimes)</onclick>
 							<enable>$EXP[CCSongSelectorEnabled]</enable>
 						</control>
 						<control type="radiobutton" id="543">

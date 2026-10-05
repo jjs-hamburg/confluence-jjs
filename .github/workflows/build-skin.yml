@@ -94,7 +94,8 @@ jobs:
           find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
           find skin.confluence.custom -type f -name '*.pyc' -delete
 
-          zip -qr "$ZIP" skin.confluence.custom             -x "*/__pycache__/*" "*.pyc"
+          zip -qr "$ZIP" skin.confluence.custom \
+            -x "*/__pycache__/*" "*.pyc"
 
           python - "$ZIP" <<'PY'
           import sys
@@ -125,9 +126,20 @@ jobs:
           set -euo pipefail
           TAG="v${SKIN_VERSION}"
           TITLE="Confluence-jjs ${SKIN_VERSION}"
+          NOTES_FILE=".github/release-notes/${SKIN_VERSION}.md"
+          FALLBACK_NOTES="Direct-install Kodi skin ZIP. Download skin.confluence.custom-${SKIN_VERSION}.zip from Assets and install it in Kodi via Add-ons -> Install from zip file."
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$SKIN_ZIP" --clobber
+            if [[ -f "$NOTES_FILE" ]]; then
+              gh release edit "$TAG" --notes-file "$NOTES_FILE"
+            fi
+          elif [[ -f "$NOTES_FILE" ]]; then
+            gh release create "$TAG" "$SKIN_ZIP" \
+              --title "$TITLE" \
+              --notes-file "$NOTES_FILE"
           else
-            gh release create "$TAG" "$SKIN_ZIP"               --title "$TITLE"               --notes "Direct-install Kodi skin ZIP. Download skin.confluence.custom-${SKIN_VERSION}.zip from Assets and install it in Kodi via Add-ons -> Install from zip file."
+            gh release create "$TAG" "$SKIN_ZIP" \
+              --title "$TITLE" \
+              --notes "$FALLBACK_NOTES"
           fi

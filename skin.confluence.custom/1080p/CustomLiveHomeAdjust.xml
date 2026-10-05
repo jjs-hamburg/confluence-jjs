@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog">
+    <defaultcontrol always="true">1</defaultcontrol>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+    <controls>
+        <control type="group">
+            <left>1410</left>
+            <top>263</top>
+            <width>470</width>
+            <height>74</height>
+            <control type="image">
+                <left>0</left><top>0</top><width>470</width><height>74</height>
+                <texture border="18,0,18,0" colordiffuse="$VAR[CCAudioBadgeColorDiffuse]">$VAR[CCTimeBadgeTexturePath]</texture>
+            </control>
+            <control type="image">
+                <left>0</left><top>0</top><width>470</width><height>74</height>
+                <texture border="18,0,18,0">CCTimeBadge3D.png</texture>
+                <visible>String.IsEqual(Skin.String(CCAudioBadge3D),true)</visible>
+            </control>
+            <control type="label">
+                <left>16</left><top>7</top><width>438</width><height>29</height>
+                <label>$INFO[Window(Home).Property(ConfluenceCustom.LiveAdjust.Title)]</label>
+                <font>font_CCSub_Roboto_20</font>
+                <align>center</align><aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor>
+            </control>
+            <control type="label">
+                <left>16</left><top>36</top><width>438</width><height>29</height>
+                <label>$INFO[Window(Home).Property(ConfluenceCustom.LiveAdjust.Help)]</label>
+                <font>font_CCSub_Roboto_20</font>
+                <align>center</align><aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor>
+            </control>
+        </control>
+        <control type="button" id="1">
+            <left>-24</left><top>-24</top><width>1</width><height>1</height>
+            <label/><font/><texturefocus/><texturenofocus/>
+            <onup>1</onup><ondown>1</ondown><onleft>1</onleft><onright>1</onright>
+        </control>
+    </controls>
+</window>
