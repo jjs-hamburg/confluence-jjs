@@ -42,8 +42,10 @@ ID_MAIN_INFO = 9309
 DYNAMIC_SHADOW_CONTROLS = (
     (9400, 9410, "main"),
     (9420, 9430, "single"),
-    (9440, 9450, "pair_front"),
-    (9460, 9470, "pair_back"),
+)
+DYNAMIC_PAIR_SHADOW_CONTROLS = (
+    ((9440, 9441, 9442), (9450, 9451, 9452), "pair_front"),
+    ((9460, 9461, 9462), (9470, 9471, 9472), "pair_back"),
 )
 
 
@@ -100,15 +102,61 @@ def _shadow_cover_rect(kind, size):
     return 980, selector_y
 
 
+def _set_shadow_piece(control, rect):
+    if control is None:
+        return
+    if rect is None:
+        _set_geometry(control, -10000, -10000, 1, 1)
+        return
+    _set_geometry(control, *rect)
+
+
+def _pair_shadow_rects(cover_x, cover_y, size, width, offset):
+    # Build the visible part of the shifted/enlarged shadow explicitly.
+    # This is the rectangle S minus the cover rectangle C. Because offset
+    # is never negative, the result is at most: right strip, bottom strip,
+    # and bottom-right corner. No control is ever drawn above or left.
+    size = int(size)
+    width = max(0, int(width))
+    offset = max(0, int(offset))
+    shadow_x = int(cover_x) + offset
+    shadow_y = int(cover_y) + offset
+    shadow_right = shadow_x + size + width
+    shadow_bottom = shadow_y + size + width
+    cover_right = int(cover_x) + size
+    cover_bottom = int(cover_y) + size
+
+    right_x = max(cover_right, shadow_x)
+    right_y = shadow_y
+    right_w = shadow_right - right_x
+    right_h = min(cover_bottom, shadow_bottom) - right_y
+
+    bottom_x = shadow_x
+    bottom_y = max(cover_bottom, shadow_y)
+    bottom_w = min(cover_right, shadow_right) - bottom_x
+    bottom_h = shadow_bottom - bottom_y
+
+    corner_x = max(cover_right, shadow_x)
+    corner_y = max(cover_bottom, shadow_y)
+    corner_w = shadow_right - corner_x
+    corner_h = shadow_bottom - corner_y
+
+    def rect(x, y, w, h):
+        return (x, y, w, h) if w > 0 and h > 0 else None
+
+    return (
+        rect(right_x, right_y, right_w, right_h),
+        rect(bottom_x, bottom_y, bottom_w, bottom_h),
+        rect(corner_x, corner_y, corner_w, corner_h),
+    )
+
+
 def _apply_dynamic_shadow_once(size):
     window = xbmcgui.Window(HOME_WINDOW_ID)
     width = max(0, _skin_int(SHADOW_WIDTH_SETTING, SHADOW_WIDTH_DEFAULT))
     offset = max(0, _skin_int(SHADOW_OFFSET_SETTING, SHADOW_OFFSET_DEFAULT))
 
-    # 5.0.178 directional geometry:
-    # - offset moves the complete shadow right AND down;
-    # - width only enlarges it to the right AND down;
-    # - offset=0,width=0 places the shadow exactly behind the cover.
+    # Keep the already verified 5.0.178 whole-rectangle path for main/single.
     extent = max(1, int(size) + width)
     for hard_id, soft_id, kind in DYNAMIC_SHADOW_CONTROLS:
         cover_x, cover_y = _shadow_cover_rect(kind, size)
@@ -116,6 +164,16 @@ def _apply_dynamic_shadow_once(size):
         y = cover_y + offset
         _set_geometry(_control(window, hard_id), x, y, extent, extent)
         _set_geometry(_control(window, soft_id), x, y, extent, extent)
+
+    # 5.0.179: pair artwork uses explicit visible pieces. This avoids relying
+    # on the cover image to mask the shadow inside its nominal square control.
+    for hard_ids, soft_ids, kind in DYNAMIC_PAIR_SHADOW_CONTROLS:
+        cover_x, cover_y = _shadow_cover_rect(kind, size)
+        rects = _pair_shadow_rects(cover_x, cover_y, size, width, offset)
+        for control_id, rect in zip(hard_ids, rects):
+            _set_shadow_piece(_control(window, control_id), rect)
+        for control_id, rect in zip(soft_ids, rects):
+            _set_shadow_piece(_control(window, control_id), rect)
 
 
 def _apply_dynamic_cover_once(size):
