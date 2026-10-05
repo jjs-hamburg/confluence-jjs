@@ -112,6 +112,10 @@ def _apply_dynamic_shadow_once(size):
     for hard_ids, soft_ids, kind in DYNAMIC_SHADOW_SETS:
         cover_x, cover_y = _shadow_cover_rect(kind, size)
         for index, shadow_width in enumerate(SHADOW_WIDTHS):
+            # The 22/38 px frame is only transparent texture padding. The
+            # selected asset itself defines the requested 6..38 px shadow.
+            # Expanding the control by that fixed padding preserves the user's
+            # shadow width in screen pixels for every cover size.
             pad = 22 if shadow_width <= 22 else 38
             x = cover_x - pad + offset
             y = cover_y - pad + offset
