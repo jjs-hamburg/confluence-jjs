@@ -49,7 +49,8 @@ jobs:
           assert len(re.findall(r'Dynamic .* soft shadow layer',home))==128
           assert 'SOFT_SHADOW_LAYERS = 32' in shadow and '_soft_shadow_plan' in shadow and 'if index in plan' in shadow
           assert 'CCHomeMusicInfoCoverSize' in cover
-          assert 'ListItem.Duration' in popup and 'Player.Time]' not in popup and 'Player.TimeRemaining' not in popup
+          assert '$INFO[ListItem.Duration, | ]' in inc
+          assert 'CCSongSelectorPopupTitleNoTrack' in popup and 'CCSongSelectorPopupTitleWithTrack' in popup
           ids=collections.Counter(re.findall(r'<control[^>]*\bid="(\d+)"',home))
           newids=[9480,9481,9482]+list(range(9700,9732))+list(range(9740,9772))+list(range(9780,9812))+list(range(9820,9852))
           assert all(ids[str(x)]==1 for x in newids)
