@@ -3,6 +3,7 @@ from __future__ import absolute_import
 
 import math
 import struct
+import sys
 import urllib.parse
 
 import xbmc
@@ -21,6 +22,12 @@ INFO_MARGIN_SETTING = "CCHomeMusicViewMargin"
 INFO_MARGIN_DEFAULT = 10
 INFO_DEFAULT_HEIGHT = 322
 INFO_MAX_IMAGE_WIDTH = 1800
+COVER_SIZE_SETTING="CCHomeMusicCoverSize"
+INFO_COVER_SIZE_SETTING="CCHomeMusicInfoCoverSize"
+COVER_DYNAMIC_SETTING="CCHomeMusicCoverDynamic"
+ABOVE_MENU_SETTING="CCHomeMusicDisplayAboveMenu"
+COVER_SIZE_STEP=25
+COVER_SIZE_MIN=25
 COMPACT_HEIGHT = 115
 COMPACT_WIDTH_STEP = 10
 COMPACT_WIDTH_MIN = 30
@@ -343,7 +350,7 @@ def clear_back_art():
             home.clearProperty(base + suffix)
 
 
-def main():
+def cycle_view():
     # 5.0.170: centered front -> centered front+back -> large front beside
     # info -> large front+back beside info -> compact footer cover -> none.
     # Back-art states are skipped when the current album has no back artwork.
@@ -365,6 +372,55 @@ def main():
     xbmc.executebuiltin("Skin.SetString({},{})".format(SETTING, new_mode))
     sync_info_cover_geometry(mode=new_mode)
 
+# 5.0.182 live sizing -------------------------------------------------------
+_old_info_height = _info_cover_height
+_old_sync_info = sync_info_cover_geometry
+
+def _above_menu(): return xbmc.getCondVisibility("Skin.HasSetting({})".format(ABOVE_MENU_SETTING))
+def _get_int(name,default):
+    try: return int((xbmc.getInfoLabel("Skin.String({})".format(name)) or str(default)).strip())
+    except Exception: return int(default)
+def _set_int(name,value): xbmc.executebuiltin("Skin.SetString({},{})".format(name,int(value)))
+def _current_mode(): return (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
+def _info_cover_height():
+    natural=_old_info_height(); mode=_current_mode()
+    if _above_menu() and mode in ("infofront","infoboth"):
+        raw=(xbmc.getInfoLabel("Skin.String({})".format(INFO_COVER_SIZE_SETTING)) or "").strip()
+        requested=_get_int(INFO_COVER_SIZE_SETTING,natural) if raw else natural
+        return max(2,min(natural,requested))
+    return natural
+
+def _geom(cid,x,y,w,h):
+    try:
+        c=_home().getControl(cid); c.setPosition(int(x),int(y)); c.setWidth(max(1,int(w))); c.setHeight(max(1,int(h)))
+    except Exception: pass
+
+def sync_info_cover_geometry(mode=None):
+    result=_old_sync_info(mode); mode=(mode or _current_mode()).lower()
+    if _above_menu() and mode in ("infofront","infoboth"):
+        h=_info_cover_height(); m=music_view_margin(); f=xbmc.getInfoLabel("Player.Art(thumb)") or ""; fw=_info_art_width(f,h); top=115-h
+        _geom(9480,-20,top,INFO_MAX_IMAGE_WIDTH,h); _geom(9481,-20,top,INFO_MAX_IMAGE_WIDTH,h); _geom(9482,-20+fw+m,top,INFO_MAX_IMAGE_WIDTH,h)
+        back=_home().getProperty(BACK_PROP) or ""; bw=_info_art_width(back,h) if back else 0
+        single=max(0,fw+2*m-30); pair=max(0,fw+bw+3*m-30); bs=max(0,fw+m); ts=pair if mode=="infoboth" and back else single
+        home=_home(); home.setProperty(INFO_FRONT_WIDTH_PROP,str(fw)); home.setProperty(INFO_BACK_SHIFT_PROP,str(bs)); home.setProperty(INFO_TEXT_SHIFT_PROP,str(ts)); _set_shift_digits(home,INFO_BACK_SHIFT_PROP,bs); _set_shift_digits(home,INFO_TEXT_SHIFT_PROP,ts)
+        if back: home.setProperty(INFO_BACK_WIDTH_PROP,str(bw))
+    return result
+
+def resize_cover(direction):
+    sync_back_art(); mode=_current_mode(); delta=COVER_SIZE_STEP if direction>0 else -COVER_SIZE_STEP
+    if mode in ("front","both"):
+        v=max(COVER_SIZE_MIN,_get_int(COVER_SIZE_SETTING,195)+delta); _set_int(COVER_SIZE_SETTING,v); xbmc.executebuiltin("Skin.SetBool({})".format(COVER_DYNAMIC_SETTING))
+        try:
+            from live_home_adjust import apply_dynamic_cover; apply_dynamic_cover(v)
+        except Exception: pass
+    elif _above_menu() and mode in ("infofront","infoboth"):
+        natural=_old_info_height(); raw=(xbmc.getInfoLabel("Skin.String({})".format(INFO_COVER_SIZE_SETTING)) or "").strip(); cur=min(_get_int(INFO_COVER_SIZE_SETTING,natural) if raw else natural,natural); _set_int(INFO_COVER_SIZE_SETTING,min(natural,max(COVER_SIZE_MIN,cur+delta))); sync_info_cover_geometry(mode)
+
+def main(action="change"):
+    a=(action or "change").lower()
+    if a=="smaller": resize_cover(-1)
+    elif a=="larger": resize_cover(1)
+    else: cycle_view()
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1] if len(sys.argv)>1 else "change")

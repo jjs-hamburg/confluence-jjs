@@ -40,12 +40,12 @@ ID_SELECTOR_PAIR_SHADOW_FRONT = 9307
 ID_SELECTOR_PAIR_SHADOW_BACK = 9308
 ID_MAIN_INFO = 9309
 DYNAMIC_ART_SHADOW_CONTROLS = (
-    (9400, tuple(range(9410, 9418)), "main"),
-    (9420, tuple(range(9430, 9438)), "single"),
-    (9440, tuple(range(9450, 9458)), "pair_front"),
-    (9460, tuple(range(9470, 9478)), "pair_back"),
+    (9400, tuple(range(9700, 9732)), "main"),
+    (9420, tuple(range(9740, 9772)), "single"),
+    (9440, tuple(range(9780, 9812)), "pair_front"),
+    (9460, tuple(range(9820, 9852)), "pair_back"),
 )
-SOFT_SHADOW_LAYERS = 8
+SOFT_SHADOW_LAYERS = 32
 
 
 def _skin_string(name, default=""):
@@ -106,12 +106,12 @@ def _hide_shadow_control(control):
         _set_geometry(control, -10000, -10000, 1, 1)
 
 
-def _soft_shadow_shifts(extent):
-    extent = max(0, int(extent))
-    if extent <= 0:
-        return ()
-    count = min(SOFT_SHADOW_LAYERS, extent)
-    return tuple(((i + 1) * extent + count - 1) // count for i in range(count))
+def _soft_shadow_plan(extent):
+    extent=max(0,int(extent))
+    if not extent: return {}
+    count=min(SOFT_SHADOW_LAYERS,extent)
+    if count==1: return {0:extent}
+    return {int(round(i*float(SOFT_SHADOW_LAYERS-1)/float(count-1))):max(1,int(round((i+1)*float(extent)/float(count)))) for i in range(count)}
 
 
 def _apply_dynamic_shadow_once(size):
@@ -124,7 +124,7 @@ def _apply_dynamic_shadow_once(size):
     # The shadow is a black silhouette of the SAME artwork, with the same
     # square control size and aspectratio=keep as the visible cover. This
     # makes 0/0 truly invisible even for non-square artwork.
-    shifts = _soft_shadow_shifts(extent)
+    plan = _soft_shadow_plan(extent)
     for hard_id, soft_ids, kind in DYNAMIC_ART_SHADOW_CONTROLS:
         cover_x, cover_y = _shadow_cover_rect(kind, size)
         hard = _control(window, hard_id)
@@ -136,8 +136,8 @@ def _apply_dynamic_shadow_once(size):
             continue
         _set_geometry(hard, cover_x + extent, cover_y + extent, size, size)
         for index, control in enumerate(soft):
-            if index < len(shifts):
-                shift = shifts[index]
+            if index in plan:
+                shift = plan[index]
                 _set_geometry(control, cover_x + shift, cover_y + shift, size, size)
             else:
                 _hide_shadow_control(control)
