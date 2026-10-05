@@ -1,0 +1,92 @@
+name: Temporary 5.0.181 popup/shadow patch
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - '.github/temp_patch_181.py'
+      - '.github/workflows/temp-5-0-181.yml'
+
+permissions:
+  contents: write
+
+env:
+  SKIN_DIR: skin.confluence.custom
+
+jobs:
+  patch-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/live-home-adjustments
+          fetch-depth: 0
+
+      - name: Apply 5.0.181 patch
+        run: python3 .github/temp_patch_181.py
+
+      - name: Validate Python and XML
+        run: |
+          python3 -m py_compile skin.confluence.custom/resources/lib/mainmenu_style.py skin.confluence.custom/resources/lib/live_home_adjust.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import xml.etree.ElementTree as ET
+          root=Path('skin.confluence.custom')
+          for p in root.rglob('*.xml'):
+              ET.parse(p)
+          addon=(root/'addon.xml').read_text(encoding='utf-8')
+          assert 'version="5.0.181"' in addon
+          s=(root/'1080p'/'SkinSettings.xml').read_text(encoding='utf-8')
+          assert s.index('Show track numbers') < s.index('Show track times')
+          assert 'songtracktimes' in s
+          inc=(root/'1080p'/'Includes.xml').read_text(encoding='utf-8')
+          assert 'CCSongSelectorPopupTitleNoTrack' in inc
+          assert 'CCSongSelectorPopupTitleWithTrack' in inc
+          assert '$INFO[ListItem.Duration, | ]' in inc
+          pop=(root/'1080p'/'custom_1116_SongSelector.xml').read_text(encoding='utf-8')
+          assert pop.count('$VAR[CCSongSelectorPopupTitleNoTrack]') == 2
+          assert pop.count('$VAR[CCSongSelectorPopupTitleWithTrack]') == 2
+          style=(root/'resources'/'lib'/'mainmenu_style.py').read_text(encoding='utf-8')
+          assert 'CCSongSelectorShowTrackTimes' in style and 'toggle_song_selector_track_times' in style
+          data=json.loads((root/'resources'/'factory-default-settings.json').read_text(encoding='utf-8'))
+          d={x['id'].lower():x for x in data['settings']}
+          assert d['ccsongselectorshowtracktimes']['value'] == 'false'
+          home=(root/'1080p'/'Home.xml').read_text(encoding='utf-8')
+          expected={1:'3C000000',2:'36000000',3:'30000000',4:'2A000000',5:'24000000',6:'1E000000',7:'16000000',8:'0E000000'}
+          lines=[line for line in home.splitlines() if 'soft shadow layer' in line]
+          assert len(lines)==32, len(lines)
+          for n, code in expected.items():
+              matching=[line for line in lines if f'soft shadow layer {n}<' in line]
+              assert len(matching)==4, (n,len(matching))
+              assert all(f'colordiffuse="{code}"' in line for line in matching), n
+          for name in ('Home.xml','SkinSettings.xml','Includes.xml'):
+              assert (root/'1080p'/name).read_bytes()==(root/'resources'/'skin_modes'/'custom'/name).read_bytes(), name
+          print('validation OK')
+          PY
+
+      - name: Remove temporary patch machinery
+        run: rm -f .github/temp_patch_181.py .github/workflows/temp-5-0-181.yml
+
+      - name: Commit final 5.0.181 changes
+        run: |
+          git config user.name 'jjs-hamburg'
+          git config user.email 'jjschaefer@jjschaefer.de'
+          git add -A
+          git commit -m '5.0.181: stronger soft shadow and optional track times'
+          git push origin feature/live-home-adjustments
+
+      - name: Build installable test ZIP
+        run: zip -qr skin.confluence.custom-5.0.181-test.zip skin.confluence.custom
+
+      - name: Test ZIP
+        run: unzip -t skin.confluence.custom-5.0.181-test.zip >/dev/null
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.181-test
+          path: skin.confluence.custom-5.0.181-test.zip
+          if-no-files-found: error
+          retention-days: 7
