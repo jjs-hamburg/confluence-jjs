@@ -1,0 +1,114 @@
+name: Temporary 5.0.186 integrated shadow appearance
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - .github/workflows/temp-5-0-186.yml
+      - tools/temp_patch_5_0_186.py
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply 5.0.186 patch
+        run: python tools/temp_patch_5_0_186.py
+
+      - name: Validate 5.0.186
+        run: |
+          python -m py_compile skin.confluence.custom/resources/lib/mainmenu_style.py
+          python -m py_compile skin.confluence.custom/resources/lib/live_home_adjust.py
+          python -m py_compile skin.confluence.custom/resources/lib/cover_display_action.py
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          root = Path('skin.confluence.custom')
+          addon = (root/'addon.xml').read_text(encoding='utf-8')
+          inc = (root/'1080p/Includes.xml').read_text(encoding='utf-8')
+          settings = (root/'1080p/SkinSettings.xml').read_text(encoding='utf-8')
+          style = (root/'resources/lib/mainmenu_style.py').read_text(encoding='utf-8')
+          home = (root/'1080p/Home.xml').read_text(encoding='utf-8')
+
+          assert 'version="5.0.186"' in addon
+          for label in (
+              'Soft shadow - Dark',
+              'Soft shadow - Medium',
+              'Soft shadow - Light',
+              'Soft shadow - Very light',
+          ):
+              assert label in style
+              assert label in inc
+          assert '("softshadow", "verylight", "Soft shadow - Very light")' in style
+          assert 'def choose_home_soft_shadow_intensity()' not in style
+          assert 'homeshadowintensity' not in style
+          assert 'Soft shadow intensity' not in settings
+          assert 'id="5900"' not in settings
+          assert settings.count('<label>Cover appearance</label>') == 1
+          assert 'CCHomeMusicSoftShadowIntensitySetting' in inc
+          assert 'verylight' in inc
+          assert 'B3FFFFFF' in inc
+          for i in range(1, 9):
+              start = inc.index(f'<variable name="CCHomeMusicSoftShadowLayer{i}Diffuse">')
+              end = inc.index('</variable>', start)
+              block = inc[start:end]
+              assert 'verylight' in block
+          assert home.count('soft shadow layer ') == 32
+          assert home.count('colordiffuse="BE000000"') == 4
+
+          for rel in ('addon.xml','1080p/Home.xml','1080p/Includes.xml','1080p/SkinSettings.xml'):
+              ET.parse(root/rel)
+          for name in ('Home.xml','Includes.xml','SkinSettings.xml'):
+              assert (root/'1080p'/name).read_bytes() == (root/'resources/skin_modes/custom'/name).read_bytes()
+          PY
+
+      - name: Verify 5.0.184/185 sizing and geometry code is untouched
+        run: |
+          BASE=6f003af8ba28d1385a5e2a7d92c2944192ce88f7
+          git diff --quiet "$BASE" -- \
+            skin.confluence.custom/1080p/Home.xml \
+            skin.confluence.custom/resources/skin_modes/custom/Home.xml \
+            skin.confluence.custom/resources/lib/live_home_adjust.py \
+            skin.confluence.custom/resources/lib/cover_display_action.py
+
+      - name: Verify only intended skin files changed from 5.0.185
+        run: |
+          BASE=6f003af8ba28d1385a5e2a7d92c2944192ce88f7
+          git diff --name-only "$BASE" -- skin.confluence.custom | sort > /tmp/changed.txt
+          printf '%s\n' \
+            skin.confluence.custom/addon.xml \
+            skin.confluence.custom/1080p/Includes.xml \
+            skin.confluence.custom/1080p/SkinSettings.xml \
+            skin.confluence.custom/resources/lib/mainmenu_style.py \
+            skin.confluence.custom/resources/skin_modes/custom/Includes.xml \
+            skin.confluence.custom/resources/skin_modes/custom/SkinSettings.xml | sort > /tmp/expected.txt
+          diff -u /tmp/expected.txt /tmp/changed.txt
+
+      - name: Commit final 5.0.186 branch state
+        run: |
+          git config user.name "jjs-hamburg"
+          git config user.email "jjschaefer@jjschaefer.de"
+          git rm .github/workflows/temp-5-0-186.yml tools/temp_patch_5_0_186.py
+          git add skin.confluence.custom
+          git commit -m "5.0.186: integrate soft shadow levels into cover appearance"
+          git push origin HEAD:feature/live-home-adjustments
+
+      - name: Package test ZIP
+        run: |
+          zip -qr skin.confluence.custom-5.0.186-test.zip skin.confluence.custom
+          unzip -t skin.confluence.custom-5.0.186-test.zip >/dev/null
+          sha256sum skin.confluence.custom-5.0.186-test.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.186-test
+          path: skin.confluence.custom-5.0.186-test.zip
+          if-no-files-found: error
