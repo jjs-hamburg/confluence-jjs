@@ -1,0 +1,84 @@
+name: Temporary 5.0.187 shadow contrast
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - .github/workflows/temp-5-0-187.yml
+      - tools/temp_patch_5_0_187.py
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply 5.0.187 patch
+        run: python tools/temp_patch_5_0_187.py
+
+      - name: Validate 5.0.187
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          root = Path('skin.confluence.custom')
+          addon = (root/'addon.xml').read_text(encoding='utf-8')
+          inc = (root/'1080p/Includes.xml').read_text(encoding='utf-8')
+          assert 'version="5.0.187"' in addon
+          assert '>FFFFFFFF<' in inc
+          assert '>BFFFFFFF<' in inc
+          assert '>80FFFFFF<' in inc
+          assert '>4DFFFFFF<' in inc
+          expected = {
+              1: ('3C','2D','1E','12'), 2: ('36','29','1B','10'),
+              3: ('30','24','18','0E'), 4: ('2A','20','15','0D'),
+              5: ('24','1B','12','0B'), 6: ('1E','17','0F','09'),
+              7: ('16','11','0B','07'), 8: ('0E','0B','07','04'),
+          }
+          for i, vals in expected.items():
+              block_start = inc.index(f'<variable name="CCHomeMusicSoftShadowLayer{i}Diffuse">')
+              block_end = inc.index('</variable>', block_start)
+              block = inc[block_start:block_end]
+              for v in vals:
+                  assert v + '000000' in block
+          assert (root/'1080p/Includes.xml').read_bytes() == (root/'resources/skin_modes/custom/Includes.xml').read_bytes()
+          for rel in ('addon.xml','1080p/Includes.xml'):
+              ET.parse(root/rel)
+          PY
+
+      - name: Verify only opacity variables and version differ from 5.0.186
+        run: |
+          BASE=b8ed375a6fa7a070a6e59762fa7b950f3e808f28
+          git diff --name-only "$BASE" -- skin.confluence.custom | sort > /tmp/changed.txt
+          printf '%s\n' \
+            skin.confluence.custom/addon.xml \
+            skin.confluence.custom/1080p/Includes.xml \
+            skin.confluence.custom/resources/skin_modes/custom/Includes.xml | sort > /tmp/expected.txt
+          diff -u /tmp/expected.txt /tmp/changed.txt
+
+      - name: Commit final 5.0.187 branch state
+        run: |
+          git config user.name "jjs-hamburg"
+          git config user.email "jjschaefer@jjschaefer.de"
+          git rm .github/workflows/temp-5-0-187.yml tools/temp_patch_5_0_187.py
+          git add skin.confluence.custom
+          git commit -m "5.0.187: widen soft shadow intensity steps"
+          git push origin HEAD:feature/live-home-adjustments
+
+      - name: Package test ZIP
+        run: |
+          zip -qr skin.confluence.custom-5.0.187-test.zip skin.confluence.custom
+          unzip -t skin.confluence.custom-5.0.187-test.zip >/dev/null
+          sha256sum skin.confluence.custom-5.0.187-test.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.187-test
+          path: skin.confluence.custom-5.0.187-test.zip
+          if-no-files-found: error
