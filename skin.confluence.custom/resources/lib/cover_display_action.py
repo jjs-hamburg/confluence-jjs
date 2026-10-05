@@ -10,6 +10,8 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 
+from worker_lock import WorkerLock
+
 SETTING = "CCMusicArtworkMode"
 HOME_ID = 10000
 BACK_PROP = "ConfluenceCustom.MusicBackArt"
@@ -28,7 +30,8 @@ INFO_COVER_SIZE_SETTING = "CCHomeMusicInfoCoverSize"
 INFO_DYNAMIC_SETTING = "CCHomeMusicInfoCoverDynamic"
 ABOVE_MENU_SETTING = "CCHomeMusicDisplayAboveMenu"
 COVER_SIZE_STEP = 25
-COVER_SIZE_MIN = 25
+CENTER_COVER_SIZE_MIN = 300
+INFO_COVER_SIZE_MIN = 115
 INFO_TEXT_BASE_WIDTH = 1830
 INFO_TEXT_MIN_WIDTH = 240
 INFO_SINGLE_FRONT_ID = 9480
@@ -37,6 +40,11 @@ INFO_PAIR_BACK_ID = 9482
 INFO_TEXT_CONTROL_IDS = tuple(range(9500, 9512)) + (9140, 9141, 9104)
 INFO_TEXT_WIDTH_PROP = "ConfluenceCustom.NowPlaying.InfoTextWidth"
 INFO_DYNAMIC_GEOMETRY_PROP = "ConfluenceCustom.NowPlaying.InfoDynamicGeometry"
+CENTER_COVER_RUNTIME_PROP = "ConfluenceCustom.NowPlaying.CenterCoverSize"
+INFO_COVER_RUNTIME_PROP = "ConfluenceCustom.NowPlaying.InfoCoverSize"
+RESIZE_LOCK_NAME = "music-view-resize"
+RESIZE_LOCK_ATTEMPTS = 200
+RESIZE_LOCK_SLEEP_MS = 10
 COMPACT_HEIGHT = 115
 COMPACT_WIDTH_STEP = 10
 COMPACT_WIDTH_MIN = 30
@@ -252,6 +260,35 @@ def _info_art_width(art, height):
     return max(1, min(width, INFO_MAX_IMAGE_WIDTH))
 
 
+def _info_cover_max_height(mode, front_art, back_art, margin):
+    """Largest info-side cover height that still leaves usable music-info width."""
+    pair = mode == "infoboth" and bool(back_art)
+    ratio = max(0.01, _art_ratio(front_art))
+    margin_cost = 2 * int(margin)
+    if pair:
+        ratio += max(0.01, _art_ratio(back_art))
+        margin_cost = 3 * int(margin)
+    available_art_width = INFO_TEXT_BASE_WIDTH - INFO_TEXT_MIN_WIDTH + 30 - margin_cost
+    maximum = int(math.floor(max(1, available_art_width) / max(0.01, ratio)))
+    return max(INFO_COVER_SIZE_MIN, maximum)
+
+
+def _runtime_size(home, prop, setting, default):
+    try:
+        raw = home.getProperty(prop) or ""
+        if raw:
+            return int(raw)
+    except Exception:
+        pass
+    return _skin_int(setting, default)
+
+
+def _set_runtime_size(home, prop, setting, value):
+    value = int(value)
+    home.setProperty(prop, str(value))
+    _set_skin_string(setting, value)
+
+
 def _set_shift_digits(home, base, value):
     value = max(0, min(1999, int(value)))
     digits = (
@@ -353,30 +390,32 @@ def _apply_dynamic_info_art(home, mode, height, front_width, back_width, margin,
 def sync_info_cover_geometry(mode=None):
     """Publish artwork geometry and keep the footer text edge aligned.
 
-    The established static geometry remains untouched unless the user has
-    explicitly resized an info-side cover and Above Menu is enabled. In that
-    dynamic case artwork, text start, text width and wrap width all derive from
-    the same real artwork dimensions.
+    Static below-menu geometry remains untouched. Above the menu, a resized
+    info-side cover uses one authoritative runtime height so the background
+    service and key actions cannot bounce between stale Skin.String values.
     """
     home = _home()
     mode = (mode or _current_mode()).strip().lower()
     natural_height = _info_cover_height()
+    front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
+    back_art = home.getProperty(BACK_PROP) or ""
+    margin = music_view_margin()
     dynamic_info = (
         _has_setting(INFO_DYNAMIC_SETTING)
         and _has_setting(ABOVE_MENU_SETTING)
         and mode in ("infofront", "infoboth")
     )
     if dynamic_info:
-        requested = max(COVER_SIZE_MIN, _skin_int(INFO_COVER_SIZE_SETTING, natural_height))
-        height = min(natural_height, requested)
+        requested = _runtime_size(home, INFO_COVER_RUNTIME_PROP, INFO_COVER_SIZE_SETTING, natural_height)
+        requested = max(INFO_COVER_SIZE_MIN, int(requested))
+        maximum = _info_cover_max_height(mode, front_art, back_art, margin)
+        height = min(maximum, requested)
+        home.setProperty(INFO_COVER_RUNTIME_PROP, str(height))
     else:
         height = natural_height
 
-    front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
-    back_art = home.getProperty(BACK_PROP) or ""
     front_width = _info_art_width(front_art, height)
     back_width = _info_art_width(back_art, height) if back_art else 0
-    margin = music_view_margin()
 
     single_shift = max(0, front_width + (2 * margin) - 30)
     pair_shift = max(0, front_width + back_width + (3 * margin) - 30)
@@ -412,7 +451,6 @@ def sync_info_cover_geometry(mode=None):
         home.clearProperty(INFO_DYNAMIC_GEOMETRY_PROP)
         _set_info_text_width(home, INFO_TEXT_BASE_WIDTH)
     return text_shift
-
 
 def compact_cover_width(art=None):
     art = art or xbmc.getInfoLabel("Player.Art(thumb)") or ""
@@ -464,17 +502,20 @@ def clear_back_art():
             home.clearProperty(base + suffix)
 
 
-def _resize_cover(direction):
+def _resize_cover_locked(direction, mode):
+    home = _home()
     sync_back_art()
-    mode = _current_mode()
     delta = COVER_SIZE_STEP if direction > 0 else -COVER_SIZE_STEP
 
     if mode in ("front", "both"):
-        current = max(COVER_SIZE_MIN, _skin_int(COVER_SIZE_SETTING, 195))
-        value = max(COVER_SIZE_MIN, current + delta)
-        if value == current:
+        raw = _runtime_size(home, CENTER_COVER_RUNTIME_PROP, COVER_SIZE_SETTING, CENTER_COVER_SIZE_MIN)
+        if raw < CENTER_COVER_SIZE_MIN:
+            value = CENTER_COVER_SIZE_MIN
+        else:
+            value = max(CENTER_COVER_SIZE_MIN, int(raw) + delta)
+        if value == raw and _has_setting(COVER_DYNAMIC_SETTING):
             return
-        _set_skin_string(COVER_SIZE_SETTING, value)
+        _set_runtime_size(home, CENTER_COVER_RUNTIME_PROP, COVER_SIZE_SETTING, value)
         _set_skin_bool(COVER_DYNAMIC_SETTING)
         try:
             from live_home_adjust import apply_dynamic_cover
@@ -485,19 +526,48 @@ def _resize_cover(direction):
 
     if mode in ("infofront", "infoboth") and _has_setting(ABOVE_MENU_SETTING):
         natural = _info_cover_height()
+        front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
+        back_art = home.getProperty(BACK_PROP) or ""
+        margin = music_view_margin()
+        maximum = _info_cover_max_height(mode, front_art, back_art, margin)
         if _has_setting(INFO_DYNAMIC_SETTING):
-            current = max(COVER_SIZE_MIN, min(natural, _skin_int(INFO_COVER_SIZE_SETTING, natural)))
+            raw = _runtime_size(home, INFO_COVER_RUNTIME_PROP, INFO_COVER_SIZE_SETTING, natural)
         else:
-            current = natural
-        value = max(COVER_SIZE_MIN, min(natural, current + delta))
-        if value == current:
+            raw = natural
+        current = max(INFO_COVER_SIZE_MIN, min(maximum, int(raw)))
+        if raw != current:
+            value = current
+        else:
+            value = max(INFO_COVER_SIZE_MIN, min(maximum, current + delta))
+        if value == raw and _has_setting(INFO_DYNAMIC_SETTING):
             return
-        _set_skin_string(INFO_COVER_SIZE_SETTING, value)
+        _set_runtime_size(home, INFO_COVER_RUNTIME_PROP, INFO_COVER_SIZE_SETTING, value)
         _set_skin_bool(INFO_DYNAMIC_SETTING)
-        # Clear the cache before the first switch from the proven static controls.
-        _home().clearProperty(INFO_DYNAMIC_GEOMETRY_PROP)
+        home.clearProperty(INFO_DYNAMIC_GEOMETRY_PROP)
         sync_info_cover_geometry(mode)
 
+
+def _resize_cover(direction):
+    # Every key repeat starts a separate RunScript instance. Serialize those
+    # instances so each step reads the size written by the previous step rather
+    # than racing on a stale Skin.String value.
+    requested_mode = _current_mode()
+    lock = None
+    for _ in range(RESIZE_LOCK_ATTEMPTS):
+        candidate = WorkerLock(RESIZE_LOCK_NAME)
+        if candidate.acquire():
+            lock = candidate
+            break
+        xbmc.sleep(RESIZE_LOCK_SLEEP_MS)
+    if lock is None:
+        return
+    try:
+        # A delayed key repeat must never resize a view the user has already left.
+        if _current_mode() != requested_mode:
+            return
+        _resize_cover_locked(direction, requested_mode)
+    finally:
+        lock.release()
 
 def _cycle_view():
     # Proven 5.0.170 order: centered front -> centered front+back -> large

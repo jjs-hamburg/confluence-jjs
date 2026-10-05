@@ -12,6 +12,7 @@ Y_OFFSET_SETTING = "CCMainMenuYOffset"
 SHADOW_WIDTH_SETTING = "CCHomeMusicShadowWidth"
 SHADOW_OFFSET_SETTING = "CCHomeMusicShadowOffset"
 COVER_DEFAULT = 195
+COVER_MIN = 300
 Y_DEFAULT = 0
 Y_MIN = -250
 Y_MAX = 300
@@ -146,7 +147,7 @@ def _apply_dynamic_cover_once(size):
     window = xbmcgui.Window(HOME_WINDOW_ID)
     if _control(window, ID_MAIN_FRAME) is None:
         raise RuntimeError("Home controls not ready")
-    size = max(1, int(size))
+    size = max(COVER_MIN, int(size))
     frame_height = max(443, size)
     frame_top = 68 if size <= 443 else 511 - size
     _set_geometry(_control(window, ID_MAIN_FRAME), 30, frame_top, size, frame_height)
@@ -257,7 +258,8 @@ class AdjustDialog(xbmcgui.WindowXMLDialog):
             if self.mode == "yoffset":
                 new_value = min(Y_MAX, self.value + STEP)
             else:
-                new_value = max(STEP, self.value - STEP)
+                minimum = COVER_MIN if self.mode == "cover" else STEP
+                new_value = max(minimum, self.value - STEP)
             self._change(new_value)
         elif action_id == ACTION_SELECT_ITEM:
             self.confirmed = True
@@ -313,7 +315,7 @@ def run(mode):
             _set_string(Y_OFFSET_SETTING, original)
     elif mode == "cover":
         original = _skin_int(COVER_SIZE_SETTING, COVER_DEFAULT)
-        current = max(1, original)
+        current = max(COVER_MIN, original)
         def on_change(value):
             _set_string(COVER_SIZE_SETTING, value)
             apply_dynamic_cover(value)
