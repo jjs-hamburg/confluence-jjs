@@ -2948,7 +2948,7 @@
 		<value>$INFO[Window(Home).Property(ConfluenceCustom.MusicBackArt)]</value>
 	</variable>
 	<variable name="CCHomeMusicCoverSizeSetting">
-		<value condition="[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]">Original (195 px)</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverSize),195) | [!Skin.HasSetting(CCHomeMusicCoverDynamic) + String.IsEmpty(Skin.String(CCHomeMusicCoverSize))]">Original (195 px)</value>
 		<value>$INFO[Skin.String(CCHomeMusicCoverSize)] px</value>
 	</variable>
 	<variable name="CCHomeMusicCoverStyleSetting">
