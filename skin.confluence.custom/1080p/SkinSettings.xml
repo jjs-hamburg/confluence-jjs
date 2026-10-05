@@ -1396,6 +1396,12 @@
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homenocover)</onclick>
 						</control>
+						<control type="button" id="519">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Music cover size</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverSizeSetting][/COLOR]</label2>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/live_home_adjust.py,cover)</onclick>
+						</control>
 						<control type="button" id="523">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Cover appearance</label><label2>[COLOR=selected]$VAR[CCHomeMusicCoverStyleSetting][/COLOR]</label2>

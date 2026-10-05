@@ -3496,15 +3496,29 @@
 			</control>
 		</control>
 	</include>
-	<!-- 5.0.182: Change Music View with context-sensitive live sizing. -->
+	<!-- 5.0.173: two-line focus guide using the exact time-badge surface. -->
 	<include name="CCMusicViewChangeBadge">
 		<control type="group">
 			<width>470</width><height>74</height>
-			<control type="image"><left>0</left><top>0</top><width>470</width><height>74</height><texture border="18,0,18,0" colordiffuse="$VAR[CCAudioBadgeColorDiffuse]">$VAR[CCTimeBadgeTexturePath]</texture></control>
-			<control type="image"><left>0</left><top>0</top><width>470</width><height>74</height><texture border="18,0,18,0">CCTimeBadge3D.png</texture><visible>String.IsEqual(Skin.String(CCAudioBadge3D),true)</visible></control>
-			<control type="label"><left>16</left><top>7</top><width>438</width><height>29</height><label>Change Music View</label><font>font_CCSub_RobotoBold_20</font><align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor></control>
-			<control type="label"><left>16</left><top>36</top><width>438</width><height>29</height><label>L/R: Size   ·   Enter: Change   ·   Down: Leave</label><font>font_CCSub_Roboto_20</font><align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor><visible>String.IsEqual(Skin.String(CCMusicArtworkMode),front) | String.IsEqual(Skin.String(CCMusicArtworkMode),both) | [Skin.HasSetting(CCHomeMusicDisplayAboveMenu) + [String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) | String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth)]]</visible></control>
-			<control type="label"><left>16</left><top>36</top><width>438</width><height>29</height><label>Enter: Change   ·   Down: Leave</label><font>font_CCSub_Roboto_20</font><align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor><visible>!String.IsEqual(Skin.String(CCMusicArtworkMode),front) + !String.IsEqual(Skin.String(CCMusicArtworkMode),both) + [!Skin.HasSetting(CCHomeMusicDisplayAboveMenu) | [!String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) + !String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth)]]</visible></control>
+			<control type="image">
+				<left>0</left><top>0</top><width>470</width><height>74</height>
+				<texture border="18,0,18,0" colordiffuse="$VAR[CCAudioBadgeColorDiffuse]">$VAR[CCTimeBadgeTexturePath]</texture>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>470</width><height>74</height>
+				<texture border="18,0,18,0">CCTimeBadge3D.png</texture>
+				<visible>String.IsEqual(Skin.String(CCAudioBadge3D),true)</visible>
+			</control>
+			<control type="label">
+				<left>16</left><top>7</top><width>438</width><height>29</height>
+				<label>Music View Change Mode</label><font>font_CCSub_Roboto_20</font>
+				<align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<left>16</left><top>36</top><width>438</width><height>29</height>
+				<label>Enter: Change   ·   Down: Leave</label><font>font_CCSub_Roboto_20</font>
+				<align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor>
+			</control>
 		</control>
 	</include>
 	<include name="CCTimeBadgeGroup">
