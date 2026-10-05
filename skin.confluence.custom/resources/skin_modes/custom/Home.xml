@@ -3,6 +3,7 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<onload>RunScript(special://skin/resources/lib/startup.py)</onload>
 	<onload condition="Skin.HasSetting(CCHomeMusicCoverDynamic)">RunScript(special://skin/resources/lib/live_home_adjust.py,apply)</onload>
+	<onload condition="Skin.HasSetting(CCHomeMusicInfoCoverDynamic)">RunScript(special://skin/resources/lib/cover_display_action.py,apply)</onload>
 	<onload condition="String.IsEmpty(Skin.String(CCAudioBadgeTextureV117))">RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgerefresh)</onload>
 	<onload condition="!Window.Previous(Weather) + !Window.Previous(Pictures) + !Window.Previous(Games) + !Window.Previous(RadioChannels) + !Window.Previous(TVChannels) + !Window.Previous(Videos) + !Window.Previous(Music) + !Window.Previous(Programs) + !Window.Previous(Favouritesbrowser) + !Window.Previous(FileManager) + !Window.Previous(Profiles) + !Window.Previous(SystemInfo) + !Window.Previous(EventLog) + !Window.Previous(TVGuide) + !Window.Previous(TVRecordings) + !Window.Previous(TVTimerRules) + !Window.Previous(TVTimers) + !Window.Previous(TVSearch) + !Window.Previous(RadioGuide) + !Window.Previous(RadioRecordings) + !Window.Previous(RadioTimerRules) + !Window.Previous(RadioTimers) + !Window.Previous(RadioSearch) + !Window.Previous(addonbrowser) + !Window.Previous(script.globalsearch) + !Window.Previous(settings) + !Window.Previous(fullscreenvideo) + !Window.Previous(visualisation)">SetFocus(9000,$INFO[Skin.String(DefaultHomeFocus)])</onload>
 	<onunload condition="Container(9000).HasFocus(10) | Container(9000).HasFocus(11) | ControlGroup(9010).HasFocus | ControlGroup(9016).HasFocus | ControlGroup(9017).HasFocus">SetProperty(VideosDirectLink,True)</onunload>
@@ -716,7 +717,7 @@
 			</control>
 			<control type="button" id="9150">
 				<left>-24</left><top>-24</top><width>1</width><height>1</height><label/><font/><texturefocus/><texturenofocus/>
-				<onup>9150</onup><ondown condition="Skin.HasSetting(CCHideHomePlaybackControls)">9000</ondown><ondown condition="!Skin.HasSetting(CCHideHomePlaybackControls)">601</ondown><onleft>9150</onleft><onright>9150</onright>
+				<onup>9150</onup><ondown condition="Skin.HasSetting(CCHideHomePlaybackControls)">9000</ondown><ondown condition="!Skin.HasSetting(CCHideHomePlaybackControls)">601</ondown><onleft>RunScript(special://skin/resources/lib/cover_display_action.py,smaller)</onleft><onright>RunScript(special://skin/resources/lib/cover_display_action.py,larger)</onright>
 				<onclick>RunScript(special://skin/resources/lib/cover_display_action.py)</onclick>
 			</control>
 			<!-- 5.0.173: badge alone indicates music-view change focus. It lives in
@@ -2799,8 +2800,24 @@
 				<animation effect="slide" start="0,0" end="12,0" time="0" condition="String.IsEqual(Skin.String(CCHomeMusicViewMargin),22)">conditional</animation>
 				<animation effect="slide" start="0,0" end="16,0" time="0" condition="String.IsEqual(Skin.String(CCHomeMusicViewMargin),26)">conditional</animation>
 				<animation effect="slide" start="0,0" end="20,0" time="0" condition="String.IsEqual(Skin.String(CCHomeMusicViewMargin),30)">conditional</animation>
-				<control type="group">
-					<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) | [String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
+				<!-- 5.0.183: dynamic info-side artwork. Static controls remain the fallback when Above Menu is off. -->
+			<control type="image" id="9480">
+				<description>Dynamic info-side single front</description><left>-20</left><top>-187</top><width>1800</width><height>302</height>
+				<aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>Skin.HasSetting(CCHomeMusicInfoCoverDynamic) + Skin.HasSetting(CCHomeMusicDisplayAboveMenu) + [String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) | [String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]]</visible>
+			</control>
+			<control type="image" id="9481">
+				<description>Dynamic info-side pair front</description><left>-20</left><top>-187</top><width>1800</width><height>302</height>
+				<aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
+				<visible>Skin.HasSetting(CCHomeMusicInfoCoverDynamic) + Skin.HasSetting(CCHomeMusicDisplayAboveMenu) + String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))</visible>
+			</control>
+			<control type="image" id="9482">
+				<description>Dynamic info-side pair back</description><left>292</left><top>-187</top><width>1800</width><height>302</height>
+				<aspectratio align="left" aligny="bottom">keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture>
+				<visible>Skin.HasSetting(CCHomeMusicInfoCoverDynamic) + Skin.HasSetting(CCHomeMusicDisplayAboveMenu) + String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))</visible>
+			</control>
+			<control type="group">
+					<visible>[String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) | [String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]] + [!Skin.HasSetting(CCHomeMusicInfoCoverDynamic) | !Skin.HasSetting(CCHomeMusicDisplayAboveMenu)]</visible>
 					<control type="image"><description>Info-side large front 560px margin 6</description><left>-20</left><top>-445</top><width>1800</width><height>560</height><aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicViewMargin),6) + String.IsEqual(Skin.String(CCMainMenuYOffset),-250)</visible></control>
 					<control type="image"><description>Info-side large front 535px margin 6</description><left>-20</left><top>-420</top><width>1800</width><height>535</height><aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicViewMargin),6) + String.IsEqual(Skin.String(CCMainMenuYOffset),-225)</visible></control>
 					<control type="image"><description>Info-side large front 510px margin 6</description><left>-20</left><top>-395</top><width>1800</width><height>510</height><aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicViewMargin),6) + String.IsEqual(Skin.String(CCMainMenuYOffset),-200)</visible></control>
@@ -2964,7 +2981,7 @@
 					<control type="image"><description>Info-side large front 2px margin 30</description><left>-20</left><top>153</top><width>1800</width><height>2</height><aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicViewMargin),30) + String.IsEqual(Skin.String(CCMainMenuYOffset),300)</visible></control>
 				</control>
 				<control type="group">
-					<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))</visible>
+					<visible>String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt)) + [!Skin.HasSetting(CCHomeMusicInfoCoverDynamic) | !Skin.HasSetting(CCHomeMusicDisplayAboveMenu)]</visible>
 					<control type="image"><description>Info-side large pair front 560px margin 6</description><left>-20</left><top>-445</top><width>1800</width><height>560</height><aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicViewMargin),6) + String.IsEqual(Skin.String(CCMainMenuYOffset),-250)</visible></control>
 					<control type="image"><description>Info-side large pair front 535px margin 6</description><left>-20</left><top>-420</top><width>1800</width><height>535</height><aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicViewMargin),6) + String.IsEqual(Skin.String(CCMainMenuYOffset),-225)</visible></control>
 					<control type="image"><description>Info-side large pair front 510px margin 6</description><left>-20</left><top>-395</top><width>1800</width><height>510</height><aspectratio align="left" aligny="bottom">keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicViewMargin),6) + String.IsEqual(Skin.String(CCMainMenuYOffset),-200)</visible></control>
@@ -3995,26 +4012,26 @@
 			     explicitly shifted copy is used only while the song itself really
 			     occupies two wrap rows. No animation or nested moving album group. -->
 			<!-- Album at the historical baseline when the song uses one row. -->
-			<control type="label">
+			<control type="label" id="9500">
 				<left>0</left><top>0</top><width>1830</width><height>34</height>
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9501">
 				<left>0</left><top>0</top><width>1830</width><height>34</height>
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9502">
 				<left>0</left><top>-34</top><width>1830</width><height>34</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + [String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))]</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9503">
 				<left>0</left><top>0</top><width>1830</width><height>34</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapLower)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
@@ -4023,26 +4040,26 @@
 
 			<!-- If the song wraps to two rows, move the complete album block up by
 			     exactly one song row (45 px). Album wrap can then yield four rows. -->
-			<control type="label">
+			<control type="label" id="9504">
 				<left>0</left><top>-45</top><width>1830</width><height>34</height>
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),truncate) + [String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9505">
 				<left>0</left><top>-45</top><width>1830</width><height>34</height>
 				<label>$VAR[CCNowPlayingAlbumLineText]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<visible>String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),scroll) + [String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9506">
 				<left>0</left><top>-79</top><width>1830</width><height>34</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<visible>[String.IsEmpty(Skin.String(CCNowPlayingAlbumOverflow)) | String.IsEqual(Skin.String(CCNowPlayingAlbumOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapUpper)) + [String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9507">
 				<left>0</left><top>-45</top><width>1830</width><height>34</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.AlbumWrapLower)]</label>
 				<align>left</align><aligny>center</aligny><font>font12</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
@@ -4051,26 +4068,26 @@
 
 			<!-- Song overflow uses the same three modes as the album. Wrap is
 			     pre-split by the selector service; one-line wrap stays on y=32. -->
-			<control type="label">
+			<control type="label" id="9508">
 				<left>0</left><top>32</top><width>1830</width><height>45</height>
 				<label>$VAR[CCNowPlayingSongTitle]</label>
 				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<visible>String.IsEqual(Skin.String(CCNowPlayingSongOverflow),truncate)</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9509">
 				<left>0</left><top>32</top><width>1830</width><height>45</height>
 				<label>$VAR[CCNowPlayingSongTitle]</label>
 				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<visible>String.IsEqual(Skin.String(CCNowPlayingSongOverflow),scroll)</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9510">
 				<left>0</left><top>-13</top><width>1830</width><height>45</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper)]</label>
 				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>
 				<visible>[String.IsEmpty(Skin.String(CCNowPlayingSongOverflow)) | String.IsEqual(Skin.String(CCNowPlayingSongOverflow),wrap)] + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapUpper))</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="9511">
 				<left>0</left><top>32</top><width>1830</width><height>45</height>
 				<label>$INFO[Window(Home).Property(ConfluenceCustom.NowPlaying.SongWrapLower)]</label>
 				<align>left</align><aligny>center</aligny><font>font13_title</font><textcolor>white</textcolor><shadowcolor>black</shadowcolor>

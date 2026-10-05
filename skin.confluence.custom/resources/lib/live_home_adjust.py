@@ -111,8 +111,8 @@ def _soft_shadow_shifts(extent):
     if extent <= 0:
         return ()
     count = min(SOFT_SHADOW_LAYERS, extent)
-    return tuple(((i + 1) * extent + count - 1) // count for i in range(count))
-
+    start = extent - count + 1
+    return tuple(range(start, extent + 1))
 
 def _apply_dynamic_shadow_once(size):
     window = xbmcgui.Window(HOME_WINDOW_ID)

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addon id="skin.confluence.custom" version="5.0.181" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
+<addon id="skin.confluence.custom" version="5.0.183" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
 		<import addon="xbmc.python" version="3.0.0" />
@@ -29,7 +29,7 @@
 			<screenshot>resources/screenshot-08.jpg</screenshot>
 			<screenshot>resources/screenshot-09.jpg</screenshot>
 		</assets>
-		<news>5.0.181: Make the dynamic soft shadow more visible and add optional song durations to the song popup.</news>
+		<news>5.0.183: Move cover sizing into Change Music View, add coordinated dynamic info-side artwork/text sizing, and smooth the soft shadow without additional image layers.</news>
 		<summary lang="en_GB">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="en_US">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="de_DE">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>

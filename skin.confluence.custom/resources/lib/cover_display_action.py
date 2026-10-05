@@ -3,6 +3,7 @@ from __future__ import absolute_import
 
 import math
 import struct
+import sys
 import urllib.parse
 
 import xbmc
@@ -21,6 +22,21 @@ INFO_MARGIN_SETTING = "CCHomeMusicViewMargin"
 INFO_MARGIN_DEFAULT = 10
 INFO_DEFAULT_HEIGHT = 322
 INFO_MAX_IMAGE_WIDTH = 1800
+COVER_SIZE_SETTING = "CCHomeMusicCoverSize"
+COVER_DYNAMIC_SETTING = "CCHomeMusicCoverDynamic"
+INFO_COVER_SIZE_SETTING = "CCHomeMusicInfoCoverSize"
+INFO_DYNAMIC_SETTING = "CCHomeMusicInfoCoverDynamic"
+ABOVE_MENU_SETTING = "CCHomeMusicDisplayAboveMenu"
+COVER_SIZE_STEP = 25
+COVER_SIZE_MIN = 25
+INFO_TEXT_BASE_WIDTH = 1830
+INFO_TEXT_MIN_WIDTH = 240
+INFO_SINGLE_FRONT_ID = 9480
+INFO_PAIR_FRONT_ID = 9481
+INFO_PAIR_BACK_ID = 9482
+INFO_TEXT_CONTROL_IDS = tuple(range(9500, 9512)) + (9140, 9141, 9104)
+INFO_TEXT_WIDTH_PROP = "ConfluenceCustom.NowPlaying.InfoTextWidth"
+INFO_DYNAMIC_GEOMETRY_PROP = "ConfluenceCustom.NowPlaying.InfoDynamicGeometry"
 COMPACT_HEIGHT = 115
 COMPACT_WIDTH_STEP = 10
 COMPACT_WIDTH_MIN = 30
@@ -248,26 +264,124 @@ def _set_shift_digits(home, base, value):
         home.setProperty(base + suffix, str(digit))
 
 
+def _skin_string(name, default=""):
+    value = xbmc.getInfoLabel("Skin.String({})".format(name))
+    return value if value else default
+
+
+def _skin_int(name, default):
+    try:
+        return int(_skin_string(name, str(default)))
+    except (TypeError, ValueError):
+        return int(default)
+
+
+def _set_skin_string(name, value):
+    xbmc.executebuiltin("Skin.SetString({},{})".format(name, int(value)))
+
+
+def _set_skin_bool(name):
+    xbmc.executebuiltin("Skin.SetBool({})".format(name))
+
+
+def _has_setting(name):
+    return xbmc.getCondVisibility("Skin.HasSetting({})".format(name))
+
+
+def _current_mode():
+    return (_skin_string(SETTING, "front") or "front").strip().lower()
+
+
+def _home_control(home, control_id):
+    try:
+        return home.getControl(int(control_id))
+    except Exception:
+        return None
+
+
+def _set_geometry(control, x, y, width, height):
+    if control is None:
+        return False
+    try:
+        control.setPosition(int(x), int(y))
+        control.setWidth(max(1, int(width)))
+        control.setHeight(max(1, int(height)))
+        return True
+    except Exception:
+        return False
+
+
+def _set_info_text_width(home, width):
+    width = max(INFO_TEXT_MIN_WIDTH, min(INFO_TEXT_BASE_WIDTH, int(width)))
+    cached = home.getProperty(INFO_TEXT_WIDTH_PROP) or ""
+    if cached == str(width):
+        return True
+    changed = 0
+    for control_id in INFO_TEXT_CONTROL_IDS:
+        control = _home_control(home, control_id)
+        if control is not None:
+            try:
+                control.setWidth(width)
+                changed += 1
+            except Exception:
+                pass
+    if changed == len(INFO_TEXT_CONTROL_IDS):
+        home.setProperty(INFO_TEXT_WIDTH_PROP, str(width))
+        return True
+    home.clearProperty(INFO_TEXT_WIDTH_PROP)
+    return False
+
+
+def _apply_dynamic_info_art(home, mode, height, front_width, back_width, margin, back_art):
+    key = "{}|{}|{}|{}|{}|{}".format(mode, int(height), int(front_width), int(back_width), int(margin), 1 if back_art else 0)
+    if home.getProperty(INFO_DYNAMIC_GEOMETRY_PROP) == key:
+        return True
+    top = 115 - int(height)
+    if mode == "infoboth" and back_art:
+        ok_front = _set_geometry(_home_control(home, INFO_PAIR_FRONT_ID), -20, top, INFO_MAX_IMAGE_WIDTH, height)
+        ok_back = _set_geometry(_home_control(home, INFO_PAIR_BACK_ID), -20 + front_width + margin, top, INFO_MAX_IMAGE_WIDTH, height)
+        ok = ok_front and ok_back
+    else:
+        ok = _set_geometry(_home_control(home, INFO_SINGLE_FRONT_ID), -20, top, INFO_MAX_IMAGE_WIDTH, height)
+    if ok:
+        home.setProperty(INFO_DYNAMIC_GEOMETRY_PROP, key)
+    else:
+        home.clearProperty(INFO_DYNAMIC_GEOMETRY_PROP)
+    return ok
+
+
 def sync_info_cover_geometry(mode=None):
-    """Publish exact rendered widths and equal-margin horizontal shifts."""
+    """Publish artwork geometry and keep the footer text edge aligned.
+
+    The established static geometry remains untouched unless the user has
+    explicitly resized an info-side cover and Above Menu is enabled. In that
+    dynamic case artwork, text start, text width and wrap width all derive from
+    the same real artwork dimensions.
+    """
     home = _home()
-    height = _info_cover_height()
+    mode = (mode or _current_mode()).strip().lower()
+    natural_height = _info_cover_height()
+    dynamic_info = (
+        _has_setting(INFO_DYNAMIC_SETTING)
+        and _has_setting(ABOVE_MENU_SETTING)
+        and mode in ("infofront", "infoboth")
+    )
+    if dynamic_info:
+        requested = max(COVER_SIZE_MIN, _skin_int(INFO_COVER_SIZE_SETTING, natural_height))
+        height = min(natural_height, requested)
+    else:
+        height = natural_height
+
     front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
     back_art = home.getProperty(BACK_PROP) or ""
-
     front_width = _info_art_width(front_art, height)
     back_width = _info_art_width(back_art, height) if back_art else 0
     margin = music_view_margin()
 
-    # Footer origin is x=30. Artwork starts at x=margin, so all following
-    # positions are derived from the real rendered image edges plus the same
-    # configured margin. Front and back widths remain fully independent.
     single_shift = max(0, front_width + (2 * margin) - 30)
     pair_shift = max(0, front_width + back_width + (3 * margin) - 30)
     back_shift = max(0, front_width + margin)
 
-    if mode is None:
-        mode = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
     if mode == "infofront":
         text_shift = single_shift
     elif mode == "infoboth":
@@ -290,6 +404,13 @@ def sync_info_cover_geometry(mode=None):
     home.setProperty(INFO_TEXT_SHIFT_PROP, str(text_shift))
     _set_shift_digits(home, INFO_BACK_SHIFT_PROP, back_shift)
     _set_shift_digits(home, INFO_TEXT_SHIFT_PROP, text_shift)
+
+    if dynamic_info:
+        _apply_dynamic_info_art(home, mode, height, front_width, back_width, margin, back_art)
+        _set_info_text_width(home, max(INFO_TEXT_MIN_WIDTH, INFO_TEXT_BASE_WIDTH - text_shift))
+    else:
+        home.clearProperty(INFO_DYNAMIC_GEOMETRY_PROP)
+        _set_info_text_width(home, INFO_TEXT_BASE_WIDTH)
     return text_shift
 
 
@@ -343,13 +464,47 @@ def clear_back_art():
             home.clearProperty(base + suffix)
 
 
-def main():
-    # 5.0.170: centered front -> centered front+back -> large front beside
-    # info -> large front+back beside info -> compact footer cover -> none.
-    # Back-art states are skipped when the current album has no back artwork.
+def _resize_cover(direction):
+    sync_back_art()
+    mode = _current_mode()
+    delta = COVER_SIZE_STEP if direction > 0 else -COVER_SIZE_STEP
+
+    if mode in ("front", "both"):
+        current = max(COVER_SIZE_MIN, _skin_int(COVER_SIZE_SETTING, 195))
+        value = max(COVER_SIZE_MIN, current + delta)
+        if value == current:
+            return
+        _set_skin_string(COVER_SIZE_SETTING, value)
+        _set_skin_bool(COVER_DYNAMIC_SETTING)
+        try:
+            from live_home_adjust import apply_dynamic_cover
+            apply_dynamic_cover(value)
+        except Exception:
+            pass
+        return
+
+    if mode in ("infofront", "infoboth") and _has_setting(ABOVE_MENU_SETTING):
+        natural = _info_cover_height()
+        if _has_setting(INFO_DYNAMIC_SETTING):
+            current = max(COVER_SIZE_MIN, min(natural, _skin_int(INFO_COVER_SIZE_SETTING, natural)))
+        else:
+            current = natural
+        value = max(COVER_SIZE_MIN, min(natural, current + delta))
+        if value == current:
+            return
+        _set_skin_string(INFO_COVER_SIZE_SETTING, value)
+        _set_skin_bool(INFO_DYNAMIC_SETTING)
+        # Clear the cache before the first switch from the proven static controls.
+        _home().clearProperty(INFO_DYNAMIC_GEOMETRY_PROP)
+        sync_info_cover_geometry(mode)
+
+
+def _cycle_view():
+    # Proven 5.0.170 order: centered front -> centered front+back -> large
+    # front beside info -> large front+back beside info -> compact -> none.
     has_back = bool(sync_back_art())
     sync_compact_cover_width()
-    mode = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
+    mode = _current_mode()
     if mode == "front":
         new_mode = "both" if has_back else "infofront"
     elif mode == "both":
@@ -366,5 +521,19 @@ def main():
     sync_info_cover_geometry(mode=new_mode)
 
 
+def main(action="change"):
+    action = (action or "change").strip().lower()
+    if action == "smaller":
+        _resize_cover(-1)
+    elif action == "larger":
+        _resize_cover(1)
+    elif action == "apply":
+        sync_back_art()
+        sync_compact_cover_width()
+        sync_info_cover_geometry()
+    else:
+        _cycle_view()
+
+
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1] if len(sys.argv) > 1 else "change")

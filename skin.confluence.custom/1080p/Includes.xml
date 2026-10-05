@@ -6,7 +6,8 @@
 	<expression name="CCSongSelectorEnabled">!String.IsEqual(Skin.String(CCSongSelectorEnabled),false)</expression>
 	<expression name="CCSongSelectorAvailable">$EXP[CCSongSelectorEnabled] + Player.HasAudio + !MusicPlayer.Content(LiveTV) + !String.IsEqual(Playlist.Length(music),0) + !Playlist.IsRandom + String.IsEmpty(Window(Videos).Property(PlayingBackgroundMedia))</expression>
 	<expression name="CCSongSelectorHasFocus">String.IsEqual(Window(Home).Property(ConfluenceCustom.SongSelector.PopupOpen),1) | Control.HasFocus(9104) | Control.HasFocus(9110)</expression>
-	<expression name="CCHomeCurrentMainHasSubMenu">[Container(9000).HasFocus(2) + !String.IsEmpty(Skin.String(CCMenu_videos_1_Label))] | [Container(9000).HasFocus(10) + !String.IsEmpty(Skin.String(CCMenu_movies_1_Label))] | [Container(9000).HasFocus(11) + !String.IsEmpty(Skin.String(CCMenu_tvshows_1_Label))] | [Container(9000).HasFocus(3) + !String.IsEmpty(Skin.String(CCMenu_music_1_Label))] | [Container(9000).HasFocus(5) + [!String.IsEmpty(Skin.String(CCMenu_system_1_Label)) | $EXP[CCSongSelectorEnabled]]] | Container(9000).HasFocus(6) | [Container(9000).HasFocus(12) + !String.IsEmpty(Skin.String(CCMenu_tv_1_Label))] | [Container(9000).HasFocus(4) + !String.IsEmpty(Skin.String(CCMenu_pictures_1_Label))] | [Container(9000).HasFocus(13) + !String.IsEmpty(Skin.String(CCMenu_radio_1_Label))] | [Container(9000).HasFocus(1) + !String.IsEmpty(Skin.String(CCMenu_addons_1_Label))]</expression>
+		<expression name="CCMusicViewSizeAdjustable">String.IsEqual(Skin.String(CCMusicArtworkMode),front) | String.IsEqual(Skin.String(CCMusicArtworkMode),both) | [Skin.HasSetting(CCHomeMusicDisplayAboveMenu) + [String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) | String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth)]]</expression>
+<expression name="CCHomeCurrentMainHasSubMenu">[Container(9000).HasFocus(2) + !String.IsEmpty(Skin.String(CCMenu_videos_1_Label))] | [Container(9000).HasFocus(10) + !String.IsEmpty(Skin.String(CCMenu_movies_1_Label))] | [Container(9000).HasFocus(11) + !String.IsEmpty(Skin.String(CCMenu_tvshows_1_Label))] | [Container(9000).HasFocus(3) + !String.IsEmpty(Skin.String(CCMenu_music_1_Label))] | [Container(9000).HasFocus(5) + [!String.IsEmpty(Skin.String(CCMenu_system_1_Label)) | $EXP[CCSongSelectorEnabled]]] | Container(9000).HasFocus(6) | [Container(9000).HasFocus(12) + !String.IsEmpty(Skin.String(CCMenu_tv_1_Label))] | [Container(9000).HasFocus(4) + !String.IsEmpty(Skin.String(CCMenu_pictures_1_Label))] | [Container(9000).HasFocus(13) + !String.IsEmpty(Skin.String(CCMenu_radio_1_Label))] | [Container(9000).HasFocus(1) + !String.IsEmpty(Skin.String(CCMenu_addons_1_Label))]</expression>
 	<include file="Defaults.xml"/>
 	<include file="ViewsVideoLibrary.xml"/>
 	<include file="ViewsMusicLibrary.xml"/>
@@ -3496,7 +3497,7 @@
 			</control>
 		</control>
 	</include>
-	<!-- 5.0.173: two-line focus guide using the exact time-badge surface. -->
+	<!-- 5.0.183: Change Music View with context-sensitive live sizing. -->
 	<include name="CCMusicViewChangeBadge">
 		<control type="group">
 			<width>470</width><height>74</height>
@@ -3511,13 +3512,20 @@
 			</control>
 			<control type="label">
 				<left>16</left><top>7</top><width>438</width><height>29</height>
-				<label>Music View Change Mode</label><font>font_CCSub_Roboto_20</font>
+				<label>Change Music View</label><font>font_CCSub_RobotoBold_20</font>
 				<align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor>
+			</control>
+			<control type="label">
+				<left>16</left><top>36</top><width>438</width><height>29</height>
+				<label>L/R: Size   ·   Enter: Change   ·   Down: Leave</label><font>font_CCSub_Roboto_20</font>
+				<align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor>
+				<visible>$EXP[CCMusicViewSizeAdjustable]</visible>
 			</control>
 			<control type="label">
 				<left>16</left><top>36</top><width>438</width><height>29</height>
 				<label>Enter: Change   ·   Down: Leave</label><font>font_CCSub_Roboto_20</font>
 				<align>center</align><aligny>center</aligny><textcolor>FFFFFFFF</textcolor><shadowcolor>AA000000</shadowcolor>
+				<visible>!$EXP[CCMusicViewSizeAdjustable]</visible>
 			</control>
 		</control>
 	</include>
