@@ -29,488 +29,193 @@ jobs:
           settings_path = root / '1080p' / 'SkinSettings.xml'
           home_path = root / '1080p' / 'Home.xml'
           includes_path = root / '1080p' / 'Includes.xml'
-          mainmenu_path = root / 'resources' / 'lib' / 'mainmenu_style.py'
-          startup_path = root / 'resources' / 'lib' / 'startup.py'
           addon_path = root / 'addon.xml'
-          live_path = root / 'resources' / 'lib' / 'live_home_adjust.py'
 
-          def replace_once(text, old, new, label):
-              count = text.count(old)
-              if count != 1:
-                  raise RuntimeError(f'{label}: expected exactly one match, got {count}')
-              return text.replace(old, new, 1)
+          def replace_once(text, old, new, label, allow_already=False):
+              if old in text:
+                  if text.count(old) != 1:
+                      raise RuntimeError('{}: expected one source match'.format(label))
+                  return text.replace(old, new, 1)
+              if allow_already and new in text:
+                  return text
+              raise RuntimeError('{}: source match not found'.format(label))
 
-          # 1) Move Vertical menu position from Menus to Home, below Shadow offset.
+          # Settings: move Vertical menu position into Home, immediately below
+          # Shadow offset. Point both live-adjusted settings directly at the new
+          # controller; the existing mainmenu_style.py remains untouched.
           settings = settings_path.read_text(encoding='utf-8')
+          settings = replace_once(
+              settings,
+              'RunScript(special://skin/resources/lib/mainmenu_style.py,homecover)',
+              'RunScript(special://skin/resources/lib/live_home_adjust.py,cover)',
+              'cover live action',
+              allow_already=True,
+          )
+          settings = replace_once(
+              settings,
+              'RunScript(special://skin/resources/lib/mainmenu_style.py,yoffset)',
+              'RunScript(special://skin/resources/lib/live_home_adjust.py,yoffset)',
+              'menu-position live action',
+              allow_already=True,
+          )
+
           vertical_re = re.compile(
-              r'\n(?P<indent>\s*)<control type="button" id="522">.*?'
-              r'<onclick>RunScript\(special://skin/resources/lib/mainmenu_style\.py,yoffset\)</onclick>.*?'
-              r'</control>',
-              re.S,
+              r'\n\s*<control type="button" id="522">.*?</control>', re.S
           )
-          match = vertical_re.search(settings)
-          if not match:
-              raise RuntimeError('Vertical menu position control not found')
-          vertical_block = match.group(0)
+          matches = list(vertical_re.finditer(settings))
+          if len(matches) != 1:
+              raise RuntimeError('Vertical menu position control count: {}'.format(len(matches)))
+          match = matches[0]
+          vertical_block = match.group(0).lstrip('\n')
           settings = settings[:match.start()] + settings[match.end():]
+
           shadow_re = re.compile(
-              r'(?P<block><control type="button" id="547">.*?'
-              r'<onclick>RunScript\(special://skin/resources/lib/mainmenu_style\.py,homeshadowoffset\)</onclick>.*?'
-              r'</control>)',
-              re.S,
+              r'<control type="button" id="547">.*?</control>', re.S
           )
-          shadow = shadow_re.search(settings)
-          if not shadow:
-              raise RuntimeError('Shadow offset control not found')
-          block = vertical_block.lstrip('\n')
-          settings = settings[:shadow.end()] + '\n' + block + settings[shadow.end():]
+          shadow_matches = list(shadow_re.finditer(settings))
+          if len(shadow_matches) != 1:
+              raise RuntimeError('Shadow offset control count: {}'.format(len(shadow_matches)))
+          shadow = shadow_matches[0]
+          settings = settings[:shadow.end()] + '\n' + vertical_block + settings[shadow.end():]
           settings_path.write_text(settings, encoding='utf-8')
 
-          # 2/3) Dynamic cover mode: keep the proven static sizes untouched for old
-          # installs. In dynamic mode only the 195 px base controls are used and
-          # resized at runtime; old larger controls are suppressed.
           home = home_path.read_text(encoding='utf-8')
           includes = includes_path.read_text(encoding='utf-8')
 
-          dynamic_flag = 'CCHomeMusicCoverDynamic'
-          size_expr_re = re.compile(r'String\.IsEqual\(Skin\.String\(CCHomeMusicCoverSize\),(\d+)\)')
+          apply_onload = (
+              '\t<onload condition="Skin.HasSetting(CCHomeMusicCoverDynamic)">'
+              'RunScript(special://skin/resources/lib/live_home_adjust.py,apply)</onload>\n'
+          )
+          if apply_onload not in home:
+              startup_onload = '\t<onload>RunScript(special://skin/resources/lib/startup.py)</onload>\n'
+              if startup_onload not in home:
+                  raise RuntimeError('Home startup onload not found')
+              home = home.replace(startup_onload, startup_onload + apply_onload, 1)
 
-          def dynamic_conditions(text):
-              def repl(m):
-                  if m.group(1) == '195':
-                      return m.group(0)
-                  return '[' + m.group(0) + ' + !Skin.HasSetting(' + dynamic_flag + ')]'
-              text = size_expr_re.sub(repl, text)
-              base = 'String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)'
-              dyn = '[Skin.HasSetting(CCHomeMusicCoverDynamic) | ' + base + ']'
-              text = text.replace(base, dyn)
-              return text
-
-          home = dynamic_conditions(home)
-          includes = dynamic_conditions(includes)
-
-          def add_image_id(text, description, control_id):
-              pattern = re.compile(
-                  r'<control type="image"(?P<rest>\s*>\s*<description>' + re.escape(description) + r'</description>)'
+          # Existing installations keep their proven static cover-size controls.
+          # Once the live selector is used, dynamic mode shows only the 195 px
+          # base controls and resizes those at runtime to any positive size.
+          if 'Skin.HasSetting(CCHomeMusicCoverDynamic)' not in includes:
+              size_expr_re = re.compile(
+                  r'String\.IsEqual\(Skin\.String\(CCHomeMusicCoverSize\),(\d+)\)'
               )
-              matches = list(pattern.finditer(text))
-              if len(matches) != 1:
-                  raise RuntimeError(f'{description}: expected one image, got {len(matches)}')
-              return pattern.sub('<control type="image" id="{}"\\g<rest>'.format(control_id), text, count=1)
 
-          image_ids = [
-              ('Cover image 195px', 9301),
-              ('Borderless cover image 195px', 9302),
-              ('Selector single framed artwork 195px', 9303),
-              ('Selector single borderless artwork 195px', 9304),
-              ('Selector front framed pair 195px', 9305),
-              ('Selector back framed pair 195px', 9306),
-              ('Selector front borderless pair 195px', 9307),
-              ('Selector back borderless pair 195px', 9308),
-          ]
-          for description, control_id in image_ids:
-              home = add_image_id(home, description, control_id)
+              def dynamic_conditions(text):
+                  def repl(match):
+                      if match.group(1) == '195':
+                          return match.group(0)
+                      return '[{} + !Skin.HasSetting(CCHomeMusicCoverDynamic)]'.format(
+                          match.group(0)
+                      )
 
-          shadow_wrappers = [
-              ('CCHomeMusicMainShadowOffsetGroups', 9310),
-              ('CCHomeMusicSelectorSingleShadowOffsetGroups', 9311),
-              ('CCHomeMusicSelectorPairShadowOffsetGroups', 9312),
-          ]
-          for include_name, control_id in shadow_wrappers:
-              old = '<include>{}</include>'.format(include_name)
-              new = '<control type="group" id="{}"><include>{}</include></control>'.format(control_id, include_name)
-              home = replace_once(home, old, new, include_name + ' wrapper')
+                  text = size_expr_re.sub(repl, text)
+                  base = (
+                      'String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | '
+                      'String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)'
+                  )
+                  return text.replace(
+                      base,
+                      '[Skin.HasSetting(CCHomeMusicCoverDynamic) | {}]'.format(base),
+                  )
 
-          # Give the 195px music-info instance an addressable group so its left
-          # edge and width can follow an arbitrary cover size.
-          info_def_old = (
-              '<param name="visible" default="true"/>\n'
-              '\t\t<definition>\n'
-              '\t\t\t<control type="group">'
-          )
-          info_def_new = (
-              '<param name="visible" default="true"/>\n'
-              '\t\t<param name="id" default="0"/>\n'
-              '\t\t<definition>\n'
-              '\t\t\t<control type="group" id="$PARAM[id]">'
-          )
-          includes = replace_once(includes, info_def_old, info_def_new, 'CCHomeMusicInfoText id parameter')
+              home = dynamic_conditions(home)
+              includes = dynamic_conditions(includes)
 
-          info_instance_re = re.compile(
-              r'(<include content="CCHomeMusicInfoText">\s*'
-              r'<param name="left" value="255"\s*/>)'
-          )
-          matches = list(info_instance_re.finditer(home))
-          if len(matches) != 1:
-              raise RuntimeError(f'195px music info instance: expected one match, got {len(matches)}')
-          home = info_instance_re.sub(r'\1\n\t\t\t\t<param name="id" value="9309"/>', home, count=1)
+              def add_image_id(text, description, control_id):
+                  pattern = re.compile(
+                      r'<control type="image"(?P<rest>\s*>\s*<description>'
+                      + re.escape(description)
+                      + r'</description>)'
+                  )
+                  found = list(pattern.finditer(text))
+                  if len(found) != 1:
+                      raise RuntimeError(
+                          '{}: expected one base image, got {}'.format(description, len(found))
+                      )
+                  return pattern.sub(
+                      '<control type="image" id="{}"\\g<rest>'.format(control_id),
+                      text,
+                      count=1,
+                  )
+
+              image_ids = [
+                  ('Cover image 195px', 9301),
+                  ('Borderless cover image 195px', 9302),
+                  ('Selector single framed artwork 195px', 9303),
+                  ('Selector single borderless artwork 195px', 9304),
+                  ('Selector front framed pair 195px', 9305),
+                  ('Selector back framed pair 195px', 9306),
+                  ('Selector front borderless pair 195px', 9307),
+                  ('Selector back borderless pair 195px', 9308),
+              ]
+              for description, control_id in image_ids:
+                  home = add_image_id(home, description, control_id)
+
+              for include_name, control_id in (
+                  ('CCHomeMusicMainShadowOffsetGroups', 9310),
+                  ('CCHomeMusicSelectorSingleShadowOffsetGroups', 9311),
+                  ('CCHomeMusicSelectorPairShadowOffsetGroups', 9312),
+              ):
+                  old = '<include>{}</include>'.format(include_name)
+                  new = (
+                      '<control type="group" id="{}"><include>{}</include></control>'
+                      .format(control_id, include_name)
+                  )
+                  if home.count(old) != 1:
+                      raise RuntimeError('{} include count is not one'.format(include_name))
+                  home = home.replace(old, new, 1)
+
+              info_def_old = (
+                  '<param name="visible" default="true"/>\n'
+                  '\t\t<definition>\n'
+                  '\t\t\t<control type="group">'
+              )
+              info_def_new = (
+                  '<param name="visible" default="true"/>\n'
+                  '\t\t<param name="id" default="0"/>\n'
+                  '\t\t<definition>\n'
+                  '\t\t\t<control type="group" id="$PARAM[id]">'
+              )
+              if includes.count(info_def_old) != 1:
+                  raise RuntimeError('CCHomeMusicInfoText definition not found exactly once')
+              includes = includes.replace(info_def_old, info_def_new, 1)
+
+              info_instance_re = re.compile(
+                  r'(<include content="CCHomeMusicInfoText">\s*'
+                  r'<param name="left" value="255"\s*/>)'
+              )
+              info_matches = list(info_instance_re.finditer(home))
+              if len(info_matches) != 1:
+                  raise RuntimeError(
+                      '195px music info instance count: {}'.format(len(info_matches))
+                  )
+              home = info_instance_re.sub(
+                  r'\1\n\t\t\t\t<param name="id" value="9309"/>',
+                  home,
+                  count=1,
+              )
 
           home_path.write_text(home, encoding='utf-8')
           includes_path.write_text(includes, encoding='utf-8')
 
-          # Live adjustment implementation. Up/down changes immediately on Home;
-          # OK commits. Back restores the value that was active on entry.
-          live_code = r'''# -*- coding: utf-8 -*-
-          import sys
-          import xbmc
-          import xbmcgui
-
-          HOME_WINDOW_ID = 10000
-          COVER_SIZE_SETTING = "CCHomeMusicCoverSize"
-          COVER_DYNAMIC_SETTING = "CCHomeMusicCoverDynamic"
-          Y_OFFSET_SETTING = "CCMainMenuYOffset"
-          COVER_DEFAULT = 195
-          Y_DEFAULT = 0
-          Y_MIN = -250
-          Y_MAX = 300
-          STEP = 25
-
-          ACTION_MOVE_UP = 3
-          ACTION_MOVE_DOWN = 4
-          ACTION_SELECT_ITEM = 7
-          ACTION_PREVIOUS_MENU = 10
-          ACTION_NAV_BACK = 92
-
-          ID_MAIN_FRAME = 9301
-          ID_MAIN_SHADOW_COVER = 9302
-          ID_SELECTOR_SINGLE_FRAME = 9303
-          ID_SELECTOR_SINGLE_SHADOW_COVER = 9304
-          ID_SELECTOR_PAIR_FRAME_FRONT = 9305
-          ID_SELECTOR_PAIR_FRAME_BACK = 9306
-          ID_SELECTOR_PAIR_SHADOW_FRONT = 9307
-          ID_SELECTOR_PAIR_SHADOW_BACK = 9308
-          ID_MAIN_INFO = 9309
-          ID_MAIN_SHADOWS = 9310
-          ID_SELECTOR_SINGLE_SHADOWS = 9311
-          ID_SELECTOR_PAIR_SHADOWS = 9312
-
-
-          def _skin_string(name, default=""):
-              value = xbmc.getInfoLabel("Skin.String({})".format(name))
-              return value if value else default
-
-
-          def _skin_int(name, default):
-              try:
-                  return int(_skin_string(name, str(default)))
-              except (TypeError, ValueError):
-                  return int(default)
-
-
-          def _set_string(name, value):
-              xbmc.executebuiltin("Skin.SetString({},{})".format(name, int(value)))
-
-
-          def _is_dynamic():
-              return xbmc.getCondVisibility("Skin.HasSetting({})".format(COVER_DYNAMIC_SETTING))
-
-
-          def _set_dynamic(enabled):
-              if enabled:
-                  xbmc.executebuiltin("Skin.SetBool({})".format(COVER_DYNAMIC_SETTING))
-              else:
-                  xbmc.executebuiltin("Skin.Reset({})".format(COVER_DYNAMIC_SETTING))
-
-
-          def _control(window, control_id):
-              try:
-                  return window.getControl(control_id)
-              except Exception:
-                  return None
-
-
-          def _set_geometry(control, x, y, width, height):
-              if control is None:
-                  return
-              control.setPosition(int(x), int(y))
-              control.setWidth(max(1, int(width)))
-              control.setHeight(max(1, int(height)))
-
-
-          def _set_zoom(control, percent, center_x, center_y):
-              if control is None:
-                  return
-              attr = "effect=zoom start=100 end={:.4f} center={},{} time=0 condition=true".format(
-                  float(percent), int(center_x), int(center_y)
-              )
-              control.setAnimations([("conditional", attr)])
-
-
-          def _apply_dynamic_cover_once(size):
-              window = xbmcgui.Window(HOME_WINDOW_ID)
-              size = max(1, int(size))
-
-              # Normal Home cover: the framed original is bottom-anchored at y=511;
-              # borderless artwork is bottom-anchored at y=495.
-              frame_height = max(443, size)
-              frame_top = 68 if size <= 443 else 511 - size
-              _set_geometry(_control(window, ID_MAIN_FRAME), 30, frame_top, size, frame_height)
-              _set_geometry(_control(window, ID_MAIN_SHADOW_COVER), 30, 495 - size, size, size)
-
-              # Centered selector, single cover.
-              selector_x = (1920 - size) // 2
-              selector_y = (600 - size) // 2
-              _set_geometry(_control(window, ID_SELECTOR_SINGLE_FRAME), selector_x, selector_y, size, size)
-              _set_geometry(_control(window, ID_SELECTOR_SINGLE_SHADOW_COVER), selector_x, selector_y, size, size)
-
-              # Centered selector, front/back pair with the established 40 px gap.
-              front_x = 940 - size
-              back_x = 980
-              _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_FRONT), front_x, selector_y, size, size)
-              _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_BACK), back_x, selector_y, size, size)
-              _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_FRONT), front_x, selector_y, size, size)
-              _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_BACK), back_x, selector_y, size, size)
-
-              # Move the normal playback text to the right of the resized cover.
-              info = _control(window, ID_MAIN_INFO)
-              if info is not None:
-                  info.setPosition(size + 60, 0)
-                  info.setWidth(max(1, 1230 - size))
-
-              # Shadow includes are based on the exact proven 195 px layout. Scale
-              # only those wrappers; the actual cover controls above retain exact
-              # pixel geometry and the pair keeps its fixed 40 px gap.
-              zoom = (float(size) / float(COVER_DEFAULT)) * 100.0
-              _set_zoom(_control(window, ID_MAIN_SHADOWS), zoom, 30, 495)
-              _set_zoom(_control(window, ID_SELECTOR_SINGLE_SHADOWS), zoom, 960, 300)
-              _set_zoom(_control(window, ID_SELECTOR_PAIR_SHADOWS), zoom, 960, 300)
-
-
-          def apply_dynamic_cover(size=None):
-              if not _is_dynamic():
-                  return False
-              if size is None:
-                  size = _skin_int(COVER_SIZE_SETTING, COVER_DEFAULT)
-              # Home's onload script may run just before all controls are available.
-              # Retry briefly only for the dynamic mode.
-              for _ in range(8):
-                  try:
-                      _apply_dynamic_cover_once(size)
-                      return True
-                  except Exception:
-                      xbmc.sleep(40)
-              return False
-
-
-          def _reset_runtime_cover_geometry():
-              try:
-                  _apply_dynamic_cover_once(COVER_DEFAULT)
-              except Exception:
-                  pass
-
-
-          def _format_offset(value):
-              if int(value) == 0:
-                  return "default"
-              return "{:+d}".format(int(value))
-
-
-          class AdjustDialog(xbmcgui.WindowDialog):
-              def __init__(self, mode, value, on_change, on_cancel):
-                  super(AdjustDialog, self).__init__()
-                  self.mode = mode
-                  self.value = int(value)
-                  self.on_change = on_change
-                  self.on_cancel = on_cancel
-                  self.confirmed = False
-
-                  self.panel = xbmcgui.ControlImage(
-                      1510, 430, 330, 150, "special://skin/media/InfoMessagePanel.png"
-                  )
-                  self.title = xbmcgui.ControlLabel(
-                      1530, 445, 290, 38,
-                      "Vertical menu position" if mode == "yoffset" else "Cover size",
-                      font="font13", textColor="FFBFBFBF", alignment=6
-                  )
-                  self.value_label = xbmcgui.ControlLabel(
-                      1530, 480, 290, 55, "",
-                      font="font30_title", textColor="FFFFFFFF", alignment=6
-                  )
-                  self.hint = xbmcgui.ControlLabel(
-                      1530, 535, 290, 28, "UP / DOWN     OK",
-                      font="font12", textColor="FFBFBFBF", alignment=6
-                  )
-                  self.addControls([self.panel, self.title, self.value_label, self.hint])
-                  self._refresh()
-
-              def _refresh(self):
-                  if self.mode == "yoffset":
-                      label = _format_offset(self.value)
-                  else:
-                      label = "{} px".format(self.value)
-                  self.value_label.setLabel(label)
-
-              def onAction(self, action):
-                  action_id = action.getId()
-                  if action_id == ACTION_MOVE_UP:
-                      if self.mode == "yoffset":
-                          new_value = max(Y_MIN, self.value - STEP)
-                      else:
-                          new_value = self.value + STEP
-                      if new_value != self.value:
-                          self.value = new_value
-                          self.on_change(self.value)
-                          self._refresh()
-                  elif action_id == ACTION_MOVE_DOWN:
-                      if self.mode == "yoffset":
-                          new_value = min(Y_MAX, self.value + STEP)
-                      else:
-                          new_value = max(STEP, self.value - STEP)
-                      if new_value != self.value:
-                          self.value = new_value
-                          self.on_change(self.value)
-                          self._refresh()
-                  elif action_id == ACTION_SELECT_ITEM:
-                      self.confirmed = True
-                      self.close()
-                  elif action_id in (ACTION_PREVIOUS_MENU, ACTION_NAV_BACK):
-                      self.on_cancel()
-                      self.close()
-
-
-          def _activate_home():
-              xbmc.executebuiltin("ActivateWindow(Home)")
-              for _ in range(40):
-                  if xbmcgui.getCurrentWindowId() == HOME_WINDOW_ID:
-                      return True
-                  xbmc.sleep(25)
-              return xbmcgui.getCurrentWindowId() == HOME_WINDOW_ID
-
-
-          def run(mode):
-              mode = (mode or "").strip().lower()
-              if mode not in ("yoffset", "cover"):
-                  return
-
-              previous_window = xbmcgui.getCurrentWindowId()
-              if mode == "yoffset":
-                  original = _skin_int(Y_OFFSET_SETTING, Y_DEFAULT)
-                  current = original
-
-                  def on_change(value):
-                      _set_string(Y_OFFSET_SETTING, value)
-
-                  def on_cancel():
-                      _set_string(Y_OFFSET_SETTING, original)
-              else:
-                  original = _skin_int(COVER_SIZE_SETTING, COVER_DEFAULT)
-                  dynamic_before = _is_dynamic()
-                  current = max(1, original)
-
-                  def on_change(value):
-                      _set_string(COVER_SIZE_SETTING, value)
-                      apply_dynamic_cover(value)
-
-                  def on_cancel():
-                      _set_string(COVER_SIZE_SETTING, original)
-                      _set_dynamic(dynamic_before)
-                      if dynamic_before:
-                          apply_dynamic_cover(original)
-                      else:
-                          _reset_runtime_cover_geometry()
-
-              if not _activate_home():
-                  return
-
-              if mode == "cover":
-                  _set_dynamic(True)
-                  _set_string(COVER_SIZE_SETTING, current)
-                  apply_dynamic_cover(current)
-
-              dialog = AdjustDialog(mode, current, on_change, on_cancel)
-              dialog.doModal()
-              confirmed = dialog.confirmed
-              del dialog
-
-              if confirmed:
-                  if mode == "yoffset":
-                      _set_string(Y_OFFSET_SETTING, current if False else _skin_int(Y_OFFSET_SETTING, current))
-                  else:
-                      _set_dynamic(True)
-                      apply_dynamic_cover(_skin_int(COVER_SIZE_SETTING, current))
-
-              # Return to the setup window that launched the live adjustment.
-              if previous_window and previous_window != HOME_WINDOW_ID:
-                  xbmc.executebuiltin("ActivateWindow({})".format(previous_window))
-
-
-          if __name__ == "__main__":
-              run(sys.argv[1] if len(sys.argv) > 1 else "")
-          '''
-          # The raw string above is indented to live inside this build script.
-          lines = live_code.splitlines()
-          nonempty = [line for line in lines if line.strip()]
-          indent = min(len(line) - len(line.lstrip()) for line in nonempty)
-          live_code = '\n'.join(line[indent:] if line.strip() else '' for line in lines).lstrip() + '\n'
-          live_path.write_text(live_code, encoding='utf-8')
-
-          # Replace only the two old list choosers; all other menu/style settings
-          # continue using the established mainmenu_style.py code.
-          mainmenu = mainmenu_path.read_text(encoding='utf-8')
-          y_re = re.compile(r'def choose_main_y_offset\(\):\n.*?\n\ndef choose_sub_font\(\):', re.S)
-          if len(y_re.findall(mainmenu)) != 1:
-              raise RuntimeError('choose_main_y_offset function not found exactly once')
-          mainmenu = y_re.sub(
-              'def choose_main_y_offset():\n'
-              '    from live_home_adjust import run\n'
-              '    run("yoffset")\n\n\n'
-              'def choose_sub_font():',
-              mainmenu,
-              count=1,
-          )
-          cover_re = re.compile(r'def choose_home_cover_size\(\):\n.*?\n\ndef choose_home_cover_style\(\):', re.S)
-          if len(cover_re.findall(mainmenu)) != 1:
-              raise RuntimeError('choose_home_cover_size function not found exactly once')
-          mainmenu = cover_re.sub(
-              'def choose_home_cover_size():\n'
-              '    from live_home_adjust import run\n'
-              '    run("cover")\n\n\n'
-              'def choose_home_cover_style():',
-              mainmenu,
-              count=1,
-          )
-          reset_anchor = 'def reset_home():\n    _set(HOME_COVER_SIZE_SETTING, DEFAULT_HOME_COVER_SIZE)'
-          mainmenu = replace_once(
-              mainmenu,
-              reset_anchor,
-              'def reset_home():\n    xbmc.executebuiltin("Skin.Reset(CCHomeMusicCoverDynamic)")\n    _set(HOME_COVER_SIZE_SETTING, DEFAULT_HOME_COVER_SIZE)',
-              'reset_home dynamic flag',
-          )
-          mainmenu_path.write_text(mainmenu, encoding='utf-8')
-
-          startup = startup_path.read_text(encoding='utf-8')
-          startup = replace_once(
-              startup,
-              'from mainmenu_style import ensure_defaults\n',
-              'from mainmenu_style import ensure_defaults\nfrom live_home_adjust import apply_dynamic_cover\n',
-              'startup live import',
-          )
-          startup = replace_once(
-              startup,
-              '        ensure_defaults()\n        _start_background_services()\n',
-              '        ensure_defaults()\n        apply_dynamic_cover()\n        _start_background_services()\n',
-              'startup apply dynamic cover',
-          )
-          startup_path.write_text(startup, encoding='utf-8')
-
           addon = addon_path.read_text(encoding='utf-8')
-          addon = replace_once(addon, 'version="5.0.173"', 'version="5.0.174"', 'addon version')
-          addon = re.sub(
-              r'<news>.*?</news>',
-              '<news>5.0.174: Add live Home preview for vertical menu position and unrestricted 25 px cover-size adjustment.</news>',
-              addon,
-              count=1,
-          )
+          if 'version="5.0.173"' in addon:
+              addon = addon.replace('version="5.0.173"', 'version="5.0.174"', 1)
+              addon = re.sub(
+                  r'<news>.*?</news>',
+                  '<news>5.0.174: Add live Home preview for vertical menu position and unrestricted 25 px cover-size adjustment.</news>',
+                  addon,
+                  count=1,
+              )
+          elif 'version="5.0.174"' not in addon:
+              raise RuntimeError('Unexpected add-on version')
           addon_path.write_text(addon, encoding='utf-8')
           PY
 
       - name: Validate changes
         shell: bash
         run: |
-          python -m py_compile \
-            skin.confluence.custom/resources/lib/mainmenu_style.py \
-            skin.confluence.custom/resources/lib/live_home_adjust.py \
-            skin.confluence.custom/resources/lib/startup.py
+          python -m py_compile skin.confluence.custom/resources/lib/live_home_adjust.py
           python - <<'PY'
           import xml.etree.ElementTree as ET
           from pathlib import Path
@@ -521,26 +226,41 @@ jobs:
 
           settings = (root / '1080p/SkinSettings.xml').read_text(encoding='utf-8')
           assert settings.count('id="522"') == 1
-          p_shadow = settings.index('id="547"')
-          p_vertical = settings.index('id="522"')
-          p_bottom = settings.index('id="520"')
+          p_home = settings.index('id="5750"')
+          p_shadow = settings.index('id="547"', p_home)
+          p_vertical = settings.index('id="522"', p_home)
+          p_bottom = settings.index('id="520"', p_home)
           p_menus = settings.index('id="5730"')
-          assert p_shadow < p_vertical < p_bottom < p_menus
+          assert p_home < p_shadow < p_vertical < p_bottom < p_menus
+          assert 'live_home_adjust.py,cover' in settings
+          assert 'live_home_adjust.py,yoffset' in settings
 
           home = (root / '1080p/Home.xml').read_text(encoding='utf-8')
-          for control_id in range(9301, 9313):
+          for control_id in list(range(9301, 9309)) + list(range(9310, 9313)):
               assert home.count('id="{}"'.format(control_id)) == 1, control_id
+          assert home.count('<param name="id" value="9309"/>') == 1
+          assert 'live_home_adjust.py,apply' in home
           assert 'Skin.HasSetting(CCHomeMusicCoverDynamic)' in home
-          assert 'Skin.HasSetting(CCHomeMusicCoverDynamic)' in (root / '1080p/Includes.xml').read_text(encoding='utf-8')
+
+          includes = (root / '1080p/Includes.xml').read_text(encoding='utf-8')
+          assert 'Skin.HasSetting(CCHomeMusicCoverDynamic)' in includes
+          assert '<param name="id" default="0"/>' in includes
+          assert 'id="$PARAM[id]"' in includes
           PY
           git diff --check
 
-      - name: Commit focused implementation
+      - name: Commit implementation
         shell: bash
         run: |
-          rm .github/workflows/apply-live-home-adjustments.yml
+          if git diff --quiet -- skin.confluence.custom; then
+            echo "Implementation already applied."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add skin.confluence.custom/1080p/SkinSettings.xml \
+                  skin.confluence.custom/1080p/Home.xml \
+                  skin.confluence.custom/1080p/Includes.xml \
+                  skin.confluence.custom/addon.xml
           git commit -m "Add live Home adjustment for menu position and cover size"
           git push origin HEAD:feature/live-home-adjustments
