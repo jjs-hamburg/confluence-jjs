@@ -3,6 +3,7 @@ import sys
 
 import xbmc
 import xbmcgui
+import xbmcvfs
 
 
 HOME_WINDOW_ID = 10000
@@ -21,6 +22,10 @@ ACTION_MOVE_DOWN = 4
 ACTION_SELECT_ITEM = 7
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92
+
+DIALOG_XML = "CustomLiveHomeAdjust.xml"
+BADGE_TITLE_PROP = "ConfluenceCustom.LiveAdjust.Title"
+BADGE_HELP_PROP = "ConfluenceCustom.LiveAdjust.Help"
 
 ID_MAIN_FRAME = 9301
 ID_MAIN_SHADOW_COVER = 9302
@@ -166,8 +171,8 @@ def _apply_dynamic_cover_once(size):
         info.setWidth(max(1, 1230 - size))
 
     # Reuse the established 195 px shadow implementations and scale their
-    # wrapper groups with the cover. This keeps all existing shadow width and
-    # offset choices available for arbitrary cover sizes.
+    # wrapper groups with the cover. The selected shadow texture itself is
+    # rebuilt when a shadow setting changes (see shadow_refresh_service.py).
     zoom = (float(size) / float(COVER_DEFAULT)) * 100.0
     _set_zoom(_control(window, ID_MAIN_SHADOWS), zoom, 30, 495)
     _set_zoom(_control(window, ID_SELECTOR_SINGLE_SHADOWS), zoom, 960, 300)
@@ -198,59 +203,35 @@ def _format_offset(value):
     return "{:+d}".format(value)
 
 
-class AdjustDialog(xbmcgui.WindowDialog):
-    def __init__(self, mode, value, on_change, on_cancel):
-        super(AdjustDialog, self).__init__()
+def _badge_lines(mode, value):
+    if mode == "yoffset":
+        title = "Vertical Menu Position    {}".format(_format_offset(value))
+    else:
+        title = "Music Cover Size    {} px".format(int(value))
+    return title, "Up/Down: Change   ·   OK: Save"
+
+
+def _set_badge(mode, value):
+    title, help_text = _badge_lines(mode, value)
+    home = xbmcgui.Window(HOME_WINDOW_ID)
+    home.setProperty(BADGE_TITLE_PROP, title)
+    home.setProperty(BADGE_HELP_PROP, help_text)
+
+
+def _clear_badge():
+    home = xbmcgui.Window(HOME_WINDOW_ID)
+    home.clearProperty(BADGE_TITLE_PROP)
+    home.clearProperty(BADGE_HELP_PROP)
+
+
+class AdjustDialog(xbmcgui.WindowXMLDialog):
+    def configure(self, mode, value, on_change, on_cancel):
         self.mode = mode
         self.value = int(value)
-        self.on_change = on_change
-        self.on_cancel = on_cancel
+        self.on_change_callback = on_change
+        self.on_cancel_callback = on_cancel
         self.confirmed = False
-
-        # Transparent WindowDialog: Home remains visible. The compact panel on
-        # the right acts as the requested live value badge.
-        self.panel = xbmcgui.ControlImage(
-            1510, 435, 330, 145, "special://skin/media/black-back2.png"
-        )
-        self.title = xbmcgui.ControlLabel(
-            1530,
-            448,
-            290,
-            34,
-            "Vertical menu position" if mode == "yoffset" else "Cover size",
-            font="font13",
-            textColor="FFBFBFBF",
-            alignment=6,
-        )
-        self.value_label = xbmcgui.ControlLabel(
-            1530,
-            483,
-            290,
-            52,
-            "",
-            font="font30_title",
-            textColor="FFFFFFFF",
-            alignment=6,
-        )
-        self.hint = xbmcgui.ControlLabel(
-            1530,
-            540,
-            290,
-            26,
-            "UP / DOWN     OK",
-            font="font12",
-            textColor="FFBFBFBF",
-            alignment=6,
-        )
-        self.addControls([self.panel, self.title, self.value_label, self.hint])
-        self._refresh()
-
-    def _refresh(self):
-        if self.mode == "yoffset":
-            label = _format_offset(self.value)
-        else:
-            label = "{} px".format(self.value)
-        self.value_label.setLabel(label)
+        _set_badge(self.mode, self.value)
 
     def onAction(self, action):
         action_id = action.getId()
@@ -264,22 +245,22 @@ class AdjustDialog(xbmcgui.WindowDialog):
             if self.mode == "yoffset":
                 new_value = min(Y_MAX, self.value + STEP)
             else:
-                # No upper limit; 25 px is only the natural lower bound.
+                # Cover size has no upper limit; 25 px is the practical minimum.
                 new_value = max(STEP, self.value - STEP)
             self._change(new_value)
         elif action_id == ACTION_SELECT_ITEM:
             self.confirmed = True
             self.close()
         elif action_id in (ACTION_PREVIOUS_MENU, ACTION_NAV_BACK):
-            self.on_cancel()
+            self.on_cancel_callback()
             self.close()
 
     def _change(self, new_value):
         if new_value == self.value:
             return
         self.value = int(new_value)
-        self.on_change(self.value)
-        self._refresh()
+        self.on_change_callback(self.value)
+        _set_badge(self.mode, self.value)
 
 
 def _activate_home():
@@ -289,6 +270,20 @@ def _activate_home():
             return True
         xbmc.sleep(25)
     return xbmcgui.getCurrentWindowId() == HOME_WINDOW_ID
+
+
+def _open_adjust_dialog(mode, current, on_change, on_cancel):
+    # WindowXMLDialog looks in the active skin first. The fallback path is only
+    # needed by Kodi's constructor and is never used while Confluence-jjs is active.
+    skin_path = xbmcvfs.translatePath("special://skin/")
+    dialog = AdjustDialog(DIALOG_XML, skin_path)
+    dialog.configure(mode, current, on_change, on_cancel)
+    try:
+        dialog.doModal()
+        return bool(dialog.confirmed)
+    finally:
+        _clear_badge()
+        del dialog
 
 
 def run(mode):
@@ -343,10 +338,7 @@ def run(mode):
         _set_string(COVER_SIZE_SETTING, current)
         apply_dynamic_cover(current)
 
-    dialog = AdjustDialog(mode, current, on_change, on_cancel)
-    dialog.doModal()
-    confirmed = dialog.confirmed
-    del dialog
+    confirmed = _open_adjust_dialog(mode, current, on_change, on_cancel)
 
     if confirmed and mode == "cover":
         _set_dynamic(True)
