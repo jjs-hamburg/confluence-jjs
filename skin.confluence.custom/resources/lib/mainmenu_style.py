@@ -39,6 +39,7 @@ SONG_SELECTOR_ACTIVE_COLOR_SETTING = "CCSongSelectorColorActive"
 SONG_SELECTOR_HIGHLIGHT_COLOR_SETTING = "CCSongSelectorHighlightColor"
 SONG_SELECTOR_ENABLED_SETTING = "CCSongSelectorEnabled"
 SONG_SELECTOR_TRACK_SETTING = "CCSongSelectorShowTrackNumbers"
+SONG_SELECTOR_TRACK_TIME_SETTING = "CCSongSelectorShowTrackTimes"
 SONG_SELECTOR_AUTO_OPEN_SETTING = "CCSongSelectorAutoOpen"
 SONG_SELECTOR_LYRICS_CENTERED_SETTING = "CCSongSelectorLyricsCentered"
 SONG_SELECTOR_LYRICS_SYNC_DELAY_SETTING = "CCSongSelectorLyricsSyncDelay"
@@ -93,6 +94,7 @@ DEFAULT_SONG_SELECTOR_ACTIVE_COLOR = "FFFFFFFF"
 DEFAULT_SONG_SELECTOR_HIGHLIGHT_COLOR = "default"
 DEFAULT_SONG_SELECTOR_ENABLED = "true"
 DEFAULT_SONG_SELECTOR_TRACK = "false"
+DEFAULT_SONG_SELECTOR_TRACK_TIME = "false"
 DEFAULT_SONG_SELECTOR_AUTO_OPEN = "false"
 DEFAULT_SONG_SELECTOR_LYRICS_CENTERED = "true"
 DEFAULT_SONG_SELECTOR_LYRICS_SYNC_DELAY = "0.25"
@@ -247,6 +249,7 @@ def ensure_defaults():
         (SONG_SELECTOR_HIGHLIGHT_COLOR_SETTING, DEFAULT_SONG_SELECTOR_HIGHLIGHT_COLOR),
         (SONG_SELECTOR_ENABLED_SETTING, DEFAULT_SONG_SELECTOR_ENABLED),
         (SONG_SELECTOR_TRACK_SETTING, DEFAULT_SONG_SELECTOR_TRACK),
+        (SONG_SELECTOR_TRACK_TIME_SETTING, DEFAULT_SONG_SELECTOR_TRACK_TIME),
         (SONG_SELECTOR_AUTO_OPEN_SETTING, DEFAULT_SONG_SELECTOR_AUTO_OPEN),
         (SONG_SELECTOR_LYRICS_CENTERED_SETTING, DEFAULT_SONG_SELECTOR_LYRICS_CENTERED),
         (SONG_SELECTOR_LYRICS_SYNC_DELAY_SETTING, DEFAULT_SONG_SELECTOR_LYRICS_SYNC_DELAY),
@@ -508,6 +511,11 @@ def toggle_song_selector_track_numbers():
     _set(SONG_SELECTOR_TRACK_SETTING, "false" if current == "true" else "true")
 
 
+def toggle_song_selector_track_times():
+    current = _get(SONG_SELECTOR_TRACK_TIME_SETTING, DEFAULT_SONG_SELECTOR_TRACK_TIME).lower()
+    _set(SONG_SELECTOR_TRACK_TIME_SETTING, "false" if current == "true" else "true")
+
+
 def toggle_song_selector_auto_open():
     _toggle_bool_setting(SONG_SELECTOR_AUTO_OPEN_SETTING, DEFAULT_SONG_SELECTOR_AUTO_OPEN)
 
@@ -730,6 +738,8 @@ def main():
         toggle_song_selector()
     elif mode == "songtracknumbers":
         toggle_song_selector_track_numbers()
+    elif mode == "songtracktimes":
+        toggle_song_selector_track_times()
     elif mode == "songautoopen":
         toggle_song_selector_auto_open()
     elif mode == "songlyricscentered":

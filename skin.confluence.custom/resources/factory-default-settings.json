@@ -71,6 +71,7 @@
     {"id":"CCSongSelectorReturnV127Migrated","type":"string","value":"1"},
     {"id":"CCSongSelectorSelectionTimeout","type":"string","value":"5"},
     {"id":"ccsongselectorshowtracknumbers","type":"string","value":"true"},
+    {"id":"CCSongSelectorShowTrackTimes","type":"string","value":"false"},
     {"id":"CCSongSelectorTimeBackground","type":"string","value":"submenu"},
     {"id":"ccsongtimecurrent","type":"string","value":"true"},
     {"id":"ccsongtimeremaining","type":"string","value":""},

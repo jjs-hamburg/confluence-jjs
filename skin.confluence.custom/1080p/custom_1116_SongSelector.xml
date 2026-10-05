@@ -32,7 +32,7 @@
 						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
 						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
 						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
-						<label>$INFO[ListItem.Title]</label>
+						<label>$VAR[CCSongSelectorPopupTitleNoTrack]</label>
 						<visible>!String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
 					</control>
 					<control type="label">
@@ -40,7 +40,7 @@
 						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
 						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
 						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
-						<label>$INFO[ListItem.TrackNumber,,  ]$INFO[ListItem.Title]</label>
+						<label>$VAR[CCSongSelectorPopupTitleWithTrack]</label>
 						<visible>String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
 					</control>
 					<control type="label">
@@ -65,7 +65,7 @@
 						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
 						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
 						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
-						<scroll>true</scroll><label>$INFO[ListItem.Title]</label>
+						<scroll>true</scroll><label>$VAR[CCSongSelectorPopupTitleNoTrack]</label>
 						<visible>!String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
 					</control>
 					<control type="label">
@@ -73,7 +73,7 @@
 						<align>left</align><aligny>center</aligny><include>CCSongSelectorFontChoice</include>
 						<textcolor>$VAR[CCSongSelectorNormalRenderColor]</textcolor>
 						<selectedcolor>$VAR[CCSongSelectorCurrentRenderColor]</selectedcolor>
-						<scroll>true</scroll><label>$INFO[ListItem.TrackNumber,,  ]$INFO[ListItem.Title]</label>
+						<scroll>true</scroll><label>$VAR[CCSongSelectorPopupTitleWithTrack]</label>
 						<visible>String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true) + !String.IsEmpty(ListItem.Title)</visible>
 					</control>
 					<control type="label">

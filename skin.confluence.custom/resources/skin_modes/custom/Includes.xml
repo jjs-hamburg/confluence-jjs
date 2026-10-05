@@ -2871,6 +2871,14 @@
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorShowTrackNumbers),true)">On</value>
 		<value>Off</value>
 	</variable>
+	<variable name="CCSongSelectorPopupTitleNoTrack">
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorShowTrackTimes),true)">$INFO[ListItem.Title]$INFO[ListItem.Duration, | ]</value>
+		<value>$INFO[ListItem.Title]</value>
+	</variable>
+	<variable name="CCSongSelectorPopupTitleWithTrack">
+		<value condition="String.IsEqual(Skin.String(CCSongSelectorShowTrackTimes),true)">$INFO[ListItem.TrackNumber,,  ]$INFO[ListItem.Title]$INFO[ListItem.Duration, | ]</value>
+		<value>$INFO[ListItem.TrackNumber,,  ]$INFO[ListItem.Title]</value>
+	</variable>
 	<variable name="CCSongSelectorAutoOpenSetting">
 		<value condition="String.IsEqual(Skin.String(CCSongSelectorAutoOpen),true)">On</value>
 		<value>Off</value>

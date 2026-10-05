@@ -1577,6 +1577,13 @@
 							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtracknumbers)</onclick>
 							<enable>$EXP[CCSongSelectorEnabled]</enable>
 						</control>
+						<control type="radiobutton" id="548">
+							<width>1125</width><height>60</height><font>font13</font>
+							<label>Show track times</label><selected>String.IsEqual(Skin.String(CCSongSelectorShowTrackTimes),true)</selected>
+							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
+							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,songtracktimes)</onclick>
+							<enable>$EXP[CCSongSelectorEnabled]</enable>
+						</control>
 						<control type="radiobutton" id="543">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Open popup automatically during music playback</label><selected>String.IsEqual(Skin.String(CCSongSelectorAutoOpen),true)</selected>
