@@ -16,10 +16,9 @@ Y_DEFAULT = 0
 Y_MIN = -250
 Y_MAX = 300
 STEP = 25
-SHADOW_WIDTHS = (6, 10, 14, 18, 22, 26, 30, 34, 38)
 SHADOW_WIDTH_DEFAULT = 14
-SHADOW_OFFSETS = tuple(range(0, 25, 2))
 SHADOW_OFFSET_DEFAULT = 4
+SHADOW_STEP = 1
 ACTION_MOVE_LEFT = 1
 ACTION_MOVE_RIGHT = 2
 ACTION_MOVE_UP = 3
@@ -40,11 +39,11 @@ ID_SELECTOR_PAIR_FRAME_BACK = 9306
 ID_SELECTOR_PAIR_SHADOW_FRONT = 9307
 ID_SELECTOR_PAIR_SHADOW_BACK = 9308
 ID_MAIN_INFO = 9309
-DYNAMIC_SHADOW_SETS = (
-    (tuple(range(9400, 9409)), tuple(range(9410, 9419)), "main"),
-    (tuple(range(9420, 9429)), tuple(range(9430, 9439)), "single"),
-    (tuple(range(9440, 9449)), tuple(range(9450, 9459)), "pair_front"),
-    (tuple(range(9460, 9469)), tuple(range(9470, 9479)), "pair_back"),
+DYNAMIC_SHADOW_CONTROLS = (
+    (9400, 9410, "main"),
+    (9420, 9430, "single"),
+    (9440, 9450, "pair_front"),
+    (9460, 9470, "pair_back"),
 )
 
 
@@ -103,25 +102,20 @@ def _shadow_cover_rect(kind, size):
 
 def _apply_dynamic_shadow_once(size):
     window = xbmcgui.Window(HOME_WINDOW_ID)
-    width = _skin_int(SHADOW_WIDTH_SETTING, SHADOW_WIDTH_DEFAULT)
-    offset = _skin_int(SHADOW_OFFSET_SETTING, SHADOW_OFFSET_DEFAULT)
-    if width not in SHADOW_WIDTHS:
-        width = SHADOW_WIDTH_DEFAULT
-    if offset not in SHADOW_OFFSETS:
-        offset = SHADOW_OFFSET_DEFAULT
-    for hard_ids, soft_ids, kind in DYNAMIC_SHADOW_SETS:
+    width = max(0, _skin_int(SHADOW_WIDTH_SETTING, SHADOW_WIDTH_DEFAULT))
+    offset = max(0, _skin_int(SHADOW_OFFSET_SETTING, SHADOW_OFFSET_DEFAULT))
+
+    # 5.0.178 directional geometry:
+    # - offset moves the complete shadow right AND down;
+    # - width only enlarges it to the right AND down;
+    # - offset=0,width=0 places the shadow exactly behind the cover.
+    extent = max(1, int(size) + width)
+    for hard_id, soft_id, kind in DYNAMIC_SHADOW_CONTROLS:
         cover_x, cover_y = _shadow_cover_rect(kind, size)
-        for index, shadow_width in enumerate(SHADOW_WIDTHS):
-            # The 22/38 px frame is only transparent texture padding. The
-            # selected asset itself defines the requested 6..38 px shadow.
-            # Expanding the control by that fixed padding preserves the user's
-            # shadow width in screen pixels for every cover size.
-            pad = 22 if shadow_width <= 22 else 38
-            x = cover_x - pad + offset
-            y = cover_y - pad + offset
-            extent = size + (2 * pad)
-            _set_geometry(_control(window, hard_ids[index]), x, y, extent, extent)
-            _set_geometry(_control(window, soft_ids[index]), x, y, extent, extent)
+        x = cover_x + offset
+        y = cover_y + offset
+        _set_geometry(_control(window, hard_id), x, y, extent, extent)
+        _set_geometry(_control(window, soft_id), x, y, extent, extent)
 
 
 def _apply_dynamic_cover_once(size):
@@ -176,7 +170,7 @@ def _badge_lines(mode, value):
     if mode == "cover":
         return "Music Cover Size    {} px".format(int(value)), "Up/Down: Change   ·   OK: Save"
     width, offset = value
-    return "Shadow    {} px / {} px".format(width, offset), "L/R: Width   ·   U/D: Offset   ·   OK: Save"
+    return "Shadow    Width {} px / Offset {} px".format(width, offset), "L/R: Width   ·   U/D: Offset   ·   OK: Save"
 
 
 def _set_badge(mode, value):
@@ -200,13 +194,6 @@ def _set_adjust_active(enabled):
         home.clearProperty(ADJUST_ACTIVE_PROP)
 
 
-def _step_choice(values, current, direction, default):
-    try:
-        index = values.index(int(current))
-    except ValueError:
-        index = values.index(default)
-    return values[max(0, min(len(values) - 1, index + direction))]
-
 
 class AdjustDialog(xbmcgui.WindowXMLDialog):
     def configure(self, mode, value, on_change, on_cancel):
@@ -222,13 +209,13 @@ class AdjustDialog(xbmcgui.WindowXMLDialog):
         if self.mode == "shadow":
             width, offset = self.value
             if action_id == ACTION_MOVE_LEFT:
-                self._change((_step_choice(SHADOW_WIDTHS, width, -1, SHADOW_WIDTH_DEFAULT), offset))
+                self._change((max(0, width - SHADOW_STEP), offset))
             elif action_id == ACTION_MOVE_RIGHT:
-                self._change((_step_choice(SHADOW_WIDTHS, width, 1, SHADOW_WIDTH_DEFAULT), offset))
+                self._change((width + SHADOW_STEP, offset))
             elif action_id == ACTION_MOVE_UP:
-                self._change((width, _step_choice(SHADOW_OFFSETS, offset, -1, SHADOW_OFFSET_DEFAULT)))
+                self._change((width, max(0, offset - SHADOW_STEP)))
             elif action_id == ACTION_MOVE_DOWN:
-                self._change((width, _step_choice(SHADOW_OFFSETS, offset, 1, SHADOW_OFFSET_DEFAULT)))
+                self._change((width, offset + SHADOW_STEP))
             elif action_id == ACTION_SELECT_ITEM:
                 self.confirmed = True
                 self.close()
