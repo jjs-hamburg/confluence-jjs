@@ -1410,16 +1410,9 @@
 						</control>
 						<control type="button" id="546">
 							<width>1125</width><height>60</height><font>font13</font>
-							<label>Shadow width</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting][/COLOR]</label2>
+							<label>Shadow</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowWidthSetting] / $VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
 							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowwidth)</onclick>
-							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
-						</control>
-						<control type="button" id="547">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Shadow offset</label><label2>[COLOR=selected]$VAR[CCHomeMusicShadowOffsetSetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowoffset)</onclick>
+							<onclick>RunScript(special://skin/resources/lib/live_home_adjust.py,shadow)</onclick>
 							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
 						</control>
 						<control type="button" id="522">
