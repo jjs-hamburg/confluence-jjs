@@ -2,6 +2,7 @@
 <window>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<onload>RunScript(special://skin/resources/lib/startup.py)</onload>
+	<onload condition="Skin.HasSetting(CCHomeMusicCoverDynamic)">RunScript(special://skin/resources/lib/live_home_adjust.py,apply)</onload>
 	<onload condition="String.IsEmpty(Skin.String(CCAudioBadgeTextureV117))">RunScript(special://skin/resources/lib/mainmenu_style.py,audiobadgerefresh)</onload>
 	<onload condition="!Window.Previous(Weather) + !Window.Previous(Pictures) + !Window.Previous(Games) + !Window.Previous(RadioChannels) + !Window.Previous(TVChannels) + !Window.Previous(Videos) + !Window.Previous(Music) + !Window.Previous(Programs) + !Window.Previous(Favouritesbrowser) + !Window.Previous(FileManager) + !Window.Previous(Profiles) + !Window.Previous(SystemInfo) + !Window.Previous(EventLog) + !Window.Previous(TVGuide) + !Window.Previous(TVRecordings) + !Window.Previous(TVTimerRules) + !Window.Previous(TVTimers) + !Window.Previous(TVSearch) + !Window.Previous(RadioGuide) + !Window.Previous(RadioRecordings) + !Window.Previous(RadioTimerRules) + !Window.Previous(RadioTimers) + !Window.Previous(RadioSearch) + !Window.Previous(addonbrowser) + !Window.Previous(script.globalsearch) + !Window.Previous(settings) + !Window.Previous(fullscreenvideo) + !Window.Previous(visualisation)">SetFocus(9000,$INFO[Skin.String(DefaultHomeFocus)])</onload>
 	<onunload condition="Container(9000).HasFocus(10) | Container(9000).HasFocus(11) | ControlGroup(9010).HasFocus | ControlGroup(9016).HasFocus | ControlGroup(9017).HasFocus">SetProperty(VideosDirectLink,True)</onunload>
@@ -125,7 +126,7 @@
 			<control type="group">
 				<visible>[String.IsEmpty(Skin.String(CCHomeMusicCoverStyle)) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),frame)] + !$EXP[CCSongSelectorEnabled]</visible>
 				<animation effect="slide" start="0,0" end="80,-70" time="0" condition="$EXP[CCSongSelectorEnabled]">conditional</animation>
-				<control type="image">
+				<control type="image" id="9301">
 					<description>Cover image 195px</description>
 					<left>30</left>
 					<top>68</top>
@@ -135,7 +136,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible>
+					<visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 210px</description>
@@ -147,7 +148,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 225px</description>
@@ -159,7 +160,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 240px</description>
@@ -171,7 +172,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 270px</description>
@@ -183,7 +184,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 300px</description>
@@ -195,7 +196,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 330px</description>
@@ -207,7 +208,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 360px</description>
@@ -219,7 +220,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 390px</description>
@@ -231,7 +232,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 420px</description>
@@ -243,7 +244,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 450px</description>
@@ -255,7 +256,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 480px</description>
@@ -267,7 +268,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 510px</description>
@@ -279,7 +280,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 540px</description>
@@ -291,7 +292,7 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Cover image 585px</description>
@@ -303,14 +304,14 @@
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
 					<bordertexture infill="false" border="8">ThumbBorder.png</bordertexture>
 					<bordersize>5</bordersize>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 			</control>
 			<!-- Confluence Custom: borderless cover with right/bottom drop shadow. -->
 			<control type="group">
 				<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + !$EXP[CCSongSelectorEnabled]</visible>
 				<animation effect="slide" start="0,0" end="80,-70" time="0" condition="$EXP[CCSongSelectorEnabled]">conditional</animation>
-				<include>CCHomeMusicMainShadowOffsetGroups</include><control type="image">
+				<control type="group" id="9310"><include>CCHomeMusicMainShadowOffsetGroups</include></control><control type="image" id="9302">
 					<description>Borderless cover image 195px</description>
 					<left>30</left>
 					<top>300</top>
@@ -318,7 +319,7 @@
 					<height>195</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible>
+					<visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 210px</description>
@@ -328,7 +329,7 @@
 					<height>210</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 225px</description>
@@ -338,7 +339,7 @@
 					<height>225</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 240px</description>
@@ -348,7 +349,7 @@
 					<height>240</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 270px</description>
@@ -358,7 +359,7 @@
 					<height>270</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 300px</description>
@@ -368,7 +369,7 @@
 					<height>300</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 330px</description>
@@ -378,7 +379,7 @@
 					<height>330</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 360px</description>
@@ -388,7 +389,7 @@
 					<height>360</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 390px</description>
@@ -398,7 +399,7 @@
 					<height>390</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 420px</description>
@@ -408,7 +409,7 @@
 					<height>420</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 450px</description>
@@ -418,7 +419,7 @@
 					<height>450</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 480px</description>
@@ -428,7 +429,7 @@
 					<height>480</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 510px</description>
@@ -438,7 +439,7 @@
 					<height>510</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 540px</description>
@@ -448,7 +449,7 @@
 					<height>540</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 				<control type="image">
 					<description>Borderless cover image 585px</description>
@@ -458,83 +459,84 @@
 					<height>585</height>
 					<aspectratio>keep</aspectratio>
 					<texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture>
-					<visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible>
+					<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible>
 				</control>
 			</control>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="255"/>
+				<param name="id" value="9309"/>
 				<param name="width" value="1035"/>
-				<param name="visible" value="String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)"/>
+				<param name="visible" value="[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="270"/>
 				<param name="width" value="1020"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="285"/>
 				<param name="width" value="1005"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="300"/>
 				<param name="width" value="990"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="330"/>
 				<param name="width" value="960"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="360"/>
 				<param name="width" value="930"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="390"/>
 				<param name="width" value="900"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="420"/>
 				<param name="width" value="870"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="450"/>
 				<param name="width" value="840"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="480"/>
 				<param name="width" value="810"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="510"/>
 				<param name="width" value="780"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="540"/>
 				<param name="width" value="750"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="570"/>
 				<param name="width" value="720"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="600"/>
 				<param name="width" value="690"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 			<include content="CCHomeMusicInfoText">
 				<param name="left" value="645"/>
 				<param name="width" value="645"/>
-				<param name="visible" value="String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)"/>
+				<param name="visible" value="[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]"/>
 			</include>
 		</control>
 		<!-- Confluence Custom: selector-mode artwork. Normally Up enters the playback controls
@@ -572,105 +574,105 @@
 			
 			<control type="group">
 				<visible>[String.IsEmpty(Skin.String(CCHomeMusicCoverStyle)) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),frame)] + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + !String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + !String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) + !String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
-				<control type="image"><description>Selector single framed artwork 195px</description><left>862</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
-				<control type="image"><description>Selector single framed artwork 210px</description><left>855</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
-				<control type="image"><description>Selector single framed artwork 225px</description><left>847</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
-				<control type="image"><description>Selector single framed artwork 240px</description><left>840</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible></control>
-				<control type="image"><description>Selector single framed artwork 270px</description><left>825</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible></control>
-				<control type="image"><description>Selector single framed artwork 300px</description><left>810</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible></control>
-				<control type="image"><description>Selector single framed artwork 330px</description><left>795</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible></control>
-				<control type="image"><description>Selector single framed artwork 360px</description><left>780</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible></control>
-				<control type="image"><description>Selector single framed artwork 390px</description><left>765</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible></control>
-				<control type="image"><description>Selector single framed artwork 420px</description><left>750</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible></control>
-				<control type="image"><description>Selector single framed artwork 450px</description><left>735</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible></control>
-				<control type="image"><description>Selector single framed artwork 480px</description><left>720</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible></control>
-				<control type="image"><description>Selector single framed artwork 510px</description><left>705</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible></control>
-				<control type="image"><description>Selector single framed artwork 540px</description><left>690</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible></control>
-				<control type="image"><description>Selector single framed artwork 585px</description><left>667</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
+				<control type="image" id="9303"><description>Selector single framed artwork 195px</description><left>862</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 210px</description><left>855</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 225px</description><left>847</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 240px</description><left>840</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 270px</description><left>825</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 300px</description><left>810</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 330px</description><left>795</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 360px</description><left>780</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 390px</description><left>765</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 420px</description><left>750</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 450px</description><left>735</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 480px</description><left>720</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 510px</description><left>705</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 540px</description><left>690</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single framed artwork 585px</description><left>667</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
 			</control>
 			<control type="group">
 				<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + !String.IsEqual(Skin.String(CCMusicArtworkMode),none) + !String.IsEqual(Skin.String(CCMusicArtworkMode),compact) + !String.IsEqual(Skin.String(CCMusicArtworkMode),infofront) + !String.IsEqual(Skin.String(CCMusicArtworkMode),infoboth) + [!String.IsEqual(Skin.String(CCMusicArtworkMode),both) | String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
-				<include>CCHomeMusicSelectorSingleShadowOffsetGroups</include><control type="image"><description>Selector single borderless artwork 195px</description><left>862</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 210px</description><left>855</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 225px</description><left>847</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 240px</description><left>840</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 270px</description><left>825</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 300px</description><left>810</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 330px</description><left>795</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 360px</description><left>780</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 390px</description><left>765</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 420px</description><left>750</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 450px</description><left>735</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 480px</description><left>720</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 510px</description><left>705</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 540px</description><left>690</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible></control>
-				<control type="image"><description>Selector single borderless artwork 585px</description><left>667</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
+				<control type="group" id="9311"><include>CCHomeMusicSelectorSingleShadowOffsetGroups</include></control><control type="image" id="9304"><description>Selector single borderless artwork 195px</description><left>862</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 210px</description><left>855</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 225px</description><left>847</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 240px</description><left>840</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 270px</description><left>825</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 300px</description><left>810</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 330px</description><left>795</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 360px</description><left>780</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 390px</description><left>765</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 420px</description><left>750</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 450px</description><left>735</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 480px</description><left>720</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 510px</description><left>705</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 540px</description><left>690</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector single borderless artwork 585px</description><left>667</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingPrimaryArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
 			</control>
 			<control type="group">
 				<visible>[String.IsEmpty(Skin.String(CCHomeMusicCoverStyle)) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),frame)] + [String.IsEqual(Skin.String(CCMusicArtworkMode),both) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
-				<control type="image"><description>Selector front framed pair 195px</description><left>745</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
-				<control type="image"><description>Selector back framed pair 195px</description><left>980</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
-				<control type="image"><description>Selector front framed pair 210px</description><left>730</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
-				<control type="image"><description>Selector back framed pair 210px</description><left>980</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
-				<control type="image"><description>Selector front framed pair 225px</description><left>715</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
-				<control type="image"><description>Selector back framed pair 225px</description><left>980</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
-				<control type="image"><description>Selector front framed pair 240px</description><left>700</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible></control>
-				<control type="image"><description>Selector back framed pair 240px</description><left>980</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible></control>
-				<control type="image"><description>Selector front framed pair 270px</description><left>670</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible></control>
-				<control type="image"><description>Selector back framed pair 270px</description><left>980</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible></control>
-				<control type="image"><description>Selector front framed pair 300px</description><left>640</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible></control>
-				<control type="image"><description>Selector back framed pair 300px</description><left>980</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible></control>
-				<control type="image"><description>Selector front framed pair 330px</description><left>610</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible></control>
-				<control type="image"><description>Selector back framed pair 330px</description><left>980</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible></control>
-				<control type="image"><description>Selector front framed pair 360px</description><left>580</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible></control>
-				<control type="image"><description>Selector back framed pair 360px</description><left>980</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible></control>
-				<control type="image"><description>Selector front framed pair 390px</description><left>550</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible></control>
-				<control type="image"><description>Selector back framed pair 390px</description><left>980</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible></control>
-				<control type="image"><description>Selector front framed pair 420px</description><left>520</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible></control>
-				<control type="image"><description>Selector back framed pair 420px</description><left>980</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible></control>
-				<control type="image"><description>Selector front framed pair 450px</description><left>490</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible></control>
-				<control type="image"><description>Selector back framed pair 450px</description><left>980</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible></control>
-				<control type="image"><description>Selector front framed pair 480px</description><left>460</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible></control>
-				<control type="image"><description>Selector back framed pair 480px</description><left>980</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible></control>
-				<control type="image"><description>Selector front framed pair 510px</description><left>430</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible></control>
-				<control type="image"><description>Selector back framed pair 510px</description><left>980</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible></control>
-				<control type="image"><description>Selector front framed pair 540px</description><left>400</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible></control>
-				<control type="image"><description>Selector back framed pair 540px</description><left>980</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible></control>
-				<control type="image"><description>Selector front framed pair 585px</description><left>355</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
-				<control type="image"><description>Selector back framed pair 585px</description><left>980</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
+				<control type="image" id="9305"><description>Selector front framed pair 195px</description><left>745</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible></control>
+				<control type="image" id="9306"><description>Selector back framed pair 195px</description><left>980</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible></control>
+				<control type="image"><description>Selector front framed pair 210px</description><left>730</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 210px</description><left>980</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 225px</description><left>715</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 225px</description><left>980</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 240px</description><left>700</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 240px</description><left>980</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 270px</description><left>670</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 270px</description><left>980</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 300px</description><left>640</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 300px</description><left>980</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 330px</description><left>610</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 330px</description><left>980</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 360px</description><left>580</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 360px</description><left>980</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 390px</description><left>550</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 390px</description><left>980</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 420px</description><left>520</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 420px</description><left>980</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 450px</description><left>490</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 450px</description><left>980</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 480px</description><left>460</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 480px</description><left>980</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 510px</description><left>430</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 510px</description><left>980</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 540px</description><left>400</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 540px</description><left>980</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front framed pair 585px</description><left>355</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture fallback="$VAR[CCGlobalNoCover]">$VAR[CCNowPlayingFrontArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back framed pair 585px</description><left>980</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><bordertexture infill="false" border="8">ThumbBorder.png</bordertexture><bordersize>5</bordersize><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
 			</control>
 			<control type="group">
 				<visible>[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + [String.IsEqual(Skin.String(CCMusicArtworkMode),both) + !String.IsEmpty(Window(Home).Property(ConfluenceCustom.MusicBackArt))]</visible>
-				<include>CCHomeMusicSelectorPairShadowOffsetGroups</include><control type="image"><description>Selector front borderless pair 195px</description><left>745</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
-				<control type="image"><description>Selector back borderless pair 195px</description><left>980</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)</visible></control>
-				<control type="image"><description>Selector front borderless pair 210px</description><left>730</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
-				<control type="image"><description>Selector back borderless pair 210px</description><left>980</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),210)</visible></control>
-				<control type="image"><description>Selector front borderless pair 225px</description><left>715</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
-				<control type="image"><description>Selector back borderless pair 225px</description><left>980</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),225)</visible></control>
-				<control type="image"><description>Selector front borderless pair 240px</description><left>700</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible></control>
-				<control type="image"><description>Selector back borderless pair 240px</description><left>980</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),240)</visible></control>
-				<control type="image"><description>Selector front borderless pair 270px</description><left>670</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible></control>
-				<control type="image"><description>Selector back borderless pair 270px</description><left>980</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),270)</visible></control>
-				<control type="image"><description>Selector front borderless pair 300px</description><left>640</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible></control>
-				<control type="image"><description>Selector back borderless pair 300px</description><left>980</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),300)</visible></control>
-				<control type="image"><description>Selector front borderless pair 330px</description><left>610</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible></control>
-				<control type="image"><description>Selector back borderless pair 330px</description><left>980</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),330)</visible></control>
-				<control type="image"><description>Selector front borderless pair 360px</description><left>580</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible></control>
-				<control type="image"><description>Selector back borderless pair 360px</description><left>980</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),360)</visible></control>
-				<control type="image"><description>Selector front borderless pair 390px</description><left>550</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible></control>
-				<control type="image"><description>Selector back borderless pair 390px</description><left>980</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),390)</visible></control>
-				<control type="image"><description>Selector front borderless pair 420px</description><left>520</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible></control>
-				<control type="image"><description>Selector back borderless pair 420px</description><left>980</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),420)</visible></control>
-				<control type="image"><description>Selector front borderless pair 450px</description><left>490</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible></control>
-				<control type="image"><description>Selector back borderless pair 450px</description><left>980</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),450)</visible></control>
-				<control type="image"><description>Selector front borderless pair 480px</description><left>460</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible></control>
-				<control type="image"><description>Selector back borderless pair 480px</description><left>980</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),480)</visible></control>
-				<control type="image"><description>Selector front borderless pair 510px</description><left>430</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible></control>
-				<control type="image"><description>Selector back borderless pair 510px</description><left>980</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),510)</visible></control>
-				<control type="image"><description>Selector front borderless pair 540px</description><left>400</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible></control>
-				<control type="image"><description>Selector back borderless pair 540px</description><left>980</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),540)</visible></control>
-				<control type="image"><description>Selector front borderless pair 585px</description><left>355</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
-				<control type="image"><description>Selector back borderless pair 585px</description><left>980</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>String.IsEqual(Skin.String(CCHomeMusicCoverSize),585)</visible></control>
+				<control type="group" id="9312"><include>CCHomeMusicSelectorPairShadowOffsetGroups</include></control><control type="image" id="9307"><description>Selector front borderless pair 195px</description><left>745</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible></control>
+				<control type="image" id="9308"><description>Selector back borderless pair 195px</description><left>980</left><top>202</top><width>195</width><height>195</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[Skin.HasSetting(CCHomeMusicCoverDynamic) | String.IsEmpty(Skin.String(CCHomeMusicCoverSize)) | String.IsEqual(Skin.String(CCHomeMusicCoverSize),195)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 210px</description><left>730</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 210px</description><left>980</left><top>195</top><width>210</width><height>210</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),210) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 225px</description><left>715</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 225px</description><left>980</left><top>188</top><width>225</width><height>225</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),225) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 240px</description><left>700</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 240px</description><left>980</left><top>180</top><width>240</width><height>240</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),240) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 270px</description><left>670</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 270px</description><left>980</left><top>165</top><width>270</width><height>270</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),270) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 300px</description><left>640</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 300px</description><left>980</left><top>150</top><width>300</width><height>300</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),300) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 330px</description><left>610</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 330px</description><left>980</left><top>135</top><width>330</width><height>330</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),330) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 360px</description><left>580</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 360px</description><left>980</left><top>120</top><width>360</width><height>360</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),360) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 390px</description><left>550</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 390px</description><left>980</left><top>105</top><width>390</width><height>390</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),390) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 420px</description><left>520</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 420px</description><left>980</left><top>90</top><width>420</width><height>420</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),420) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 450px</description><left>490</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 450px</description><left>980</left><top>75</top><width>450</width><height>450</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),450) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 480px</description><left>460</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 480px</description><left>980</left><top>60</top><width>480</width><height>480</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),480) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 510px</description><left>430</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 510px</description><left>980</left><top>45</top><width>510</width><height>510</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),510) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 540px</description><left>400</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 540px</description><left>980</left><top>30</top><width>540</width><height>540</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),540) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector front borderless pair 585px</description><left>355</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingFrontArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
+				<control type="image"><description>Selector back borderless pair 585px</description><left>980</left><top>8</top><width>585</width><height>585</height><aspectratio>keep</aspectratio><texture>$VAR[CCNowPlayingBackArt]</texture><visible>[String.IsEqual(Skin.String(CCHomeMusicCoverSize),585) + !Skin.HasSetting(CCHomeMusicCoverDynamic)]</visible></control>
 			</control>
 			<control type="button" id="9150">
 				<left>-24</left><top>-24</top><width>1</width><height>1</height><label/><font/><texturefocus/><texturenofocus/>
