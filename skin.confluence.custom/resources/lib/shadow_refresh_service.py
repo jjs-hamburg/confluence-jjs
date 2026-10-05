@@ -9,6 +9,7 @@ SHADOW_WIDTH_SETTING = "CCHomeMusicShadowWidth"
 SHADOW_OFFSET_SETTING = "CCHomeMusicShadowOffset"
 DEFAULT_SHADOW_WIDTH = "14"
 DEFAULT_SHADOW_OFFSET = "4"
+ADJUST_ACTIVE_PROP = "ConfluenceCustom.LiveAdjust.Active"
 
 
 def _skin_value(name, default):
@@ -21,6 +22,10 @@ def _shadow_state():
         _skin_value(SHADOW_WIDTH_SETTING, DEFAULT_SHADOW_WIDTH),
         _skin_value(SHADOW_OFFSET_SETTING, DEFAULT_SHADOW_OFFSET),
     )
+
+
+def _live_adjustment_active():
+    return xbmcgui.Window(HOME_WINDOW_ID).getProperty(ADJUST_ACTIVE_PROP) == "true"
 
 
 def main():
@@ -38,7 +43,11 @@ def main():
             # Shadow border textures are selected through conditional includes
             # when Home is built. Rebuild once after the user has left settings;
             # never reload underneath DialogSelect or SkinSettings itself.
-            if rebuild_pending and xbmcgui.getCurrentWindowId() == HOME_WINDOW_ID:
+            if (
+                rebuild_pending
+                and xbmcgui.getCurrentWindowId() == HOME_WINDOW_ID
+                and not _live_adjustment_active()
+            ):
                 rebuild_pending = False
                 xbmc.executebuiltin("ReloadSkin()")
                 if monitor.waitForAbort(0.75):
