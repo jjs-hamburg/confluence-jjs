@@ -1,0 +1,131 @@
+name: Temporary 5.0.183 safe rebuild
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - .github/workflows/temp-5-0-183.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify restored 5.0.181 skin tree
+        run: |
+          test "$(git rev-parse 05721cee046c694082b91ccff46fd3ac3b1a1098^{tree}:skin.confluence.custom)" = "$(git rev-parse HEAD^{tree}:skin.confluence.custom)"
+
+      - name: Apply 5.0.183 patch
+        run: python .github/temp_patch_5_0_183.py .
+
+      - name: Validate 5.0.183
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import collections
+          import py_compile
+          import re
+          import xml.etree.ElementTree as ET
+
+          r = Path('skin.confluence.custom')
+          xmls = [
+              r/'1080p/Home.xml', r/'1080p/Includes.xml', r/'1080p/SkinSettings.xml',
+              r/'resources/skin_modes/custom/Home.xml', r/'resources/skin_modes/custom/Includes.xml',
+              r/'resources/skin_modes/custom/SkinSettings.xml', r/'addon.xml'
+          ]
+          for path in xmls:
+              ET.parse(path)
+          for path in [r/'resources/lib/cover_display_action.py', r/'resources/lib/live_home_adjust.py', r/'resources/lib/songselector_service.py']:
+              py_compile.compile(str(path), doraise=True)
+
+          for name in ('Home.xml','Includes.xml','SkinSettings.xml'):
+              assert (r/'1080p'/name).read_bytes() == (r/'resources/skin_modes/custom'/name).read_bytes(), name
+
+          home = (r/'1080p/Home.xml').read_text()
+          inc = (r/'1080p/Includes.xml').read_text()
+          settings = (r/'1080p/SkinSettings.xml').read_text()
+          cover = (r/'resources/lib/cover_display_action.py').read_text()
+          shadow = (r/'resources/lib/live_home_adjust.py').read_text()
+          service = (r/'resources/lib/songselector_service.py').read_text()
+          addon = (r/'addon.xml').read_text()
+
+          assert 'version="5.0.183"' in addon
+          assert 'Music cover size' not in settings
+          assert 'live_home_adjust.py,cover' not in settings
+          assert '<label>Change Music View</label><font>font_CCSub_RobotoBold_20</font>' in inc
+          assert 'name="CCMusicViewSizeAdjustable"' in inc
+          assert '<visible>$EXP[CCMusicViewSizeAdjustable]</visible>' in inc
+          assert '<visible>!$EXP[CCMusicViewSizeAdjustable]</visible>' in inc
+          assert 'cover_display_action.py,smaller' in home and 'cover_display_action.py,larger' in home
+          assert 'CCHomeMusicInfoCoverDynamic' in home
+          assert home.count('!Skin.HasSetting(CCHomeMusicInfoCoverDynamic)') == 2
+          assert all('id="%d"' % cid in home for cid in (9480,9481,9482))
+          assert all('id="%d"' % cid in home for cid in range(9500,9512))
+
+          ids = collections.Counter(re.findall(r'<control[^>]*\bid="(\d+)"', home))
+          for cid in list(range(9500,9512)) + [9480,9481,9482]:
+              assert ids[str(cid)] == 1, (cid, ids[str(cid)])
+
+          assert cover.count('def sync_info_cover_geometry(') == 1
+          assert '_old_sync_info' not in cover and '_old_info_height' not in cover
+          assert 'INFO_TEXT_CONTROL_IDS = tuple(range(9500, 9512)) + (9140, 9141, 9104)' in cover
+          assert 'INFO_TEXT_BASE_WIDTH - text_shift' in cover
+          assert 'min(natural_height, requested)' in cover
+          assert 'mode in ("infofront", "infoboth") and _has_setting(ABOVE_MENU_SETTING)' in cover
+          assert '_apply_dynamic_info_art' in cover
+          assert '_set_info_text_width' in cover
+          # Existing service already makes wrap width follow InfoTextShift.
+          assert service.count('_info_artwork_text_shift(home)') >= 2
+
+          # Smooth shadow uses the original eight artwork controls only.
+          assert 'SOFT_SHADOW_LAYERS = 8' in shadow
+          assert 'start = extent - count + 1' in shadow
+          assert 'return tuple(range(start, extent + 1))' in shadow
+          assert 'SOFT_SHADOW_LAYERS = 32' not in shadow
+          assert not re.search(r'id="(?:97|98)\d\d"', home)
+
+          print('5.0.183 validation OK')
+          PY
+
+      - name: Verify only intended skin files changed from 5.0.181
+        run: |
+          rm -f .github/temp_patch_5_0_183.py .github/workflows/temp-analyze-5-0-183.yml .github/workflows/temp-5-0-183.yml
+          git diff --name-only 05721cee046c694082b91ccff46fd3ac3b1a1098 | sort > /tmp/changed.txt
+          cat /tmp/changed.txt
+          cat > /tmp/expected.txt <<'EOF'
+          skin.confluence.custom/1080p/Home.xml
+          skin.confluence.custom/1080p/Includes.xml
+          skin.confluence.custom/1080p/SkinSettings.xml
+          skin.confluence.custom/addon.xml
+          skin.confluence.custom/resources/lib/cover_display_action.py
+          skin.confluence.custom/resources/lib/live_home_adjust.py
+          skin.confluence.custom/resources/skin_modes/custom/Home.xml
+          skin.confluence.custom/resources/skin_modes/custom/Includes.xml
+          skin.confluence.custom/resources/skin_modes/custom/SkinSettings.xml
+          EOF
+          sort -o /tmp/expected.txt /tmp/expected.txt
+          diff -u /tmp/expected.txt /tmp/changed.txt
+
+      - name: Commit final 5.0.183 branch state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "5.0.183: rebuild Change Music View sizing from 5.0.181"
+          git push
+
+      - name: Package test ZIP
+        run: zip -qr skin.confluence.custom-5.0.183-test.zip skin.confluence.custom
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.183-test
+          path: skin.confluence.custom-5.0.183-test.zip
+          if-no-files-found: error
