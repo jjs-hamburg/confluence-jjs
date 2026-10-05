@@ -1409,13 +1409,6 @@
 							<onclick>RunScript(special://skin/resources/lib/live_home_adjust.py,shadow)</onclick>
 							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
 						</control>
-						<control type="button" id="5900">
-							<width>1125</width><height>60</height><font>font13</font>
-							<label>Soft shadow intensity</label><label2>[COLOR=selected]$VAR[CCHomeMusicSoftShadowIntensitySetting][/COLOR]</label2>
-							<textcolor>grey2</textcolor><focusedcolor>white</focusedcolor><texturefocus>MenuItemFO.png</texturefocus><texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>RunScript(special://skin/resources/lib/mainmenu_style.py,homeshadowintensity)</onclick>
-							<enable>String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)</enable>
-						</control>
 						<control type="button" id="522">
 							<width>1125</width><height>60</height><font>font13</font>
 							<label>Vertical menu position</label><label2>[COLOR=selected]$VAR[CCMainMenuYOffsetSetting][/COLOR]</label2>

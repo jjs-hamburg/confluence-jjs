@@ -168,6 +168,14 @@ HOME_COVER_STYLES = [
     ("hardshadow", "Hard shadow"),
     ("softshadow", "Soft shadow"),
 ]
+HOME_COVER_APPEARANCES = [
+    ("frame", None, "Frame"),
+    ("hardshadow", None, "Hard shadow"),
+    ("softshadow", "dark", "Soft shadow - Dark"),
+    ("softshadow", "medium", "Soft shadow - Medium"),
+    ("softshadow", "light", "Soft shadow - Light"),
+    ("softshadow", "verylight", "Soft shadow - Very light"),
+]
 HOME_SHADOW_WIDTHS = [("6", "6 px"), ("10", "10 px"), ("14", "14 px"), ("18", "18 px"), ("22", "22 px"), ("26", "26 px"), ("30", "30 px"), ("34", "34 px"), ("38", "38 px")]
 HOME_SHADOW_OFFSETS = [("0", "0 px"), ("2", "2 px"), ("4", "4 px"), ("6", "6 px"), ("8", "8 px"), ("10", "10 px"), ("12", "12 px"), ("14", "14 px"), ("16", "16 px"), ("18", "18 px"), ("20", "20 px"), ("22", "22 px"), ("24", "24 px")]
 HOME_SOFT_SHADOW_INTENSITIES = [("dark", "Dark"), ("medium", "Medium"), ("light", "Light")]
@@ -387,21 +395,33 @@ def choose_home_cover_size():
 
 
 def choose_home_cover_style():
-    _choose(
-        "Home screen cover appearance",
-        HOME_COVER_STYLE_SETTING,
-        HOME_COVER_STYLES,
-        DEFAULT_HOME_COVER_STYLE,
-    )
-
-
-def choose_home_soft_shadow_intensity():
-    _choose(
-        "Soft shadow intensity",
+    current_style = _get(HOME_COVER_STYLE_SETTING, DEFAULT_HOME_COVER_STYLE).lower()
+    if current_style == "shadow":
+        current_style = "softshadow"
+    current_intensity = _get(
         HOME_SOFT_SHADOW_INTENSITY_SETTING,
-        HOME_SOFT_SHADOW_INTENSITIES,
         DEFAULT_HOME_SOFT_SHADOW_INTENSITY,
+    ).lower()
+
+    preselect = 0
+    for index, (style, intensity, _label) in enumerate(HOME_COVER_APPEARANCES):
+        if style != current_style:
+            continue
+        if style != "softshadow" or intensity == current_intensity:
+            preselect = index
+            break
+
+    labels = [item[2] for item in HOME_COVER_APPEARANCES]
+    selected = xbmcgui.Dialog().select(
+        "Home screen cover appearance", labels, preselect=preselect
     )
+    if selected < 0:
+        return
+
+    style, intensity, _label = HOME_COVER_APPEARANCES[selected]
+    _set(HOME_COVER_STYLE_SETTING, style)
+    if intensity:
+        _set(HOME_SOFT_SHADOW_INTENSITY_SETTING, intensity)
 
 
 def choose_home_shadow_width():
@@ -805,8 +825,6 @@ def main():
         choose_home_cover_size()
     elif mode == "homecoverstyle":
         choose_home_cover_style()
-    elif mode == "homeshadowintensity":
-        choose_home_soft_shadow_intensity()
     elif mode == "homenocover":
         choose_home_no_cover()
     elif mode == "homebackgrounddefault":
