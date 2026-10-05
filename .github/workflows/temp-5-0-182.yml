@@ -1,0 +1,75 @@
+name: Temporary 5.0.182 combined test build
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - .github/workflows/temp-5-0-182.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply 5.0.182 patch
+        run: python .github/temp_patch_5_0_182.py .
+
+      - name: Validate 5.0.182
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import collections, py_compile, re, xml.etree.ElementTree as ET
+          r=Path('skin.confluence.custom')
+          xmls=[r/'1080p/Home.xml',r/'1080p/Includes.xml',r/'1080p/SkinSettings.xml',r/'resources/skin_modes/custom/Home.xml',r/'resources/skin_modes/custom/Includes.xml',r/'resources/skin_modes/custom/SkinSettings.xml',r/'addon.xml']
+          for p in xmls: ET.parse(p)
+          for p in [r/'resources/lib/cover_display_action.py',r/'resources/lib/live_home_adjust.py']:
+              py_compile.compile(str(p),doraise=True)
+          for n in ('Home.xml','Includes.xml','SkinSettings.xml'):
+              assert (r/'1080p'/n).read_bytes()==(r/'resources/skin_modes/custom'/n).read_bytes(), n
+          home=(r/'1080p/Home.xml').read_text()
+          inc=(r/'1080p/Includes.xml').read_text()
+          settings=(r/'1080p/SkinSettings.xml').read_text()
+          cover=(r/'resources/lib/cover_display_action.py').read_text()
+          shadow=(r/'resources/lib/live_home_adjust.py').read_text()
+          popup=(r/'1080p/custom_1116_SongSelector.xml').read_text()
+          addon=(r/'addon.xml').read_text()
+          assert 'version="5.0.182"' in addon
+          assert 'Music cover size' not in settings and 'live_home_adjust.py,cover' not in settings
+          assert '<label>Change Music View</label><font>font_CCSub_RobotoBold_20</font>' in inc
+          assert 'L/R: Size' in inc and 'CCHomeMusicDisplayAboveMenu' in inc
+          assert 'cover_display_action.py,smaller' in home and 'cover_display_action.py,larger' in home
+          assert all(f'id="{x}"' in home for x in (9480,9481,9482))
+          assert len(re.findall(r'Dynamic .* soft shadow layer',home))==128
+          assert 'SOFT_SHADOW_LAYERS = 32' in shadow and '_soft_shadow_plan' in shadow and 'if index in plan' in shadow
+          assert 'CCHomeMusicInfoCoverSize' in cover
+          assert 'ListItem.Duration' in popup and 'Player.Time]' not in popup and 'Player.TimeRemaining' not in popup
+          ids=collections.Counter(re.findall(r'<control[^>]*\bid="(\d+)"',home))
+          newids=[9480,9481,9482]+list(range(9700,9732))+list(range(9740,9772))+list(range(9780,9812))+list(range(9820,9852))
+          assert all(ids[str(x)]==1 for x in newids)
+          print('5.0.182 validation OK')
+          PY
+
+      - name: Commit final 5.0.182 branch state
+        run: |
+          rm -f .github/temp_patch_5_0_182.py .github/workflows/temp-5-0-182.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "5.0.182: smooth shadow and live Change Music View sizing"
+          git push
+
+      - name: Package test ZIP
+        run: zip -qr skin.confluence.custom-5.0.182-test.zip skin.confluence.custom
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.182-test
+          path: skin.confluence.custom-5.0.182-test.zip
+          if-no-files-found: error
