@@ -258,123 +258,69 @@ def _set_shift_digits(home, base, value):
 def sync_info_cover_geometry(mode=None):
     """Publish exact rendered widths and equal-margin horizontal shifts."""
     home = _home()
+    mode = (mode or (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front")).strip().lower()
     height = _info_cover_height()
+    margin = music_view_margin()
     front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
-    back_art = home.getProperty(BACK_PROP) or ""
-
+    back_art = sync_back_art()
     front_width = _info_art_width(front_art, height)
     back_width = _info_art_width(back_art, height) if back_art else 0
-    margin = music_view_margin()
-
-    # Footer origin is x=30. Artwork starts at x=margin, so all following
-    # positions are derived from the real rendered image edges plus the same
-    # configured margin. Front and back widths remain fully independent.
-    single_shift = max(0, front_width + (2 * margin) - 30)
-    pair_shift = max(0, front_width + back_width + (3 * margin) - 30)
-    back_shift = max(0, front_width + margin)
-
-    if mode is None:
-        mode = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
-    if mode == "infofront":
-        text_shift = single_shift
-    elif mode == "infoboth":
-        text_shift = pair_shift if back_art else single_shift
-    elif mode == "compact":
-        try:
-            compact_width = int(home.getProperty(COMPACT_WIDTH_PROP) or COMPACT_WIDTH_FALLBACK)
-        except Exception:
-            compact_width = COMPACT_WIDTH_FALLBACK
-        text_shift = max(0, compact_width + (2 * margin) - 30)
+    back_shift = front_width + margin
+    if mode == "infoboth" and back_art:
+        text_shift = front_width + margin + back_width + margin
     else:
-        text_shift = 0
-
+        text_shift = front_width + margin
     home.setProperty(INFO_FRONT_WIDTH_PROP, str(front_width))
-    if back_art:
-        home.setProperty(INFO_BACK_WIDTH_PROP, str(back_width))
-    else:
-        home.clearProperty(INFO_BACK_WIDTH_PROP)
+    home.setProperty(INFO_BACK_WIDTH_PROP, str(back_width))
     home.setProperty(INFO_BACK_SHIFT_PROP, str(back_shift))
     home.setProperty(INFO_TEXT_SHIFT_PROP, str(text_shift))
     _set_shift_digits(home, INFO_BACK_SHIFT_PROP, back_shift)
     _set_shift_digits(home, INFO_TEXT_SHIFT_PROP, text_shift)
-    return text_shift
+    return (height, front_width, back_width, back_shift, text_shift)
 
 
-def compact_cover_width(art=None):
-    art = art or xbmc.getInfoLabel("Player.Art(thumb)") or ""
-    cache_key = str(art or "")
-    if cache_key in _COMPACT_WIDTH_CACHE:
-        return _COMPACT_WIDTH_CACHE[cache_key]
-
-    size = None
-    for path in _image_candidates(art):
-        size = _image_size(_read_image_header(path))
-        if size:
-            break
-
-    if not size:
-        result = COMPACT_WIDTH_FALLBACK
-        _COMPACT_WIDTH_CACHE[cache_key] = result
-        return result
-
-    width, height = size
-    target = (float(width) / float(height)) * COMPACT_HEIGHT
-    result = int(math.ceil(target / COMPACT_WIDTH_STEP) * COMPACT_WIDTH_STEP)
-    result = max(COMPACT_WIDTH_MIN, min(COMPACT_WIDTH_MAX, result))
-
-    if len(_COMPACT_WIDTH_CACHE) >= 128:
-        try:
-            _COMPACT_WIDTH_CACHE.pop(next(iter(_COMPACT_WIDTH_CACHE)))
-        except Exception:
-            _COMPACT_WIDTH_CACHE.clear()
-    _COMPACT_WIDTH_CACHE[cache_key] = result
-    return result
+def _compact_width():
+    art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
+    if not art:
+        return COMPACT_WIDTH_FALLBACK
+    ratio = _art_ratio(art)
+    width = max(COMPACT_WIDTH_MIN, min(COMPACT_WIDTH_MAX, int(round(ratio * COMPACT_HEIGHT))))
+    return width
 
 
 def sync_compact_cover_width():
-    width = compact_cover_width()
+    width = _compact_width()
     _home().setProperty(COMPACT_WIDTH_PROP, str(width))
     return width
 
 
-def clear_back_art():
-    home = _home()
-    home.clearProperty(BACK_PROP)
-    home.clearProperty(COMPACT_WIDTH_PROP)
-    for prop in (
-        INFO_FRONT_WIDTH_PROP, INFO_BACK_WIDTH_PROP, INFO_BACK_SHIFT_PROP, INFO_TEXT_SHIFT_PROP,
-    ):
-        home.clearProperty(prop)
-    for base in (INFO_BACK_SHIFT_PROP, INFO_TEXT_SHIFT_PROP):
-        for suffix in ("Thousands", "Hundreds", "Tens", "Ones"):
-            home.clearProperty(base + suffix)
+def _next_mode(mode, has_back):
+    if mode == "front":
+        return "both" if has_back else "infofront"
+    if mode == "both":
+        return "infofront"
+    if mode == "infofront":
+        return "infoboth" if has_back else "compact"
+    if mode == "infoboth":
+        return "compact"
+    if mode == "compact":
+        return "none"
+    return "front"
 
 
 def cycle_view():
-    # 5.0.170: centered front -> centered front+back -> large front beside
-    # info -> large front+back beside info -> compact footer cover -> none.
-    # Back-art states are skipped when the current album has no back artwork.
-    has_back = bool(sync_back_art())
-    sync_compact_cover_width()
-    mode = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
-    if mode == "front":
-        new_mode = "both" if has_back else "infofront"
-    elif mode == "both":
-        new_mode = "infofront"
-    elif mode == "infofront":
-        new_mode = "infoboth" if has_back else "compact"
-    elif mode == "infoboth":
-        new_mode = "compact"
-    elif mode == "compact":
-        new_mode = "none"
-    else:
-        new_mode = "front"
+    current = (xbmc.getInfoLabel("Skin.String({})".format(SETTING)) or "front").strip().lower()
+    back = sync_back_art()
+    new_mode = _next_mode(current, bool(back))
     xbmc.executebuiltin("Skin.SetString({},{})".format(SETTING, new_mode))
-    sync_info_cover_geometry(mode=new_mode)
+    sync_compact_cover_width()
+    sync_info_cover_geometry(new_mode)
+
 
 # 5.0.182 live sizing -------------------------------------------------------
 _old_info_height = _info_cover_height
 _old_sync_info = sync_info_cover_geometry
+
 
 def _above_menu(): return xbmc.getCondVisibility("Skin.HasSetting({})".format(ABOVE_MENU_SETTING))
 def _get_int(name,default):
@@ -390,10 +336,12 @@ def _info_cover_height():
         return max(2,min(natural,requested))
     return natural
 
+
 def _geom(cid,x,y,w,h):
     try:
         c=_home().getControl(cid); c.setPosition(int(x),int(y)); c.setWidth(max(1,int(w))); c.setHeight(max(1,int(h)))
     except Exception: pass
+
 
 def sync_info_cover_geometry(mode=None):
     result=_old_sync_info(mode); mode=(mode or _current_mode()).lower()
@@ -406,6 +354,7 @@ def sync_info_cover_geometry(mode=None):
         if back: home.setProperty(INFO_BACK_WIDTH_PROP,str(bw))
     return result
 
+
 def resize_cover(direction):
     sync_back_art(); mode=_current_mode(); delta=COVER_SIZE_STEP if direction>0 else -COVER_SIZE_STEP
     if mode in ("front","both"):
@@ -416,11 +365,13 @@ def resize_cover(direction):
     elif _above_menu() and mode in ("infofront","infoboth"):
         natural=_old_info_height(); raw=(xbmc.getInfoLabel("Skin.String({})".format(INFO_COVER_SIZE_SETTING)) or "").strip(); cur=min(_get_int(INFO_COVER_SIZE_SETTING,natural) if raw else natural,natural); _set_int(INFO_COVER_SIZE_SETTING,min(natural,max(COVER_SIZE_MIN,cur+delta))); sync_info_cover_geometry(mode)
 
+
 def main(action="change"):
     a=(action or "change").lower()
     if a=="smaller": resize_cover(-1)
     elif a=="larger": resize_cover(1)
     else: cycle_view()
+
 
 if __name__ == "__main__":
     main(sys.argv[1] if len(sys.argv)>1 else "change")
