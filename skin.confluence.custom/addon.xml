@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addon id="skin.confluence.custom" version="5.0.175" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
+<addon id="skin.confluence.custom" version="5.0.176" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
 		<import addon="xbmc.python" version="3.0.0" />
@@ -11,6 +11,7 @@
 	<extension point="xbmc.gui.skin" debugging="false" effectslowdown="1.0">
 		<res width="1920" height="1080" aspect="16:9" default="true" folder="1080p" />
 	</extension>
+	<extension point="xbmc.service" library="resources/lib/shadow_refresh_service.py" />
 	<extension point="xbmc.addon.metadata">
 		<platform>all</platform>
 		<license>GNU General Public License version 2</license>
@@ -29,7 +30,7 @@
 			<screenshot>resources/screenshot-08.jpg</screenshot>
 			<screenshot>resources/screenshot-09.jpg</screenshot>
 		</assets>
-		<news>5.0.175: Add live Home preview for vertical menu position and unrestricted 25 px cover-size adjustment; keep custom skin mode snapshot in sync.</news>
+		<news>5.0.176: Reuse the Music View Change badge style for live Home adjustments and rebuild Home after shadow width or offset changes.</news>
 		<summary lang="en_GB">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="en_US">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="de_DE">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
