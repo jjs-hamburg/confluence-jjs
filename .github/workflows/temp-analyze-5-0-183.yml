@@ -1,0 +1,63 @@
+name: Temporary 5.0.183 layout analysis
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - .github/workflows/temp-analyze-5-0-183.yml
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect music info XML
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          path=Path('skin.confluence.custom/1080p/Home.xml')
+          text=path.read_text()
+          lines=text.splitlines()
+          for needle in ('InfoTextShiftThousands','InfoBackShiftThousands','Info-side large front','CCHomeMusicInfoText'):
+              print('\n===', needle, '===')
+              for i,line in enumerate(lines,1):
+                  if needle in line:
+                      print('first line',i,':',line.strip()[:300])
+                      break
+
+          root=ET.parse(path).getroot()
+          def txt(e,tag):
+              c=e.find(tag)
+              return (c.text or '').strip() if c is not None and c.text else ''
+          def walk(node, stack):
+              newstack=stack+[node]
+              if node.tag=='animation' and 'InfoTextShiftThousands' in (node.attrib.get('condition') or ''):
+                  group=next((x for x in reversed(stack) if x.tag=='control' and x.attrib.get('type')=='group'),None)
+                  print('\n=== OUTERMOST MATCHING INFO SHIFT GROUP ===')
+                  if group is not None:
+                      # climb to highest consecutive group ancestor under the Music Info area
+                      groups=[x for x in stack if x.tag=='control' and x.attrib.get('type')=='group']
+                      for idx,g in enumerate(groups):
+                          descendants=list(g.iter())
+                          if any(y.tag=='animation' and 'InfoTextShiftThousands' in (y.attrib.get('condition') or '') for y in descendants):
+                              group=g
+                              break
+                      print('group attrs',group.attrib)
+                      print('group left/top/width/height',*[txt(group,k) for k in ('left','top','width','height')])
+                      print('descendant controls:')
+                      for c in group.iter('control'):
+                          if c is group: continue
+                          desc=txt(c,'description')
+                          label=txt(c,'label')
+                          print(' ',c.attrib,'desc=',desc[:80],'left=',txt(c,'left'),'top=',txt(c,'top'),'width=',txt(c,'width'),'height=',txt(c,'height'),'label=',label[:100])
+                  raise SystemExit(0)
+              for child in node:
+                  walk(child,newstack)
+          try:
+              walk(root,[])
+          except SystemExit:
+              pass
+          PY
