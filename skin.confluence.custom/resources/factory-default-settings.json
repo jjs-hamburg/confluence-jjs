@@ -27,6 +27,7 @@
     {"id":"cchomemusiccoversize","type":"string","value":"585"},
     {"id":"cchomemusiccoverstyle","type":"string","value":"softshadow"},
     {"id":"cchomemusicshadowoffset","type":"string","value":"24"},
+    {"id":"cchomemusicsoftshadowintensity","type":"string","value":"medium"},
     {"id":"cchomemusicshadowwidth","type":"string","value":"6"},
     {"id":"cchomenocoverstyle","type":"string","value":"custom"},
     {"id":"cchomeplaybackfanart","type":"boolean","value":false},

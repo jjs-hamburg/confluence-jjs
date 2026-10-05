@@ -24,6 +24,7 @@ HOME_COVER_SIZE_SETTING = "CCHomeMusicCoverSize"
 HOME_COVER_STYLE_SETTING = "CCHomeMusicCoverStyle"
 HOME_SHADOW_WIDTH_SETTING = "CCHomeMusicShadowWidth"
 HOME_SHADOW_OFFSET_SETTING = "CCHomeMusicShadowOffset"
+HOME_SOFT_SHADOW_INTENSITY_SETTING = "CCHomeMusicSoftShadowIntensity"
 HOME_FLOOR_STYLE_SETTING = "CCHomeFloorStyle"
 HOME_ARTWORK_MODE_SETTING = "CCMusicArtworkMode"
 HOME_NO_COVER_SETTING = "CCHomeNoCoverStyle"
@@ -80,6 +81,7 @@ DEFAULT_HOME_COVER_SIZE = "195"
 DEFAULT_HOME_COVER_STYLE = "frame"
 DEFAULT_HOME_SHADOW_WIDTH = "14"
 DEFAULT_HOME_SHADOW_OFFSET = "4"
+DEFAULT_HOME_SOFT_SHADOW_INTENSITY = "medium"
 DEFAULT_HOME_FLOOR_STYLE = "original"
 DEFAULT_HOME_ARTWORK_MODE = "front"
 DEFAULT_HOME_NO_COVER = "custom"
@@ -168,6 +170,7 @@ HOME_COVER_STYLES = [
 ]
 HOME_SHADOW_WIDTHS = [("6", "6 px"), ("10", "10 px"), ("14", "14 px"), ("18", "18 px"), ("22", "22 px"), ("26", "26 px"), ("30", "30 px"), ("34", "34 px"), ("38", "38 px")]
 HOME_SHADOW_OFFSETS = [("0", "0 px"), ("2", "2 px"), ("4", "4 px"), ("6", "6 px"), ("8", "8 px"), ("10", "10 px"), ("12", "12 px"), ("14", "14 px"), ("16", "16 px"), ("18", "18 px"), ("20", "20 px"), ("22", "22 px"), ("24", "24 px")]
+HOME_SOFT_SHADOW_INTENSITIES = [("dark", "Dark"), ("medium", "Medium"), ("light", "Light")]
 HOME_FLOOR_STYLES = [
     ("original", "Original"),
     ("dark", "Dark"),
@@ -236,6 +239,7 @@ def ensure_defaults():
         (HOME_COVER_STYLE_SETTING, DEFAULT_HOME_COVER_STYLE),
         (HOME_SHADOW_WIDTH_SETTING, DEFAULT_HOME_SHADOW_WIDTH),
         (HOME_SHADOW_OFFSET_SETTING, DEFAULT_HOME_SHADOW_OFFSET),
+        (HOME_SOFT_SHADOW_INTENSITY_SETTING, DEFAULT_HOME_SOFT_SHADOW_INTENSITY),
         (HOME_FLOOR_STYLE_SETTING, DEFAULT_HOME_FLOOR_STYLE),
         (HOME_ARTWORK_MODE_SETTING, DEFAULT_HOME_ARTWORK_MODE),
         (HOME_NO_COVER_SETTING, DEFAULT_HOME_NO_COVER),
@@ -388,6 +392,15 @@ def choose_home_cover_style():
         HOME_COVER_STYLE_SETTING,
         HOME_COVER_STYLES,
         DEFAULT_HOME_COVER_STYLE,
+    )
+
+
+def choose_home_soft_shadow_intensity():
+    _choose(
+        "Soft shadow intensity",
+        HOME_SOFT_SHADOW_INTENSITY_SETTING,
+        HOME_SOFT_SHADOW_INTENSITIES,
+        DEFAULT_HOME_SOFT_SHADOW_INTENSITY,
     )
 
 
@@ -792,6 +805,8 @@ def main():
         choose_home_cover_size()
     elif mode == "homecoverstyle":
         choose_home_cover_style()
+    elif mode == "homeshadowintensity":
+        choose_home_soft_shadow_intensity()
     elif mode == "homenocover":
         choose_home_no_cover()
     elif mode == "homebackgrounddefault":

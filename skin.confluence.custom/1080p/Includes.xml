@@ -2960,6 +2960,56 @@
 		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverSize),195) | [!Skin.HasSetting(CCHomeMusicCoverDynamic) + String.IsEmpty(Skin.String(CCHomeMusicCoverSize))]">Original (195 px)</value>
 		<value>$INFO[Skin.String(CCHomeMusicCoverSize)] px</value>
 	</variable>
+	<variable name="CCHomeMusicSoftShadowIntensitySetting">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">Dark</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">Light</value>
+		<value>Medium</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowStaticDiffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">FFFFFFFF</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">CCFFFFFF</value>
+		<value>E6FFFFFF</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer1Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">3C000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">30000000</value>
+		<value>36000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer2Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">36000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">2B000000</value>
+		<value>31000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer3Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">30000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">26000000</value>
+		<value>2B000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer4Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">2A000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">21000000</value>
+		<value>26000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer5Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">24000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">1D000000</value>
+		<value>20000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer6Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">1E000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">18000000</value>
+		<value>1B000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer7Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">16000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">12000000</value>
+		<value>14000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer8Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">0E000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">0A000000</value>
+		<value>0C000000</value>
+	</variable>
 	<variable name="CCHomeMusicCoverStyleSetting">
 		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow)">Hard shadow</value>
 		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)">Soft shadow</value>
@@ -2989,11 +3039,11 @@
 	<include name="CCHomeMusicShadowBorderHard14"><bordertexture border="22" infill="true">CCCoverShadowFrameHard14.png</bordertexture></include>
 	<include name="CCHomeMusicShadowBorderHard18"><bordertexture border="22" infill="true">CCCoverShadowFrameHard18.png</bordertexture></include>
 	<include name="CCHomeMusicShadowBorderHard22"><bordertexture border="22" infill="true">CCCoverShadowFrameHard22.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderSoft06"><bordertexture border="22" infill="true">CCCoverShadowFrameSoft06.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderSoft10"><bordertexture border="22" infill="true">CCCoverShadowFrameSoft10.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderSoft14"><bordertexture border="22" infill="true">CCCoverShadowFrameSoft14.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderSoft18"><bordertexture border="22" infill="true">CCCoverShadowFrameSoft18.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderSoft22"><bordertexture border="22" infill="true">CCCoverShadowFrameSoft22.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderSoft06"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="22" infill="true">CCCoverShadowFrameSoft06.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderSoft10"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="22" infill="true">CCCoverShadowFrameSoft10.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderSoft14"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="22" infill="true">CCCoverShadowFrameSoft14.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderSoft18"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="22" infill="true">CCCoverShadowFrameSoft18.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderSoft22"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="22" infill="true">CCCoverShadowFrameSoft22.png</bordertexture></include>
 	<include name="CCHomeMusicShadowBorderSelector">
 		<include condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) + String.IsEqual(Skin.String(CCHomeMusicShadowWidth),6)">CCHomeMusicShadowBorderHard06</include>
 		<include condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) + String.IsEqual(Skin.String(CCHomeMusicShadowWidth),10)">CCHomeMusicShadowBorderHard10</include>
@@ -3011,10 +3061,10 @@
 	<include name="CCHomeMusicShadowBorderHighHard30"><bordertexture border="38" infill="true">CCCoverShadowFrameHard30.png</bordertexture></include>
 	<include name="CCHomeMusicShadowBorderHighHard34"><bordertexture border="38" infill="true">CCCoverShadowFrameHard34.png</bordertexture></include>
 	<include name="CCHomeMusicShadowBorderHighHard38"><bordertexture border="38" infill="true">CCCoverShadowFrameHard38.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderHighSoft26"><bordertexture border="38" infill="true">CCCoverShadowFrameSoft26.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderHighSoft30"><bordertexture border="38" infill="true">CCCoverShadowFrameSoft30.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderHighSoft34"><bordertexture border="38" infill="true">CCCoverShadowFrameSoft34.png</bordertexture></include>
-	<include name="CCHomeMusicShadowBorderHighSoft38"><bordertexture border="38" infill="true">CCCoverShadowFrameSoft38.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderHighSoft26"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="38" infill="true">CCCoverShadowFrameSoft26.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderHighSoft30"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="38" infill="true">CCCoverShadowFrameSoft30.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderHighSoft34"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="38" infill="true">CCCoverShadowFrameSoft34.png</bordertexture></include>
+	<include name="CCHomeMusicShadowBorderHighSoft38"><colordiffuse>$VAR[CCHomeMusicSoftShadowStaticDiffuse]</colordiffuse><bordertexture border="38" infill="true">CCCoverShadowFrameSoft38.png</bordertexture></include>
 	<include name="CCHomeMusicShadowBorderSelectorHigh">
 		<include condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) + String.IsEqual(Skin.String(CCHomeMusicShadowWidth),26)">CCHomeMusicShadowBorderHighHard26</include>
 		<include condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow) + String.IsEqual(Skin.String(CCHomeMusicShadowWidth),30)">CCHomeMusicShadowBorderHighHard30</include>
