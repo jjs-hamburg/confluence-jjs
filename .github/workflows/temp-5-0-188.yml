@@ -1,0 +1,88 @@
+name: Temporary 5.0.188 shadow levels
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - .github/workflows/temp-5-0-188.yml
+      - tools/temp_patch_5_0_188.py
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply 5.0.188 patch
+        run: python tools/temp_patch_5_0_188.py
+
+      - name: Validate 5.0.188
+        run: |
+          python -m py_compile skin.confluence.custom/resources/lib/mainmenu_style.py
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import xml.etree.ElementTree as ET
+          root=Path('skin.confluence.custom')
+          addon=(root/'addon.xml').read_text(encoding='utf-8')
+          style=(root/'resources/lib/mainmenu_style.py').read_text(encoding='utf-8')
+          inc=(root/'1080p/Includes.xml').read_text(encoding='utf-8')
+          assert 'version="5.0.188"' in addon
+          assert 'Soft shadow - Very light' not in style
+          assert 'Soft shadow - Very light' not in inc
+          assert '("softshadow", "dark", "Soft shadow - Dark")' in style
+          assert '("softshadow", "medium", "Soft shadow - Medium")' in style
+          assert '("softshadow", "light", "Soft shadow - Light")' in style
+          assert 'verylight' in style  # migration only
+          assert inc.count('verylight') == 0
+          assert (root/'1080p/Includes.xml').read_bytes() == (root/'resources/skin_modes/custom/Includes.xml').read_bytes()
+          ET.parse(root/'addon.xml'); ET.parse(root/'1080p/Includes.xml')
+          # New opacity order must be visibly distinct: dark > medium > light on layer 1.
+          def v(name, key=None):
+              block=re.search(r'<variable name="'+name+r'">(.*?)</variable>',inc,re.S).group(1)
+              if key:
+                  return re.search(r'<value condition="String.IsEqual\(Skin.String\(CCHomeMusicSoftShadowIntensity\),'+key+r'\)">([0-9A-F]{8})</value>',block).group(1)
+              return re.search(r'<value>([0-9A-F]{8})</value>',block).group(1)
+          d=int(v('CCHomeMusicSoftShadowLayer1Diffuse','dark')[:2],16)
+          m=int(v('CCHomeMusicSoftShadowLayer1Diffuse')[:2],16)
+          l=int(v('CCHomeMusicSoftShadowLayer1Diffuse','light')[:2],16)
+          assert d > m > l, (d,m,l)
+          PY
+
+      - name: Verify only intended skin files changed from 5.0.187
+        run: |
+          BASE=e2564a8d2ed3a0c716881fdfcae9de8338d65bc4
+          git diff --name-only "$BASE" -- skin.confluence.custom | sort > /tmp/changed.txt
+          printf '%s\n' \
+            skin.confluence.custom/addon.xml \
+            skin.confluence.custom/1080p/Includes.xml \
+            skin.confluence.custom/resources/lib/mainmenu_style.py \
+            skin.confluence.custom/resources/skin_modes/custom/Includes.xml | sort > /tmp/expected.txt
+          diff -u /tmp/expected.txt /tmp/changed.txt
+
+      - name: Commit final 5.0.188 branch state
+        run: |
+          git config user.name "jjs-hamburg"
+          git config user.email "jjschaefer@jjschaefer.de"
+          git rm .github/workflows/temp-5-0-188.yml tools/temp_patch_5_0_188.py
+          git add skin.confluence.custom
+          git commit -m "5.0.188: simplify soft shadow levels"
+          git push origin HEAD:feature/live-home-adjustments
+
+      - name: Package test ZIP
+        run: |
+          zip -qr skin.confluence.custom-5.0.188-test.zip skin.confluence.custom
+          unzip -t skin.confluence.custom-5.0.188-test.zip >/dev/null
+          sha256sum skin.confluence.custom-5.0.188-test.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.188-test
+          path: skin.confluence.custom-5.0.188-test.zip
+          if-no-files-found: error
