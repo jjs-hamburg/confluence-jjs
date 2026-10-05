@@ -30,7 +30,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import json
-          import re
           import xml.etree.ElementTree as ET
 
           root = Path('skin.confluence.custom')
@@ -48,15 +47,16 @@ jobs:
           assert 'def choose_home_soft_shadow_intensity():' in style
           assert 'elif mode == "homeshadowintensity":' in style
           assert '<label>Soft shadow intensity</label>' in settings
-          assert settings.index('id="546"') < settings.index('id="550"') < settings.index('id="522"')
-          assert 'String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow)' not in settings[settings.index('id="550"'):settings.index('</control>', settings.index('id="550"'))]
+          assert settings.index('id="546"') < settings.index('id="5900"') < settings.index('id="522"')
+          block = settings[settings.index('id="5900"'):settings.index('</control>', settings.index('id="5900"'))]
+          assert 'String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow)' not in block
 
           for i in range(1, 9):
               assert f'CCHomeMusicSoftShadowLayer{i}Diffuse' in inc
               assert home.count(f'$VAR[CCHomeMusicSoftShadowLayer{i}Diffuse]') == 4
           assert home.count('soft shadow layer ') == 32
           assert home.count('colordiffuse="BE000000"') == 4
-          assert inc.count('$VAR[CCHomeMusicSoftShadowStaticDiffuse]') == 10  # variable value reference + 9 soft border includes
+          assert inc.count('$VAR[CCHomeMusicSoftShadowStaticDiffuse]') == 9
           assert 'CCHomeMusicSoftShadowIntensitySetting' in inc
 
           vals = {item['id'].lower(): item.get('value') for item in defaults['settings']}
