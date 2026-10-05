@@ -1,0 +1,90 @@
+name: "Temporary 5.0.178 shadow geometry patch"
+
+on:
+  push:
+    branches:
+      - feature/live-home-adjustments
+    paths:
+      - "tools/patch_5_0_178_shadow.py"
+      - ".github/workflows/temp-5-0-178-shadow-patch.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v5
+        with:
+          ref: feature/live-home-adjustments
+          fetch-depth: 0
+
+      - name: Apply 5.0.178 patch
+        run: python tools/patch_5_0_178_shadow.py
+
+      - name: Validate patched skin
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root = Path("skin.confluence.custom")
+          addon = (root / "addon.xml").read_text(encoding="utf-8")
+          assert 'version="5.0.178"' in addon
+
+          for p in sorted((root / "resources/lib").rglob("*.py")):
+              py_compile.compile(str(p), doraise=True)
+          for d in (root / "1080p", root / "resources/skin_modes/custom", root / "resources/skin_modes/standard"):
+              for p in sorted(d.glob("*.xml")):
+                  ET.parse(p)
+
+          assert (root / "1080p/Home.xml").read_bytes() == (root / "resources/skin_modes/custom/Home.xml").read_bytes()
+          assert (root / "1080p/SkinSettings.xml").read_bytes() == (root / "resources/skin_modes/custom/SkinSettings.xml").read_bytes()
+          assert (root / "1080p/Includes.xml").read_bytes() == (root / "resources/skin_modes/custom/Includes.xml").read_bytes()
+
+          home = (root / "1080p/Home.xml").read_text(encoding="utf-8")
+          live = (root / "resources/lib/live_home_adjust.py").read_text(encoding="utf-8")
+          for cid in (9400,9410,9420,9430,9440,9450,9460,9470):
+              assert f'id="{cid}"' in home, cid
+          for cid in (9401,9411,9421,9431,9441,9451,9461,9471,9478):
+              assert f'id="{cid}"' not in home, cid
+          assert "SHADOW_STEP = 1" in live
+          assert "SHADOW_WIDTHS" not in live and "SHADOW_OFFSETS" not in live
+          assert "cover_x + offset" in live and "int(size) + width" in live
+          assert (root / "media/CCCoverShadowDynamicHard.png").is_file()
+          assert (root / "media/CCCoverShadowDynamicSoft.png").is_file()
+          print("5.0.178 validation OK")
+          PY
+
+      - name: Commit patch and remove temporary helpers
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f tools/patch_5_0_178_shadow.py .github/workflows/temp-5-0-178-shadow-patch.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "5.0.178: correct directional shadow geometry"
+          git push origin HEAD:feature/live-home-adjustments
+
+      - name: Build direct-install test ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip -qr /tmp/skin.confluence.custom-5.0.178-test.zip skin.confluence.custom
+          unzip -t /tmp/skin.confluence.custom-5.0.178-test.zip >/dev/null
+          sha256sum /tmp/skin.confluence.custom-5.0.178-test.zip
+
+      - name: Upload test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.178-test
+          path: /tmp/skin.confluence.custom-5.0.178-test.zip
+          if-no-files-found: error
+          retention-days: 7
