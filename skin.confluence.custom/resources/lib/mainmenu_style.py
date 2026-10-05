@@ -174,7 +174,6 @@ HOME_COVER_APPEARANCES = [
     ("softshadow", "dark", "Soft shadow - Dark"),
     ("softshadow", "medium", "Soft shadow - Medium"),
     ("softshadow", "light", "Soft shadow - Light"),
-    ("softshadow", "verylight", "Soft shadow - Very light"),
 ]
 HOME_SHADOW_WIDTHS = [("6", "6 px"), ("10", "10 px"), ("14", "14 px"), ("18", "18 px"), ("22", "22 px"), ("26", "26 px"), ("30", "30 px"), ("34", "34 px"), ("38", "38 px")]
 HOME_SHADOW_OFFSETS = [("0", "0 px"), ("2", "2 px"), ("4", "4 px"), ("6", "6 px"), ("8", "8 px"), ("10", "10 px"), ("12", "12 px"), ("14", "14 px"), ("16", "16 px"), ("18", "18 px"), ("20", "20 px"), ("22", "22 px"), ("24", "24 px")]
@@ -284,6 +283,8 @@ def ensure_defaults():
     # Legacy: the old single shadow mode is the soft shadow mode.
     if _get(HOME_COVER_STYLE_SETTING).lower() == "shadow":
         _set(HOME_COVER_STYLE_SETTING, "softshadow")
+    if _get(HOME_SOFT_SHADOW_INTENSITY_SETTING).lower() == "verylight":
+        _set(HOME_SOFT_SHADOW_INTENSITY_SETTING, "light")
 
     # 5.0.32 used a near-white value as submenu focus default.
     # Confluence itself uses pure white; migrate only that legacy default.

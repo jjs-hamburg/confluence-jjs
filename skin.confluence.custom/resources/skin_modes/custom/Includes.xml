@@ -2963,68 +2963,57 @@
 	<variable name="CCHomeMusicSoftShadowIntensitySetting">
 		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">Dark</value>
 		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">Light</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">Very light</value>
 		<value>Medium</value>
 	</variable>
 	<variable name="CCHomeMusicSoftShadowStaticDiffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">FFFFFFFF</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">80FFFFFF</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">4DFFFFFF</value>
-		<value>BFFFFFFF</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">BFFFFFFF</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">4DFFFFFF</value>
+		<value>80FFFFFF</value>
 	</variable>
 	<variable name="CCHomeMusicSoftShadowLayer1Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">3C000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">1E000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">12000000</value>
-		<value>2D000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">2D000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">12000000</value>
+		<value>1E000000</value>
 	</variable>
 	<variable name="CCHomeMusicSoftShadowLayer2Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">36000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">1B000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">10000000</value>
-		<value>29000000</value>
-	</variable>
-	<variable name="CCHomeMusicSoftShadowLayer3Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">30000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">18000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">0E000000</value>
-		<value>24000000</value>
-	</variable>
-	<variable name="CCHomeMusicSoftShadowLayer4Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">2A000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">15000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">0D000000</value>
-		<value>20000000</value>
-	</variable>
-	<variable name="CCHomeMusicSoftShadowLayer5Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">24000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">12000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">0B000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">29000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">10000000</value>
 		<value>1B000000</value>
 	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer3Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">24000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">0E000000</value>
+		<value>18000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer4Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">20000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">0D000000</value>
+		<value>15000000</value>
+	</variable>
+	<variable name="CCHomeMusicSoftShadowLayer5Diffuse">
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">1B000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">0B000000</value>
+		<value>12000000</value>
+	</variable>
 	<variable name="CCHomeMusicSoftShadowLayer6Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">1E000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">0F000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">09000000</value>
-		<value>17000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">17000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">09000000</value>
+		<value>0F000000</value>
 	</variable>
 	<variable name="CCHomeMusicSoftShadowLayer7Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">16000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">0B000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">07000000</value>
-		<value>11000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">11000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">07000000</value>
+		<value>0B000000</value>
 	</variable>
 	<variable name="CCHomeMusicSoftShadowLayer8Diffuse">
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">0E000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">07000000</value>
-		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">04000000</value>
-		<value>0B000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">0B000000</value>
+		<value condition="String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">04000000</value>
+		<value>07000000</value>
 	</variable>
 	<variable name="CCHomeMusicCoverStyleSetting">
 		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),hardshadow)">Hard shadow</value>
 		<value condition="[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),dark)">Soft shadow - Dark</value>
 		<value condition="[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),light)">Soft shadow - Light</value>
-		<value condition="[String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)] + String.IsEqual(Skin.String(CCHomeMusicSoftShadowIntensity),verylight)">Soft shadow - Very light</value>
 		<value condition="String.IsEqual(Skin.String(CCHomeMusicCoverStyle),softshadow) | String.IsEqual(Skin.String(CCHomeMusicCoverStyle),shadow)">Soft shadow - Medium</value>
 		<value>Frame</value>
 	</variable>
