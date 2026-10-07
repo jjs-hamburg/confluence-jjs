@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Song Popup controller for Confluence-jjs.
+"""Song Popup runtime for Confluence-jjs.
 
-This worker owns only popup lifecycle, popup navigation follow, credits and lyrics.
-General Now Playing data/artwork is handled by nowplaying_service.py.
+This worker owns popup navigation follow plus credits/lyrics data while window
+1116 is actually open. General Now Playing data/artwork is handled by
+nowplaying_service.py. Window lifecycle itself is centralized in
+songpopup_controller.py.
 """
 from __future__ import absolute_import
 
@@ -13,6 +15,11 @@ import xbmc
 import xbmcgui
 
 from credits_runtime import CreditsRuntime, clear_properties as clear_credits_properties
+from songpopup_controller import (
+    close_dialog as controller_close_dialog,
+    is_open as controller_is_open,
+    reconcile as controller_reconcile,
+)
 from songselector_action import _native_list_index, detail_view, focus_current, lyrics_view, open_popup, show_credits
 from songselector_service import (
     _build_credit_display_rows,
@@ -25,7 +32,7 @@ from songselector_service import (
     _publish_lyrics_window,
     _songselector_font_signature,
 )
-from songselector_state import close_popup, current, popup_open, size
+from songselector_state import current, size
 from worker_lock import WorkerLock
 
 HOME_ID = 10000
@@ -38,6 +45,7 @@ AUTO_OPEN_SETTING = "CCSongSelectorAutoOpen"
 HIGHLIGHT_PROP = "ConfluenceCustom.SongSelector.Highlight"
 PROGRAMMATIC_UNTIL_PROP = "ConfluenceCustom.SongSelector.ProgrammaticUntil"
 SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
+PLAYBACK_STOP_SETTLE_SECONDS = 1.0
 
 LYRICS_TEXT_PROP = "ConfluenceCustom.SongSelector.LyricsText"
 CULRC_LYRICS_PROP = "culrc.lyrics"
@@ -87,10 +95,6 @@ def _popup_context():
     )
 
 
-def _actual_popup_open():
-    return xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID))
-
-
 def _set_navigation_highlight(home, enabled):
     if enabled:
         home.setProperty(HIGHLIGHT_PROP, "1")
@@ -98,22 +102,10 @@ def _set_navigation_highlight(home, enabled):
         home.clearProperty(HIGHLIGHT_PROP)
 
 
-def _close_dialog():
-    xbmc.executebuiltin("Dialog.Close({},true)".format(DIALOG_ID))
-
-
 def _close_popup_runtime(home):
-    """Single service-owned forced-close path.
-
-    Back/unload remains handled by songselector_action.py. This function is used
-    only when playback/session/context really ends or the selector is disabled.
-    """
+    """Close through the single lifecycle controller."""
     _set_navigation_highlight(home, False)
-    home.clearProperty(SELECTION_TARGET_PROP)
-    home.clearProperty(CREDITS_WINDOW_START_PROP)
-    close_popup()
-    if _actual_popup_open():
-        _close_dialog()
+    controller_close_dialog()
 
 
 def _clear_popup_data(home):
@@ -165,13 +157,59 @@ def _lyrics_sync_delay_seconds():
     return max(0.0, min(1.0, value))
 
 
+class PlaybackEvents(xbmc.Player):
+    """Track real playback stop/end callbacks without classifying Player.GoTo.
+
+    Kodi can emit a stop while switching tracks. A following start/AV-start
+    simply cancels the pending stop. Only a stop/end that remains unmatched by
+    a new start is considered the end of the music session.
+    """
+
+    def __init__(self):
+        xbmc.Player.__init__(self)
+        self.stop_candidate_at = None
+
+    def _started(self):
+        self.stop_candidate_at = None
+
+    def _stopped(self):
+        self.stop_candidate_at = time.monotonic()
+
+    def onPlayBackStarted(self):
+        self._started()
+
+    def onAVStarted(self):
+        self._started()
+
+    def onPlayBackStopped(self):
+        self._stopped()
+
+    def onPlayBackEnded(self):
+        self._stopped()
+
+    def reset(self):
+        self.stop_candidate_at = None
+
+    def confirmed_stop(self, now, audio_active):
+        if self.stop_candidate_at is None:
+            return False
+        if audio_active:
+            self.stop_candidate_at = None
+            return False
+        if now - self.stop_candidate_at < PLAYBACK_STOP_SETTLE_SECONDS:
+            return False
+        self.stop_candidate_at = None
+        return True
+
+
 class PopupDataRuntime(object):
-    """Property-only credits/lyrics model used by the dialog."""
+    """Property-only credits/lyrics model used only while the dialog is open."""
 
     def __init__(self, home):
         self.home = home
         self.credits_runtime = CreditsRuntime()
         self.credits_started = False
+        self.active = False
         self.last_lyrics_file = None
         self.blocked_lyrics_raw = None
         self.last_lyrics_raw = None
@@ -187,11 +225,14 @@ class PopupDataRuntime(object):
         self.credits_display_rows = []
 
     def start(self):
+        self.active = True
         if not self.credits_started:
             self.credits_runtime.start()
             self.credits_started = True
 
     def clear(self, clear_source=False):
+        if not self.active and not clear_source:
+            return
         home = self.home
         home.clearProperty(LYRICS_TEXT_PROP)
         home.clearProperty(LYRICS_SYNC_PROP)
@@ -211,6 +252,7 @@ class PopupDataRuntime(object):
         self.last_credits_window_key = None
         self.last_credits_source_key = None
         self.credits_display_rows = []
+        self.active = False
         if clear_source:
             clear_credits_properties()
 
@@ -390,6 +432,7 @@ def run():
     monitor = xbmc.Monitor()
     home = xbmcgui.Window(HOME_ID)
     data_runtime = PopupDataRuntime(home)
+    playback_events = PlaybackEvents()
 
     last_touch = home.getProperty(TOUCH_PROP)
     last_user_activity = time.monotonic()
@@ -398,26 +441,21 @@ def run():
     was_open = False
 
     playback_session_active = _audio_active()
-    playback_missing_since = None
     last_auto_open_setting = _auto_open_enabled()
     auto_open_pending = bool(playback_session_active and last_auto_open_setting)
+    dormant_cleaned = False
 
     while not monitor.abortRequested():
-        if xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)"):
-            if popup_open() or _actual_popup_open():
-                _close_popup_runtime(home)
-            data_runtime.clear(clear_source=True)
-            if monitor.waitForAbort(0.50):
-                break
-            continue
-
+        standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
         enabled = _selector_enabled()
-        if not enabled:
-            if popup_open() or _actual_popup_open():
-                _close_popup_runtime(home)
-            data_runtime.clear(clear_source=True)
+        if standard or not enabled:
+            if not dormant_cleaned:
+                if controller_reconcile():
+                    _close_popup_runtime(home)
+                data_runtime.clear(clear_source=True)
+                playback_events.reset()
+                dormant_cleaned = True
             playback_session_active = _audio_active()
-            playback_missing_since = None
             auto_open_pending = False
             was_open = False
             last_playing = -1
@@ -426,31 +464,23 @@ def run():
                 break
             continue
 
+        dormant_cleaned = False
         now = time.monotonic()
         audio = _audio_active()
         auto_open_enabled = _auto_open_enabled()
 
-        # Session state is determined only from sustained audio state. Kodi may
-        # emit onPlayBackStopped during Player.GoTo; that callback is deliberately
-        # irrelevant to popup lifecycle.
-        if audio:
-            if not playback_session_active:
-                playback_session_active = True
-                if auto_open_enabled:
-                    auto_open_pending = True
-            playback_missing_since = None
-        elif playback_session_active:
-            if playback_missing_since is None:
-                playback_missing_since = now
-            elif now - playback_missing_since >= 2.5:
-                playback_session_active = False
-                playback_missing_since = None
-                auto_open_pending = False
-                if popup_open() or _actual_popup_open():
-                    _close_popup_runtime(home)
-                    was_open = False
-        else:
-            playback_missing_since = None
+        # Stop/end handling is callback driven. A transient HasAudio gap by
+        # itself is never a close reason, and Player.GoTo is never classified.
+        if playback_events.confirmed_stop(now, audio):
+            playback_session_active = False
+            auto_open_pending = False
+            if controller_is_open():
+                _close_popup_runtime(home)
+                was_open = False
+        elif audio and not playback_session_active:
+            playback_session_active = True
+            if auto_open_enabled:
+                auto_open_pending = True
 
         if auto_open_enabled and not last_auto_open_setting and audio:
             auto_open_pending = True
@@ -462,27 +492,21 @@ def run():
             and audio
             and xbmc.getCondVisibility("Window.IsActive(Home)")
             and _popup_context()
-            and not _actual_popup_open()
+            and not controller_is_open()
         ):
             open_popup()
             auto_open_pending = False
 
         context = _popup_context()
-        opened = _actual_popup_open()
-
-        # Reconcile the compatibility property with Kodi's actual dialog state.
-        # Window 1116 is authoritative; PopupOpen is only a published mirror.
-        if opened and not popup_open():
-            home.setProperty("ConfluenceCustom.SongSelector.PopupOpen", "1")
-        elif not opened and popup_open():
-            close_popup()
+        opened = controller_reconcile()
 
         if context:
-            data_runtime.poll(audio)
             count = size()
             playing = current() if count > 0 else -1
 
             if opened:
+                data_runtime.poll(audio)
+
                 if not was_open:
                     last_user_activity = now
                     last_list_position = _container_position()
@@ -532,6 +556,8 @@ def run():
                         last_list_position = playing
                     _set_navigation_highlight(home, True)
                     last_user_activity = now
+            elif was_open:
+                data_runtime.clear(clear_source=False)
         else:
             data_runtime.clear(clear_source=False)
             if opened:
