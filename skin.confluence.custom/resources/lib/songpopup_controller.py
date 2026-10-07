@@ -72,7 +72,11 @@ def on_unload():
 
 
 def reconcile():
-    """Publish actual Kodi window state without making the property authoritative."""
+    """Publish actual Kodi window state and keep popup-only data attached to it."""
     opened = is_open()
     set_popup_open(opened)
+    if opened:
+        # Covers the close/reopen edge where the previous lyrics session is
+        # still releasing its worker lock when the dialog is opened again.
+        _start_lyrics_session()
     return opened
