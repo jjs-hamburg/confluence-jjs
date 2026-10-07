@@ -7,6 +7,7 @@ The dialog renders fixed XML controls from Home-window properties only.
 from __future__ import absolute_import
 
 import re
+import unicodedata
 
 import xbmc
 
@@ -34,6 +35,19 @@ _LRC_TIME_RE = re.compile(r"^(?:\[(?:\d{1,3}:)?\d{1,2}:\d{1,2}(?:[.:]\d{1,3})?\]
 _LRC_SIMPLE_TIME_RE = re.compile(r"^(?:\[\d{1,3}:\d{1,2}(?:[.:]\d{1,3})?\])+", re.I)
 _LRC_ENHANCED_TIME_RE = re.compile(r"<\d{1,3}:\d{1,2}(?:[.:]\d{1,3})?>")
 _LRC_META_RE = re.compile(r"^\[(?:ar|al|ti|au|by|offset|re|ve|length|id):.*\]$", re.I)
+
+
+_CREDIT_UNSUPPORTED_RANGES = (
+    (0x1100, 0x11FF),   # Hangul Jamo
+    (0x2E80, 0x2FFF),   # CJK radicals / symbols
+    (0x3000, 0x30FF),   # CJK punctuation, Hiragana, Katakana
+    (0x31F0, 0x31FF),   # Katakana extensions
+    (0x3400, 0x4DBF),   # CJK Extension A
+    (0x4E00, 0x9FFF),   # CJK Unified Ideographs
+    (0xAC00, 0xD7AF),   # Hangul syllables
+    (0xF900, 0xFAFF),   # CJK compatibility ideographs
+    (0x20000, 0x2FA1F), # CJK supplementary ideographs
+)
 
 
 def int_property(home, name, default=0):
@@ -309,15 +323,54 @@ def _wrap_credit_row(left, right, name_side, signature=None):
     return rows
 
 
+def _credit_char_supported(char):
+    """Keep only characters the bundled popup fonts can render reliably.
+
+    The credits sources occasionally return replacement/symbol/CJK characters
+    which the selected Confluence fonts render as square placeholder glyphs.
+    This filter is deliberately limited to the Song Popup credits display;
+    source/cache data remains untouched and normal Latin umlauts/accents,
+    Greek and Cyrillic text are preserved.
+    """
+    if not char:
+        return False
+    category = unicodedata.category(char)
+    if category in ("Cc", "Cf", "Cs", "Co", "Cn", "So"):
+        return False
+    codepoint = ord(char)
+    for first, last in _CREDIT_UNSUPPORTED_RANGES:
+        if first <= codepoint <= last:
+            return False
+    return True
+
+
+def _clean_credit_display_text(value):
+    text = unicodedata.normalize("NFC", str(value or ""))
+    text = "".join(char for char in text if _credit_char_supported(char))
+    text = re.sub(r"\s+", " ", text).strip()
+    return text.strip(" :;,-–—·•|/\\")
+
+
 def build_credit_display_rows(home, signature=None):
     count = max(0, int_property(home, CREDITS_SOURCE_COUNT_PROP, 0))
     signature = signature or font_signature()
     rows = []
+    seen = set()
     for source_index in range(count):
         base = CREDITS_SOURCE_PREFIX + str(source_index) + "."
-        left = home.getProperty(base + "Left") or ""
-        right = home.getProperty(base + "Right") or ""
+        left = _clean_credit_display_text(home.getProperty(base + "Left") or "")
+        right = _clean_credit_display_text(home.getProperty(base + "Right") or "")
+        if not left and not right:
+            continue
         name_side = (home.getProperty(base + "NameSide") or "").strip().lower()
+        if name_side == "left" and not left:
+            name_side = ""
+        elif name_side == "right" and not right:
+            name_side = ""
+        key = (left, right, name_side)
+        if key in seen:
+            continue
+        seen.add(key)
         rows.extend(_wrap_credit_row(left, right, name_side, signature))
     return rows
 
