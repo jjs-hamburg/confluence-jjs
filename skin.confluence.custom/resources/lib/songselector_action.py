@@ -8,7 +8,12 @@ import time
 import xbmc
 import xbmcgui
 
-from songselector_state import close_popup, current, set_popup_open, size
+from songpopup_controller import (
+    close_dialog as controller_close_dialog,
+    on_unload as controller_on_unload,
+    open_dialog as controller_open_dialog,
+)
+from songselector_state import current, size
 
 HOME_ID = 10000
 DIALOG_ID = 1116
@@ -232,10 +237,6 @@ def _focus_existing_track_selection():
     return False
 
 
-def _close_dialog():
-    xbmc.executebuiltin("Dialog.Close({},true)".format(DIALOG_ID))
-
-
 def _audio_player_id():
     try:
         request = {"jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1}
@@ -256,9 +257,8 @@ def open_popup():
     _set_lyrics_view(False)
     _home().clearProperty(SELECTION_TARGET_PROP)
     _home().clearProperty(CREDITS_WINDOW_START_PROP)
-    set_popup_open(True)
     _touch()
-    xbmc.executebuiltin("ActivateWindow({})".format(DIALOG_ID))
+    controller_open_dialog()
     focus_current()
     _set_highlight(True)
 
@@ -378,24 +378,14 @@ def reactivate():
     _touch()
 
 
-def _clear_dialog_state():
-    home = _home()
-    _set_highlight(False)
-    _set_credits_view(False)
-    _set_lyrics_view(False)
-    home.clearProperty(SELECTION_TARGET_PROP)
-    home.clearProperty(CREDITS_WINDOW_START_PROP)
-    close_popup()
+def close_dialog():
+    controller_close_dialog()
     _touch()
 
 
-def close_dialog():
-    _clear_dialog_state()
-    _close_dialog()
-
-
 def closed():
-    _clear_dialog_state()
+    controller_on_unload()
+    _touch()
     xbmc.sleep(40)
     if xbmc.getCondVisibility("Window.IsActive(Home)"):
         _focus(MAIN_LIST_ID)
