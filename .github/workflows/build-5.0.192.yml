@@ -19,28 +19,22 @@ jobs:
           ref: cleanup/5.0.192-runtime-architecture
 
       - name: Apply 5.0.192 source changes
-        shell: bash
-        run: |
-          echo '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' | base64 -d | gzip -d > /tmp/apply_192.py
-          python /tmp/apply_192.py
+        run: python .github/scripts/apply_5_0_192.py
 
       - name: Validate 5.0.192
-        shell: bash
-        run: |
-          echo 'H4sIAI2+3GkC/7VWTW/bMAy991cQdkeCZFvWbYDHAMuBYkejw5AsUxaTSIqkKFf2P0/p2olrO3aGJUh6fPj4kFJ4b+7sEK2bEnxC5pQxzQU6GWL8XBI+IBm3oimreJsGryZ/UyDbbO+MUvSpxfEohhHpuhAOyVFXjpdhr6QYA2cv7wW9FizBkc5BPc5h/PHeP5ww+j0BUkUJaRfoLJGxbpmznML40TDvaAgOh/yQHJ25bMlkrTi/mA54DjBPlMCeRxj8R6ykKRgD6s9HiFDo5IA46WJa6kdj/ga/uMaJDk4k2BgAPsrEoK98WBDqEbKgV+RJ76zjFSNaMyLNKK1Z9QWDnLJ2uGTJRRLpnpWAMtADjyIKJWQcEVwgSy39FCVqpDcXSaySoDTFWWX8xQ9gFx3MKgs4ZAt6yvg61JJrn10yYGzo/kRsPEBUCY71zjhMOnrOvJ7hMX1lb9G9LSnH+HscV1yzgq26fDAXa1x7ZbLMcAeP2BIbxZiQC3i9G8Kk3n6ULBRckjCQtod3tfZbN1Ah42XhpDrjInFnpTvtVsLMud8H2Y9v+8mIy8STXp3JoWOy8oLtbhbVTkuwx5ksFwacddhDFGBapcnMw7iWrW32ThbvuiSHdeUrurUP4GM+j1C4a1FHXgOGf7yoNfP7jS7vV1L/fyqkKSUeaGCbLIXddseVzeuOpwt/3YHTio+CtZqIXIBLzxnkTSgE6FVbtZj4gMiWiGGp0I+FqOvrKX/vJdty9pOB8+tWDF/mz8slOFpefjoVKX5dvf7r6Mf0d7D69fLm6vvloywTDp/gfVV6LPVuBcTv4b3Yff4L3YWT4mtkaZTdje2lvXUrR3aE35xJTkzbvWM2lJb6A0XZU20MyrfrCStPjHxWFJsVaRLNP04tUlxj5Qt4naFSZyZOmz5hN6Qhhb5Rf4F16+c2aTOB4+s0brnH8MFqmHIhSuH6A/h4hObynwcAAA==' | base64 -d | gzip -d > /tmp/validate_192.py
-          python /tmp/validate_192.py
+        run: python .github/scripts/validate_5_0_192.py
 
-      - name: Commit 5.0.192 source
+      - name: Commit validated 5.0.192 source
         shell: bash
         run: |
           if git diff --quiet -- skin.confluence.custom; then
-            echo "No source changes to commit"
+            echo "Source already committed"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add skin.confluence.custom
-          git commit -m "Confluence-jjs 5.0.192 artwork stability and popup fixes"
+          git commit -m "Confluence-jjs 5.0.192 artwork stability and popup fixes [skip ci]"
           git push origin HEAD:cleanup/5.0.192-runtime-architecture
 
       - name: Build clean install ZIP
