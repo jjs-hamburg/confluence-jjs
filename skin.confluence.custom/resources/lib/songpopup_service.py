@@ -20,7 +20,7 @@ from songpopup_controller import (
     is_open as controller_is_open,
     reconcile as controller_reconcile,
 )
-from songselector_action import _native_list_index, detail_view, focus_current, lyrics_view, open_popup, show_credits
+from songselector_action import detail_view, lyrics_view, open_popup, show_credits
 from songselector_service import (
     _build_credit_display_rows,
     _clean_and_time_culrc_lyrics,
@@ -37,8 +37,10 @@ from worker_lock import WorkerLock
 
 HOME_ID = 10000
 DIALOG_ID = 1116
+LIST_ID = 9110
 NEUTRAL_CONTROL_ID = 9131
 SERVICE_RUNNING_PROP = "ConfluenceCustom.SongPopup.ServiceRunning"
+FOCUS_ACTION = "special://skin/resources/lib/songpopup_focus_action.py"
 TOUCH_PROP = "ConfluenceCustom.SongSelector.Touch"
 SELECTION_TIMEOUT_SETTING = "CCSongSelectorSelectionTimeout"
 AUTO_OPEN_SETTING = "CCSongSelectorAutoOpen"
@@ -125,9 +127,19 @@ def _track_navigation_focused():
 
 
 def _container_position():
+    """Read the list position from Kodi info labels without fetching a Control."""
     if not _track_navigation_focused():
         return None
-    return _native_list_index()
+    try:
+        current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
+    except Exception:
+        return None
+    return current_item - 1 if current_item > 0 else None
+
+
+def _request_focus_current():
+    """Dispatch list positioning to a short-lived UI action."""
+    xbmc.executebuiltin("RunScript({})".format(FOCUS_ACTION))
 
 
 def _programmatic_focus_active(home):
@@ -530,7 +542,7 @@ def run():
                 # event-driven follow positions the visible list and clears the marker.
                 if selected_target is not None and selected_target == playing:
                     if not detail_view():
-                        focus_current()
+                        _request_focus_current()
                         last_list_position = playing
                     home.clearProperty(SELECTION_TARGET_PROP)
                     selected_target = None
@@ -540,7 +552,7 @@ def run():
                 if was_open and not detail_view() and last_playing >= 0 and playing != last_playing:
                     position = _container_position()
                     if position == last_playing or position == playing:
-                        focus_current()
+                        _request_focus_current()
                         last_list_position = playing
 
                 selection_timeout = _seconds(SELECTION_TIMEOUT_SETTING, 5)
@@ -552,7 +564,7 @@ def run():
                 ):
                     position = _container_position()
                     if position is not None and position != playing:
-                        focus_current()
+                        _request_focus_current()
                         last_list_position = playing
                     _set_navigation_highlight(home, True)
                     last_user_activity = now
