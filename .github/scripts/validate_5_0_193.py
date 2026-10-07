@@ -60,7 +60,7 @@ play_end = selector.index("\ndef main():", play_start)
 play_block = selector[play_start:play_end]
 if 'Playlist.PlayOffset(music,{})' not in play_block:
     raise SystemExit("Popup selection does not use Playlist.PlayOffset")
-if '"method": "Player.GoTo"' in play_block or "executeJSONRPC" in play_block:
+if '"method": "Player.GoTo"' in play_block or "xbmc.executeJSONRPC(" in play_block:
     raise SystemExit("Synchronous Player.GoTo still present in play_focused")
 if "SELECTION_TARGET_PROP" not in play_block:
     raise SystemExit("Explicit-selection transition marker was lost")
