@@ -329,6 +329,27 @@ def _current_mode():
     return (_skin_string(SETTING, "front") or "front").strip().lower()
 
 
+def normalize_artwork_mode_for_back():
+    """Skip an unavailable back-cover mode on a real title change only.
+
+    The selected artwork mode is otherwise persistent across window changes,
+    scans, Stop and restart. Explicit mode cycling already checks back artwork
+    in _cycle_view(); this function provides the corresponding title-change
+    check without coupling the mode to transient Home visibility.
+    """
+    mode = _current_mode()
+    if _home().getProperty(BACK_PROP):
+        return mode
+    fallback = {
+        "both": "infofront",
+        "infoboth": "compact",
+    }.get(mode)
+    if fallback:
+        xbmc.executebuiltin("Skin.SetString({},{})".format(SETTING, fallback))
+        return fallback
+    return mode
+
+
 def _home_control(home, control_id):
     try:
         return home.getControl(int(control_id))

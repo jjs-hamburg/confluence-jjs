@@ -10,7 +10,7 @@ import xbmcgui
 from cover_display_action import (
     BACK_PROP,
     INFO_TEXT_SHIFT_PROP,
-    clear_back_art,
+    normalize_artwork_mode_for_back,
     sync_back_art,
     sync_compact_cover_width,
 )
@@ -366,8 +366,9 @@ def _wrap_signature(home):
 
 
 def _geometry_signature(home):
+    # Home visibility is deliberately not part of the signature. Home is kept
+    # in memory, so Videos/Music/scanners must not invalidate artwork geometry.
     return (
-        bool(xbmc.getCondVisibility("Window.IsActive(Home)")),
         xbmc.getInfoLabel("Player.FilenameAndPath") or "",
         xbmc.getInfoLabel("Player.Art(thumb)") or "",
         home.getProperty(BACK_PROP) or "",
@@ -409,42 +410,50 @@ def run():
         context = _playback_context()
         audio = _audio_active()
 
-        if not standard and context:
-            count = size()
-            playing = current() if count > 0 else -1
-            if not meta or count != last_size:
-                meta = playlist_metadata()
-                last_size = count
-
+        if not standard:
+            # Artwork belongs to the playing title, not to the current window.
+            # Keep it stable while Videos/Music/scanners are active.
             if audio:
                 playing_file = xbmc.getInfoLabel("Player.FilenameAndPath") or ""
                 if playing_file and playing_file != last_art_file:
                     sync_back_art()
                     sync_compact_cover_width()
+                    normalize_artwork_mode_for_back()
                     last_art_file = playing_file
                     last_geometry_signature = None
 
                 geometry_signature = _geometry_signature(home)
-                if geometry_signature != last_geometry_signature:
-                    # The persistent worker never fetches or mutates Kodi controls.
-                    # A short-lived action performs geometry only on real changes.
-                    if geometry_signature[0]:
-                        _request_geometry_sync()
+                if (
+                    xbmc.getCondVisibility("Window.IsActive(Home)")
+                    and geometry_signature != last_geometry_signature
+                ):
+                    # One foreground action applies centered + info geometry.
+                    # Returning to Home with the same title/settings is a no-op.
+                    _request_geometry_sync()
                     last_geometry_signature = geometry_signature
 
-                if now - last_time_update >= 0.50:
-                    _set_times(home, meta, playing)
-                    last_time_update = now
+            if context:
+                count = size()
+                playing = current() if count > 0 else -1
+                if not meta or count != last_size:
+                    meta = playlist_metadata()
+                    last_size = count
+                if audio:
+                    if now - last_time_update >= 0.50:
+                        _set_times(home, meta, playing)
+                        last_time_update = now
+                else:
+                    _clear_times(home)
             else:
                 _clear_times(home)
-        else:
-            _clear_times(home)
-            if not context:
-                clear_back_art()
-                last_art_file = ""
+                # Playlist metadata can change while another window is open;
+                # artwork/mode/geometry intentionally remain untouched.
                 last_size = -1
                 meta = []
-                last_geometry_signature = None
+        else:
+            _clear_times(home)
+            last_size = -1
+            meta = []
 
         if monitor.waitForAbort(0.15 if context else 0.50):
             break
