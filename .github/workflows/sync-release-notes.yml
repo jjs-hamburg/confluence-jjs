@@ -1,0 +1,39 @@
+name: "Sync GitHub release notes"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/release-notes/*.md"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Update published release notes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git diff --name-only HEAD^ HEAD -- '.github/release-notes/*.md' | while read -r NOTES_FILE; do
+            [[ -n "$NOTES_FILE" ]] || continue
+            VERSION="$(basename "$NOTES_FILE" .md)"
+            TAG="v${VERSION}"
+            if gh release view "$TAG" >/dev/null 2>&1; then
+              gh release edit "$TAG" --notes-file "$NOTES_FILE"
+              echo "Updated $TAG from $NOTES_FILE"
+            else
+              echo "No published release for $TAG; nothing to update"
+            fi
+          done
