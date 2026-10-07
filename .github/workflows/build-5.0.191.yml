@@ -1,0 +1,125 @@
+name: "Build Confluence-jjs 5.0.191"
+
+on:
+  push:
+    branches:
+      - cleanup/5.0.191-runtime-architecture
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Apply 5.0.191 source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("skin.confluence.custom")
+
+          # Version: 5.0.191 is based strictly on the tested 5.0.190 state.
+          addon = root / "addon.xml"
+          text = addon.read_text(encoding="utf-8")
+          text = text.replace('version="5.0.190"', 'version="5.0.191"', 1)
+          text = re.sub(
+              r'<news>.*?</news>',
+              '<news>5.0.191: Preserve the immediate Stop fix, suppress unsupported glyphs in Song Popup credits, and keep explicit song selection focused without redundant follow-up UI actions.</news>',
+              text,
+              count=1,
+          )
+          addon.write_text(text, encoding="utf-8")
+
+          service = root / "resources" / "lib" / "songpopup_service.py"
+          text = service.read_text(encoding="utf-8")
+          old = '''                selected_target = _selection_target(home)\n\n                # Explicit selection is a playback action only. It never closes\n                # the popup. Once Kodi reports the requested row as playing, one\n                # event-driven follow positions the visible list and clears the marker.\n                if selected_target is not None and selected_target == playing:\n                    if not detail_view():\n                        _request_focus_current()\n                        last_list_position = playing\n                    home.clearProperty(SELECTION_TARGET_PROP)\n                    selected_target = None\n\n                # Natural track changes follow when the user has not deliberately\n                # browsed away from the playing row.\n                if was_open and not detail_view() and last_playing >= 0 and playing != last_playing:\n                    position = _container_position()\n                    if position == last_playing or position == playing:\n                        _request_focus_current()\n                        last_list_position = playing\n'''
+          new = '''                selected_target = _selection_target(home)\n                explicit_selection_resolved = False\n\n                # The user's cursor is already on the row selected with OK. Once\n                # Kodi reports that row as playing, only clear the transition\n                # marker. Do not launch the focus action: it suppresses Highlight\n                # while scrolling and is exactly the Busy/blink seen on selection.\n                if selected_target is not None and selected_target == playing:\n                    last_list_position = playing\n                    home.clearProperty(SELECTION_TARGET_PROP)\n                    selected_target = None\n                    explicit_selection_resolved = True\n\n                # Natural track changes still follow when the user has not browsed\n                # away. Never reinterpret the just-resolved explicit selection as\n                # a natural transition in the same service iteration.\n                if (\n                    was_open\n                    and not explicit_selection_resolved\n                    and not detail_view()\n                    and last_playing >= 0\n                    and playing != last_playing\n                ):\n                    position = _container_position()\n                    if position == last_playing or position == playing:\n                        _request_focus_current()\n                        last_list_position = playing\n'''
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif 'explicit_selection_resolved = False' not in text:
+              raise SystemExit('Expected 5.0.190 selection block not found')
+          service.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit 5.0.191 source state
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- skin.confluence.custom/addon.xml skin.confluence.custom/resources/lib/songpopup_service.py; then
+            echo "Source already at 5.0.191 state"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add skin.confluence.custom/addon.xml skin.confluence.custom/resources/lib/songpopup_service.py
+            git commit -m "5.0.191: fix explicit Song Popup selection follow"
+            git push origin HEAD:cleanup/5.0.191-runtime-architecture
+          fi
+
+      - name: Validate 5.0.191
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root = Path("skin.confluence.custom")
+          addon = ET.parse(root / "addon.xml").getroot()
+          assert addon.attrib["version"] == "5.0.191", addon.attrib["version"]
+
+          lib = root / "resources" / "lib"
+          service = (lib / "songpopup_service.py").read_text(encoding="utf-8")
+          data = (lib / "songpopup_data.py").read_text(encoding="utf-8")
+
+          # Preserve the user-confirmed immediate Stop behavior from 5.0.190.
+          assert "PLAYBACK_END_SETTLE_SECONDS = 1.0" in service
+          assert "self.stop_now = True" in service
+          assert "if self._selection_transition():" in service
+
+          # 5.0.191: explicit OK selection must not fall through to natural follow.
+          assert "explicit_selection_resolved = False" in service
+          assert "and not explicit_selection_resolved" in service
+          explicit = service.split("selected_target = _selection_target(home)", 1)[1].split("# Natural track changes", 1)[0]
+          assert "_request_focus_current()" not in explicit
+
+          # 5.0.191: hide glyphs that the popup fonts render as boxes.
+          assert "_CREDIT_UNSUPPORTED_RANGES" in data
+          assert "_clean_credit_display_text" in data
+          assert 'category in ("Cc", "Cf", "Cs", "Co", "Cn", "So")' in data
+          assert 'repair_mojibake(raw or "")' in data
+
+          for py in sorted(lib.rglob("*.py")):
+            py_compile.compile(str(py), doraise=True)
+          for xml_dir in [root / "1080p", root / "resources" / "skin_modes" / "custom", root / "resources" / "skin_modes" / "standard"]:
+            for xml in sorted(xml_dir.glob("*.xml")):
+              ET.parse(xml)
+          print("Confluence-jjs 5.0.191 validation OK")
+          PY
+
+      - name: Build skin.confluence.custom-5.0.191.zip
+        shell: bash
+        run: |
+          set -euo pipefail
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+          zip -qr skin.confluence.custom-5.0.191.zip skin.confluence.custom -x "*/__pycache__/*" "*.pyc"
+          unzip -t skin.confluence.custom-5.0.191.zip >/dev/null
+
+      - name: Upload 5.0.191
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.191
+          path: skin.confluence.custom-5.0.191.zip
+          if-no-files-found: error
