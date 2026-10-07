@@ -10,14 +10,38 @@ import xbmcgui
 from worker_lock import worker_is_running
 
 
+def _start_worker(home, name, running_property, script):
+    if home.getProperty(running_property) == "1" or worker_is_running(name):
+        return
+    xbmc.executebuiltin("RunScript({})".format(script), wait=False)
+
+
 def _start_background_services():
+    """Start independent long-lived workers.
+
+    Since 5.0.189 the former all-in-one songselector worker is deliberately not
+    started. General Now Playing data and the optional Song Popup have separate
+    lifecycles so disabling the popup cannot leave popup code touching the GUI.
+    """
     home = xbmcgui.Window(10000)
-    if (home.getProperty("ConfluenceCustom.SongSelector.ServiceRunning") != "1"
-            and not worker_is_running("songselector")):
-        xbmc.executebuiltin("RunScript(special://skin/resources/lib/songselector_service.py)", wait=False)
-    if (home.getProperty("ConfluenceCustom.Lyrics.ServiceRunning") != "1"
-            and not worker_is_running("lyrics")):
-        xbmc.executebuiltin("RunScript(special://skin/resources/lib/culrc_runner.py)", wait=False)
+    _start_worker(
+        home,
+        "nowplaying",
+        "ConfluenceCustom.NowPlaying.ServiceRunning",
+        "special://skin/resources/lib/nowplaying_service.py",
+    )
+    _start_worker(
+        home,
+        "songpopup",
+        "ConfluenceCustom.SongPopup.ServiceRunning",
+        "special://skin/resources/lib/songpopup_service.py",
+    )
+    _start_worker(
+        home,
+        "lyrics",
+        "ConfluenceCustom.Lyrics.ServiceRunning",
+        "special://skin/resources/lib/culrc_runner.py",
+    )
 
 
 def _wait_for_skin_switch_confirmation():
