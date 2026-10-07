@@ -1,0 +1,179 @@
+name: "Apply Confluence-jjs 5.0.190 runtime fixes"
+
+on:
+  push:
+    branches:
+      - cleanup/5.0.190-runtime-architecture
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Apply focused runtime fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{label}: expected exactly one match, found {count}")
+              return text.replace(old, new, 1)
+
+          service_path = Path("skin.confluence.custom/resources/lib/songpopup_service.py")
+          service = service_path.read_text(encoding="utf-8")
+          service = replace_once(
+              service,
+              'PLAYBACK_STOP_SETTLE_SECONDS = 1.0',
+              'PLAYBACK_END_SETTLE_SECONDS = 1.0',
+              'playback settle constant',
+          )
+          service = replace_once(
+              service,
+              '''def _request_focus_current():\n    """Dispatch list positioning to a short-lived UI action."""\n    xbmc.executebuiltin("RunScript({})".format(FOCUS_ACTION))\n''',
+              '''def _request_focus_current():\n    """Reposition only when the visible list is not already on the playing row."""\n    home = xbmcgui.Window(HOME_ID)\n    # During an explicit selection the user's cursor is already on the row that\n    # Player.GoTo is starting. Launching another Python UI action here creates\n    # a Busy flash and briefly removes the navigation highlight for no benefit.\n    if home.getProperty(SELECTION_TARGET_PROP):\n        return\n    position = _container_position()\n    playing = current()\n    if position is not None and position == playing:\n        return\n    xbmc.executebuiltin("RunScript({})".format(FOCUS_ACTION))\n''',
+              'focus dispatch',
+          )
+          old_class = '''class PlaybackEvents(xbmc.Player):\n    """Track real playback stop/end callbacks without classifying Player.GoTo.\n\n    Kodi can emit a stop while switching tracks. A following start/AV-start\n    simply cancels the pending stop. Only a stop/end that remains unmatched by\n    a new start is considered the end of the music session.\n    """\n\n    def __init__(self):\n        xbmc.Player.__init__(self)\n        self.stop_candidate_at = None\n\n    def _started(self):\n        self.stop_candidate_at = None\n\n    def _stopped(self):\n        self.stop_candidate_at = time.monotonic()\n\n    def onPlayBackStarted(self):\n        self._started()\n\n    def onAVStarted(self):\n        self._started()\n\n    def onPlayBackStopped(self):\n        self._stopped()\n\n    def onPlayBackEnded(self):\n        self._stopped()\n\n    def reset(self):\n        self.stop_candidate_at = None\n\n    def confirmed_stop(self, now, audio_active):\n        if self.stop_candidate_at is None:\n            return False\n        if audio_active:\n            self.stop_candidate_at = None\n            return False\n        if now - self.stop_candidate_at < PLAYBACK_STOP_SETTLE_SECONDS:\n            return False\n        self.stop_candidate_at = None\n        return True\n'''
+          new_class = '''class PlaybackEvents(xbmc.Player):\n    """Separate an explicit Stop from a normal end-of-track transition.\n\n    Kodi has distinct callbacks for user Stop and natural playback end. A real\n    Stop may therefore close the popup on the next service tick. Natural track\n    endings keep a short settle window so the following playlist start can\n    cancel the close. Player.GoTo may emit a Stop callback as part of switching\n    tracks; the existing SelectionTarget marker identifies that transition.\n    """\n\n    def __init__(self):\n        xbmc.Player.__init__(self)\n        self.stop_now = False\n        self.end_candidate_at = None\n\n    def _started(self):\n        self.stop_now = False\n        self.end_candidate_at = None\n\n    def _selection_transition(self):\n        return bool(xbmcgui.Window(HOME_ID).getProperty(SELECTION_TARGET_PROP))\n\n    def onPlayBackStarted(self):\n        self._started()\n\n    def onAVStarted(self):\n        self._started()\n\n    def onPlayBackStopped(self):\n        if self._selection_transition():\n            return\n        self.stop_now = True\n        self.end_candidate_at = None\n\n    def onPlayBackEnded(self):\n        self.end_candidate_at = time.monotonic()\n\n    def reset(self):\n        self.stop_now = False\n        self.end_candidate_at = None\n\n    def confirmed_stop(self, now, audio_active):\n        if self.stop_now:\n            self.stop_now = False\n            self.end_candidate_at = None\n            return True\n        if self.end_candidate_at is None:\n            return False\n        if audio_active:\n            self.end_candidate_at = None\n            return False\n        if now - self.end_candidate_at < PLAYBACK_END_SETTLE_SECONDS:\n            return False\n        self.end_candidate_at = None\n        return True\n'''
+          service = replace_once(service, old_class, new_class, 'PlaybackEvents')
+          service_path.write_text(service, encoding="utf-8")
+
+          data_path = Path("skin.confluence.custom/resources/lib/songpopup_data.py")
+          data = data_path.read_text(encoding="utf-8")
+          marker = '_LRC_META_RE = re.compile(r"^\\[(?:ar|al|ti|au|by|offset|re|ve|length|id):.*\\]$", re.I)\n\n\n'
+          helper = '''_LRC_META_RE = re.compile(r"^\\[(?:ar|al|ti|au|by|offset|re|ve|length|id):.*\\]$", re.I)\n\n_MOJIBAKE_MARKERS = ("Ã", "Â", "â", "ð", "ï¿½")\n\n\ndef repair_mojibake(text):\n    """Repair UTF-8 text that was accidentally decoded as a Western code page.\n\n    The repair is deliberately conservative: unchanged Unicode wins unless a\n    round-trip through cp1252/latin-1 measurably removes mojibake markers.\n    Two passes cover the common double-decoding case without touching normal\n    lyrics containing umlauts, accents, dashes or other valid Unicode.\n    """\n    value = str(text or "")\n    if not value:\n        return value\n\n    def badness(candidate):\n        return (\n            sum(candidate.count(marker) for marker in _MOJIBAKE_MARKERS)\n            + (candidate.count("\\ufffd") * 10)\n        )\n\n    for _unused in range(2):\n        current_score = badness(value)\n        if current_score <= 0:\n            break\n        candidates = [value]\n        for encoding in ("cp1252", "latin-1"):\n            try:\n                candidates.append(value.encode(encoding).decode("utf-8"))\n            except (UnicodeEncodeError, UnicodeDecodeError):\n                pass\n        best = min(candidates, key=badness)\n        if badness(best) >= current_score:\n            break\n        value = best\n    return value\n\n\n'''
+          data = replace_once(data, marker, helper, 'lyrics mojibake helper insertion')
+          data = replace_once(
+              data,
+              '    text = (raw or "").replace("\\ufeff", "").replace("\\x00", "")\n',
+              '    text = repair_mojibake(raw or "").replace("\\ufeff", "").replace("\\x00", "")\n',
+              'lyrics normalization call',
+          )
+          data_path.write_text(data, encoding="utf-8")
+
+          addon_path = Path("skin.confluence.custom/addon.xml")
+          addon = addon_path.read_text(encoding="utf-8")
+          addon = replace_once(addon, 'version="5.0.189"', 'version="5.0.190"', 'addon version')
+          addon = replace_once(
+              addon,
+              '<news>5.0.189: Split the former all-in-one music runtime into isolated Now Playing and Song Popup workers, remove popup-close races around track selection, and stop continuous background GUI-control access.</news>',
+              '<news>5.0.190: Remove redundant Song Popup focus churn after explicit song selection, close immediately on explicit playback Stop, and repair UTF-8 mojibake in lyrics.</news>',
+              'addon news',
+          )
+          addon_path.write_text(addon, encoding="utf-8")
+
+          validation_path = Path(".github/workflows/validate-cleanup.yml")
+          validation = validation_path.read_text(encoding="utf-8")
+          validation = validation.replace('cleanup/5.0.189-runtime-architecture', 'cleanup/5.0.190-runtime-architecture')
+          validation = validation.replace('5.0.189 runtime cleanup', '5.0.190 runtime cleanup')
+          validation = validation.replace('confluence-jjs-5.0.189-runtime-cleanup-test', 'confluence-jjs-5.0.190-runtime-cleanup-test')
+          validation_path.write_text(validation, encoding="utf-8")
+          PY
+
+      - name: Validate patched source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root = Path("skin.confluence.custom")
+          lib = root / "resources" / "lib"
+          service = (lib / "songpopup_service.py").read_text(encoding="utf-8")
+          data = (lib / "songpopup_data.py").read_text(encoding="utf-8")
+          addon = ET.parse(root / "addon.xml").getroot()
+
+          assert addon.attrib["version"] == "5.0.190"
+          assert "PLAYBACK_STOP_SETTLE_SECONDS" not in service
+          assert "PLAYBACK_END_SETTLE_SECONDS = 1.0" in service
+          assert "self.stop_now = True" in service
+          assert "if self._selection_transition():" in service
+          assert "if home.getProperty(SELECTION_TARGET_PROP):" in service
+          assert "repair_mojibake(raw or \"\")" in data
+          assert '"Ã"' in data and '"â"' in data
+          assert "getControl(" not in service
+          assert "Dialog.Close(" not in service
+          assert "GoToPending" not in service
+
+          for item in sorted(lib.rglob("*.py")):
+              py_compile.compile(str(item), doraise=True)
+          for item in sorted((root / "1080p").glob("*.xml")):
+              ET.parse(item)
+          print("5.0.190 targeted validation OK")
+          PY
+
+          python - <<'PY'
+          def repair_mojibake(text):
+              markers = ("Ã", "Â", "â", "ð", "ï¿½")
+              value = str(text or "")
+              def badness(candidate):
+                  return sum(candidate.count(marker) for marker in markers) + candidate.count("\ufffd") * 10
+              for _ in range(2):
+                  score = badness(value)
+                  if score <= 0:
+                      break
+                  candidates = [value]
+                  for encoding in ("cp1252", "latin-1"):
+                      try:
+                          candidates.append(value.encode(encoding).decode("utf-8"))
+                      except (UnicodeEncodeError, UnicodeDecodeError):
+                          pass
+                  best = min(candidates, key=badness)
+                  if badness(best) >= score:
+                      break
+                  value = best
+              return value
+
+          assert repair_mojibake("TrÃ¤nen") == "Tränen"
+          assert repair_mojibake("fÃ¼r") == "für"
+          assert repair_mojibake("lÃ¤uten") == "läuten"
+          assert repair_mojibake("â€¦") == "…"
+          assert repair_mojibake("Größe – schön") == "Größe – schön"
+          print("Lyrics encoding cases OK")
+          PY
+
+      - name: Build test ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="skin.confluence.custom-5.0.190.zip"
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+          zip -qr "$ZIP" skin.confluence.custom -x "*/__pycache__/*" "*.pyc"
+          unzip -tq "$ZIP"
+          echo "SKIN_ZIP=$ZIP" >> "$GITHUB_ENV"
+
+      - name: Commit patched source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/apply-5.0.190-runtime-fixes.yml
+          git add skin.confluence.custom/resources/lib/songpopup_service.py
+          git add skin.confluence.custom/resources/lib/songpopup_data.py
+          git add skin.confluence.custom/addon.xml
+          git add .github/workflows/validate-cleanup.yml
+          git commit -m "Fix popup transitions and lyrics encoding for 5.0.190"
+          git push origin HEAD:cleanup/5.0.190-runtime-architecture
+
+      - name: Upload test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: confluence-jjs-5.0.190-runtime-cleanup-test
+          path: ${{ env.SKIN_ZIP }}
+          if-no-files-found: error
