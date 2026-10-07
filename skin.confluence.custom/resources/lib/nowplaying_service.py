@@ -409,11 +409,12 @@ def run():
         standard = xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")
         context = _playback_context()
         audio = _audio_active()
+        music_audio = audio and not xbmc.getCondVisibility("Player.HasVideo")
 
         if not standard:
-            # Artwork belongs to the playing title, not to the current window.
-            # Keep it stable while Videos/Music/scanners are active.
-            if audio:
+            # Artwork belongs to the playing MUSIC title, not to the current
+            # GUI window. A video with an audio track must never alter it.
+            if music_audio:
                 playing_file = xbmc.getInfoLabel("Player.FilenameAndPath") or ""
                 if playing_file and playing_file != last_art_file:
                     sync_back_art()
