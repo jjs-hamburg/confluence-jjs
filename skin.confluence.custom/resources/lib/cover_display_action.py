@@ -341,8 +341,9 @@ def normalize_artwork_mode_for_back():
     if _home().getProperty(BACK_PROP):
         return mode
     fallback = {
-        "both": "infofront",
-        "infoboth": "compact",
+        # Keep the selected layout size; only drop the unavailable back cover.
+        "both": "front",
+        "infoboth": "infofront",
     }.get(mode)
     if fallback:
         xbmc.executebuiltin("Skin.SetString({},{})".format(SETTING, fallback))

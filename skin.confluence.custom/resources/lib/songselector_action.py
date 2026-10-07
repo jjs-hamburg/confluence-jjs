@@ -442,20 +442,11 @@ def play_focused():
         return
     home = _home()
     home.setProperty(SELECTION_TARGET_PROP, str(target))
-    request = {
-        "jsonrpc": "2.0",
-        "method": "Player.GoTo",
-        "params": {"playerid": _audio_player_id(), "to": target},
-        "id": 1,
-    }
-    try:
-        result = json.loads(xbmc.executeJSONRPC(json.dumps(request)))
-        if result.get("error"):
-            home.clearProperty(SELECTION_TARGET_PROP)
-            return
-    except Exception:
-        home.clearProperty(SELECTION_TARGET_PROP)
-        return
+    # Player.GoTo via executeJSONRPC keeps this foreground RunScript alive while
+    # Kodi changes tracks. That can raise DialogBusy; its focus then hides the
+    # popup navigation highlight. Playlist.PlayOffset is Kodi's native playlist
+    # action and executebuiltin is non-blocking, so this action can return at once.
+    xbmc.executebuiltin("Playlist.PlayOffset(music,{})".format(target), wait=False)
     _touch()
 
 

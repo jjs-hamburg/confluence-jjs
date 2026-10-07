@@ -376,7 +376,10 @@ def _credit_char_supported(char):
 
 
 def _clean_credit_display_text(value):
-    text = unicodedata.normalize("NFC", str(value or ""))
+    # Credits can contain the same UTF-8-as-Western-codepage mojibake already
+    # handled for lyrics. Repair it before glyph filtering so sequences such as
+    # "Ã…" / "â…" do not survive as formally valid but visibly wrong text.
+    text = unicodedata.normalize("NFC", repair_mojibake(value))
     text = "".join(char for char in text if _credit_char_supported(char))
     text = re.sub(r"\s+", " ", text).strip()
     return text.strip(" :;,-–—·•|/\\")
