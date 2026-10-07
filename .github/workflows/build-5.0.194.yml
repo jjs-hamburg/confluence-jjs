@@ -1,0 +1,173 @@
+name: Build Confluence-jjs 5.0.194
+
+on:
+  push:
+    branches:
+      - cleanup/5.0.194-relative-playoffset
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch history
+        uses: actions/checkout@v4
+        with:
+          ref: cleanup/5.0.194-relative-playoffset
+          fetch-depth: 0
+
+      - name: Apply only 5.0.194 source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Revert the complete failed 5.0.191 credit-glyph suppression experiment
+          # to the exact pre-filter 5.0.190 implementation. This intentionally
+          # keeps the older lyrics-only mojibake repair, which predates the filter.
+          git show c345d48582ca22741b4d52667cd91582a7295876:skin.confluence.custom/resources/lib/songpopup_data.py \
+            > skin.confluence.custom/resources/lib/songpopup_data.py
+
+          python - <<'PY'
+          from pathlib import Path
+
+          addon = Path('skin.confluence.custom/addon.xml')
+          text = addon.read_text(encoding='utf-8')
+          old_version = 'version="5.0.193"'
+          if text.count(old_version) != 1:
+              raise SystemExit('Expected exactly one 5.0.193 addon version')
+          text = text.replace(old_version, 'version="5.0.194"', 1)
+          old_news = "<news>5.0.193: Preserve the validated artwork stability, keep the selected large/small layout when a new title has no back cover, repair mojibake in Song Popup credits, and switch popup track selection through Kodi's non-blocking playlist offset action.</news>"
+          new_news = "<news>5.0.194: Keep the validated 5.0.193 artwork/back-cover behavior, correct Song Popup playlist selection by converting the absolute highlighted row to Kodi's relative PlayOffset value, and remove the ineffective credit-glyph suppression experiment.</news>"
+          if text.count(old_news) != 1:
+              raise SystemExit('Expected exact 5.0.193 news entry')
+          addon.write_text(text.replace(old_news, new_news, 1), encoding='utf-8')
+
+          selector = Path('skin.confluence.custom/resources/lib/songselector_action.py')
+          text = selector.read_text(encoding='utf-8')
+          old = '''    home = _home()\n    home.setProperty(SELECTION_TARGET_PROP, str(target))\n    # Player.GoTo via executeJSONRPC keeps this foreground RunScript alive while\n    # Kodi changes tracks. That can raise DialogBusy; its focus then hides the\n    # popup navigation highlight. Playlist.PlayOffset is Kodi's native playlist\n    # action and executebuiltin is non-blocking, so this action can return at once.\n    xbmc.executebuiltin("Playlist.PlayOffset(music,{})".format(target), wait=False)\n    _touch()'''
+          new = '''    # Kodi's Playlist.PlayOffset uses a RELATIVE offset while a playlist is\n    # already playing. The highlighted row and current() are absolute zero-based\n    # playlist indices, so convert them before dispatching the non-blocking action.\n    playing = current()\n    offset = target - playing\n    home = _home()\n    home.setProperty(SELECTION_TARGET_PROP, str(target))\n    xbmc.executebuiltin("Playlist.PlayOffset(music,{})".format(offset), wait=False)\n    _touch()'''
+          if text.count(old) != 1:
+              raise SystemExit('Expected exact 5.0.193 play_focused block')
+          selector.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Validate narrow 5.0.194 scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import subprocess
+          import xml.etree.ElementTree as ET
+
+          BASE = 'ce4b50f26c496e7af19ea54606d4ada1bc3ff5d5'
+          FILTER_BASE = 'c345d48582ca22741b4d52667cd91582a7295876'
+          ROOT = Path('skin.confluence.custom')
+          expected = {
+              'skin.confluence.custom/addon.xml',
+              'skin.confluence.custom/resources/lib/songpopup_data.py',
+              'skin.confluence.custom/resources/lib/songselector_action.py',
+          }
+          changed = set(subprocess.check_output(
+              ['git', 'diff', '--name-only', BASE, '--', 'skin.confluence.custom'],
+              text=True,
+          ).splitlines())
+          if changed != expected:
+              raise SystemExit('Unexpected 5.0.194 source scope: {}'.format(sorted(changed)))
+
+          addon = ET.parse(ROOT / 'addon.xml').getroot()
+          if addon.attrib.get('version') != '5.0.194':
+              raise SystemExit('Wrong addon version')
+
+          # Failed credit-filter experiment must be gone exactly, not replaced
+          # by another guess. The complete file must equal pre-filter 5.0.190.
+          data_path = 'skin.confluence.custom/resources/lib/songpopup_data.py'
+          expected_data = subprocess.check_output(
+              ['git', 'show', FILTER_BASE + ':' + data_path], text=True
+          )
+          actual_data = Path(data_path).read_text(encoding='utf-8')
+          if actual_data != expected_data:
+              raise SystemExit('songpopup_data.py is not the exact pre-filter implementation')
+          for forbidden in ('_CREDIT_UNSUPPORTED_RANGES', '_credit_char_supported', '_clean_credit_display_text', 'import unicodedata'):
+              if forbidden in actual_data:
+                  raise SystemExit('Failed credit-filter code still present: ' + forbidden)
+
+          selector = (ROOT / 'resources/lib/songselector_action.py').read_text(encoding='utf-8')
+          block = selector.split('def play_focused():', 1)[1].split('\ndef main():', 1)[0]
+          for required in (
+              'playing = current()',
+              'offset = target - playing',
+              'Playlist.PlayOffset(music,{})".format(offset)',
+              'SELECTION_TARGET_PROP, str(target)',
+          ):
+              if required not in block:
+                  raise SystemExit('Missing relative-offset selection logic: ' + required)
+          if 'format(target)' in block:
+              raise SystemExit('Absolute target is still being sent to Playlist.PlayOffset')
+
+          # Verify the conversion itself for forward/backward and non-zero starts.
+          for playing, target in ((0, 1), (1, 2), (2, 7), (7, 2), (11, 11)):
+              offset = target - playing
+              if playing + offset != target:
+                  raise SystemExit('Offset arithmetic validation failed')
+
+          # Explicitly protect the already device-confirmed 5.0.193 fixes.
+          for protected in (
+              'skin.confluence.custom/resources/lib/cover_display_action.py',
+              'skin.confluence.custom/resources/lib/songpopup_service.py',
+              'skin.confluence.custom/resources/lib/nowplaying_service.py',
+          ):
+              if subprocess.run(['git', 'diff', '--quiet', BASE, '--', protected]).returncode != 0:
+                  raise SystemExit('Protected 5.0.193 file changed: ' + protected)
+
+          for py in (
+              ROOT / 'resources/lib/songpopup_data.py',
+              ROOT / 'resources/lib/songselector_action.py',
+              ROOT / 'resources/lib/songpopup_service.py',
+              ROOT / 'resources/lib/nowplaying_service.py',
+          ):
+              py_compile.compile(str(py), doraise=True)
+          for xml in (ROOT / 'addon.xml', ROOT / '1080p/Home.xml', ROOT / '1080p/custom_1116_SongSelector.xml'):
+              ET.parse(xml)
+
+          print('Confluence-jjs 5.0.194 validation OK')
+          print('Changed source files:')
+          for path in sorted(changed):
+              print(' -', path)
+          PY
+
+      - name: Commit validated 5.0.194 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            skin.confluence.custom/addon.xml \
+            skin.confluence.custom/resources/lib/songpopup_data.py \
+            skin.confluence.custom/resources/lib/songselector_action.py
+          git commit -m "Confluence-jjs 5.0.194 relative playlist selection fix [skip ci]"
+          git push origin HEAD:cleanup/5.0.194-relative-playoffset
+
+      - name: Build clean install ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+          rm -f skin.confluence.custom-5.0.194.zip
+          zip -qr skin.confluence.custom-5.0.194.zip skin.confluence.custom -x "*/__pycache__/*" "*.pyc"
+          unzip -tq skin.confluence.custom-5.0.194.zip
+          sha256sum skin.confluence.custom-5.0.194.zip
+
+      - name: Upload 5.0.194 test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.194
+          path: skin.confluence.custom-5.0.194.zip
+          if-no-files-found: error
