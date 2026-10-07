@@ -19,7 +19,7 @@ jobs:
           ref: cleanup/5.0.192-runtime-architecture
 
       - name: Apply 5.0.192 source changes
-        run: python .github/scripts/apply_5_0_192.py
+        run: python .github/scripts/apply_5_0_192_wrapper.py
 
       - name: Validate 5.0.192
         run: python .github/scripts/validate_5_0_192.py
