@@ -1,0 +1,53 @@
+name: Build Confluence-jjs 5.0.193
+
+on:
+  push:
+    branches:
+      - cleanup/5.0.193-popup-selection-fallback
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: cleanup/5.0.193-popup-selection-fallback
+
+      - name: Apply exact 5.0.193 source changes
+        run: python .github/scripts/apply_5_0_193.py
+
+      - name: Validate 5.0.193
+        run: python .github/scripts/validate_5_0_193.py
+
+      - name: Commit validated 5.0.193 source
+        shell: bash
+        run: |
+          if git diff --quiet -- skin.confluence.custom; then
+            echo "Source already committed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skin.confluence.custom
+          git commit -m "Confluence-jjs 5.0.193 popup selection and fallback fixes [skip ci]"
+          git push origin HEAD:cleanup/5.0.193-popup-selection-fallback
+
+      - name: Build clean install ZIP
+        shell: bash
+        run: |
+          rm -f skin.confluence.custom-5.0.193.zip
+          zip -qr skin.confluence.custom-5.0.193.zip skin.confluence.custom
+          unzip -tq skin.confluence.custom-5.0.193.zip
+          sha256sum skin.confluence.custom-5.0.193.zip
+
+      - name: Upload test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.193
+          path: skin.confluence.custom-5.0.193.zip
+          if-no-files-found: error
