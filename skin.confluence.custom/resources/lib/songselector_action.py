@@ -440,13 +440,14 @@ def play_focused():
     count = size()
     if target < 0 or target >= count:
         return
+    # Kodi's Playlist.PlayOffset uses a RELATIVE offset while a playlist is
+    # already playing. The highlighted row and current() are absolute zero-based
+    # playlist indices, so convert them before dispatching the non-blocking action.
+    playing = current()
+    offset = target - playing
     home = _home()
     home.setProperty(SELECTION_TARGET_PROP, str(target))
-    # Player.GoTo via executeJSONRPC keeps this foreground RunScript alive while
-    # Kodi changes tracks. That can raise DialogBusy; its focus then hides the
-    # popup navigation highlight. Playlist.PlayOffset is Kodi's native playlist
-    # action and executebuiltin is non-blocking, so this action can return at once.
-    xbmc.executebuiltin("Playlist.PlayOffset(music,{})".format(target), wait=False)
+    xbmc.executebuiltin("Playlist.PlayOffset(music,{})".format(offset), wait=False)
     _touch()
 
 
