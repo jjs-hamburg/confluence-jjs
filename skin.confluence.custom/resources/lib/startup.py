@@ -17,11 +17,12 @@ def _start_worker(home, name, running_property, script):
 
 
 def _start_background_services():
-    """Start independent long-lived workers.
+    """Start only genuinely long-lived workers.
 
     Since 5.0.189 the former all-in-one songselector worker is deliberately not
-    started. General Now Playing data and the optional Song Popup have separate
-    lifecycles so disabling the popup cannot leave popup code touching the GUI.
+    started. General Now Playing data and the Song Popup watcher have separate
+    lifecycles. The embedded lyrics engine is even narrower: it is started by
+    the popup runtime only for an actual window-1116 session.
     """
     home = xbmcgui.Window(10000)
     _start_worker(
@@ -35,12 +36,6 @@ def _start_background_services():
         "songpopup",
         "ConfluenceCustom.SongPopup.ServiceRunning",
         "special://skin/resources/lib/songpopup_service.py",
-    )
-    _start_worker(
-        home,
-        "lyrics",
-        "ConfluenceCustom.Lyrics.ServiceRunning",
-        "special://skin/resources/lib/culrc_runner.py",
     )
 
 
