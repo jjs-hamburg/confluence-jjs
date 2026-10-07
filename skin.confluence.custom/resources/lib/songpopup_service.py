@@ -558,20 +558,28 @@ def run():
                         last_user_activity = now
 
                 selected_target = _selection_target(home)
+                explicit_selection_resolved = False
 
-                # Explicit selection is a playback action only. It never closes
-                # the popup. Once Kodi reports the requested row as playing, one
-                # event-driven follow positions the visible list and clears the marker.
+                # The user's cursor is already on the row selected with OK. Once
+                # Kodi reports that row as playing, only clear the transition
+                # marker. Do not launch the focus action: it suppresses Highlight
+                # while scrolling and is exactly the Busy/blink seen on selection.
                 if selected_target is not None and selected_target == playing:
-                    if not detail_view():
-                        _request_focus_current()
-                        last_list_position = playing
+                    last_list_position = playing
                     home.clearProperty(SELECTION_TARGET_PROP)
                     selected_target = None
+                    explicit_selection_resolved = True
 
-                # Natural track changes follow when the user has not deliberately
-                # browsed away from the playing row.
-                if was_open and not detail_view() and last_playing >= 0 and playing != last_playing:
+                # Natural track changes still follow when the user has not browsed
+                # away. Never reinterpret the just-resolved explicit selection as
+                # a natural transition in the same service iteration.
+                if (
+                    was_open
+                    and not explicit_selection_resolved
+                    and not detail_view()
+                    and last_playing >= 0
+                    and playing != last_playing
+                ):
                     position = _container_position()
                     if position == last_playing or position == playing:
                         _request_focus_current()
