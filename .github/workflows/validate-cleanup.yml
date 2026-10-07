@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - cleanup/confluence-jjs
+      - cleanup/5.0.189-runtime-architecture
   workflow_dispatch:
 
 permissions:
@@ -57,7 +58,11 @@ jobs:
               root_dir / "resources" / "skin_modes" / "custom" / "Includes.xml",
               root_dir / "resources" / "skin_modes" / "custom" / "SkinSettings.xml",
               root_dir / "resources" / "skin_modes" / "standard" / "Home.xml",
+              root_dir / "resources" / "lib" / "nowplaying_service.py",
+              root_dir / "resources" / "lib" / "songpopup_service.py",
+              root_dir / "resources" / "lib" / "songpopup_data.py",
               root_dir / "resources" / "lib" / "songselector_service.py",
+              root_dir / "resources" / "lib" / "songselector_action.py",
               root_dir / "resources" / "lib" / "credits_resolver.py",
               root_dir / "resources" / "lib" / "credits_runtime.py",
               root_dir / "resources" / "lib" / "menu_editor.py",
@@ -122,6 +127,6 @@ jobs:
       - name: Upload test ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: confluence-jjs-test
+          name: confluence-jjs-5.0.189-runtime-cleanup-test
           path: ${{ env.SKIN_ZIP }}
           if-no-files-found: error
