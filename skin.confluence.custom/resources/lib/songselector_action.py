@@ -22,7 +22,6 @@ CULRC_STATUS_PROP = "culrc.jjsstatus"
 CULRC_RUNNING_PROP = "culrc.running"
 CULRC_ISLRC_PROP = "culrc.islrc"
 LYRICS_SYNC_PROP = "ConfluenceCustom.SongSelector.LyricsSync"
-CREDITS_SCROLL_ID = 9121
 CREDITS_NAV_ID = 9123
 CREDITS_VISIBLE_ROWS = 13
 CREDITS_SOURCE_COUNT_PROP = "ConfluenceCustom.Credits.LineCount"
@@ -34,7 +33,6 @@ LYRICS_WINDOW_START_PROP = "ConfluenceCustom.SongSelector.LyricsWindowStart"
 LYRICS_MANUAL_START_PROP = "ConfluenceCustom.SongSelector.LyricsManualStart"
 LYRICS_LINE_COUNT_PROP = "ConfluenceCustom.SongSelector.LyricsLineCount"
 SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
-SELECTION_GOTO_PENDING_PROP = "ConfluenceCustom.SongSelector.GoToPending"
 HIGHLIGHT_PROP = "ConfluenceCustom.SongSelector.Highlight"
 PROGRAMMATIC_UNTIL_PROP = "ConfluenceCustom.SongSelector.ProgrammaticUntil"
 NEUTRAL_CONTROL_ID = 9131
@@ -50,6 +48,11 @@ def _touch():
     _home().setProperty(TOUCH_PROP, "{:.3f}".format(time.time()))
 
 
+def _selector_enabled():
+    value = (xbmc.getInfoLabel("Skin.String(CCSongSelectorEnabled)") or "true").strip().lower()
+    return value != "false"
+
+
 def _set_highlight(enabled):
     home = _home()
     if enabled:
@@ -59,15 +62,10 @@ def _set_highlight(enabled):
 
 
 def _programmatic_focus_begin(seconds=0.8):
-    # The viewport setup deliberately focuses several rows. Mark that sequence so
-    # the service never mistakes it for manual Up/Down navigation. The navigation
-    # highlight itself stays visible permanently on the track page.
     _home().setProperty(PROGRAMMATIC_UNTIL_PROP, "{:.6f}".format(time.time() + float(seconds)))
 
 
 def _programmatic_focus_end():
-    # Leave a short grace period because the native list can report its final
-    # position a few frames after Control.SetFocus returns.
     _home().setProperty(PROGRAMMATIC_UNTIL_PROP, "{:.6f}".format(time.time() + 0.25))
 
 
@@ -101,19 +99,16 @@ def detail_view():
 
 def lyrics_available():
     home = _home()
-    status = (home.getProperty(CULRC_STATUS_PROP) or '').strip().lower()
-    if status == 'not_found':
+    status = (home.getProperty(CULRC_STATUS_PROP) or "").strip().lower()
+    if status == "not_found":
         return False
-    if status in ('searching', 'found'):
+    if status in ("searching", "found"):
         return True
-    # Before the first JJS status arrives, keep the page reachable only while
-    # CU LRC's service is actually running or text is already present.
-    return bool((home.getProperty(LYRICS_TEXT_PROP) or '').strip()) or home.getProperty(CULRC_RUNNING_PROP) == 'true'
+    return bool((home.getProperty(LYRICS_TEXT_PROP) or "").strip()) or home.getProperty(CULRC_RUNNING_PROP) == "true"
 
 
 def _focus(control_id):
     xbmc.executebuiltin("Control.SetFocus({})".format(int(control_id)))
-
 
 
 def _container_num_items():
@@ -124,12 +119,6 @@ def _container_num_items():
 
 
 def _wait_for_list_visible(timeout_ms=1200):
-    """Wait until Kodi has actually made the playlist control focusable.
-
-    ActivateWindow and the detail-page visibility properties are asynchronous.
-    Focusing 9110 one frame too early is the source of the repeated
-    "asked to focus, but it can't" errors seen in kodi.log.
-    """
     deadline = time.time() + (max(0, int(timeout_ms)) / 1000.0)
     while time.time() < deadline:
         if xbmc.getCondVisibility(
@@ -142,11 +131,6 @@ def _wait_for_list_visible(timeout_ms=1200):
 
 
 def _wait_for_list(target_index, timeout_ms=2500):
-    """Wait until the requested playlist row actually exists in the native list.
-
-    playlistmusic:// is filled asynchronously. 5.0.59 returned as soon as the first
-    row existed, so a later absolute target was clamped to row 0.
-    """
     target_index = max(0, int(target_index))
     deadline = time.time() + (max(0, int(timeout_ms)) / 1000.0)
     while time.time() < deadline:
@@ -159,13 +143,6 @@ def _wait_for_list(target_index, timeout_ms=2500):
 
 
 def _desired_window(count, playing):
-    """Return the 13-row viewport requested for automatic playback following.
-
-    Tracks 1-5 keep the first page unchanged. From track 6 onward the playing
-    song sits on row 5 whenever possible, leaving four previous songs above it
-    and up to eight upcoming songs below it. At the album end the final page is
-    held steady, so the last track stays visible at the bottom.
-    """
     count = max(0, int(count or 0))
     if count <= 0:
         return 0, -1
@@ -177,7 +154,6 @@ def _desired_window(count, playing):
 
 
 def _native_list_control():
-    """Return the active native playlist control without forcing GUI focus."""
     for window_id in (DIALOG_ID + 10000, DIALOG_ID):
         try:
             window = xbmcgui.Window(window_id)
@@ -190,7 +166,6 @@ def _native_list_control():
 
 
 def _native_list_index():
-    """Return the native playlist selection without requiring list focus."""
     _window, control = _native_list_control()
     if control is not None:
         try:
@@ -199,9 +174,6 @@ def _native_list_index():
                 return selected
         except Exception:
             pass
-
-    # Fallback only. Container.CurrentItem is focus-sensitive and therefore
-    # cannot be the primary source while the proxy owns track-page input.
     try:
         current_item = int(xbmc.getInfoLabel("Container({}).CurrentItem".format(LIST_ID)) or 0)
     except Exception:
@@ -210,18 +182,11 @@ def _native_list_index():
 
 
 def focus_current(take_focus=False):
-    """Position the display-only playlist while keeping input on the proxy control.
-
-    The take_focus argument is retained for compatibility with older callers but
-    is deliberately ignored. The native playlist must never receive GUI focus:
-    Kodi gives a focused directory list special ACTION_PLAYER_PLAY semantics,
-    which can replace the album playlist when PlayPause resumes playback.
-    """
+    """Position the display-only playlist and leave input on proxy 9131."""
     home = _home()
     restore_highlight = home.getProperty(HIGHLIGHT_PROP) == "1"
     if restore_highlight:
         _set_highlight(False)
-
     _programmatic_focus_begin()
     try:
         if not _wait_for_list_visible():
@@ -233,8 +198,7 @@ def focus_current(take_focus=False):
         view_start, view_end = _desired_window(count, playing)
         if not _wait_for_list(view_end):
             return False
-
-        window, control = _native_list_control()
+        _window, control = _native_list_control()
         if control is None:
             return False
         try:
@@ -244,8 +208,6 @@ def focus_current(take_focus=False):
             xbmc.sleep(80)
             control.selectItem(playing)
             xbmc.sleep(35)
-            # Never focus the native directory-backed playlist. The dedicated
-            # proxy is the sole input target for the track page.
             _focus(NEUTRAL_CONTROL_ID)
         except Exception:
             return False
@@ -256,9 +218,7 @@ def focus_current(take_focus=False):
             _set_highlight(True)
 
 
-
 def _focus_existing_track_selection():
-    """Return to the track page without ever focusing the native playlist."""
     deadline = time.time() + 0.35
     while time.time() < deadline:
         if xbmc.getCondVisibility(
@@ -289,10 +249,8 @@ def _audio_player_id():
 
 
 def open_popup():
-    if size() <= 0:
+    if not _selector_enabled() or size() <= 0:
         return
-    # Keep the grey navigation tile hidden while Kodi creates and positions the
-    # native list. This prevents the default/bottom row from flashing briefly.
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
@@ -315,9 +273,6 @@ def show_credits():
     if home.getProperty(CREDITS_WINDOW_START_PROP) == "":
         home.setProperty(CREDITS_WINDOW_START_PROP, "0")
     _touch()
-    # Focus belongs to the visible credits page itself. 9123 is a transparent
-    # full-area button covering that page, not an offscreen/tiny anchor. Retry
-    # briefly while Kodi applies the visibility switch.
     for _ in range(8):
         xbmc.sleep(30)
         _focus(CREDITS_NAV_ID)
@@ -333,18 +288,11 @@ def show_lyrics():
     if not lyrics_available():
         show_credits()
         return
-    # Keep the lyrics page reachable while CU LRC is fetching. Once CU LRC has
-    # explicitly reported not_found, navigation skips this third page.
     _set_credits_view(False)
     _set_lyrics_view(True)
-    # Synchronized LRC scrolling is on by default for a track. Enter/OK on the
-    # lyrics page toggles it without affecting normal manual scrollbar use.
     if not _home().getProperty(LYRICS_SYNC_PROP):
         _home().setProperty(LYRICS_SYNC_PROP, "1")
     _touch()
-    # Lyrics are rendered from Home properties, so one persistent proxy handles
-    # horizontal navigation, Enter/OK and manual Up/Down without focusing a
-    # conditional GUI list.
     for _ in range(8):
         xbmc.sleep(30)
         _focus(LYRICS_NAV_ID)
@@ -361,7 +309,6 @@ def _int_home_property(name, default=0):
 
 
 def scroll_lyrics_manual(delta):
-    """Move the property-backed lyrics viewport while sync is paused."""
     home = _home()
     if not lyrics_view() or home.getProperty(LYRICS_SYNC_PROP) != "0":
         return
@@ -376,7 +323,6 @@ def scroll_lyrics_manual(delta):
 
 
 def toggle_lyrics_sync():
-    """Enter/OK toggles automatic LRC following on the lyrics page."""
     home = _home()
     if not lyrics_view() or not xbmc.getCondVisibility("Window.IsActive({})".format(DIALOG_ID)):
         return
@@ -385,16 +331,13 @@ def toggle_lyrics_sync():
     if home.getProperty(LYRICS_SYNC_PROP) == "0":
         home.setProperty(LYRICS_SYNC_PROP, "1")
     else:
-        # Freeze manual browsing at the viewport currently shown by sync.
-        home.setProperty(LYRICS_MANUAL_START_PROP,
-                         home.getProperty(LYRICS_WINDOW_START_PROP) or "0")
+        home.setProperty(LYRICS_MANUAL_START_PROP, home.getProperty(LYRICS_WINDOW_START_PROP) or "0")
         home.setProperty(LYRICS_SYNC_PROP, "0")
     _focus(LYRICS_NAV_ID)
     _touch()
 
 
 def scroll_credits(delta):
-    """Scroll the property-backed credits viewport without touching Kodi GUI controls."""
     home = _home()
     if not credits_view():
         return
@@ -418,9 +361,6 @@ def next_from_credits():
 
 
 def show_tracks():
-    # Credits/lyrics hide 9110 but do not destroy its native selection/viewport.
-    # Reuse that state instead of rebuilding the 13-row viewport, so the grey
-    # highlight is back essentially immediately when returning to the track page.
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
@@ -431,8 +371,6 @@ def show_tracks():
 
 
 def reactivate():
-    # Backwards-compatible entry point for older XML. The native playlist is
-    # display-only; all track-page input belongs to the proxy control.
     if detail_view():
         return
     _set_highlight(True)
@@ -440,27 +378,24 @@ def reactivate():
     _touch()
 
 
-def close_dialog():
+def _clear_dialog_state():
+    home = _home()
     _set_highlight(False)
     _set_credits_view(False)
     _set_lyrics_view(False)
-    _home().clearProperty(SELECTION_TARGET_PROP)
-    _home().clearProperty(SELECTION_GOTO_PENDING_PROP)
-    _home().clearProperty(CREDITS_WINDOW_START_PROP)
+    home.clearProperty(SELECTION_TARGET_PROP)
+    home.clearProperty(CREDITS_WINDOW_START_PROP)
     close_popup()
     _touch()
+
+
+def close_dialog():
+    _clear_dialog_state()
     _close_dialog()
 
 
 def closed():
-    _set_highlight(False)
-    _set_credits_view(False)
-    _set_lyrics_view(False)
-    _home().clearProperty(SELECTION_TARGET_PROP)
-    _home().clearProperty(SELECTION_GOTO_PENDING_PROP)
-    _home().clearProperty(CREDITS_WINDOW_START_PROP)
-    close_popup()
-    _touch()
+    _clear_dialog_state()
     xbmc.sleep(40)
     if xbmc.getCondVisibility("Window.IsActive(Home)"):
         _focus(MAIN_LIST_ID)
@@ -505,12 +440,7 @@ def play_path(path):
 
 
 def play_focused():
-    """Play the row selected in the display-only native playlist.
-
-    The proxy owns GUI focus. Container.CurrentItem still exposes the selected
-    absolute row (1-based), so OK can invoke Player.GoTo without giving the
-    directory provider any input action.
-    """
+    """Start the selected row. Selection is never a popup-close event."""
     if not xbmc.getCondVisibility(
             "Window.IsActive({}) + Control.HasFocus({})".format(DIALOG_ID, NEUTRAL_CONTROL_ID)):
         return
@@ -520,18 +450,8 @@ def play_focused():
     count = size()
     if target < 0 or target >= count:
         return
-
-    # Mark explicit OK/Select playback separately from a natural track change.
-    # The service uses this marker to follow the newly playing row without
-    # confusing that move with manual Up/Down navigation.
     home = _home()
-    previous_playing = current()
     home.setProperty(SELECTION_TARGET_PROP, str(target))
-    # Player.GoTo can emit onPlayBackStopped even when the selected row is the
-    # already playing track. Mark every explicit popup selection before GoTo so
-    # the service never mistakes a same-track restart for a real Stop button.
-    home.setProperty(SELECTION_GOTO_PENDING_PROP, "{:.6f}".format(time.time()))
-
     request = {
         "jsonrpc": "2.0",
         "method": "Player.GoTo",
@@ -542,16 +462,10 @@ def play_focused():
         result = json.loads(xbmc.executeJSONRPC(json.dumps(request)))
         if result.get("error"):
             home.clearProperty(SELECTION_TARGET_PROP)
-            home.clearProperty(SELECTION_GOTO_PENDING_PROP)
             return
     except Exception:
         home.clearProperty(SELECTION_TARGET_PROP)
-        home.clearProperty(SELECTION_GOTO_PENDING_PROP)
         return
-
-    # Keep the popup open: selecting a song is now a playback action only.
-    # The service detects the new playing index and performs one automatic
-    # viewport follow for that track. Back remains the sole close action.
     _touch()
 
 
