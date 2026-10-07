@@ -3,7 +3,6 @@ name: "Validate Confluence-jjs cleanup"
 on:
   push:
     branches:
-      - cleanup/confluence-jjs
       - cleanup/5.0.189-runtime-architecture
   workflow_dispatch:
 
@@ -35,6 +34,7 @@ jobs:
           import xml.etree.ElementTree as ET
 
           root_dir = Path("skin.confluence.custom")
+          lib_dir = root_dir / "resources" / "lib"
           addon_xml = root_dir / "addon.xml"
           root = ET.parse(addon_xml).getroot()
 
@@ -58,15 +58,19 @@ jobs:
               root_dir / "resources" / "skin_modes" / "custom" / "Includes.xml",
               root_dir / "resources" / "skin_modes" / "custom" / "SkinSettings.xml",
               root_dir / "resources" / "skin_modes" / "standard" / "Home.xml",
-              root_dir / "resources" / "lib" / "nowplaying_service.py",
-              root_dir / "resources" / "lib" / "songpopup_service.py",
-              root_dir / "resources" / "lib" / "songpopup_data.py",
-              root_dir / "resources" / "lib" / "songselector_service.py",
-              root_dir / "resources" / "lib" / "songselector_action.py",
-              root_dir / "resources" / "lib" / "credits_resolver.py",
-              root_dir / "resources" / "lib" / "credits_runtime.py",
-              root_dir / "resources" / "lib" / "menu_editor.py",
-              root_dir / "resources" / "lib" / "skin_mode.py",
+              lib_dir / "home_geometry_action.py",
+              lib_dir / "nowplaying_service.py",
+              lib_dir / "songpopup_controller.py",
+              lib_dir / "songpopup_data.py",
+              lib_dir / "songpopup_focus_action.py",
+              lib_dir / "songpopup_service.py",
+              lib_dir / "songselector_service.py",
+              lib_dir / "songselector_action.py",
+              lib_dir / "culrc_runner.py",
+              lib_dir / "credits_resolver.py",
+              lib_dir / "credits_runtime.py",
+              lib_dir / "menu_editor.py",
+              lib_dir / "skin_mode.py",
               root_dir / "resources" / "factory-default-settings.json",
               root_dir / "LICENSE.txt",
           ]
@@ -81,7 +85,26 @@ jobs:
               root_dir / "resources" / "skin_modes" / "custom" / "Includes.xml"
           ).read_bytes(), "Active/custom Includes.xml differ"
 
-          for item in sorted((root_dir / "resources" / "lib").rglob("*.py")):
+          # Architecture guardrails for the 5.0.189 runtime cleanup. Persistent
+          # workers may publish properties and observe Kodi state, but direct
+          # Control mutation belongs in short-lived UI action scripts only.
+          nowplaying = (lib_dir / "nowplaying_service.py").read_text(encoding="utf-8")
+          popup = (lib_dir / "songpopup_service.py").read_text(encoding="utf-8")
+          popup_action = (lib_dir / "songselector_action.py").read_text(encoding="utf-8")
+          popup_controller = (lib_dir / "songpopup_controller.py").read_text(encoding="utf-8")
+          startup = (lib_dir / "startup.py").read_text(encoding="utf-8")
+
+          assert "getControl(" not in nowplaying, "Now Playing worker must not access GUI controls"
+          assert "sync_info_cover_geometry" not in nowplaying, "Now Playing worker must dispatch geometry actions"
+          assert "getControl(" not in popup, "Song Popup worker must not access GUI controls"
+          assert "Dialog.Close(" not in popup, "Song Popup worker must close only through controller"
+          assert "Dialog.Close(" not in popup_action, "Song actions must close only through controller"
+          assert "Dialog.Close(" in popup_controller, "Song Popup controller must own window close"
+          assert "GoToPending" not in popup + popup_action + popup_controller, "Legacy GoTo inference must stay removed"
+          assert "culrc_runner.py" not in startup, "Popup-only lyrics worker must not start with the skin"
+          assert "culrc_runner.py" in popup_controller, "Popup controller must start the lyrics session"
+
+          for item in sorted(lib_dir.rglob("*.py")):
               py_compile.compile(str(item), doraise=True)
 
           for xml_dir in [
