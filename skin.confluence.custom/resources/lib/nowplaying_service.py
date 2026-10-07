@@ -13,7 +13,6 @@ from cover_display_action import (
     clear_back_art,
     sync_back_art,
     sync_compact_cover_width,
-    sync_info_cover_geometry,
 )
 from nocover_manager import sync_on_startup
 from songselector_state import current, playlist_metadata, size
@@ -22,6 +21,7 @@ from worker_lock import WorkerLock
 
 HOME_ID = 10000
 SERVICE_RUNNING_PROP = "ConfluenceCustom.NowPlaying.ServiceRunning"
+GEOMETRY_ACTION = "special://skin/resources/lib/home_geometry_action.py"
 
 SONG_ELAPSED_PROP = "ConfluenceCustom.SongSelector.SongElapsed"
 SONG_DURATION_PROP = "ConfluenceCustom.SongSelector.SongDuration"
@@ -381,6 +381,11 @@ def _geometry_signature(home):
     )
 
 
+def _request_geometry_sync():
+    """Dispatch GUI geometry work to a short-lived UI action script."""
+    xbmc.executebuiltin("RunScript({})".format(GEOMETRY_ACTION))
+
+
 def run():
     sync_on_startup()
     monitor = xbmc.Monitor()
@@ -421,10 +426,10 @@ def run():
 
                 geometry_signature = _geometry_signature(home)
                 if geometry_signature != last_geometry_signature:
-                    # Direct Home-control mutation is event driven. In particular,
-                    # it no longer runs every 150 ms while the user is elsewhere.
+                    # The persistent worker never fetches or mutates Kodi controls.
+                    # A short-lived action performs geometry only on real changes.
                     if geometry_signature[0]:
-                        sync_info_cover_geometry()
+                        _request_geometry_sync()
                     last_geometry_signature = geometry_signature
 
                 if now - last_time_update >= 0.50:
