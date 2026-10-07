@@ -1,0 +1,450 @@
+name: Build Confluence-jjs 5.0.192
+
+on:
+  push:
+    branches:
+      - cleanup/5.0.192-runtime-architecture
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: cleanup/5.0.192-runtime-architecture
+
+      - name: Apply 5.0.192 source changes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new, label):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'{label}: expected source block not found in {path}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          addon = Path('skin.confluence.custom/addon.xml')
+          addon_text = addon.read_text(encoding='utf-8')
+          if 'version="5.0.192"' in addon_text:
+              print('5.0.192 source already applied; validating only')
+              raise SystemExit(0)
+          if 'version="5.0.191"' not in addon_text:
+              raise SystemExit('Unexpected base version; refusing to patch')
+
+          replace_once(
+              'skin.confluence.custom/addon.xml',
+              'version="5.0.191"',
+              'version="5.0.192"',
+              'version bump',
+          )
+          replace_once(
+              'skin.confluence.custom/addon.xml',
+              '<news>5.0.191: Preserve the immediate Stop fix, suppress unsupported glyphs in Song Popup credits, and keep explicit song selection focused without redundant follow-up UI actions.</news>',
+              '<news>5.0.192: Keep artwork mode stable across window changes and scans, skip unavailable back-cover modes only on mode/title change, tighten large front/back spacing for non-square artwork, and retain the 5.0.191 Song Popup fixes.</news>',
+              'news update',
+          )
+
+          replace_once(
+              'skin.confluence.custom/1080p/Home.xml',
+              '\t<onload condition="Skin.HasSetting(CCHomeMusicCoverDynamic)">RunScript(special://skin/resources/lib/live_home_adjust.py,apply)</onload>\n',
+              '',
+              'remove centered-cover home reload rebuild',
+          )
+          replace_once(
+              'skin.confluence.custom/1080p/Home.xml',
+              '\t<onload condition="Skin.HasSetting(CCHomeMusicInfoCoverDynamic)">RunScript(special://skin/resources/lib/cover_display_action.py,apply)</onload>\n',
+              '',
+              'remove info-cover home reload rebuild',
+          )
+
+          replace_once(
+              'skin.confluence.custom/resources/lib/home_geometry_action.py',
+              'from cover_display_action import sync_info_cover_geometry\n',
+              'from cover_display_action import sync_info_cover_geometry\nfrom live_home_adjust import apply_dynamic_cover\n',
+              'geometry action import',
+          )
+          replace_once(
+              'skin.confluence.custom/resources/lib/home_geometry_action.py',
+              'def main():\n    sync_info_cover_geometry()\n',
+              'def main():\n    # Apply both centered and info-side dynamic geometry in one foreground action.\n    # This runs only for real artwork/setting changes, never merely because Home\n    # was left for Videos/Music and then shown again.\n    apply_dynamic_cover()\n    sync_info_cover_geometry()\n',
+              'geometry action body',
+          )
+
+          replace_once(
+              'skin.confluence.custom/resources/lib/cover_display_action.py',
+              'def _current_mode():\n    return (_skin_string(SETTING, "front") or "front").strip().lower()\n\n\ndef _home_control(home, control_id):\n',
+              '''def _current_mode():
+    return (_skin_string(SETTING, "front") or "front").strip().lower()
+
+
+def normalize_artwork_mode_for_back():
+    """Skip a back-cover mode only when the current title has no back artwork.
+
+    CCMusicArtworkMode remains the persistent user choice across window changes,
+    scans, Stop and restarts. This function is intentionally called only for a
+    real title change. Explicit mode cycling performs the same availability test
+    in _cycle_view().
+    """
+    mode = _current_mode()
+    if _home().getProperty(BACK_PROP):
+        return mode
+    fallback = {
+        "both": "infofront",
+        "infoboth": "compact",
+    }.get(mode)
+    if fallback:
+        xbmc.executebuiltin("Skin.SetString({},{})".format(SETTING, fallback))
+        return fallback
+    return mode
+
+
+def _home_control(home, control_id):
+''',
+              'back-cover mode normalization',
+          )
+
+          replace_once(
+              'skin.confluence.custom/resources/lib/live_home_adjust.py',
+              'import xbmc\nimport xbmcgui\nimport xbmcvfs\n\n',
+              'import xbmc\nimport xbmcgui\nimport xbmcvfs\n\nfrom cover_display_action import BACK_PROP, _art_ratio\n\n',
+              'longbox geometry import',
+          )
+          replace_once(
+              'skin.confluence.custom/resources/lib/live_home_adjust.py',
+              'SOFT_SHADOW_LAYERS = 8\n',
+              'SOFT_SHADOW_LAYERS = 8\nPAIR_GAP = 40\n',
+              'pair gap constant',
+          )
+          replace_once(
+              'skin.confluence.custom/resources/lib/live_home_adjust.py',
+              '''def _shadow_cover_rect(kind, size):
+    selector_y = (600 - size) // 2
+    if kind == "main":
+        return 30, 495 - size
+    if kind == "single":
+        return (1920 - size) // 2, selector_y
+    if kind == "pair_front":
+        return 940 - size, selector_y
+    return 980, selector_y
+''',
+              '''def _pair_cover_rects(size):
+    """Return visible front/back rectangles, not square placeholder rectangles."""
+    size = max(1, int(size))
+    home = xbmcgui.Window(HOME_WINDOW_ID)
+    front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
+    back_art = home.getProperty(BACK_PROP) or ""
+    front_width = max(1, int(round(_art_ratio(front_art) * float(size))))
+    back_width = max(1, int(round(_art_ratio(back_art) * float(size))))
+    total_width = front_width + PAIR_GAP + back_width
+    front_x = int(round((1920 - total_width) / 2.0))
+    back_x = front_x + front_width + PAIR_GAP
+    selector_y = (600 - size) // 2
+    return (
+        (front_x, selector_y, front_width, size),
+        (back_x, selector_y, back_width, size),
+    )
+
+
+def _cover_rect(kind, size):
+    selector_y = (600 - size) // 2
+    if kind == "main":
+        return 30, 495 - size, size, size
+    if kind == "single":
+        return (1920 - size) // 2, selector_y, size, size
+    front_rect, back_rect = _pair_cover_rects(size)
+    return front_rect if kind == "pair_front" else back_rect
+''',
+              'visible pair geometry helper',
+          )
+          replace_once(
+              'skin.confluence.custom/resources/lib/live_home_adjust.py',
+              '''        cover_x, cover_y = _shadow_cover_rect(kind, size)
+        hard = _control(window, hard_id)
+        soft = tuple(_control(window, cid) for cid in soft_ids)
+        if extent <= 0:
+            _hide_shadow_control(hard)
+            for control in soft:
+                _hide_shadow_control(control)
+            continue
+        _set_geometry(hard, cover_x + extent, cover_y + extent, size, size)
+        for index, control in enumerate(soft):
+            if index < len(shifts):
+                shift = shifts[index]
+                _set_geometry(control, cover_x + shift, cover_y + shift, size, size)
+            else:
+                _hide_shadow_control(control)
+''',
+              '''        cover_x, cover_y, cover_width, cover_height = _cover_rect(kind, size)
+        hard = _control(window, hard_id)
+        soft = tuple(_control(window, cid) for cid in soft_ids)
+        if extent <= 0:
+            _hide_shadow_control(hard)
+            for control in soft:
+                _hide_shadow_control(control)
+            continue
+        _set_geometry(hard, cover_x + extent, cover_y + extent, cover_width, cover_height)
+        for index, control in enumerate(soft):
+            if index < len(shifts):
+                shift = shifts[index]
+                _set_geometry(control, cover_x + shift, cover_y + shift, cover_width, cover_height)
+            else:
+                _hide_shadow_control(control)
+''',
+              'shadow follows visible artwork width',
+          )
+          replace_once(
+              'skin.confluence.custom/resources/lib/live_home_adjust.py',
+              '''    front_x = 940 - size
+    back_x = 980
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_FRONT), front_x, selector_y, size, size)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_BACK), back_x, selector_y, size, size)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_FRONT), front_x, selector_y, size, size)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_BACK), back_x, selector_y, size, size)
+''',
+              '''    front_rect, back_rect = _pair_cover_rects(size)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_FRONT), *front_rect)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_BACK), *back_rect)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_FRONT), *front_rect)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_BACK), *back_rect)
+''',
+              'dynamic pair uses visible widths',
+          )
+
+          replace_once(
+              'skin.confluence.custom/resources/lib/nowplaying_service.py',
+              '''from cover_display_action import (
+    BACK_PROP,
+    INFO_TEXT_SHIFT_PROP,
+    clear_back_art,
+    sync_back_art,
+    sync_compact_cover_width,
+)
+''',
+              '''from cover_display_action import (
+    BACK_PROP,
+    INFO_TEXT_SHIFT_PROP,
+    normalize_artwork_mode_for_back,
+    sync_back_art,
+    sync_compact_cover_width,
+)
+''',
+              'nowplaying artwork imports',
+          )
+          replace_once(
+              'skin.confluence.custom/resources/lib/nowplaying_service.py',
+              '''def _geometry_signature(home):
+    return (
+        bool(xbmc.getCondVisibility("Window.IsActive(Home)")),
+        xbmc.getInfoLabel("Player.FilenameAndPath") or "",
+        xbmc.getInfoLabel("Player.Art(thumb)") or "",
+        home.getProperty(BACK_PROP) or "",
+        _skin_string("CCMusicArtworkMode", "front"),
+        _skin_string("CCMainMenuYOffset", "0"),
+        _skin_string("CCHomeMusicViewMargin", "10"),
+        _skin_string("CCHomeMusicInfoCoverSize", ""),
+        bool(xbmc.getCondVisibility("Skin.HasSetting(CCHomeMusicInfoCoverDynamic)")),
+        bool(xbmc.getCondVisibility("Skin.HasSetting(CCHomeMusicDisplayAboveMenu)")),
+        bool(xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")),
+    )
+''',
+              '''def _geometry_signature(home):
+    # Home visibility is deliberately not part of the signature. Home is kept
+    # in memory, so leaving it for Videos/Music must not invalidate geometry.
+    return (
+        xbmc.getInfoLabel("Player.FilenameAndPath") or "",
+        xbmc.getInfoLabel("Player.Art(thumb)") or "",
+        home.getProperty(BACK_PROP) or "",
+        _skin_string("CCMusicArtworkMode", "front"),
+        _skin_string("CCMainMenuYOffset", "0"),
+        _skin_string("CCHomeMusicViewMargin", "10"),
+        _skin_string("CCHomeMusicInfoCoverSize", ""),
+        bool(xbmc.getCondVisibility("Skin.HasSetting(CCHomeMusicInfoCoverDynamic)")),
+        bool(xbmc.getCondVisibility("Skin.HasSetting(CCHomeMusicDisplayAboveMenu)")),
+        bool(xbmc.getCondVisibility("Skin.HasSetting(CCStandardConfluence)")),
+    )
+''',
+              'stable geometry signature',
+          )
+          replace_once(
+              'skin.confluence.custom/resources/lib/nowplaying_service.py',
+              '''        if not standard and context:
+            count = size()
+            playing = current() if count > 0 else -1
+            if not meta or count != last_size:
+                meta = playlist_metadata()
+                last_size = count
+
+            if audio:
+                playing_file = xbmc.getInfoLabel("Player.FilenameAndPath") or ""
+                if playing_file and playing_file != last_art_file:
+                    sync_back_art()
+                    sync_compact_cover_width()
+                    last_art_file = playing_file
+                    last_geometry_signature = None
+
+                geometry_signature = _geometry_signature(home)
+                if geometry_signature != last_geometry_signature:
+                    # The persistent worker never fetches or mutates Kodi controls.
+                    # A short-lived action performs geometry only on real changes.
+                    if geometry_signature[0]:
+                        _request_geometry_sync()
+                    last_geometry_signature = geometry_signature
+
+                if now - last_time_update >= 0.50:
+                    _set_times(home, meta, playing)
+                    last_time_update = now
+            else:
+                _clear_times(home)
+        else:
+            _clear_times(home)
+            if not context:
+                clear_back_art()
+                last_art_file = ""
+                last_size = -1
+                meta = []
+                last_geometry_signature = None
+
+        if monitor.waitForAbort(0.15 if context else 0.50):
+            break
+''',
+              '''        if not standard:
+            # Artwork identity belongs to the playing title, not to the current
+            # GUI window. Keep it stable while Videos/Music/scanners are active.
+            if audio:
+                playing_file = xbmc.getInfoLabel("Player.FilenameAndPath") or ""
+                if playing_file and playing_file != last_art_file:
+                    sync_back_art()
+                    sync_compact_cover_width()
+                    normalize_artwork_mode_for_back()
+                    last_art_file = playing_file
+                    last_geometry_signature = None
+
+                geometry_signature = _geometry_signature(home)
+                if (
+                    xbmc.getCondVisibility("Window.IsActive(Home)")
+                    and geometry_signature != last_geometry_signature
+                ):
+                    # One foreground action applies centered + info geometry.
+                    # Returning to Home with the same title/settings is a no-op.
+                    _request_geometry_sync()
+                    last_geometry_signature = geometry_signature
+
+            if context:
+                count = size()
+                playing = current() if count > 0 else -1
+                if not meta or count != last_size:
+                    meta = playlist_metadata()
+                    last_size = count
+                if audio:
+                    if now - last_time_update >= 0.50:
+                        _set_times(home, meta, playing)
+                        last_time_update = now
+                else:
+                    _clear_times(home)
+            else:
+                _clear_times(home)
+                # Playlist metadata may change while another window is open,
+                # but artwork/mode/geometry remain valid for the same title.
+                last_size = -1
+                meta = []
+        else:
+            _clear_times(home)
+            last_size = -1
+            meta = []
+
+        if monitor.waitForAbort(0.15 if context else 0.50):
+            break
+''',
+              'stable artwork runtime',
+          )
+
+          print('5.0.192 source patch applied')
+          PY
+
+      - name: Validate 5.0.192
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import xml.etree.ElementTree as ET
+
+          root = Path('skin.confluence.custom')
+          addon = (root / 'addon.xml').read_text(encoding='utf-8')
+          home = (root / '1080p/Home.xml').read_text(encoding='utf-8')
+          nowplaying = (root / 'resources/lib/nowplaying_service.py').read_text(encoding='utf-8')
+          cover = (root / 'resources/lib/cover_display_action.py').read_text(encoding='utf-8')
+          geometry = (root / 'resources/lib/home_geometry_action.py').read_text(encoding='utf-8')
+          live = (root / 'resources/lib/live_home_adjust.py').read_text(encoding='utf-8')
+          popup = (root / 'resources/lib/songpopup_service.py').read_text(encoding='utf-8')
+          popup_data = (root / 'resources/lib/songpopup_data.py').read_text(encoding='utf-8')
+
+          assert 'version="5.0.192"' in addon
+          assert 'live_home_adjust.py,apply' not in home
+          assert 'cover_display_action.py,apply' not in home
+          assert 'normalize_artwork_mode_for_back()' in nowplaying
+          assert 'clear_back_art()' not in nowplaying
+          assert 'Window.IsActive(Home)' not in nowplaying.split('def _geometry_signature(home):',1)[1].split('def _request_geometry_sync',1)[0]
+          assert 'def normalize_artwork_mode_for_back()' in cover
+          assert '"both": "infofront"' in cover
+          assert '"infoboth": "compact"' in cover
+          assert 'apply_dynamic_cover()' in geometry
+          assert 'PAIR_GAP = 40' in live
+          assert '_pair_cover_rects(size)' in live
+          assert '_art_ratio(front_art)' in live
+          assert 'explicit_selection_resolved = False' in popup
+          assert 'and not explicit_selection_resolved' in popup
+          assert 'PLAYBACK_END_SETTLE_SECONDS = 1.0' in popup
+          assert '_clean_credit_display_text' in popup_data
+          assert '_CREDIT_UNSUPPORTED_RANGES' in popup_data
+
+          for path in (
+              root / 'resources/lib/nowplaying_service.py',
+              root / 'resources/lib/cover_display_action.py',
+              root / 'resources/lib/home_geometry_action.py',
+              root / 'resources/lib/live_home_adjust.py',
+              root / 'resources/lib/songpopup_service.py',
+              root / 'resources/lib/songpopup_data.py',
+          ):
+              py_compile.compile(str(path), doraise=True)
+
+          ET.parse(root / 'addon.xml')
+          ET.parse(root / '1080p/Home.xml')
+          print('5.0.192 validation OK')
+          PY
+
+      - name: Commit 5.0.192 source
+        shell: bash
+        run: |
+          if git diff --quiet -- skin.confluence.custom; then
+            echo "No source changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skin.confluence.custom
+          git commit -m "Confluence-jjs 5.0.192 artwork stability and popup fixes"
+          git push origin HEAD:cleanup/5.0.192-runtime-architecture
+
+      - name: Build clean install ZIP
+        shell: bash
+        run: |
+          rm -f skin.confluence.custom-5.0.192.zip
+          zip -qr skin.confluence.custom-5.0.192.zip skin.confluence.custom
+          unzip -tq skin.confluence.custom-5.0.192.zip
+          sha256sum skin.confluence.custom-5.0.192.zip
+
+      - name: Upload test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.192
+          path: skin.confluence.custom-5.0.192.zip
+          if-no-files-found: error
