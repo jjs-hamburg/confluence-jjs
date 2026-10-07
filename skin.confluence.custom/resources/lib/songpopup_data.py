@@ -35,6 +35,40 @@ _LRC_SIMPLE_TIME_RE = re.compile(r"^(?:\[\d{1,3}:\d{1,2}(?:[.:]\d{1,3})?\])+", r
 _LRC_ENHANCED_TIME_RE = re.compile(r"<\d{1,3}:\d{1,2}(?:[.:]\d{1,3})?>")
 _LRC_META_RE = re.compile(r"^\[(?:ar|al|ti|au|by|offset|re|ve|length|id):.*\]$", re.I)
 
+_MOJIBAKE_MARKERS = ("Ã", "Â", "â", "ð", "ï¿½")
+
+
+def repair_mojibake(text):
+    """Repair UTF-8 text that was accidentally decoded as a Western code page.
+
+    The repair is deliberately conservative: unchanged Unicode wins unless a
+    round-trip through cp1252/latin-1 measurably removes mojibake markers.
+    Two passes cover the common double-decoding case without touching normal
+    lyrics containing umlauts, accents, dashes or other valid Unicode.
+    """
+    value = str(text or "")
+    if not value:
+        return value
+
+    def badness(candidate):
+        return sum(candidate.count(marker) for marker in _MOJIBAKE_MARKERS) + (candidate.count("\ufffd") * 10)
+
+    for _unused in range(2):
+        current_score = badness(value)
+        if current_score <= 0:
+            break
+        candidates = [value]
+        for encoding in ("cp1252", "latin-1"):
+            try:
+                candidates.append(value.encode(encoding).decode("utf-8"))
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                pass
+        best = min(candidates, key=badness)
+        if badness(best) >= current_score:
+            break
+        value = best
+    return value
+
 
 def int_property(home, name, default=0):
     try:
@@ -139,7 +173,7 @@ def _parse_lrc_timestamp(tag):
 
 
 def clean_and_time_lyrics(raw):
-    text = (raw or "").replace("\ufeff", "").replace("\x00", "")
+    text = repair_mojibake(raw or "").replace("\ufeff", "").replace("\x00", "")
     text = text.replace("[CR]", "\n").replace("\r\n", "\n").replace("\r", "\n")
     embedded_offset = 0.0
     offset_match = re.search(r"^\s*\[offset:\s*(-?\d+)\]\s*$", text, flags=re.I | re.M)

@@ -47,7 +47,7 @@ AUTO_OPEN_SETTING = "CCSongSelectorAutoOpen"
 HIGHLIGHT_PROP = "ConfluenceCustom.SongSelector.Highlight"
 PROGRAMMATIC_UNTIL_PROP = "ConfluenceCustom.SongSelector.ProgrammaticUntil"
 SELECTION_TARGET_PROP = "ConfluenceCustom.SongSelector.SelectionTarget"
-PLAYBACK_STOP_SETTLE_SECONDS = 1.0
+PLAYBACK_END_SETTLE_SECONDS = 1.0
 
 LYRICS_TEXT_PROP = "ConfluenceCustom.SongSelector.LyricsText"
 CULRC_LYRICS_PROP = "culrc.lyrics"
@@ -138,7 +138,17 @@ def _container_position():
 
 
 def _request_focus_current():
-    """Dispatch list positioning to a short-lived UI action."""
+    """Reposition only when the visible list is not already on the playing row."""
+    home = xbmcgui.Window(HOME_ID)
+    # During an explicit selection the user's cursor is already on the row that
+    # Player.GoTo is starting. Launching another Python UI action here creates
+    # a Busy flash and briefly removes the navigation highlight for no benefit.
+    if home.getProperty(SELECTION_TARGET_PROP):
+        return
+    position = _container_position()
+    playing = current()
+    if position is not None and position == playing:
+        return
     xbmc.executebuiltin("RunScript({})".format(FOCUS_ACTION))
 
 
@@ -170,22 +180,26 @@ def _lyrics_sync_delay_seconds():
 
 
 class PlaybackEvents(xbmc.Player):
-    """Track real playback stop/end callbacks without classifying Player.GoTo.
+    """Separate an explicit Stop from a normal end-of-track transition.
 
-    Kodi can emit a stop while switching tracks. A following start/AV-start
-    simply cancels the pending stop. Only a stop/end that remains unmatched by
-    a new start is considered the end of the music session.
+    Kodi has distinct callbacks for user Stop and natural playback end. A real
+    Stop may therefore close the popup on the next service tick. Natural track
+    endings keep a short settle window so the following playlist start can
+    cancel the close. Player.GoTo may emit a Stop callback as part of switching
+    tracks; the existing SelectionTarget marker identifies that transition.
     """
 
     def __init__(self):
         xbmc.Player.__init__(self)
-        self.stop_candidate_at = None
+        self.stop_now = False
+        self.end_candidate_at = None
 
     def _started(self):
-        self.stop_candidate_at = None
+        self.stop_now = False
+        self.end_candidate_at = None
 
-    def _stopped(self):
-        self.stop_candidate_at = time.monotonic()
+    def _selection_transition(self):
+        return bool(xbmcgui.Window(HOME_ID).getProperty(SELECTION_TARGET_PROP))
 
     def onPlayBackStarted(self):
         self._started()
@@ -194,23 +208,31 @@ class PlaybackEvents(xbmc.Player):
         self._started()
 
     def onPlayBackStopped(self):
-        self._stopped()
+        if self._selection_transition():
+            return
+        self.stop_now = True
+        self.end_candidate_at = None
 
     def onPlayBackEnded(self):
-        self._stopped()
+        self.end_candidate_at = time.monotonic()
 
     def reset(self):
-        self.stop_candidate_at = None
+        self.stop_now = False
+        self.end_candidate_at = None
 
     def confirmed_stop(self, now, audio_active):
-        if self.stop_candidate_at is None:
+        if self.stop_now:
+            self.stop_now = False
+            self.end_candidate_at = None
+            return True
+        if self.end_candidate_at is None:
             return False
         if audio_active:
-            self.stop_candidate_at = None
+            self.end_candidate_at = None
             return False
-        if now - self.stop_candidate_at < PLAYBACK_STOP_SETTLE_SECONDS:
+        if now - self.end_candidate_at < PLAYBACK_END_SETTLE_SECONDS:
             return False
-        self.stop_candidate_at = None
+        self.end_candidate_at = None
         return True
 
 
