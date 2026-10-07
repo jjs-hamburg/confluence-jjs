@@ -18,8 +18,8 @@ jobs:
         with:
           ref: cleanup/5.0.192-runtime-architecture
 
-      - name: Apply 5.0.192 source changes
-        run: python .github/scripts/apply_5_0_192_wrapper.py
+      - name: Apply final 5.0.192 music-artwork guard
+        run: python .github/scripts/fix_5_0_192_music_guard.py
 
       - name: Validate 5.0.192
         run: python .github/scripts/validate_5_0_192.py
@@ -34,7 +34,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add skin.confluence.custom
-          git commit -m "Confluence-jjs 5.0.192 artwork stability and popup fixes [skip ci]"
+          git commit -m "Confluence-jjs 5.0.192 guard artwork state from video playback [skip ci]"
           git push origin HEAD:cleanup/5.0.192-runtime-architecture
 
       - name: Build clean install ZIP
