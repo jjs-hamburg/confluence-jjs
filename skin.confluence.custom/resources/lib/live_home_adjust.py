@@ -5,6 +5,8 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 
+from cover_display_action import BACK_PROP, _art_ratio
+
 HOME_WINDOW_ID = 10000
 COVER_SIZE_SETTING = "CCHomeMusicCoverSize"
 COVER_DYNAMIC_SETTING = "CCHomeMusicCoverDynamic"
@@ -47,6 +49,7 @@ DYNAMIC_ART_SHADOW_CONTROLS = (
     (9460, tuple(range(9470, 9478)), "pair_back"),
 )
 SOFT_SHADOW_LAYERS = 8
+PAIR_GAP = 40
 
 
 def _skin_string(name, default=""):
@@ -91,15 +94,32 @@ def _set_geometry(control, x, y, width, height):
     control.setHeight(max(1, int(height)))
 
 
-def _shadow_cover_rect(kind, size):
+def _pair_cover_rects(size):
+    """Place the visible pair, not two square placeholder boxes."""
+    size = max(1, int(size))
+    home = xbmcgui.Window(HOME_WINDOW_ID)
+    front_art = xbmc.getInfoLabel("Player.Art(thumb)") or ""
+    back_art = home.getProperty(BACK_PROP) or ""
+    front_width = max(1, int(round(_art_ratio(front_art) * float(size))))
+    back_width = max(1, int(round(_art_ratio(back_art) * float(size))))
+    total_width = front_width + PAIR_GAP + back_width
+    front_x = int(round((1920 - total_width) / 2.0))
+    back_x = front_x + front_width + PAIR_GAP
+    selector_y = (600 - size) // 2
+    return (
+        (front_x, selector_y, front_width, size),
+        (back_x, selector_y, back_width, size),
+    )
+
+
+def _cover_rect(kind, size):
     selector_y = (600 - size) // 2
     if kind == "main":
-        return 30, 495 - size
+        return 30, 495 - size, size, size
     if kind == "single":
-        return (1920 - size) // 2, selector_y
-    if kind == "pair_front":
-        return 940 - size, selector_y
-    return 980, selector_y
+        return (1920 - size) // 2, selector_y, size, size
+    front_rect, back_rect = _pair_cover_rects(size)
+    return front_rect if kind == "pair_front" else back_rect
 
 
 def _hide_shadow_control(control):
@@ -127,7 +147,7 @@ def _apply_dynamic_shadow_once(size):
     # makes 0/0 truly invisible even for non-square artwork.
     shifts = _soft_shadow_shifts(extent)
     for hard_id, soft_ids, kind in DYNAMIC_ART_SHADOW_CONTROLS:
-        cover_x, cover_y = _shadow_cover_rect(kind, size)
+        cover_x, cover_y, cover_width, cover_height = _cover_rect(kind, size)
         hard = _control(window, hard_id)
         soft = tuple(_control(window, cid) for cid in soft_ids)
         if extent <= 0:
@@ -135,11 +155,11 @@ def _apply_dynamic_shadow_once(size):
             for control in soft:
                 _hide_shadow_control(control)
             continue
-        _set_geometry(hard, cover_x + extent, cover_y + extent, size, size)
+        _set_geometry(hard, cover_x + extent, cover_y + extent, cover_width, cover_height)
         for index, control in enumerate(soft):
             if index < len(shifts):
                 shift = shifts[index]
-                _set_geometry(control, cover_x + shift, cover_y + shift, size, size)
+                _set_geometry(control, cover_x + shift, cover_y + shift, cover_width, cover_height)
             else:
                 _hide_shadow_control(control)
 
@@ -156,12 +176,11 @@ def _apply_dynamic_cover_once(size):
     selector_y = (600 - size) // 2
     _set_geometry(_control(window, ID_SELECTOR_SINGLE_FRAME), selector_x, selector_y, size, size)
     _set_geometry(_control(window, ID_SELECTOR_SINGLE_SHADOW_COVER), selector_x, selector_y, size, size)
-    front_x = 940 - size
-    back_x = 980
-    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_FRONT), front_x, selector_y, size, size)
-    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_BACK), back_x, selector_y, size, size)
-    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_FRONT), front_x, selector_y, size, size)
-    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_BACK), back_x, selector_y, size, size)
+    front_rect, back_rect = _pair_cover_rects(size)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_FRONT), *front_rect)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_FRAME_BACK), *back_rect)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_FRONT), *front_rect)
+    _set_geometry(_control(window, ID_SELECTOR_PAIR_SHADOW_BACK), *back_rect)
     info = _control(window, ID_MAIN_INFO)
     if info is not None:
         info.setPosition(size + 60, 0)
