@@ -2365,8 +2365,13 @@
 					</control>
 					<control type="label">
 						<include>WindowTitleCommons</include>
+						<label>[COLOR=blue] - [/COLOR]$INFO[Container.PluginCategory]</label>
+						<visible>!String.IsEmpty(Container.PluginCategory)</visible>
+					</control>
+					<control type="label">
+						<include>WindowTitleCommons</include>
 						<label>[COLOR=blue] - [/COLOR]$INFO[Container.FolderName]</label>
-						<visible>!String.IsEmpty(Container.FolderName)</visible>
+						<visible>String.IsEmpty(Container.PluginCategory) + !String.IsEmpty(Container.FolderName)</visible>
 					</control>
 					<control type="label">
 						<include>WindowTitleCommons</include>
