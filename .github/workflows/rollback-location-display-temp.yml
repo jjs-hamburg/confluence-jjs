@@ -1,0 +1,57 @@
+name: Temporary exact location-display rollback
+
+on:
+  push:
+    branches:
+      - rollback-location-display-5.0.196
+
+permissions:
+  contents: write
+
+jobs:
+  rollback:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: rollback-location-display-5.0.196
+          fetch-depth: 0
+      - name: Restore standard Confluence header only
+        shell: python
+        run: |
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          includes = Path('skin.confluence.custom/1080p/Includes.xml')
+          text = includes.read_text(encoding='utf-8')
+          current = '''\t\t\t\t\t<control type="label">\n\t\t\t\t\t\t<include>WindowTitleCommons</include>\n\t\t\t\t\t\t<label>[COLOR=blue] - [/COLOR]$INFO[Container.PluginCategory]</label>\n\t\t\t\t\t\t<visible>!String.IsEmpty(Container.PluginCategory)</visible>\n\t\t\t\t\t</control>\n\t\t\t\t\t<control type="label">\n\t\t\t\t\t\t<include>WindowTitleCommons</include>\n\t\t\t\t\t\t<label>[COLOR=blue] - [/COLOR]$INFO[Container.FolderName]</label>\n\t\t\t\t\t\t<visible>String.IsEmpty(Container.PluginCategory) + !String.IsEmpty(Container.FolderName)</visible>\n\t\t\t\t\t</control>'''
+          original = '''\t\t\t\t\t<control type="label">\n\t\t\t\t\t\t<include>WindowTitleCommons</include>\n\t\t\t\t\t\t<label>[COLOR=blue] - [/COLOR]$INFO[Container.FolderName]</label>\n\t\t\t\t\t\t<visible>!String.IsEmpty(Container.FolderName)</visible>\n\t\t\t\t\t</control>'''
+          if text.count(current) != 1:
+              raise SystemExit(f'Expected exactly one plugin-category header block, found {text.count(current)}')
+          includes.write_text(text.replace(current, original, 1), encoding='utf-8')
+
+          addon = Path('skin.confluence.custom/addon.xml')
+          text = addon.read_text(encoding='utf-8')
+          if text.count('version="5.0.195"') != 1:
+              raise SystemExit('Expected version 5.0.195 exactly once')
+          text = text.replace('version="5.0.195"', 'version="5.0.196"', 1)
+          old_news = '<news>5.0.195: Show a plugin-provided Container.PluginCategory in the shared window header when available, with the existing Container.FolderName retained as the generic fallback.</news>'
+          new_news = '<news>5.0.196: Revert the experimental plugin location display and restore the standard Confluence window header behavior.</news>'
+          if text.count(old_news) != 1:
+              raise SystemExit('Expected 5.0.195 news exactly once')
+          addon.write_text(text.replace(old_news, new_news, 1), encoding='utf-8')
+
+          ET.parse(includes)
+          ET.parse(addon)
+          print('XML OK')
+      - name: Remove temporary workflow and commit rollback
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/rollback-location-display-temp.yml
+          git add skin.confluence.custom/1080p/Includes.xml skin.confluence.custom/addon.xml
+          git diff --cached --check
+          git commit -m "Revert location display experiment"
+          git push origin HEAD:rollback-location-display-5.0.196
