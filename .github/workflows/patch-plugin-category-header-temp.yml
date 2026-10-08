@@ -1,0 +1,60 @@
+name: Temporary plugin header patch
+
+on:
+  push:
+    branches:
+      - fix-plugin-category-header-5.0.195
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-plugin-category-header-5.0.195
+          fetch-depth: 0
+      - name: Apply exact generic header patch
+        shell: python
+        run: |
+          from pathlib import Path
+
+          includes = Path('skin.confluence.custom/1080p/Includes.xml')
+          text = includes.read_text(encoding='utf-8')
+          old = '''\t\t\t\t\t<control type="label">\n\t\t\t\t\t\t<include>WindowTitleCommons</include>\n\t\t\t\t\t\t<label>[COLOR=blue] - [/COLOR]$INFO[Container.FolderName]</label>\n\t\t\t\t\t\t<visible>!String.IsEmpty(Container.FolderName)</visible>\n\t\t\t\t\t</control>'''
+          new = '''\t\t\t\t\t<control type="label">\n\t\t\t\t\t\t<include>WindowTitleCommons</include>\n\t\t\t\t\t\t<label>[COLOR=blue] - [/COLOR]$INFO[Container.PluginCategory]</label>\n\t\t\t\t\t\t<visible>!String.IsEmpty(Container.PluginCategory)</visible>\n\t\t\t\t\t</control>\n\t\t\t\t\t<control type="label">\n\t\t\t\t\t\t<include>WindowTitleCommons</include>\n\t\t\t\t\t\t<label>[COLOR=blue] - [/COLOR]$INFO[Container.FolderName]</label>\n\t\t\t\t\t\t<visible>String.IsEmpty(Container.PluginCategory) + !String.IsEmpty(Container.FolderName)</visible>\n\t\t\t\t\t</control>'''
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'Expected exactly one CommonWindowHeader folder-label block, found {count}')
+          includes.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          addon = Path('skin.confluence.custom/addon.xml')
+          text = addon.read_text(encoding='utf-8')
+          old_version = 'version="5.0.194"'
+          if text.count(old_version) != 1:
+              raise SystemExit('Expected addon version 5.0.194 exactly once')
+          text = text.replace(old_version, 'version="5.0.195"', 1)
+          old_news = '<news>5.0.194: Keep the validated 5.0.193 artwork/back-cover behavior, correct Song Popup playlist selection by converting the absolute highlighted row to Kodi\'s relative PlayOffset value, and remove the ineffective credit-glyph suppression experiment.</news>'
+          new_news = '<news>5.0.195: Show a plugin-provided Container.PluginCategory in the shared window header when available, with the existing Container.FolderName retained as the generic fallback.</news>'
+          if text.count(old_news) != 1:
+              raise SystemExit('Expected 5.0.194 news entry exactly once')
+          addon.write_text(text.replace(old_news, new_news, 1), encoding='utf-8')
+      - name: Validate XML
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('skin.confluence.custom/1080p/Includes.xml')
+          ET.parse('skin.confluence.custom/addon.xml')
+          print('XML OK')
+          PY
+      - name: Commit branch changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skin.confluence.custom/1080p/Includes.xml skin.confluence.custom/addon.xml
+          git diff --cached --check
+          git commit -m "Show plugin category in shared window header"
+          git push origin HEAD:fix-plugin-category-header-5.0.195
