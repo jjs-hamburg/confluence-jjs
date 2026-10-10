@@ -46,7 +46,54 @@
 		</control>
 		<control type="group">
 			<depth>DepthFooter</depth>
-			<include>CommonPageCount</include>
+			<control type="group">
+				<animation effect="slide" start="0,0" end="-135,0" time="0" condition="system.getbool(input.enablemouse)">Conditional</animation>
+				<control type="label">
+					<description>Page Count Label</description>
+					<right>60</right>
+					<top>80r</top>
+					<width>750</width>
+					<height>30</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[Container.NumItems,([COLOR=blue],[/COLOR]) $LOCALIZE[31025]]$INFO[Container.CurrentPage, - $LOCALIZE[31024] ([COLOR=blue]]$INFO[Container.NumPages,/,[/COLOR])]</label>
+					<visible>!Container.Content(movies)</visible>
+					<include>Window_OpenClose_Animation</include>
+				</control>
+				<control type="label">
+					<description>Movie Page Count Label</description>
+					<right>60</right>
+					<top>48r</top>
+					<width>750</width>
+					<height>30</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[Container.NumItems,([COLOR=blue],[/COLOR]) $LOCALIZE[31025]]$INFO[Container.CurrentPage, - $LOCALIZE[31024] ([COLOR=blue]]$INFO[Container.NumPages,/,[/COLOR])]</label>
+					<visible>Container.Content(movies)</visible>
+					<include>Window_OpenClose_Animation</include>
+				</control>
+				<control type="label">
+					<description>Container Duration Label</description>
+					<right>60</right>
+					<top>48r</top>
+					<width>750</width>
+					<height>30</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[Container.TotalTime,$LOCALIZE[31009] ([COLOR=blue],[/COLOR])]</label>
+					<visible>!Container.Content(movies)</visible>
+					<include>Window_OpenClose_Animation</include>
+				</control>
+			</control>
 			<include>CommonNowPlaying</include>
 		</control>
 		<include>MainWindowMouseButtons</include>
