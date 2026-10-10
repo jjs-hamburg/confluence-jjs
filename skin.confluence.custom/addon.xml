@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addon id="skin.confluence.custom" version="5.0.197" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
+<addon id="skin.confluence.custom" version="5.0.198" name="Confluence-jjs" provider-name="Jezz_X, Team Kodi; JJS">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
 		<import addon="xbmc.python" version="3.0.0" />
@@ -29,7 +29,7 @@
 			<screenshot>resources/screenshot-08.jpg</screenshot>
 			<screenshot>resources/screenshot-09.jpg</screenshot>
 		</assets>
-		<news>5.0.197: Do not calculate or display the total container duration in movie library views; music album duration remains unchanged.</news>
+		<news>5.0.198: Keep movie total duration disabled and use the freed footer row in List 3 by moving item/page information down and extending the two movie content panels.</news>
 		<summary lang="en_GB">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="en_US">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
 		<summary lang="de_DE">Confluence-jjs – extended Confluence skin for music playback, artwork and configurable menus.</summary>
