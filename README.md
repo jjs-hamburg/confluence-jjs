@@ -52,6 +52,7 @@ Click any thumbnail to open the full-size screenshot.
 ## Main additions
 
 - improved artwork display, including optional back covers
+- faster movie lists by removing the total duration calculation
 - configurable fonts, colors and font sizes
 - more information about the currently playing music, including timing, format, DOR, lyrics and credits
 - configurable home screen, main menu and submenus
