@@ -15,6 +15,39 @@
 		</control>
 		<include>CommonBackground</include>
 		<include>ContentPanelBackgrounds</include>
+		<!-- Movies / List 3: use the footer row freed by suppressing Container.TotalTime. -->
+		<control type="group">
+			<visible>Control.IsVisible(515) + Container.Content(Movies)</visible>
+			<include>VisibleFadeEffect</include>
+			<control type="image">
+				<left>75</left>
+				<top>978</top>
+				<width>600</width>
+				<height>44</height>
+				<texture border="15,0,15,15">ContentPanel.png</texture>
+			</control>
+			<control type="image">
+				<left>690</left>
+				<top>978</top>
+				<width>1155</width>
+				<height>44</height>
+				<texture border="15,0,15,15">ContentPanel.png</texture>
+			</control>
+			<control type="image">
+				<left>75</left>
+				<top>1010</top>
+				<width>600</width>
+				<height>96</height>
+				<texture border="15">ContentPanelMirror.png</texture>
+			</control>
+			<control type="image">
+				<left>690</left>
+				<top>1010</top>
+				<width>1155</width>
+				<height>96</height>
+				<texture border="15">ContentPanelMirror.png</texture>
+			</control>
+		</control>
 		<control type="group">
 			<include>Window_OpenClose_Animation</include>
 			<!-- view id = 50 -->
@@ -60,6 +93,22 @@
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>$INFO[Container.NumItems,([COLOR=blue],[/COLOR]) $LOCALIZE[31025]]$INFO[Container.CurrentPage, - $LOCALIZE[31024] ([COLOR=blue]]$INFO[Container.NumPages,/,[/COLOR])]</label>
+					<visible>!Container.Content(movies)</visible>
+					<include>Window_OpenClose_Animation</include>
+				</control>
+				<control type="label">
+					<description>Movie Page Count Label</description>
+					<right>60</right>
+					<top>48r</top>
+					<width>750</width>
+					<height>30</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[Container.NumItems,([COLOR=blue],[/COLOR]) $LOCALIZE[31025]]$INFO[Container.CurrentPage, - $LOCALIZE[31024] ([COLOR=blue]]$INFO[Container.NumPages,/,[/COLOR])]</label>
+					<visible>Container.Content(movies)</visible>
 					<include>Window_OpenClose_Animation</include>
 				</control>
 				<control type="label">
