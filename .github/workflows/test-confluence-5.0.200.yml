@@ -34,9 +34,7 @@ jobs:
           nav = root / "1080p" / "MyVideoNav.xml"
           view = root / "1080p" / "ViewsVideoLibrary.xml"
 
-          # 5.0.200 = committed 5.0.198 logic, but without the 5.0.198 panel extension.
-          # Keep movie total duration suppressed and keep only the movie item/page line
-          # in the freed lower footer row.
+          # 5.0.200 test: pre-5.0.198 List 3 geometry with the movie-only footer optimization.
           addon_text = addon.read_text(encoding="utf-8")
           if 'version="5.0.198"' not in addon_text:
               raise SystemExit("Unexpected source version; expected committed 5.0.198 test base")
