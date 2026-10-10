@@ -1,0 +1,128 @@
+name: "Test Confluence-jjs 5.0.200"
+
+on:
+  push:
+    branches:
+      - test/confluence-5.0.200
+    paths:
+      - ".github/workflows/test-confluence-5.0.200.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout test branch
+        uses: actions/checkout@v5
+
+      - name: Build exact 5.0.200 test source
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          root = Path("skin.confluence.custom")
+          addon = root / "addon.xml"
+          nav = root / "1080p" / "MyVideoNav.xml"
+          view = root / "1080p" / "ViewsVideoLibrary.xml"
+
+          # 5.0.200 = committed 5.0.198 logic, but without the 5.0.198 panel extension.
+          # Keep movie total duration suppressed and keep only the movie item/page line
+          # in the freed lower footer row.
+          addon_text = addon.read_text(encoding="utf-8")
+          if 'version="5.0.198"' not in addon_text:
+              raise SystemExit("Unexpected source version; expected committed 5.0.198 test base")
+          addon_text = addon_text.replace('version="5.0.198"', 'version="5.0.200"', 1)
+          old_news = ('5.0.198: Keep movie total duration disabled and use the freed footer row in List 3 '
+                      'by moving item/page information down and extending the two movie content panels.')
+          new_news = ('5.0.200: Keep movie total duration disabled, restore the original List 3 panel geometry, '
+                      'and use only the freed footer row for movie item/page information.')
+          if old_news not in addon_text:
+              raise SystemExit("Expected 5.0.198 news entry not found")
+          addon.write_text(addon_text.replace(old_news, new_news, 1), encoding="utf-8")
+
+          nav_text = nav.read_text(encoding="utf-8")
+          start_marker = '\t\t<!-- Movies / List 3: use the footer row freed by suppressing Container.TotalTime. -->\n'
+          next_group = ('\t\t<control type="group">\n'
+                        '\t\t\t<include>Window_OpenClose_Animation</include>\n')
+          start = nav_text.find(start_marker)
+          if start < 0:
+              raise SystemExit("5.0.198 movie panel extension marker not found")
+          end = nav_text.find(next_group, start)
+          if end < 0:
+              raise SystemExit("Could not locate end of 5.0.198 movie panel extension")
+          nav_text = nav_text[:start] + nav_text[end:]
+          nav.write_text(nav_text, encoding="utf-8")
+
+          # Exact intended footer behavior remains from 5.0.198.
+          assert "Movie Page Count Label" in nav_text
+          movie_page = nav_text.split("Movie Page Count Label", 1)[1].split("</control>", 1)[0]
+          assert "<top>48r</top>" in movie_page
+          assert "<visible>Container.Content(movies)</visible>" in movie_page
+          duration = nav_text.split("Container Duration Label", 1)[1].split("</control>", 1)[0]
+          assert "$INFO[Container.TotalTime" in duration
+          assert "<visible>!Container.Content(movies)</visible>" in duration
+          assert "Movies / List 3: use the footer row" not in nav_text
+
+          # The actual List 3 content geometry must be the original pre-5.0.198 geometry.
+          view_text = view.read_text(encoding="utf-8")
+          list3 = view_text.split('<include name="MediaListView4">', 1)[1]
+          assert "<height>842</height>" in list3
+          assert "<height>840</height>" in list3
+          movie = list3.split("Container.Content(Movies)", 1)[1].split("</control>\n\t\t\t</control>", 1)[0]
+          assert "<height>147</height>" in movie
+          assert "<top>810</top>" in movie
+          assert "<height>660</height>" in movie
+          assert "<height>902</height>" not in list3
+          assert "<height>900</height>" not in list3
+          assert "<height>692</height>" not in movie
+
+          # Parse all skin XML after transformation.
+          for xml in sorted((root / "1080p").glob("*.xml")):
+              ET.parse(xml)
+          parsed = ET.parse(addon).getroot()
+          assert parsed.attrib["id"] == "skin.confluence.custom"
+          assert parsed.attrib["version"] == "5.0.200"
+
+          print("Exact 5.0.200 geometry/footer assertions passed")
+          PY
+
+      - name: Build test ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP="skin.confluence.custom-5.0.200.zip"
+          find skin.confluence.custom -type d -name __pycache__ -prune -exec rm -rf {} +
+          find skin.confluence.custom -type f -name '*.pyc' -delete
+          zip -qr "$ZIP" skin.confluence.custom -x "*/__pycache__/*" "*.pyc"
+
+          python - "$ZIP" <<'PY'
+          import sys, zipfile, xml.etree.ElementTree as ET
+          from io import BytesIO
+          zip_path = sys.argv[1]
+          with zipfile.ZipFile(zip_path) as zf:
+              assert zf.testzip() is None
+              names = zf.namelist()
+              assert {n.split('/', 1)[0] for n in names if n} == {"skin.confluence.custom"}
+              root = ET.parse(BytesIO(zf.read("skin.confluence.custom/addon.xml"))).getroot()
+              assert root.attrib["version"] == "5.0.200"
+          print("ZIP structure/version OK:", zip_path)
+          PY
+
+          sha256sum "$ZIP"
+
+      - name: Upload 5.0.200 test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: skin.confluence.custom-5.0.200
+          path: skin.confluence.custom-5.0.200.zip
+          if-no-files-found: error
+          retention-days: 30
